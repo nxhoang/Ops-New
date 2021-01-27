@@ -97,6 +97,23 @@ namespace OPS_DAL.Business
         #region Oracle database
 
         /// <summary>
+        /// Get development team with has factory code start character is not P
+        /// </summary>
+        /// <returns></returns>
+        /// Author: Son Nguyen Cao
+        /// Date: 26/Jan/2021
+        public static List<FactoryEntity> GetDevelopmentTeam()
+        {
+            string strSql = @"SELECT factory as factoryId, name as factoryname
+                                FROM T_CM_FCMT 
+                                WHERE TYPE = 'P' AND STATUS  = 'OK' AND SUBSTR(FACTORY, 1, 1) <> 'P' ORDER BY FACTORY";
+
+            var listDevTeam = OracleDbManager.GetObjects<FactoryEntity>(strSql, CommandType.Text, null);
+
+            return listDevTeam;
+        }
+
+        /// <summary>
         /// Gets the by type and status.
         /// </summary>
         /// <param name="factoryType">Type of the factory.</param>

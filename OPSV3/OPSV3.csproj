@@ -164,6 +164,8 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\ChangeLanguageController.cs" />
+    <Compile Include="Controllers\DataAuditToolController.cs" />
+    <Compile Include="Controllers\DataMasterController.cs" />
     <Compile Include="Controllers\DefaultController.cs" />
     <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Controllers\ExportExcelController.cs" />
@@ -242,6 +244,9 @@
     <Content Include="assets\country-dropdown\js\msdropdown\jquery.dd.min.js" />
     <Content Include="assets\csv\jquery.csv.js" />
     <Content Include="assets\csv\jquery.csv.min.js" />
+    <Content Include="assets\daterangepicker-master-4\daterangepicker.css" />
+    <Content Include="assets\daterangepicker-master-4\daterangepicker.js" />
+    <Content Include="assets\daterangepicker-master-4\moment.min.js" />
     <Content Include="assets\ffmpeg\bin\ffmpeg.exe" />
     <Content Include="assets\ffmpeg\bin\ffplay.exe" />
     <Content Include="assets\ffmpeg\bin\ffprobe.exe" />
@@ -1080,7 +1085,10 @@
     <Content Include="js\jsPanel\jquery.jspanel.min.css" />
     <Content Include="js\jsPanel\jquery.jspanel.min.js" />
     <Content Include="js\jsPanel\LICENSE.TXT" />
+    <Content Include="js\ops\data_audit_tool\data_audit_tool.js" />
+    <Content Include="js\ops\data_audit_tool\data_audit_tool_event.js" />
     <Content Include="js\ops\generic\common.js" />
+    <Content Include="js\ops\generic\data_master.js" />
     <Content Include="js\ops\generic\editJqgrid.js" />
     <Content Include="js\ops\generic\jqgrid-common.js" />
     <Content Include="js\ops\generic\SmSgManager.js" />
@@ -1738,6 +1746,7 @@
     <Content Include="Scripts\angular-resource.min.js.map" />
     <Content Include="Scripts\angular.min.js.map" />
     <Content Include="Views\UiControl\OpLayoutVideo.cshtml" />
+    <Content Include="Views\DataAuditTool\DataAuditTool.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -1762,6 +1771,7 @@
     <Folder Include="pkfile\video\temp\e5d2eea7-5ae2-47ad-aacb-1cece9081ffb\" />
     <Folder Include="pkfile\video\temp\f871a989-5bb4-4520-b0e4-6ae5f4b81688\" />
     <Folder Include="signalr\hubs\" />
+    <Folder Include="Views\DataMaster\" />
     <Folder Include="Views\Error\" />
   </ItemGroup>
   <ItemGroup>

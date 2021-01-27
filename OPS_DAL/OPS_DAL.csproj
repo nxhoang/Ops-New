@@ -116,6 +116,7 @@
     <Compile Include="Business\MBomBus.cs" />
     <Compile Include="Business\MccaBus.cs" />
     <Compile Include="Business\McmtBus.cs" />
+    <Compile Include="Business\MptnBus.cs" />
     <Compile Include="Business\MrulBus.cs" />
     <Compile Include="Business\OnamBus.cs" />
     <Compile Include="Business\OpColorBus.cs" />
@@ -137,6 +138,7 @@
     <Compile Include="APIEntities\IcmtAPI.cs" />
     <Compile Include="Entities\Mboh.cs" />
     <Compile Include="Entities\Mcca.cs" />
+    <Compile Include="Entities\Mpnt.cs" />
     <Compile Include="Entities\OpMaster.cs" />
     <Compile Include="Entities\SdSamt.cs" />
     <Compile Include="Entities\Sgmc.cs" />

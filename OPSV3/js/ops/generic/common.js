@@ -814,3 +814,18 @@ const setSelect2DropdownBelowWidthList = (listDropdownId, dropWidth) => {
     });
 }
 //#endregion
+
+//#region daterangepicker
+const setDateRangePicker4 = (txtDateRangeId) => {
+    $(txtDateRangeId).daterangepicker({
+        autoUpdateInput: false,
+        locale: {
+            format: 'YYYY/MM/DD'
+        }
+    });
+
+    $(txtDateRangeId).on('apply.daterangepicker', function (ev, picker) {
+        $(this).val(picker.startDate.format('YYYY/MM/DD') + ' - ' + picker.endDate.format('YYYY/MM/DD'));
+    });
+}
+//#endregion

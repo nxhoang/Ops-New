@@ -222,6 +222,9 @@
                                     <a href="/OpName/OpName" class="menu-item">Operation Name</a>
                                 </li>
                                 <li>
+                                    <a href="/DataAuditTool/DataAuditTool" class="menu-item">Data Audit Tool</a>
+                                </li>
+                                <li>
                                     <a href="/Ops/ProcessTemplate" class="menu-item"><span>Process Template</span></a>
                                 </li>
                             </ul>
@@ -305,6 +308,7 @@
                                 <a href="/OpsMasterData/Machine" class="dropdown-item py-1"><span>Machine</span></a>
                                 <a href="/OpsMasterData/Tools" class="dropdown-item py-1"><span>Tool</span></a>
                                 <a href="/OpName/OpName" class="dropdown-item py-1"><span>Operation Name</span></a>
+                                <a href="/DataAuditTool/DataAuditTool" class="dropdown-item py-1"><span>Data Audit Tool</span></a>
                                 <a href="/Ops/ProcessTemplate" class="dropdown-item py-1"><span>Process Template</span></a>
                             </div>
                         </div>
@@ -412,7 +416,7 @@
                                         </div>
                                         <div class="col-md-12 page-body">
 
-                                            <div class="panel panel-default">
+                                            <div id="divPageBody" class="panel panel-default">
                                                 <div class="panel-body">
                                                     <!-- END X-NAVIGATION VERTICAL -->
                                                     <!-- PAGE CONTENT WRAPPER -->
@@ -612,9 +616,9 @@
     <script src="~/js/jqGrid/js/grid.locale-en.js"></script>
     <script src="~/js/jqGrid/js/jquery.jqGrid.min.js"></script>
     <script src="~/js/ops/generic/editJqgrid.js"></script>
-    <script src="~/js/ops/generic/common.js?v=1.0.1"></script>
+    <script src="~/js/ops/generic/common.js?v=1.0.2"></script>
     <script src="~/js/ops/generic/jqgrid-common.js"></script>
-
+    <script src="~/js/ops/generic/data_master.js"></script> <!--ADD - SON) 26/Jan/2021-->
     <script src="~/js/ops/Pages/ops-common.js?v=2.0.7"></script>
     <script src="~/js/ops/uicontrol/SearchStyle.js?v=1.0.6"></script>
 
@@ -700,7 +704,13 @@
 
         });
 
-
+        //START ADD - SON) 26/Jan/2021
+        //$(window).on('resize', function () {
+        //    const screenHeight = $(window).height();
+        //    const pageBodyHeight = screenHeight - (60 + 75);//60 is height of menu on top
+        //    $('#divPageBody').height(pageBodyHeight);
+        //}).trigger('resize');
+        //END ADD - SON) 26/Jan/2021
 
         //==================================
         //START ADD: HA

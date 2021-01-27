@@ -1,0 +1,103 @@
+﻿
+@{
+    ViewBag.Title = "DataAuditTool";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link href="~/assets/daterangepicker-master-4/daterangepicker.css" rel="stylesheet" />
+<style type="text/css">
+    .ui-jqgrid .ui-jqgrid-bdiv {
+        border-bottom: 1px solid #E1E1E1;
+    }
+
+    .margin-top-10px{
+        margin-top: 10px;
+    }
+</style>
+
+<div class="row">
+    <div class="col-sm-2">
+        <div class="form-group selec2-custom">
+            <select id="drpTeamGroup" class="form-control" data-placeholder="Team">
+                <option></option>
+                <option value="1">Sale Team</option>
+                <option value="2">Product Team</option>
+            </select>
+        </div>
+    </div>
+    <div class="col-sm-2">
+        <div class="form-group selec2-custom">
+            <select id="drpTeam" class="form-control" data-placeholder="Team"></select>
+        </div>
+    </div>
+    <div class="col-md-2 col-sm-2 col-xs-2">
+        <div class="form-group selec2-custom">
+            <select id="drpBuyer" class="form-control" data-placeholder="Buyer"></select>
+        </div>
+    </div>
+    <div class="col-md-2 col-sm-2 col-xs-2 ">
+        <div class="input-group">
+            <span class="add-on input-group-addon"><i class="glyphicon glyphicon-calendar fa fa-calendar"></i></span>
+            <input id="txtDateRange" type="text" class="form-control" placeholder="Date range" autocomplete="off">
+        </div>
+    </div>    
+    <div class="col-sm-1 ">
+        <div class="input-group">
+            <input id="txtAoNumber" type="text" class="form-control" placeholder="AO Number">
+        </div>
+    </div>
+    <div class="col-sm-3">
+        <div class="input-group">
+            <input id="txtStyleInfo" type="text" class="form-control" placeholder="Search For..">
+            <span class="input-group-btn">
+                <input type="button" value="Find" id="btnSearchStyle" class="btn btn-primary btn-modal">
+            </span>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-12">        
+        <table id="tbStyle"></table>
+        <div id="tbStylePager"></div>
+    </div>
+</div>
+<div class="row margin-top-10px">
+    <div class="col-sm-6">
+        <div class="row">
+            <div class="col-sm-12">
+                <table id="tbBom"></table>
+            </div>
+        </div>
+        <div class="row margin-top-10px">
+            <div class="col-sm-12">
+                <table id="tbMBom"></table>
+                <table id="tbMBom2"></table>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6">
+        <div class="row">
+            <div class="col-sm-12">
+                <table id="tbOpPlan"></table>
+                <div id="tbOpPlanPager"></div>
+            </div>
+        </div>
+        <div class="row margin-top-10px">
+            <div class="col-sm-12">
+                <table id="tbOpPlanDt"></table>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <script src="~/assets/daterangepicker-master-4/moment.min.js"></script>
+    <script src="~/assets/daterangepicker-master-4/daterangepicker.js"></script>
+    <script src="~/js/ops/data_audit_tool/data_audit_tool.js"></script>
+    <script src="~/js/ops/data_audit_tool/data_audit_tool_event.js"></script>
+    <script type="text/javascript">
+        $(() => {
+            initialDataAuditToolPage();
+        });
+    </script>
+}
