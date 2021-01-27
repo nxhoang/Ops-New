@@ -2601,70 +2601,72 @@ app.controller("OpsLayoutController", function ($uibModal, $log, $document, $sco
 
             const smsg = getMsgByLang(msgConfirmDelete);
 
-            ConfirmYesNo(smsg.title, smsg.value, function () {
+            ConfirmYesNo(smsg.title, smsg.value, () => {
                 window.isChange = true;
 
                 const opdt = new Opdt(Edition, "", StyleCode, StyleColorSerial, StyleSize, RevNo, OpRevNo, node.id);
 
                 //START ADD - Son Nguyen Cao
                 //Update next process.
-                var objConnection = toolkit.getNode(node.id).getEdges();
-                var lstOpdtNextOp = [];
-                $.each(objConnection, function (index, vaule) {
-                    if (opdt.OpSerial !== vaule.source.id) {
-                        var newOpdt = new Opdt(Edition, "", StyleCode, StyleColorSerial, StyleSize, RevNo, OpRevNo, vaule.source.id);
-                        lstOpdtNextOp.push(newOpdt);
-                    }
-                });
-                //END ADD - Son Nguyen Cao.
-
-                let deleteProcess = $http.post("/OpLayout/DeleteProcess", { opdt: opdt });
-                deleteProcess.then(function (response) {
-                    var result = response;
-
-                    if (result) {
-                        IsDeleteProcess = true; // to ignore function ClearAllVideoInfo1()
-
-                        toolkit.removeNode(node);
-
-                        // Removing empty group also
-                        const grp = toolkit.getGroup(node.group);
-                        if (grp) {
-                            const pcs = grp.getNodes();
-                            if (pcs && pcs.length === 0) toolkit.removeGroup(grp, true);
+                if (toolkit.getNode(node.id)) {
+                    const objConnection = toolkit.getNode(node.id).getEdges();
+                    var lstOpdtNextOp = [];
+                    $.each(objConnection, (index, value) => {
+                        if (opdt.OpSerial !== value.source.id) {
+                            var newOpdt = new Opdt(Edition, "", StyleCode, StyleColorSerial, StyleSize, RevNo, OpRevNo, value.source.id);
+                            lstOpdtNextOp.push(newOpdt);
                         }
+                    });
 
-                        const msg = getMsgByLang(msgDeleted);
-                        MsgInform(msg.title, msg.value, ObjMessageType.Info, false, true);
+                    let deleteProcess = $http.post("/OpLayout/DeleteProcess", { opdt: opdt });
+                    deleteProcess.then(function (response) {
+                        var result = response;
 
-                        //START ADD - Son Nguyen Cao
-                        //Update next process.                                                        
-                        let updateNextOp = $http.post("/OpLayout/UpdateNextOp", { lstOpdt: lstOpdtNextOp });
-                        updateNextOp.then(function (response) {
-                            if (response.data === Success) {
-                                LayoutEvent = true;
-                                //Reload operation master gird
-                                var postData = {
-                                    styleCode: opdt.StyleCode, styleSize: opdt.StyleSize, styleColor: opdt.StyleColorSerial
-                                    , revNo: opdt.RevNo, edition: $("#drpOpsMasterEdition").val()
-                                };
-                                //ReloadJqGrid(gridOpsTableName, postData);
-                                ReloadJqGrid2LoCal(gridOpsTableName, postData);
-                                //ShowMessage("Update next opeartion plan", "Cannot update next operation plan.", MessageTypeAlert);
+                        if (result) {
+                            IsDeleteProcess = true; // to ignore function ClearAllVideoInfo1()
+
+                            toolkit.removeNode(node);
+
+                            // Removing empty group also
+                            const grp = toolkit.getGroup(node.group);
+                            if (grp) {
+                                const pcs = grp.getNodes();
+                                if (pcs && pcs.length === 0) toolkit.removeGroup(grp, true);
                             }
-                        });
 
-                        //toolkit.removeNode(node);
-                        //MsgInform("Inform", "The process is deleted successfully.", ObjMessageType.Info, false, true);
+                            const msg = getMsgByLang(msgDeleted);
+                            MsgInform(msg.title, msg.value, ObjMessageType.Info, false, true);
 
-                        //END ADD - Son Nguyen Cao
-                    } else {
-                        const msg = getMsgByLang(msgError);
-                        MsgInform(msg.title, msg.value, ObjMessageType.Error, false, false);
-                    }
-                }, function (error) {
-                    ShowAjaxError(error, "/OpLayout/DeleteProcess");
-                });
+                            //START ADD - Son Nguyen Cao
+                            //Update next process.                                                        
+                            let updateNextOp = $http.post("/OpLayout/UpdateNextOp", { lstOpdt: lstOpdtNextOp });
+                            updateNextOp.then(function (response) {
+                                if (response.data === Success) {
+                                    LayoutEvent = true;
+                                    //Reload operation master gird
+                                    var postData = {
+                                        styleCode: opdt.StyleCode, styleSize: opdt.StyleSize, styleColor: opdt.StyleColorSerial
+                                        , revNo: opdt.RevNo, edition: $("#drpOpsMasterEdition").val()
+                                    };
+                                    //ReloadJqGrid(gridOpsTableName, postData);
+                                    ReloadJqGrid2LoCal(gridOpsTableName, postData);
+                                    //ShowMessage("Update next opeartion plan", "Cannot update next operation plan.", MessageTypeAlert);
+                                }
+                            });
+
+                            //toolkit.removeNode(node);
+                            //MsgInform("Inform", "The process is deleted successfully.", ObjMessageType.Info, false, true);
+
+                            //END ADD - Son Nguyen Cao
+                        } else {
+                            const msg = getMsgByLang(msgError);
+                            MsgInform(msg.title, msg.value, ObjMessageType.Error, false, false);
+                        }
+                    }, function (error) {
+                        ShowAjaxError(error, "/OpLayout/DeleteProcess");
+                    });
+                }
+                //END ADD - Son Nguyen Cao.
             });
         } else {
             const msg = getMsgByLang(msgOpConfirmed);

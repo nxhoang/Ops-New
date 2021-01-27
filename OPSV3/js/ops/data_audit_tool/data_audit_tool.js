@@ -28,6 +28,7 @@ const eventSelectionStyleRow = (rowData) => {
     const revNo = rowData.RevNo;
     reloadGridBom(styleCode, styleSize, styleColorSerial, revNo);
     reloadGridOpPlan(styleCode, styleSize, styleColorSerial, revNo, '');
+    reloadGridMbom(styleCode, styleSize, styleColorSerial, revNo);
 }
 //#endregion
 
@@ -78,7 +79,7 @@ function bindDataToGridStyle(buyer, startDate, endDate, aoNumber, styleInfo) {
             { name: 'Buyer', index: 'Buyer', hidden: true }
         ],
         onSelectRow: function (rowid) {
-             const rowdata = $('#tbStyle').jqGrid("getRowData", rowid);
+            const rowdata = $('#tbStyle').jqGrid("getRowData", rowid);
             eventSelectionStyleRow(rowdata);
         },
         loadComplete: function () {
@@ -89,7 +90,7 @@ function bindDataToGridStyle(buyer, startDate, endDate, aoNumber, styleInfo) {
             //    SetPaging(myJqgrid, tableNavName);
             //}
         },
-        ajaxGridOptions: { async: true } //MOD - SON) 23/Oct/2020 - Change async to true
+        ajaxGridOptions: { async: true } 
     }).jqGrid("navGrid", "#tbStylePager", {
         cloneToTop: true,
         edit: false,
@@ -296,7 +297,7 @@ const bindDataToJqGridOpPlan = (styleCode, styleSize, styleColor, revNo, edition
                 updatePagerIcons();
             }, 0);
         },
-        onPaging: function (pgButton) {            
+        onPaging: function (pgButton) {
             if (pgButton === "records") {
                 SetPaging($('#tbOpPlan'), 'tbOpPlanPager');
             }
@@ -306,10 +307,18 @@ const bindDataToJqGridOpPlan = (styleCode, styleSize, styleColor, revNo, edition
             reloadGridOpPlanDetail(rowData.StyleCode, rowData.StyleSize, rowData.StyleColorSerial, rowData.RevNo, rowData.OpRevNo, rowData.Edition, 'en');
         },
         ajaxGridOptions: { async: false },
-        loadonce: true,     
+        loadonce: true,
     });
 
-    AddEditionDropdownToOpsHeader();
+    //Add filter edition on header of gridview
+    jQuery('#tbOpPlan').jqGrid('setLabel', 'Edition2',
+        "<select id= 'drpOpPlanEdition' >" +
+        "<option value=''>All</option >" +
+        "<option value='P'>PDM</option >" +
+        "<option value='O'>OPS</option >" +
+        "<option value='A'>AOMTOPS</option>" +
+        "<option value='M'>MES</option>" +
+        "</select> ");
     //navButtons
     jQuery('#tbOpPlan').jqGrid('navGrid', '#tbOpPlanPager', {
         //navbar options
@@ -421,7 +430,7 @@ const bindDataToJqGridOpPlanDetail = (styleCode, styleSize, styleColor, revNo, o
             groupCollapse: false,
             plusicon: "ace-icon fa fa-plus",
             minusicon: "ace-icon fa fa-minus"
-        },       
+        },
         ajaxGridOptions: { async: false }
     });
 
@@ -434,9 +443,8 @@ const bindDataToJqGridOpPlanDetail = (styleCode, styleSize, styleColor, revNo, o
 }
 
 const bindDataToJqGridMbom = (styleCode, styleSize, styleColorSerial, revNo) => {
-    
-    jQuery('#tbMBom').jqGrid({
-        url: '/DataAuditTool/GetMbom',
+    jQuery("#tbModule").jqGrid({
+        url: '/DataAuditTool/GetModules',
         postData: {
             styleCode: styleCode,
             styleSize: styleSize,
@@ -447,19 +455,174 @@ const bindDataToJqGridMbom = (styleCode, styleSize, styleColorSerial, revNo) => 
         height: 300,
         width: null,
         shrinkToFit: false,
+        viewrecords: false,
         rowNum: -1,
         rownumbers: false,
-        loadonce: true,    
-        gridview: true,
         caption: "MBOM",
         colModel: [
-            { name: 'ModuleItemCode', index: 'ModuleItemCode', label: "Part Id", width: 150 },
-            { name: 'ModuleName', index: 'ModuleName', label: 'Part Name', width: 250},
-            { name: 'FinalAssembly', index: 'FinalAssembly', label: 'Final Assembly', width: 250, },
-            { name: 'RegistryDate', index: 'RegistryDate', width: 250, label: "No Of Items" },
-            { name: 'RegistryDate', index: 'RegistryDate', width: 250, label: "RegistryDate" },
-        ],        
+            { name: 'ModuleId', index: 'ModuleId', label: "Part Id", width: 150 },
+            { name: 'ModuleName', index: 'ModuleName', label: 'Part Name', width: 150 },
+            { name: 'FinalAssembly', index: 'FinalAssembly', label: 'Final Assembly', width: 100, align: 'center'},
+            { name: 'ItemCount', index: 'ItemCount', width: 100, label: "No Of Items", align: 'center' },
+            { name: 'RegistryDate', index: 'RegistryDate', width: 170, label: "RegistryDate" },
+            { name: 'HasItem', index: 'HasPattern', hidden: true }
+        ],
+        gridComplete: function () {
+            let ids = jQuery("#tbModule").jqGrid('getDataIDs');
+            for (let i = 1; i <= ids.length; i++) {
+                let rowdata = $("#tbModule").jqGrid("getRowData", i);
+                if (rowdata.HasItem !== "Y") {
+                    //Hide plus icon if item has no pattern
+                    $("tr[id=" + i + "]>td[aria-describedby$=tbModule_subgrid]").html("&nbsp;");
+
+                    //Disable click event on the first column
+                    $("tr[id=" + i + "]>td[aria-describedby$=tbModule_subgrid]").unbind('click');
+                }
+            }
+        },
+        subGrid: true,
+        subGridOptions: {
+            plusicon: "ui-icon-plus",
+            minusicon: "ui-icon-minus",
+            openicon: "ui-icon-carat-1-sw",
+            expandOnLoad: false,
+            selectOnExpand: false,
+            reloadOnExpand: true
+        },
+        subGridRowExpanded: subGridModuleMbom,
         ajaxGridOptions: { async: false }
+    });
+}
+
+const subGridModuleMbom = (subgridDivId, rowId) => {
+    //get current selected linked item row data
+    let rowData = $('#tbModule').jqGrid('getRowData', rowId);
+    const rowDataStyle = GetSelectedOneRowData('#tbStyle');
+    let subgridTableId = subgridDivId + "_t";
+    $("#" + subgridDivId).html("<table id='" + subgridTableId + "' class='scroll'></table>");
+    $("#" + subgridTableId).jqGrid({
+        url: '/DataAuditTool/GetMBom',
+        postData: {
+            styleCode: rowDataStyle.StyleCode,
+            styleSize: rowDataStyle.StyleSize,
+            styleColorSerial: rowDataStyle.StyleColorSerial,
+            revNo: rowDataStyle.RevNo,
+            moduleId: rowData.ModuleId
+        },
+        datatype: "json",
+        height: 300,
+        width: null,
+        shrinkToFit: false,
+        viewrecords: false,
+        rowNum: -1,
+        rownumbers: false,
+        gridview: true,
+        colModel: [
+            { name: 'ItemCode', index: 'ItemCode', label: "Item Code", classes: 'pointer' },
+            { name: 'ItemName', index: 'ItemName', label: "Item Name", width: 250, classes: 'pointer' },
+            { name: 'ItemColorways', index: 'ItemColorways', label: "Item Color", width: 150, classes: 'pointer' },
+            { name: 'UnitConsumption', index: 'UnitConsumption', label: "Purchase Cons", width: 100, align: 'center', classes: 'pointer' },
+            { name: 'ConsumpUnit', index: 'ConsumpUnit', label: "Cons.Unit", width: 70, align: 'center' },
+            { name: 'MainItemCode', index: 'MainItemCode', hidden: true },
+            { name: 'MainItemColorSerial', index: 'MainItemColorSerial', hidden: true },
+            { name: 'ItemColorSerial', index: 'ItemColorSerial', hidden: true },
+            { name: 'StyleCode', index: 'StyleCode', hidden: true },
+            { name: 'StyleSize', index: 'StyleSize', hidden: true },
+            { name: 'StyleColorSerial', index: 'StyleColorSerial', hidden: true },
+            { name: 'RevNo', index: 'RevNo', hidden: true },
+            { name: 'ModuleItemCode', index: 'ModuleItemCode', hidden: true },
+            { name: 'PatternSerial', index: 'PatternSerial', hidden: true },
+            { name: 'HasPattern', index: 'HasPattern', hidden: true }
+        ],
+        gridComplete: function () {
+            let ids = jQuery(`#${subgridTableId}`).jqGrid('getDataIDs');
+            for (let i = 1; i <= ids.length; i++) {
+                let rowdata = $(`#${subgridTableId}`).jqGrid("getRowData", i);
+                if (rowdata.HasPattern !== "Y") {
+                    //Hide plus icon if item has no pattern
+                    $("tr[id=" + i + "]>td[aria-describedby$=" + subgridTableId + "_subgrid]").html("&nbsp;");
+
+                    //Disable click event on the first column
+                    $(`tr[id=${i}]>td[aria-describedby$=${subgridTableId}_subgrid]`).unbind('click');
+                }
+            }
+        },
+        subGrid: true,
+        subGridOptions: {
+            plusicon: "ui-icon-plus",
+            minusicon: "ui-icon-minus",
+            openicon: "ui-icon-carat-1-sw",
+            expandOnLoad: false,
+            selectOnExpand: false,
+            reloadOnExpand: true
+        },
+        subGridRowExpanded: subGridviewMbomPatterns
+    });
+}
+
+const subGridviewMbomPatterns = (subgridDivId, rowId) => {
+    const parentTableId = subgridDivId.substring(0, subgridDivId.lastIndexOf("_"));
+    //get current selected linked item row data
+    let rowData = $(`#${parentTableId}`).jqGrid('getRowData', rowId);
+    const { StyleCode, StyleSize, StyleColorSerial, RevNo, ModuleItemCode, ItemCode, ItemColorSerial, MainItemCode, MainItemColorSerial } = rowData;
+
+    //clear delete element
+    rowData.DeleteItemEle = '';
+    let subgridTableId = subgridDivId + "_t";
+    $("#" + subgridDivId).html("<table id='" + subgridTableId + "' class='scroll'></table>");
+    $("#" + subgridTableId).jqGrid({
+        url: '/DataAuditTool/GetMbomPatterns',
+        postData: {
+            styleCode: StyleCode,
+            styleSize: StyleSize,
+            styleColorSerial: StyleColorSerial,
+            revNo: RevNo,
+            moduleId: ModuleItemCode,
+            itemCode: ItemCode,
+            itemColorSerial: ItemColorSerial,
+            mainItemCode: MainItemCode,
+            mainItemColorSerial: MainItemColorSerial
+        },
+        datatype: "json",
+        height: 300,
+        width: null,
+        shrinkToFit: false,
+        viewrecords: false,
+        rowNum: -1, //Show all rows
+        rownumbers: false,
+        gridview: true,
+        //multiselect: true,
+        colModel: [
+            {
+                label: " ",
+                name: "IMAGELINK",
+                index: "IMAGELINK",
+                align: "center",
+                width: 120,
+                formatter: function (cellvalue, options) {
+                    var id = options.rowId;
+                    if (cellvalue)
+                        return `<img id='${id}' class='imgpattern' onclick = showPatternImage('${cellvalue}'); src='${cellvalue}' onerror='imgError(this);'/>`;
+                    return "";
+                }
+            },
+            { name: "PIECE", index: "PIECE", label: "Piece", width: 300 },
+            { name: "WIDTH", index: "WIDTH", label: "Width", align: "center", width: 50 },
+            { name: "HEIGHT", index: "HEIGHT", label: "Height", align: "center", width: 50 },
+            { name: "ENDWISE", index: "ENDWISE", label: "End Wise", align: "center", width: 80 },
+            { name: "PIECEQTY", index: "PIECEQTY", label: "Qty", width: 50 },
+            { name: "CONSUMPUNIT", index: "CONSUMPUNIT", label: "Cons.Unit", width: 80 },
+            { name: "PATTERNSERIAL", index: "PATTERNSERIAL", label: "Serial", width: 80 },
+            { name: "PIECEUNIQUE", index: "PIECEUNIQUE", label: "Unique", align: "center", width: 80 },
+            { name: "ITEMCODE", index: "ITEMCODE", hidden: true },
+            { name: "ITEMCOLORSERIAL", index: "ITEMCOLORSERIAL", hidden: true },
+            { name: "MAINITEMCODE", index: "MAINITEMCODE", hidden: true },
+            { name: "MAINITEMCOLORSERIAL", index: "MAINITEMCOLORSERIAL", hidden: true },
+            { name: 'STYLECODE', index: 'STYLECODE', hidden: true },
+            { name: 'STYLESIZE', index: 'STYLESIZE', hidden: true },
+            { name: 'STYLECOLORSERIAL', index: 'STYLECOLORSERIAL', hidden: true },
+            { name: 'REVNO', index: 'REVNO', hidden: true }            
+        ]
     });
 }
 //#endregion
@@ -476,12 +639,12 @@ const reloadGridOpPlan = (styleCode, styleSize, styleColorSerial, revNo, edition
 }
 
 const reloadGridOpPlanDetail = (styleCode, styleSize, styleColorSerial, revNo, opRevNo, edition, languageId) => {
-    const postData = { styleCode: styleCode, styleSize: styleSize, styleColor: styleColorSerial, revNo: revNo, opRevNo: opRevNo, edition: edition, languageId: languageId};
+    const postData = { styleCode: styleCode, styleSize: styleSize, styleColor: styleColorSerial, revNo: revNo, opRevNo: opRevNo, edition: edition, languageId: languageId };
     ReloadJqGrid2LoCal('tbOpPlanDt', postData);
 }
 
 const reloadGridMbom = (styleCode, styleSize, styleColorSerial, revNo) => {
-    const postData = { styleCode: styleCode, styleSize: styleSize, styleColor: styleColorSerial, revNo: revNo};
-    ReloadJqGrid2LoCal('tbMbom', postData);
+    const postData = { styleCode: styleCode, styleSize: styleSize, styleColorSerial: styleColorSerial, revNo: revNo };
+    ReloadJqGrid2LoCal('tbModule', postData);
 }
 //#endregion

@@ -875,6 +875,7 @@ function dragStartVideo1(e) {
 function allowDropCanvas(event) {
     event.preventDefault();
     //console.log("Allowing dropping video to canvas.");
+    
 }
 
 function dropCanvas(event) {
@@ -889,7 +890,16 @@ function dropCanvas(event) {
             console.log(`videoNo: ${videoNo}`);
             console.log("dragVideo");
             console.log(dragVideo);
-            console.log(event.currentTarget);
+            //console.log(event.currentTarget);
+
+            console.log(event.offsetX);
+            console.log(event.offsetY);
+            console.log(event.top);
+            console.log(event.left);
+            console.log(event.clientX);
+            console.log(event.clientY);
+            console.log(event.pageX);
+            console.log(event.pageY);
 
             console.log(window.CurrentOpmt);
 

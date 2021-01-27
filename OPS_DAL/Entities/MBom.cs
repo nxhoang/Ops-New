@@ -41,5 +41,7 @@ namespace OPS_DAL.Entities
         public string HasPattern { get; set; }//ADD) SON - 12 December 2019
         public string ModuleName { get; set; }//ADD) SON - 12 December 2019
         public string Linked { get; set; }//ADD - SON) 1/Oct/2020
+        public string ItemColorways { get; set; }//ADD - SON) 27/Jan/2021
+        public string ItemName { get; set; }//ADD - SON) 27/Jan/2021
     }
 }

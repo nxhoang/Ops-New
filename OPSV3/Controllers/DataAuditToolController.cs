@@ -54,7 +54,7 @@ namespace OPSV3.Controllers
             return Json(listPatterns, JsonRequestBehavior.AllowGet);
         }
 
-        public JsonResult GetMBom(string styleCode, string styleSize, string styleColorSerial, string revNo)
+        public JsonResult GetModules(string styleCode, string styleSize, string styleColorSerial, string revNo)
         {
 
             //If style code, size, color, revno is null or empty then return list of empty BOM
@@ -63,22 +63,58 @@ namespace OPSV3.Controllers
                 return Json(new List<MBom>(), JsonRequestBehavior.AllowGet);
             }
             //get list patterns by style
-            var listMbom = Mptn.GetModulesMbom(styleCode, styleSize, styleColorSerial, revNo);
+            var listMbom = MBomBus.GetMBOMByStyleCode(styleCode, styleSize, styleColorSerial, revNo);
             //get list bom detail by style
             var listModule = SamtBus.GetModulesByCode(styleCode);
 
-            ////Check item has patterns or not
-            //foreach (var bom in listBOM)
-            //{
-            //    //Check item has pattern or not
-            //    var hasPt = listPatterns.Where(x => x.ItemCode == bom.ItemCode && x.ItemColorSerial == bom.ItemColorSerial && bom.MainItemCode == x.MainItemCode && bom.MainItemColorSerial == x.MainItemColorSerial).Any();
-            //    if (hasPt)
-            //    {
-            //        bom.HasPattern = "Y";
-            //    }
-            //}
+            //Check item has patterns or not
+            foreach (var mdl in listModule)
+            {
+                //Check item has pattern or not
+                var countItem = listMbom.Where(x => x.ModuleItemCode == mdl.ModuleId).Count();
+                mdl.ItemCount = countItem;
+                if (countItem > 0)
+                {
+                    mdl.HasItem = "Y";
+                }
+            }
 
             return Json(listModule, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult GetMBom(string styleCode, string styleSize, string styleColorSerial, string revNo, string moduleId)
+        {
+            //get list mbom
+            var listMbom = MBomBus.GetMBOMByStyleCode(styleCode, styleSize, styleColorSerial, revNo);
+            //filter list mbom by module
+            var listMbomByModule = listMbom.Where(x => x.ModuleItemCode == moduleId);
+
+            //get all patterns MBOM
+            var listPatterns = MptnBus.GetPatternsMbom(styleCode, styleSize, styleColorSerial, revNo);
+            //filter patterns by module
+            var listPatternsByModule = listPatterns.Where(x => x.MODULEITEMCODE == moduleId);
+
+            //check mbom whether has pattern or not
+            foreach (var mbom in listMbomByModule)
+            {
+                var hasPt = listMbomByModule.Where(x => x.ItemCode == mbom.ItemCode && x.ItemColorSerial == mbom.ItemColorSerial && x.MainItemCode == mbom.MainItemCode && x.MainItemColorSerial == mbom.MainItemColorSerial).Any();
+                if (hasPt)
+                {
+                    mbom.HasPattern = "Y";
+                }
+            }
+
+            return Json(listMbomByModule, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult GetMbomPatterns(string styleCode, string styleSize, string styleColorSerial, string revNo, string moduleId, string itemCode, string itemColorSerial, string mainItemCode, string mainItemColorSerial)
+        {
+            //get all patterns MBOM
+            var listPatterns = MptnBus.GetPatternsMbom(styleCode, styleSize, styleColorSerial, revNo);
+            //filter patterns by module, item code, item color serial, main item code, main item color serial
+            var listPatternsFilter = listPatterns.Where(x => x.MODULEITEMCODE == moduleId && x.ITEMCODE ==itemCode && x.ITEMCOLORSERIAL == itemColorSerial && x.MAINITEMCODE == mainItemCode && x.MAINITEMCOLORSERIAL == mainItemColorSerial);
+
+            return Json(listPatternsFilter, JsonRequestBehavior.AllowGet);
         }
 
         public JsonResult SearchStyle(GridSettings gridRequest, string buyer, string startDate, string endDate, string aoNumber, string styleInfo)

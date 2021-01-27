@@ -72,7 +72,12 @@ namespace OPS_DAL.Business
         /// <returns></returns>
         public static List<MBom> GetMBOMByStyleCode(string stlCode, string stlSize, string stlColorSerial, string stlRevNo)
         {
-            var strSql = @"  SELECT * FROM T_SD_MBOM WHERE STYLECODE = :P_STYLECODE AND STYLESIZE = :P_STYLESIZE AND STYLECOLORSERIAL = :P_STYLECOLORSERIAL AND REVNO = :P_REVNO ";
+            //var strSql = @"  SELECT * FROM T_SD_MBOM WHERE STYLECODE = :P_STYLECODE AND STYLESIZE = :P_STYLESIZE AND STYLECOLORSERIAL = :P_STYLECOLORSERIAL AND REVNO = :P_REVNO ";
+            var strSql = @"SELECT ICM.ITEMNAME, ICC.ITEMCOLORSERIAL || ' - ' || ICC.ITEMCOLORWAYS AS ITEMCOLORWAYS, MBOM.* 
+                        FROM T_SD_MBOM MBOM
+                            JOIN T_00_ICMT ICM ON ICM.ITEMCODE = MBOM.ITEMCODE
+                            JOIN T_00_ICCM ICC ON ICC.ITEMCODE = MBOM.ITEMCODE AND ICC.ITEMCOLORSERIAL = MBOM.ITEMCOLORSERIAL 
+                        WHERE MBOM.STYLECODE = :P_STYLECODE AND MBOM.STYLESIZE = :P_STYLESIZE AND MBOM.STYLECOLORSERIAL = :P_STYLECOLORSERIAL AND MBOM.REVNO = :P_REVNO ";
 
             var oraPrams = new OpsParams(stlCode, stlSize, stlColorSerial, stlRevNo);
 

@@ -21,6 +21,12 @@
         if (teamGroup === '1') getBuyerList();
     });
 
+    $('#drpOpPlanEdition').change(() => {
+        const { StyleCode, StyleSize, StyleColorSerial, RevNo } = GetSelectedOneRowData('#tbStyle');
+        const edition = $('#drpOpPlanEdition').val();
+        reloadGridOpPlan(StyleCode, StyleSize, StyleColorSerial, RevNo, edition)
+    });
+
     $('#btnSearchStyle').click(() => {
         let startDate = '';
         let endDate = '';
