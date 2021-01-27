@@ -1,0 +1,100 @@
+﻿
+@{
+    ViewBag.Title = "LineChartDashboard";
+    Layout = "~/Views/Shared/_MesLayout.cshtml";
+}
+
+<link href="~/assets/DayRangePicker/daterangepicker.min.css" rel="stylesheet" />
+
+<style>
+    #chartjs-tooltip {
+			opacity: 1;
+			position: absolute;
+			background: rgba(0, 0, 0, .7);
+			color: white;
+			border-radius: 3px;
+			-webkit-transition: all .1s ease;
+			transition: all .1s ease;
+			pointer-events: none;
+			-webkit-transform: translate(-50%, 0);
+			transform: translate(-50%, 0);
+		}
+
+		.chartjs-tooltip-key {
+			display: inline-block;
+			width: 10px;
+			height: 10px;
+			margin-right: 10px;
+		}
+
+        .tooltip-pad-left{
+            padding-left: 5px;
+        }
+</style>
+<div class="row">
+    <div class="col-sm-12">
+        <div class="form-horizontal bv-form">
+            <div class="form-group">
+
+                <label class="col-sm-1 control-label">Factory</label>
+                <div class="col-sm-2">
+                    <select id="drpFactory" name="factoryId" class="form-control">
+                        <option>---</option>
+                        @foreach (var factory in ViewBag.LstFactories)
+                        {
+                            <option value="@factory.Factory">@factory.Name</option>
+                        }
+                    </select>
+                </div>
+
+                <label class="col-sm-1 control-label">Date</label>
+                <div class="col-sm-1">
+                    <input type="text" id="txtDate" class="form-control" placeholder="Date" style="padding-right:0;">
+                </div>
+
+                <div class="col-sm-1">
+                    <button id="btnDisplay" class="form-control btn btn-primary">Display</button>
+                </div>
+                <div class="col-sm-4">
+                </div>
+
+                <div class="col-sm-2">
+                    @*<label class="checkbox-inline"><input type="checkbox" id="chkDisplayDetail" value="">Display detail</label>*@
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-sm-12">
+        <div id="divLineChart" style="width: 100%" wfd-id="0">
+            @*<div class="chartjs-size-monitor" wfd-id="2">
+            <div class="chartjs-size-monitor-expand">
+                <div class="">
+                    </div></div>
+            <div class="chartjs-size-monitor-shrink"><div class=""></div></div></div>*@
+            @*<canvas id="canvas" style="display: block; height: 547px; width: 1094px;" width="1367" height="683" class="chartjs-render-monitor"></canvas>*@
+            <canvas id="canvas" style="display: block;" class="chartjs-render-monitor"></canvas>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <script src="~/assets/DayRangePicker/daterangepicker.min.js"></script>
+    <script src="~/Assets/chartjs/Chart.min.js"></script>
+    <script src="~/Assets/chartjs/chartjs-plugin-datalabels.min.js"></script>
+
+    <script src="~/js/mes/mes-common.js?v=1.0.3"></script>
+
+    <script src="~/js/mes/linedashboard/line-chart-dashboard.js?v=1.0.2"></script>
+    <script src="~/js/mes/linedashboard/line-chart-dashboard-event.js?v=1.0.2"></script>
+
+    <script>
+        $(function () {
+            initLineChartDashboardPage();
+        });
+
+    </script>
+
+}

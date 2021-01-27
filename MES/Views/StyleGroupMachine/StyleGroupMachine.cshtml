@@ -1,0 +1,113 @@
+﻿
+@{
+    ViewBag.Title = "StyleGroupMachine";
+    Layout = "~/Views/Shared/_MesLayout.cshtml";
+}
+
+<link href="~/Assets/bootstrap-multiselect/bootstrap-multiselect.css" rel="stylesheet" />
+
+<div class="row">
+
+    <div class="col-sm-1">
+        <div class="form-group">
+            <div><label class="control-label">&nbsp;</label></div>
+            <button type="button" id="btnExpand" class="btn btn-info" data-toggle="collapse" data-target="#divExpand">
+                <i class="fa fa-plus"></i>
+            </button>
+        </div>
+    </div>
+
+    <div class="col-sm-2">
+        <div class="form-group">
+            <label class="control-label">Style Group</label>
+            <select id="drpStyleGroup" class="form-control" data-placeholder=""></select>
+        </div>
+    </div>
+
+    <div class="col-sm-2">
+        <div class="form-group">
+            <label class="control-label">Sub Group</label>
+            <select id="drpSubGroup" class="form-control" data-placeholder=""></select>
+        </div>
+    </div>
+
+    <div class="col-sm-2">
+        <div class="form-group">
+            <label class="control-label">Sub Group</label>
+            <select id="drpSubSubGroup" class="form-control" data-placeholder=""></select>
+        </div>
+    </div>
+
+    <div class="col-sm-1">
+        <div class="form-group">
+            <div><label class="control-label">&nbsp;</label></div>
+            <button type="button" id="btnSearch" class="btn btn-primary">Search</button>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div id="divExpand" class="collapse">
+        <div class="col-sm-1">
+        </div>
+
+        <div class="col-sm-2">
+            <div class="form-group">
+                <label class="control-label">Category</label>
+                <select id="drpCategory" class="form-control" data-placeholder=""></select>
+            </div>
+        </div>
+
+        <div class="col-sm-2">
+            <div class="form-group">
+                <label class="control-label">Machines</label>
+                <select id="drpMachine" class="form-control" multiple="multiple" data-placeholder=""></select>
+            </div>
+        </div>
+
+        <div class="col-sm-2">
+            <div class="form-group">
+                <label class="control-label">Main Machines</label>
+                <select id="drpMainMachine" class="form-control" multiple="multiple" data-placeholder=""></select>
+            </div>
+        </div>
+
+        <div class="col-sm-1">
+            <div class="form-group">
+                <div><label class="control-label">&nbsp;</label></div>
+                <button type="button" id="btnAdd" class="btn btn-primary">Add</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-sm-1"></div>
+    <div class="col-sm-10">
+        <table id="tbMachineGroup"></table>
+        <div id="divMachineGroup"></div>
+    </div>
+    <div class="col-sm-1"></div>
+</div>
+<div class="top-buffer"></div>
+
+@section Scripts{
+
+    <!--jqgrid libary-->
+    <script src="~/js/plugin/jqgrid/jquery.jqGrid.min.js"></script>
+    <script src="~/js/plugin/jqgrid/grid.locale-en.min.js"></script>
+
+    <script src="~/Assets/bootstrap-multiselect/bootstrap-multiselect.js"></script>
+
+    <script src="~/js/mes/mes-common.js"></script>
+
+    <script src="~/js/mes/style-group-machine/style-group-machine.js"></script>
+    <script src="~/js/mes/style-group-machine/style-group-machine-event.js"></script>
+
+    <script>
+        $(function () {
+            initStyleGroupMachinePage();
+        });
+    </script>
+}
+

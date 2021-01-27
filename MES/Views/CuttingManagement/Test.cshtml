@@ -1,0 +1,78 @@
+﻿
+@{
+    ViewBag.Title = "Test";
+    Layout = "~/Views/Shared/_MesLayout.cshtml";
+}
+
+
+<link href="~/js/plugin/jqgrid/css/ui.jqgrid.min.css" rel="stylesheet" />
+
+<link href="~/Assets/jspanel-4.7.0/jspanel.min.css" rel="stylesheet" />
+
+<h2>Test</h2>
+
+<table id="test"></table>
+<div id="testPager"></div>
+
+@section Scripts{
+    <script src="~/js/plugin/jqgrid/jquery.jqGrid.min.js"></script>
+    <script src="~/js/plugin/jqgrid/grid.locale-en.min.js"></script>
+    <script src="~/js/plugin/jqgrid/Common.js"></script>
+
+    <script src="~/Assets/jspanel-4.7.0/jspanel.min.js"></script>
+    <script src="~/Assets/jspanel-4.7.0/extensions/modal/jspanel.modal.min.js"></script>
+
+    <script>
+        var isGrouping = false;
+        var QCPSGrid_colModels = [];
+
+        QCPSGrid_colModels.push({
+            name: 'LISTMTOPSPP', index: 'LISTMTOPSPP', label: 'MTOPS Packages', align: 'left', sortable: false, title: false,
+            cellattr: function (rowId, cellValue, rawObject, cm, rdata) {
+                //if (rawObject.STARTCOLUMNSPAN == "NewGroup") {
+                //    if (rawObject.MESPCount > 1)
+                //        return 'rowspan = ' + rawObject.MESPCount;
+                //    else
+                //        return ' ';
+                //}
+                //else if (rawObject.STARTCOLUMNSPAN == "SameGroup") {
+                //}
+                //return ' style="display:none;"  ';
+            }
+        }); //For change the position purpose
+        QCPSGrid_colModels.push({
+            name: 'PACKAGEGROUP', index: 'PACKAGEGROUP', label: 'PACKAGEGROUP', align: 'left', hidden: false,
+            cellattr: function (rowId, cellValue, rawObject, cm, rdata) {
+            }
+        });
+        QCPSGrid_colModels.push({ name: 'STYLECODE', index: 'STYLECODE', label: 'STYLECODE', align: 'left', hidden: false });
+        QCPSGrid_colModels.push({ name: 'STYLESIZE', index: 'STYLESIZE', label: 'STYLESIZE', align: 'left', hidden: false });
+        QCPSGrid_colModels.push({ name: 'STYLECOLORSERIAL', index: 'STYLECOLORSERIAL', label: 'STYLECOLORSERIAL', align: 'left', hidden: false });
+        QCPSGrid_colModels.push({ name: 'REVNO', index: 'REVNO', label: 'REVNO', align: 'left', hidden: false });
+        QCPSGrid_colModels.push({ name: 'MXPACKAGE', index: 'MXPACKAGE', label: 'MXPACKAGE', align: 'left', hidden: false });
+        QCPSGrid_colModels.push({ name: 'PLNSTARTDATE', index: 'PLNSTARTDATE', label: 'PLNSTARTDATE', align: 'right', hidden: false });
+        QCPSGrid_colModels.push({ name: 'MXTARGET', index: 'MXTARGET', label: 'MES QTY', align: 'right', hidden: false });
+        QCPSGrid_colModels.push({ name: 'FACTORY', index: 'FACTORY', label: 'FACTORY', align: 'left', hidden: false });
+        QCPSGrid_colModels.push({ name: 'LINESERIAL', index: 'LINESERIAL', label: 'LINESERIAL', align: 'left', hidden: false });
+
+        QCPSGrid_colModels.push({ name: 'ITEMCODE', index: 'ITEMCODE', label: 'ITEMCODE', align: 'left', hidden: false });
+        QCPSGrid_colModels.push({ name: 'ITEMCOLORSERIAL', index: 'ITEMCOLORSERIAL', label: 'ITEMCOLORSERIAL', align: 'left', hidden: false });
+        QCPSGrid_colModels.push({ name: 'TOTALCONSUMPTION', index: 'TOTALCONSUMPTION', label: 'TOTALCONSUMPTION', align: 'right', hidden: false });
+
+        CreateJqGridObject('test', '/CuttingManagement/TestGrid', 'local', QCPSGrid_colModels, false, '', 100);
+
+        $(function () {
+            jsPanel.modal.create({
+                theme: 'primary',
+                headerTitle: 'my panel',
+                position: 'center 50 50',
+                callback: function () {
+                    this.content.innerHTML = '<p>Example panel ...</p>'
+                },
+                onbeforeclose: function () {
+                    return confirm('Do you really want to close the panel?');
+                }
+            });
+        });
+    </script>
+}

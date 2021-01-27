@@ -1,0 +1,67 @@
+﻿
+@{
+    ViewBag.Title = "Test";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    
+     .modal-header {
+         background-color: #5bc0de;
+         border-top-left-radius: 8px;
+         border-top-right-radius: 8px;
+         min-height: 16.43px;
+         padding: 10px;
+         border-bottom: 1px solid #e5e5e5;
+     }
+
+    #btnModal {
+        position: fixed;
+        right: 0px;
+        top: 100px;
+        background: #1caf9a;
+        -moz-border-radius: 5px 0px 0px 5px;
+        -webkit-border-radius: 5px 0px 0px 5px;
+        border-radius: 5px 0px 0px 5px;
+        font-size: 13px;
+        color: #FFF;
+        line-height: 34px;
+        text-align: center;
+        cursor: pointer;
+    }
+
+</style>
+
+<script>
+    
+</script>
+
+<h2>Test</h2>
+ <!-- Trigger the modal with a button -->
+<button id="btnModal" type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#myModal">Style</button>
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog modal-lg">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Modal Header</h4>
+            </div>
+            <div class="modal-body">
+                <p>Some text in the modal.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<br/> <br/>
+
+@{
+    Html.RenderPartial("~/Views/Menu/MenuPartialView.cshtml");
+}

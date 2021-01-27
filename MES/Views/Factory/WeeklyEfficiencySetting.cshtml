@@ -1,0 +1,253 @@
+﻿
+@{
+    ViewBag.Title = "Weekly Efficiency Setting";
+    Layout = "~/Views/Shared/_MesLayout.cshtml";
+}
+
+<style>
+    body .jqgfirstrow td {
+        padding: 0 0 !important;
+    }
+</style>
+
+<div class="row">
+    <div class="col-lg-9">
+        <div style="text-align:center;">
+            <button type="button" class="btn btn-success" onclick="ConfirmEffi();">Confirm Efficiency</button>
+            <button type="button" class="btn btn-primary" onclick="NewFWES();">New Setting</button>
+        </div>
+    </div>
+</div>
+
+<div class="row" style="margin-top:10px;">
+    <div class="col-lg-12">
+        <table id="FWESGrid" class="gridWithNavTab"></table>
+        <div id="FWESGridPager"></div>
+    </div>
+</div>
+
+<div class="modal fade" id="ModalNewFWES">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form method="post" id="frmModalNewFWES">
+                <div class="modal-header">
+                    <h3 class="pull-left">New Weekly Efficiency</h3>
+                    <button type="button" class="close pull-right" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                </div>
+
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                <label>Factory</label>
+                                <select id="NewFACTORY" name="FACTORY" class="form-control" required="">
+                                    <option value=""></option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                <label>Year</label>
+                                <select id="NewYEAR" name="YEAR" class="form-control" required="">
+                                    <option value=""></option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                <label>Week No</label>
+                                <input id="NewWEEKNO" name="WEEKNO" class="form-control" type="number" max="53" min="1" />
+                            </div>
+                        </div>
+
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                <label>Efficiency</label>
+                                <input id="NewEFFICIENCYPERCEN" name="EFFICIENCYPERCEN" class="form-control" type="number" max="100" min="0" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-success">Confirm</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </form>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div>
+
+@section Scripts{
+    <script src="~/js/plugin/jqgrid/jquery.jqGrid.min.js"></script>
+    <script src="~/js/plugin/jqgrid/grid.locale-en.min.js"></script>
+    <script src="~/js/plugin/jqgrid/Common.js"></script>
+
+    <script src="~/Assets/jquery.blockUI/jquery.blockUI.js"></script>
+
+    @*Bootstrap Notify *@
+    <script src="~/Assets/remarkable-bootstrap-notify/dist/bootstrap-notify.min.js"></script>
+    <script src="~/Assets/remarkable-bootstrap-notify/dist/Common.js"></script>
+
+    <script>
+        var FWESGrid_cols = [];
+        FWESGrid_cols.push({ name: 'cbPick', index: 'cbPick', label: 'Pick', align: 'center', width: 50, sortable: false, classes: 'pointer', formatter: 'checkbox', formatoptions: {disabled : false} });
+
+        FWESGrid_cols.push({ name: 'FACTORY', index: 'FACTORY', label: 'Factory', align: 'left', width: 100, sortable: true, classes: 'pointer' });
+        FWESGrid_cols.push({ name: 'YEAR', index: 'YEAR', label: 'Year', align: 'right', width: 100, sortable: true, classes: 'pointer' });
+        FWESGrid_cols.push({ name: 'WEEKNO', index: 'WEEKNO', label: 'Week No', align: 'right', width: 100, sortable: true, classes: 'pointer' });
+        FWESGrid_cols.push({ name: 'EFFICIENCYPERCEN', index: 'EFFICIENCYPERCEN', label: 'Efficiency Rate', align: 'right', width: 100, sortable: false, classes: 'pointer' });
+        FWESGrid_cols.push({ name: 'CONFIRMYN', index: 'CONFIRMYN', label: 'Confirm (Y/N)', align: 'right', width: 50, sortable: false, classes: 'pointer' });
+
+        FWESGrid_cols.push({ name: 'CONFIRMBY', index: 'CONFIRMYN', label: 'Confirm By', align: 'right', width: 50, sortable: false, classes: 'pointer' });
+        FWESGrid_cols.push({ name: 'CONFIRMDATE', index: 'CONFIRMYN', label: 'Confirm Date', align: 'right', width: 50, sortable: false, classes: 'pointer' });
+
+        var QCPSGrid = CreateJqGridObject('FWESGrid', '../Factory/GetFWES', 'json', FWESGrid_cols, false, '', 100);
+         
+        //////////////////////////////////
+        function ConfirmEffi() {
+             ShowConfirmYesNo(
+                "Confirm"
+                , "Are you sure Run QCO in Factory [" + _qcoQueue.FACTORY + "]?"
+                , function () {
+                    $.ajax({
+                        url: '/QCO/RunQCO',
+                        type: 'POST',
+                        contentType: 'application/json',
+                        data: JSON.stringify({ qcoQueue: _qcoQueue }),
+                        success: function (response) {
+                            //console.log(response);
+                            Notify(response, 'info', 'top', 'center');
+                        },
+                        complete: function (jqXHR, textStatus) {
+                            console.log(jqXHR, textStatus);
+                            $this.trigger("reset");
+                            $this.closest('div.modal-content').find('div.modal-header').find('button[data-dismiss="modal"]').trigger('click');
+                        }
+                    });
+                }
+                , function () { }
+            );
+
+        }
+
+        function NewFWES() {
+            $('#ModalNewFWES').modal('toggle');
+        }
+
+        function resizeGrid() {
+            var $grid = $(".gridWithNavTab"),
+                newWidth = $grid.closest(".ui-jqgrid").parent().width();
+            $grid.jqGrid("setGridWidth", newWidth, false);
+        }
+
+        //////////////////////////////////
+        $(document).ready(function () {
+            customJqGridCss();
+            resizeGrid();
+
+            var CurDate = new Date();
+            var CurYear = CurDate.getFullYear();
+
+            for (var i = CurYear; i < CurYear + 6; i++) {
+                if (i == CurDate.getFullYear()) {
+                    $('#NewYEAR').append($('<option>',
+                        {
+                            value: i,
+                            text: i,
+                            selected: true
+                        })
+                    );
+                    $('#NewYEAR option[value="' + i + '"]').text(i);
+                } else {
+                    $('#NewYEAR').append($('<option>',
+                        {
+                            value: i,
+                            text: i
+                        })
+                    );
+                }
+            }
+
+            $.when(
+                $.ajax({
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    url: "../QCO/GetFactoryList",
+                    type: "POST",
+                    async: true,
+                    data: JSON.stringify({ vstrFactory: '' }),
+                    beforeSend: function () {
+                        $.blockUI({ message: '<h1><img src="busy.gif" /> Just a moment...</h1>' }); 
+                    },
+                    success: function (response, textStatus, xhr) {
+                        console.log(response, textStatus, xhr);
+                        for (i = 0; i < response.length; i++) {
+                            $('#NewFACTORY').append($('<option>',
+                                {
+                                    value: response[i].Factory,
+                                    text: '[' + response[i].Factory + '] ' + response[i].Name
+                                })
+                            );
+                        }
+                    },
+                    error: function (xhr, textStatus, errorThrown) {
+                        console.log(xhr, textStatus, errorThrown);
+                    },
+                    complete: function () { 
+                    }
+                })
+            ).done(function () { 
+            });
+        });
+        $(document).ajaxStop($.unblockUI);  
+        $(document).bind("beforeSend ", function () {
+             $.blockUI();
+        });
+
+        $('#ModalNewFWES').on('shown.bs.collapse', function () {
+            alert('shown.bs.collapse');
+            console.log($(this));
+        });
+
+        $('#ModalNewFWES').on('hidden.bs.collapse', function () {
+            alert('hidden.bs.collapse'); 
+            console.log($(this));
+            $(this).find('#frmModalNewFWES').trigger('reset');
+        });
+
+        $('#frmModalNewFWES').submit(function () {
+            let $this = $(this);
+            var frmData = getFormData($this)
+
+            $.ajax({
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                url: "/Factory/NewFWES",
+                type: "POST",
+                async: true,
+                data: JSON.stringify({
+                    objFWES: frmData
+                }),
+                success: function (response, textStatus, xhr) {
+                    console.log(response, textStatus, xhr);
+
+                    if (response.retResult)
+                        Notify(response.retMessage, 'success');
+                    else
+                        Notify(response.retMessage, 'danger'); 
+                },
+                error: function (xhr, textStatus, errorThrown) {
+                    console.log(xhr, textStatus, errorThrown);
+                },
+                complete: function () {
+                     $('#ModalNewFWES').modal('toggle');
+                }
+            });
+
+            return false;
+        });
+    </script>
+}

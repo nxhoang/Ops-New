@@ -1,0 +1,1064 @@
+﻿
+@{
+    ViewBag.Title = "QCO Capacity";
+    Layout = "~/Views/Shared/_MesLayout.cshtml";
+}
+
+
+
+@* Fancy Box *@
+<link href="~/Assets/fancybox-master/dist/jquery.fancybox.css" rel="stylesheet" />
+<link href="~/assets/DayRangePicker/daterangepicker.min.css" rel="stylesheet" />
+
+@*<link href="~/Assets/qtip/jquery.qtip.min.css" rel="stylesheet" />*@
+
+<link href="~/css/MES/QCO/QCOController.css" rel="stylesheet" />
+
+<style>
+    .fancybox-caption-wrap {
+        display: none;
+    }
+
+    .fancybox-title-caption {
+        position: absolute;
+        font-size: 20px;
+        color: whitesmoke;
+        margin-top: 7px;
+        text-decoration: none;
+    }
+
+        .fancybox-title-caption:hover {
+            color: whitesmoke;
+            cursor: default;
+        }
+
+    .fancybox-title-caption-right {
+        /*position: absolute;
+        right: 50px;
+        width: 45px;
+        font-size: 20px;*/
+        color: white !important;
+        text-decoration: none;
+        opacity: 0.75;
+    }
+
+        .fancybox-title-caption-right:hover {
+            opacity: 1;
+            animation: ease-in;
+            -moz-animation: ease-in;
+        }
+
+    .fancyboxmessage {
+        color: black !important;
+    }
+
+
+    /* Other Customize */
+    #FactorySettingDesc {
+        height: 100px;
+        /*border: 1px solid rgba(0, 0, 0, 0.1);*/
+        background: none;
+        padding-left: 8px;
+    }
+
+    .jqgrid-row-even {
+        background: whitesmoke;
+    }
+
+    .SortingPara {
+        border: none !important;
+        font-weight: bold;
+    }
+
+    .btnCenter {
+        align-content: center;
+        text-align: center;
+        align-items: center;
+    }
+
+    .mt-1 {
+        margin-top: 1%
+    }
+
+    .mt-2 {
+        margin-top: 2%
+    }
+
+    .mt-3 {
+        margin-top: 3%
+    }
+
+    .mt-4 {
+        margin-top: 4%
+    }
+
+    .modal-content {
+        background: whitesmoke;
+    }
+
+    #charlie_FactorySettingDesc {
+        height: 125px !important;
+        resize: none;
+    }
+
+    /*QCO Detail Modal*/
+    #myModal .modal-dialog {
+        width: calc(95%);
+    }
+
+    .jqgrid-row-qcochanged {
+        background-color: cornflowerblue !important;
+    }
+
+    .ui-pg-table td[align="left"] {
+        width: unset !important;
+    }
+
+    body .jqgfirstrow td {
+        padding: 0 0 !important;
+    }
+
+    /****/
+    .qtip-wiki {
+        max-width: calc(45%);
+        min-width: calc(33%);
+        width: calc(45%);
+        font-size: 15px;
+        color: black;
+    }
+
+        .qtip-wiki label {
+            font-weight: bold;
+        }
+
+        .qtip-wiki p {
+            margin: 0 0 6px;
+        }
+
+        .qtip-wiki h1 {
+            font-size: 20px;
+            line-height: 1.1;
+            margin: 0 0 5px;
+        }
+
+        .qtip-wiki img {
+            float: left;
+            margin: 10px 10px 10px 0;
+        }
+
+        .qtip-wiki .info {
+            overflow: hidden;
+        }
+
+        .qtip-wiki p.note {
+            font-weight: 700;
+        }
+</style>
+
+
+<div class="searchingBoxToggleIcon">
+    <i class="fa fa-search fa-2x" onclick="ToggleSearchBox(this,'.searchingBoxToggle');"></i>
+</div>
+
+<div class="searchingBoxToggleBackground" data-targetDomClass=""></div>
+<div class="searchingBoxToggle" data-targetDomClass="searchingBoxToggleIcon">
+    <div class="searchingBoxToggleHeader">
+        <i class="fa fa-times fa-2x pull-right"></i>
+    </div>
+
+    <div class="searchingBoxToggleBody">
+        <div class="row mt-1">
+            <div class="col-lg-2 col-md-3 col-sm-6 col-xs-6">
+                <div class="form-group">
+                    <div>
+                        <label for="charlie_drpFactory" class="label-control">Factory</label>
+                    </div>
+                    <select id="charlie_drpFactory" class="form-control" style="background: white; width:100%;">
+                        <option value="_all_">-Choose a factory-</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="col-lg-1 col-md-3 col-sm-3 col-xs-6">
+                <div class="form-group">
+                    <label for="charlie_Year" class="">Year</label>
+                    <select id="charlie_Year" class="form-control" style="background: white; width:100%;">
+                        <option></option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="col-lg-1 col-md-3 col-sm-3 col-xs-6">
+                <div class="form-group">
+                    <label for="charlie_WeekNo" class="">QCO Week No</label>
+                    <select id="charlie_WeekNo" class="form-control" style="background: white; width:100%;">
+                        <option></option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="col-lg-2 col-md-3 col-sm-3 col-xs-6">
+                <div class="form-group" style="display:block;">
+                    <label for="charlie_StartCAPAWeekNo" class="" style="display:block; text-align:center;">Est. Prod. Period</label>
+                    <select id="charlie_StartCAPAWeekNo" class="form-control2" style="background: white; width:45%; display:inline-block;">
+                        <option></option>
+                    </select> ~
+                    <select id="charlie_EndCAPAWeekNo" class="form-control2" style="background: white; width:45%; display:inline-block;">
+                        <option></option>
+                    </select>
+                </div>
+            </div>
+            @*<div class="col-lg-1 col-md-3 col-sm-3 col-xs-6"> <div class="form-group"> <label for="charlie_EndCAPAWeekNo" class="">CAPA. End Week No</label> </div> </div>*@
+
+            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                <div class="row mt-1">
+                    <div class="col-lg-3 col-md-3 col-sm-3 col-xs-6">
+                        <div class="form-group">
+                            <label class=""></label>
+                            <button class="btn btn-primary btn-block" type="button" id="ShowQCOCAPA" onclick="ShowQCOCAPA();">Display</button>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-3 col-md-3 col-sm-3 col-xs-6">
+                        <div class="form-group">
+                            <label class=""></label>
+                            <button class="btn btn-primary btn-block" type="button" id="" onclick="CapaDistribution();">Reallocate</button>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-3 col-md-3 col-sm-3 col-xs-6">
+                        <div class="form-group">
+                            <label class=""></label>
+                            <button class="btn btn-primary btn-block" type="button"  onclick="QCOCapaToExcel();">Export</button>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-3 col-md-3 col-sm-3 col-xs-6">
+                        <div class="">
+                            <label class=""></label>
+                            <div class="btn-group btn-block" role="group" aria-label="Basic example">
+                                <button class="btn btn-primary" type="button" onclick="QCOCapaBOMToExcel();">BOM <img src="~/img/iconexcel.png" title="BOM Excel Export" width="18" height="18" /></button>
+                                <button class="btn btn-primary" type="button" onclick="QCOCapaBOMToPDF();">BOM <img src="~/img/iconpdf.png" title="BOM PDF Export" width="18" height="18" /></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="searchingBoxToggleFooter">
+    </div>
+</div>
+
+<div id="popupColumnSelectionBackground"></div>
+<div id="popupColumnSelection">
+
+    <div id="popupColumnSelectionHeader">
+        <span style="font-size: 18px;font-weight: bold;">QCO Capa Column Selection</span>
+        <span>Please select the column you wish to see on PDF file.</span>
+    </div>
+    <div id="popupColumnSelectionBody">
+        <form id="popupColumnSelectionBodyFrm">
+            <div class="divTable">
+                <div class="divTableHeading">
+                    <div class="divTableRow">
+                        <div class="divTableHead"></div>
+                    </div>
+                </div>
+                <div class="divTableBody">
+                    <div class="divTableRow">
+                        <div class="divTableCell">
+                            <span style="font-size: 17px; font-weight: bold;">Standard Columns</span>
+                        </div>
+                    </div>
+
+                    <div class="divTableRow">
+                        <div class="divTableCell">
+                            <label class="custom-control custom-checkbox">
+                                <input type="checkbox" class="custom-control-input" checked="" disabled="" name="colQCOFactory">
+                                <span class="custom-control-indicator"></span>
+                                <span class="custom-control-description">QCO Factory</span>
+                            </label>
+                        </div>
+                        <div class="divTableCell">
+                            <label class="custom-control custom-checkbox">
+                                <input type="checkbox" class="custom-control-input" checked="" disabled="" name="colQCOYear">
+                                <span class="custom-control-indicator"></span>
+                                <span class="custom-control-description">QCO Year</span>
+                            </label>
+                        </div>
+                        <div class="divTableCell">
+                            <label class="custom-control custom-checkbox">
+                                <input type="checkbox" class="custom-control-input" checked="" disabled="" name="colQCOWeekNo">
+                                <span class="custom-control-indicator"></span>
+                                <span class="custom-control-description">QCO Week No</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="divTableRow">
+                        <div class="divTableCell">
+                            <label class="custom-control custom-checkbox">
+                                <input type="checkbox" class="custom-control-input" checked="" disabled="" name="colCUSTOMRANKING">
+                                <span class="custom-control-indicator"></span>
+                                <span class="custom-control-description">QCO Ranking</span>
+                            </label>
+                        </div>
+                        <div class="divTableCell">
+                            <label class="custom-control custom-checkbox">
+                                <input type="checkbox" class="custom-control-input" checked="" disabled="" name="colFactory">
+                                <span class="custom-control-indicator"></span>
+                                <span class="custom-control-description">Factory </span>
+                            </label>
+                        </div>
+                        <div class="divTableCell">
+                            <label class="custom-control custom-checkbox">
+                                <input type="checkbox" class="custom-control-input" checked="" disabled="" name="colAONo">
+                                <span class="custom-control-indicator"></span>
+                                <span class="custom-control-description">AO No</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="divTableRow">
+                        <div class="divTableCell">
+                            <label class="custom-control custom-checkbox">
+                                <input type="checkbox" class="custom-control-input" checked="" disabled="" name="colStyleCode">
+                                <span class="custom-control-indicator"></span>
+                                <span class="custom-control-description">Style Code</span>
+                            </label>
+                        </div>
+                        <div class="divTableCell">
+                            <label class="custom-control custom-checkbox">
+                                <input type="checkbox" class="custom-control-input" checked="" disabled="" name="colStyleSize">
+                                <span class="custom-control-indicator"></span>
+                                <span class="custom-control-description">Style Size </span>
+                            </label>
+                        </div>
+                        <div class="divTableCell">
+                            <label class="custom-control custom-checkbox">
+                                <input type="checkbox" class="custom-control-input" checked="" disabled="" name="colStyleColorSerial">
+                                <span class="custom-control-indicator"></span>
+                                <span class="custom-control-description">Style Color Serial</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="divTableRow">
+                        <div class="divTableCell">
+                            <label class="custom-control custom-checkbox">
+                                <input type="checkbox" class="custom-control-input" checked="" disabled="" name="colRevNo">
+                                <span class="custom-control-indicator"></span>
+                                <span class="custom-control-description">Rev No</span>
+                            </label>
+                        </div>
+                        <div class="divTableCell">
+                            <label class="custom-control custom-checkbox">
+                                <input type="checkbox" class="custom-control-input" checked="" disabled="" name="colPrdPkg">
+                                <span class="custom-control-indicator"></span>
+                                <span class="custom-control-description">Package ID</span>
+                            </label>
+                        </div>
+                        <div class="divTableCell">
+                            <label class="custom-control custom-checkbox">
+                                <input type="checkbox" class="custom-control-input" checked="" disabled="" name="colItemCode">
+                                <span class="custom-control-indicator"></span>
+                                <span class="custom-control-description">Item Code</span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="divTableRow">
+                        <div class="divTableCell">
+                            <label class="custom-control custom-checkbox">
+                                <input type="checkbox" class="custom-control-input" checked="" disabled="" name="colItemColorWays">
+                                <span class="custom-control-indicator"></span>
+                                <span class="custom-control-description">Item Color Ways</span>
+                            </label>
+                        </div>
+                        <div class="divTableCell">
+                            <label class="custom-control custom-checkbox">
+                                <input type="checkbox" class="custom-control-input" checked="" disabled="" name="colAssignWeek">
+                                <span class="custom-control-indicator"></span>
+                                <span class="custom-control-description">Assign Week Capa</span>
+                            </label>
+                        </div>
+                        <div class="divTableCell">
+                            <label class="custom-control custom-checkbox">
+                                <input type="checkbox" class="custom-control-input" checked="" disabled="" name="colChangeQCORank">
+                                <span class="custom-control-indicator"></span>
+                                <span class="custom-control-description">Custom Ranking</span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="divTableRow">
+                        <div class="divTableCell">
+                            &nbsp;
+                        </div>
+                    </div>
+                    <div class="divTableRow">
+                        <div class="divTableCell">
+                            <span style="font-size: 17px; font-weight: bold;">More Columns</span>
+                        </div>
+
+                        <div class="divTableCell">
+                            <button type="button" class="btn btn-primary" name="popupColumnSelectionSelAll">Select All</button>
+                        </div>
+                        <div class="divTableCell">
+                            <button type="button" class="btn btn-warning" name="popupColumnSelectionDeselAll">Deselect All</button>
+                        </div> 
+                    </div>
+                    <div class="divTableRow">
+                        <div class="divTableCell">
+                            <label class="custom-control custom-checkbox">
+                                <input type="checkbox" class="custom-control-input" name="colOPTime">
+                                <span class="custom-control-indicator"></span>
+                                <span class="custom-control-description">OP Time</span>
+                            </label>
+                        </div>
+                        <div class="divTableCell">
+                            <label class="custom-control custom-checkbox">
+                                <input type="checkbox" class="custom-control-input" name="colEFFICIENCY">
+                                <span class="custom-control-indicator"></span>
+                                <span class="custom-control-description">Efficiency Rate</span>
+                            </label>
+                        </div>
+                        <div class="divTableCell">
+                            <label class="custom-control custom-checkbox">
+                                <input type="checkbox" class="custom-control-input" name="colCustomOPTime">
+                                <span class="custom-control-indicator"></span>
+                                <span class="custom-control-description">Custom OP Time</span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="divTableRow">
+                        <div class="divTableCell">
+                            <label class="custom-control custom-checkbox">
+                                <input type="checkbox" class="custom-control-input" name="colAvailableCapa">
+                                <span class="custom-control-indicator"></span>
+                                <span class="custom-control-description">Begin Capa</span>
+                            </label>
+                        </div>
+                        <div class="divTableCell">
+                            <label class="custom-control custom-checkbox">
+                                <input type="checkbox" class="custom-control-input" name="colReqManHours">
+                                <span class="custom-control-indicator"></span>
+                                <span class="custom-control-description">Req. Man Hour</span>
+                            </label>
+                        </div>
+                        <div class="divTableCell">
+                            <label class="custom-control custom-checkbox">
+                                <input type="checkbox" class="custom-control-input" name="colBALANCECAPA">
+                                <span class="custom-control-indicator"></span>
+                                <span class="custom-control-description">Remain Capa</span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="divTableRow">
+                        <div class="divTableCell">
+                            <label class="custom-control custom-checkbox">
+                                <input type="checkbox" class="custom-control-input" name="colCustomOPTimeByPP">
+                                <span class="custom-control-indicator"></span>
+                                <span class="custom-control-description">Custom OP Time by Package</span>
+                            </label>
+                        </div>
+                        <div class="divTableCell">
+                            <label class="custom-control custom-checkbox">
+                                <input type="checkbox" class="custom-control-input" name="colREQUESTQTY">
+                                <span class="custom-control-indicator"></span>
+                                <span class="custom-control-description">Request Quantity</span>
+                            </label>
+                        </div>
+                        <div class="divTableCell">
+                            <label class="custom-control custom-checkbox">
+                                <input type="checkbox" class="custom-control-input" name="colWMS_QTY">
+                                <span class="custom-control-indicator"></span>
+                                <span class="custom-control-description">WMS Qty</span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="divTableRow">
+                        <div class="divTableCell">
+                            <label class="custom-control custom-checkbox">
+                                <input type="checkbox" class="custom-control-input" name="colRECEIVING_WITHIN_5DAYS">
+                                <span class="custom-control-indicator"></span>
+                                <span class="custom-control-description">ETA in 5 days</span>
+                            </label>
+                        </div>
+                        <div class="divTableCell">
+                            <label class="custom-control custom-checkbox">
+                                <input type="checkbox" class="custom-control-input" name="colRECEIVING_WITHIN_10DAYS">
+                                <span class="custom-control-indicator"></span>
+                                <span class="custom-control-description">ETA in 10 days</span>
+                            </label>
+                        </div>
+                        <div class="divTableCell">
+                            <label class="custom-control custom-checkbox">
+                                <input type="checkbox" class="custom-control-input" name="colRECEIVING_AFTER_DUEDATE">
+                                <span class="custom-control-indicator"></span>
+                                <span class="custom-control-description">ETA > Prod. Start Date</span>
+                            </label>
+                        </div>
+                    </div> 
+
+                    <div class="divTableRow">
+                        <div class="divTableCell">
+                            <label class="custom-control custom-checkbox">
+                                <input type="checkbox" class="custom-control-input" name="colBALANCEQTY">
+                                <span class="custom-control-indicator"></span>
+                                <span class="custom-control-description">Balance Qty</span>
+                            </label>
+                        </div> 
+                    </div>
+
+                </div>
+            </div>
+        </form>
+    </div>
+    <div id="popupColumnSelectionFooter">
+        <div class="pull-right">
+            <button class="btn btn-success" type="button" name="popupColumnSelectionConfirm">Confirm</button>
+            <button class="btn btn-default" type="button" name="popupColumnSelectionClose">Cancel</button>
+        </div>
+    </div>
+</div>
+
+<div class="" style="width:99%;">
+    <table id="QCOCapaGrid" class="gridWithNavTab has-qtip"></table>
+    <div id="QCOCapaGridPager"></div>
+</div>
+
+@section Scripts{
+    <script src="~/js/mes/QCO/QCOController.js"></script>
+
+    @*JQuery qtip
+        <script src="~/Assets/qtip/jquery.qtip.min.js"></script>*@
+
+    @*JQuery Grid *@
+    <script src="~/js/plugin/jqgrid/jquery.jqGrid.min.js"></script>
+    <script src="~/js/plugin/jqgrid/grid.locale-en.min.js"></script>
+    <script src="~/js/plugin/jqgrid/Common.js"></script>
+
+
+    @*Bootstrap Notify *@
+    <script src="~/Assets/remarkable-bootstrap-notify/dist/bootstrap-notify.min.js"></script>
+    <script src="~/Assets/remarkable-bootstrap-notify/dist/Common.js"></script>
+
+
+    @* Fancy Box *@
+    @*<script src="~/Assets/fancybox-master/dist/jquery.fancybox.min.js"></script>*@
+    <script src="~/Assets/fancybox-master/dist/jquery.fancybox.js"></script>
+    @*<script src="~/Assets/fancybox-master/dist/Common.js"></script>*@
+
+<script>
+	/***************************/
+	var IsAssignNewRanking = false;
+	var origStyle = "";
+	/////////////////////////////////////////////////
+	var QCODetailBox;
+	/***********/
+	var lastSel_QCPSGrid;
+	var lastSel;
+	var jqGridDataType = 'local';
+
+	var QCPSGrid_colModels = [];
+
+	QCPSGrid_colModels.push({ name: 'RANKING', index: 'RANKING', label: 'ROW<br/>SEQ', align: 'right', width: 40, hidden: true }); //For change the position purpose
+	QCPSGrid_colModels.push({ name: 'QCORANKINGNEW', index: 'QCORANKINGNEW', label: 'QCORANKING<br/>NEW', align: 'right', width: 40, hidden: true });
+	QCPSGrid_colModels.push({ name: 'QCOFACTORY', index: 'QCOFACTORY', label: 'QCO<BR/>FACTORY', align: 'center', width: 80, hidden: true });
+	QCPSGrid_colModels.push({ name: 'QCOYEAR', index: 'QCOYEAR', label: 'QCO<BR/>YEAR', align: 'center', width: 80, hidden: true });
+	QCPSGrid_colModels.push({ name: 'QCOWEEKNO', index: 'QCOWEEKNO', label: 'QCO<BR/>WEEK NO', align: 'center', width: 80, hidden: true });
+	QCPSGrid_colModels.push({ name: 'QCORANK', index: 'QCORANK', label: 'System rank', align: 'right', width: 65, sortable: false, classes: 'pointer', key: true });
+	QCPSGrid_colModels.push({ name: 'CHANGEQCORANK', index: 'CHANGEQCORANK', label: 'Custom rank', align: 'right', width: 65, sortable: false, classes: 'pointer', hidden: false, editable: true });
+
+	//QCPSGrid_colModels.push({ name: 'NORMALIZEDPERCENT', index: 'NORMALIZEDPERCENT', label: 'Material<BR/>Readiness', align: 'right', width: 10, sortable: false, classes: 'pointer', hidden: false});
+	//QCPSGrid_colModels.push({ name: 'AOPRDSDAT', index: 'AOPRDSDAT', label: 'Start<BR/>Date', align: 'right', width: 100, sortable: false, editable: false, classes: 'pointer' });
+	//QCPSGrid_colModels.push({ name: 'AOPRDEDAT', index: 'AOPRDEDAT', label: 'End<BR/>Date', align: 'right', width: 100, sortable: false, editable: false, classes: 'pointer' });
+	//QCPSGrid_colModels.push({ name: 'ORDQTY', index: 'ORDQTY', label: 'Order<BR/>Qty', align: 'right', width: 80, sortable: false, editable: false, classes: 'pointer' });
+	//QCPSGrid_colModels.push({ name: 'CHANGEFACTORY', index: 'CHANGEFACTORY', label: 'Factory', align: 'left', width: 64, sortable: false, classes: 'pointer', hidden: true });
+
+	QCPSGrid_colModels.push({ name: 'AONO', index: 'AONO', label: 'AO No.', align: 'left', width: 100, sortable: false, classes: 'pointer' });
+	QCPSGrid_colModels.push({ name: 'ADTYPENAME', index: 'ADTYPENAME', label: 'AO Type', align: 'left', width: 100, sortable: false, classes: 'pointer' });
+	QCPSGrid_colModels.push({ name: 'LINENO', index: 'LINENO', label: 'Line<BR/>no.', align: 'left', width: 80, sortable: false, hidden: false });
+	QCPSGrid_colModels.push({ name: 'DELIVERYDATE', index: 'DELIVERYDATE', label: 'Delivery date', align: 'right', width: 100, sortable: false, editable: false, classes: 'pointer' });
+	QCPSGrid_colModels.push({
+		name: 'PRDPKG', index: 'PRDPKG', label: 'Production package', align: 'left', width: 150, sortable: false, editable: false, title: false, formatter: function (cellvalue, options, rowObject) {
+			let aHref =
+				'<a href="#" data-role="quickSummary" data-summaryurl="/QCO/POPStyleSummary/?StyleCode=' + rowObject.STYLECODE + '&StyleSize=' + rowObject.STYLESIZE + '&StyleColorSerial=' + rowObject.STYLECOLORSERIAL + '&RevNo=' + rowObject.REVNO + '&PRDPKG=' + rowObject.PRDPKG + '" >' + rowObject.PRDPKG + '</a>';
+			return aHref;
+		}
+	});
+	QCPSGrid_colModels.push({ name: 'PLANQTY', index: 'PLANQTY', label: 'Pkg<BR/>Qty', align: 'right', width: 80, sortable: false, editable: false, classes: 'pointer' });
+	QCPSGrid_colModels.push({ name: 'PLANQTYBAL', index: 'PLANQTYBAL', label: 'Pkg<BR/>Balance<br/>Qty', align: 'right', width: 80, sortable: false, editable: false, classes: 'pointer' });
+
+	QCPSGrid_colModels.push({ name: 'TAKETIME', index: 'TAKETIME', label: 'Takt time', align: 'right', width: 64, sortable: false, classes: 'pointer' });
+	QCPSGrid_colModels.push({ name: 'OPTIME', index: 'OPTIME', label: 'OP time', align: 'right', width: 64, sortable: false, classes: 'pointer' });
+
+	QCPSGrid_colModels.push({
+		name: 'OPTIMEINCEFF', index: 'OPTIMEINCEFF', label: 'Optimized time', align: 'right', width: 64, sortable: false, classes: 'pointer', formatter: function (cellvalue, options, rowObject) {
+			return rowObject.OPTIME + rowObject.OPTIME * (2 - (2 * parseFloat(rowObject.EFFICIENCY) * 0.01));
+		}
+	});
+	QCPSGrid_colModels.push({ name: 'MANCOUNT', index: 'MANCOUNT', label: 'Man count', align: 'right', width: 64, sortable: false, classes: 'pointer' });
+
+	QCPSGrid_colModels.push({ name: 'BEGINCAPA', index: 'BEGINCAPA', label: 'Available capacity ', align: 'right', width: 100, sortable: false, classes: 'pointer' });
+	QCPSGrid_colModels.push({ name: 'USAGECAPA', index: 'USAGECAPA', label: 'Req man hours', align: 'right', width: 100, sortable: false, classes: 'pointer' });
+	QCPSGrid_colModels.push({ name: 'BALANCECAPA', index: 'BALANCECAPA', label: 'Balance capacity', align: 'right', width: 100, sortable: false, classes: 'pointer' });
+
+	QCPSGrid_colModels.push({ name: 'WEEKCAPA', index: 'WEEKCAPA', label: 'Assigned Week', align: 'right', width: 100, sortable: false, classes: 'pointer' });
+	QCPSGrid_colModels.push({ name: 'WEEKWORKHOUR', index: 'WEEKWORKHOUR', label: 'Week Total Hours', align: 'right', width: 100, sortable: false, classes: 'pointer' });
+	QCPSGrid_colModels.push({ name: 'EFFICIENCY', index: 'EFFICIENCY', label: 'Efficiency Rate', align: 'right', width: 100, sortable: false, classes: 'pointer' });
+
+	QCPSGrid_colModels.push({ name: 'STYLECODE', index: 'STYLECODE', label: 'STYLE<BR/>CODE', align: 'left', width: 100, sortable: false, hidden: true });
+	QCPSGrid_colModels.push({ name: 'STYLENAME', index: 'STYLENAME', label: 'STYLE<BR/>NAME', align: 'left', width: 100, sortable: false, hidden: true });
+	QCPSGrid_colModels.push({ name: 'BUYERSTYLECODE', index: 'BUYERSTYLECODE', label: 'Buyer<BR/>style code', align: 'left', width: 100, sortable: false, classes: 'pointer' });
+	QCPSGrid_colModels.push({ name: 'BUYERSTYLENAME', index: 'BUYERSTYLENAME', label: 'Buyer<BR/>style name', align: 'left', width: 150, sortable: false, classes: 'pointer' });
+	QCPSGrid_colModels.push({ name: 'STYLESIZE', index: 'STYLESIZE', label: 'Style<BR/>size', align: 'center', width: 64, sortable: false, classes: 'pointer' });
+	QCPSGrid_colModels.push({ name: 'STYLECOLORSERIAL', index: 'STYLECOLORSERIAL', label: 'Style<BR/>color serial', align: 'left', width: 120, sortable: false, hidden: true });
+	QCPSGrid_colModels.push({ name: 'STYLECOLORWAYS', index: 'STYLECOLORWAYS', label: 'Style<BR/>color ways', align: 'left', width: 150, sortable: false, classes: 'pointer' });
+	QCPSGrid_colModels.push({ name: 'REVNO', index: 'REVNO', label: 'Rev no.', align: 'right', width: 64, sortable: false, classes: 'pointer' });
+
+	var QCOCapaGrid = CreateJqGridObject('QCOCapaGrid', '', jqGridDataType, QCPSGrid_colModels, false, '', 100);
+
+	QCOCapaGrid.jqGrid('navGrid', '#' + 'QCOCapaGrid' + 'Pager'
+		, { add: false, edit: false, del: false, search: false }
+		, { /*edit option*/ }
+		, { /*add option*/ }
+		, { /*delete option*/ }
+		, { /*search option*/ }
+		, { /*View option*/ }
+	);
+
+	QCOCapaGrid.jqGrid('gridDnD');
+	pimpHeader(QCOCapaGrid);
+	customJqGridCss();
+
+
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	// Defined Functions
+	function CapaDistribution() {
+		var charlie_drpFactory = $('#charlie_drpFactory').val();
+		var charlie_StartCAPAWeekNo = $('#charlie_StartCAPAWeekNo').val(); //2020-04-29 Tai Le(Thomas)
+
+		if (charlie_drpFactory.length == 0) {
+			Notify('Choose the factory and continue.', 'danger', 'top', 'center');
+			return false;
+		} else
+			ShowConfirmYesNo(
+				"Confirm"
+				, "Are you sure Run Capacity Allocation in Factory [" + charlie_drpFactory + "]?<br/>It will take a while."
+				, function () {
+					$.ajax({
+						url: '/QCO/CapaAllocation/' + charlie_drpFactory,
+						type: 'POST',
+						contentType: 'application/json',
+						data: JSON.stringify({ StartWeek: charlie_StartCAPAWeekNo }),
+						//data: JSON.stringify({ Factory: charlie_drpFactory }),
+						success: function (response) {
+							console.log(response);
+							//Notify(response, 'info', 'top', 'center');
+						},
+						complete: function (jqXHR, textStatus) {
+							console.log(jqXHR, textStatus);
+						}
+					});
+				}
+				, function () { }
+			);
+
+
+		return false;
+	}
+
+	function QCOCapaBOMToExcel() {
+		var charlie_drpFactory = $('#charlie_drpFactory').val();
+		var charlie_Year = $('#charlie_Year').val();
+		var charlie_WeekNo = $('#charlie_WeekNo').val();
+
+		var charlie_StartCAPAWeekNo = $('#charlie_StartCAPAWeekNo').val();
+		var charlie_EndCAPAWeekNo = $('#charlie_EndCAPAWeekNo').val();
+
+		if (!(charlie_drpFactory && charlie_Year && charlie_WeekNo))
+			Notify('[Factory], [Year] and [Week No] are required. Please check and try again.', 'warning');
+		else {
+			if (charlie_drpFactory.length <= 0 || charlie_Year.length <= 0 || charlie_WeekNo.length <= 0) {
+				Notify('[Factory], [Year] and [Week No] are required. Please check and try again.', 'warning');
+			} else {
+				ShowConfirmYesNo(
+					'BOM Excel Export'
+					, 'BOM To Excel takes a while. Are you sure to proceed?'
+					, function () {
+						var pUrl = '../QCO/QCOCapaBOMToExcel/?_searchFieldQCOFACTORY=' + charlie_drpFactory + '&_searchFieldQCOYEAR=' + charlie_Year + '&_searchFieldQCOWEEKNO=' + charlie_WeekNo + '&_searchFieldStrBeginASSIGNWEEK=' + (charlie_StartCAPAWeekNo.length > 0 ? charlie_Year + ' / ' + charlie_StartCAPAWeekNo : '') + '&_searchFieldStrEndASSIGNWEEK=' + (charlie_EndCAPAWeekNo.length > 0 ? (charlie_EndCAPAWeekNo < charlie_StartCAPAWeekNo ? (parseInt(charlie_Year) + 1) : charlie_Year) + ' / ' + charlie_EndCAPAWeekNo : '');
+						$.post(pUrl + '&sidx=ranking&rows=9999999').done(function (resp) {
+							var convertArr = base64ToArrayBuffer(resp.fileByte);
+							ByteArrayToFile(resp.fileName, resp.fileExtension, convertArr)
+						});
+					}
+					, function () { });
+			}
+		}
+	}
+
+	function QCOCapaBOMToPDF() {
+		var charlie_drpFactory = $('#charlie_drpFactory').val();
+		var charlie_Year = $('#charlie_Year').val();
+		var charlie_WeekNo = $('#charlie_WeekNo').val();
+
+		if (!(charlie_drpFactory && charlie_Year && charlie_WeekNo))
+			Notify('[Factory], [Year] and [Week No] are required. Please check and try again.', 'warning');
+		else {
+			if (charlie_drpFactory.length <= 0 || charlie_Year.length <= 0 || charlie_WeekNo.length <= 0) {
+				Notify('[Factory], [Year] and [Week No] are required. Please check and try again.', 'warning');
+			} else {
+				ToggleShowColumn('popupColumnSelection');
+			}
+		}
+	}
+
+	var blShowColumnVisible = false;
+
+	function ToggleShowColumn(DOM_Ele) {
+		//Reset the form
+		$('#' + DOM_Ele).find('form').trigger('reset');
+
+		var BackgrDIV = DOM_Ele + 'Background';
+
+		if (!blShowColumnVisible) {
+			$('#' + BackgrDIV).show();
+			$('#' + DOM_Ele).show(500);
+		} else {
+			$('#' + DOM_Ele).hide();
+			$('#' + BackgrDIV).hide(500);
+		}
+		blShowColumnVisible = !blShowColumnVisible;
+	}
+
+	function QCOCapaToExcel() {
+		var charlie_drpFactory = $('#charlie_drpFactory').val();
+		var charlie_Year = $('#charlie_Year').val();
+		var charlie_WeekNo = $('#charlie_WeekNo').val();
+
+		if (charlie_drpFactory.length <= 0 || charlie_Year.length <= 0 || charlie_WeekNo.length <= 0) {
+			Notify('[Factory], [Year] and [Week No] are required. Please check and try again.', 'warning');
+		} else {
+			let pUrl = '../QCO/QCOCapaToExcel/?_searchFieldQCOFACTORY=' + charlie_drpFactory + '&_searchFieldQCOYEAR=' + charlie_Year + '&_searchFieldQCOWEEKNO=' + charlie_WeekNo + '&sidx=ranking&rows=9999999';
+			window.location = pUrl;
+		}
+	}
+
+	function QCOCapaGridTrigger(pUrl) {
+		QCOCapaGrid.setGridParam({
+			url: pUrl,
+			sortname: 'ranking',
+			datatype: 'json',
+			loadui: 'block',
+			loadtext: '',
+			loadComplete: function (data) {
+				if (data.hasOwnProperty('retResult')) {
+					if (!data["retResult"]) {
+						Notify(data["dataRow"], 'warning');
+					}
+				}
+				//QCOCapaGrid.setGridParam({ //    url: pUrl //}).trigger('reloadGrid');
+			}
+			, loadError: function (xhr, status, error) {
+				console.log('loadError');
+				console.log(xhr);
+				console.log(status);
+				console.log(error);
+			}
+			, onSelectRow: function (id, onselectrow) {
+			}
+			, ondblClickRow: function (id, iRow, iCol, e) {
+			}
+			, gridComplete: function () {
+				var selfgridID = this.id;
+				var ids = jQuery("#" + selfgridID).jqGrid('getDataIDs');
+				var modvalue;
+
+				for (var i = 0; i < ids.length; i++) {
+					var dtRow = jQuery("#" + this.id).jqGrid('getRowData', ids[i]);
+
+					modvalue = (i + 1) % 2;
+
+					/*#Noted: Set row background color for chẵn and lẻ row */
+					var backgroundColor;
+					if (modvalue === 0) {
+						backgroundColor = 'jqgrid-row-even';
+					} else {
+						backgroundColor = 'jqgrid-row-odd';
+					}
+
+					if (dtRow.CHANGEBY)
+						backgroundColor = 'jqgrid-row-qcochanged';
+
+					jQuery("#" + selfgridID).jqGrid('setRowData', ids[i], {}, backgroundColor);
+				}
+			}
+		}).trigger("reloadGrid");
+	};
+
+	function resizeGrid() {
+		var $grid = $(".gridWithNavTab"),
+			newWidth = $grid.closest(".ui-jqgrid").parent().width();
+		$grid.jqGrid("setGridWidth", newWidth, false);
+	}
+
+	async function ShowQCOCAPA() {
+		var charlie_drpFactory = $('#charlie_drpFactory').val();
+		var charlie_Year = $('#charlie_Year').val();
+		var charlie_WeekNo = $('#charlie_WeekNo').val();
+
+		var charlie_StartCAPAWeekNo = HandleCAPAWeek($('#charlie_StartCAPAWeekNo').val());
+		var charlie_EndCAPAWeekNo = HandleCAPAWeek($('#charlie_EndCAPAWeekNo').val());
+
+		console.log({ charlie_StartCAPAWeekNo, charlie_EndCAPAWeekNo });
+
+		var pUrl = '../QCO/ShowQCOCapa/?_searchFieldQCOFACTORY=' + charlie_drpFactory + '&_searchFieldQCOYEAR=' + charlie_Year + '&_searchFieldQCOWEEKNO=' + charlie_WeekNo + '&_searchFieldStrBeginWEEKCAPA=' + (charlie_StartCAPAWeekNo.length > 0 ? charlie_Year + ' / ' + charlie_StartCAPAWeekNo : '') + '&_searchFieldStrEndWEEKCAPA=' + (charlie_EndCAPAWeekNo.length > 0 ? (charlie_EndCAPAWeekNo < charlie_StartCAPAWeekNo ? (parseInt(charlie_Year) + 1) : charlie_Year) + ' / ' + charlie_EndCAPAWeekNo : '');
+
+		if (charlie_drpFactory.length <= 0 || charlie_drpFactory == '%' || charlie_Year.length <= 0 || charlie_WeekNo.length <= 0) {
+			Notify('[Factory], [Year] and [Week No] are required. Please check and try again.', 'warning');
+		} else {
+			//console.log(pUrl);
+			await QCOCapaGridTrigger(pUrl);
+			await $('#PageBreadcrumb').html(` > ${charlie_drpFactory} - ${charlie_Year} - ${charlie_WeekNo}`);
+		}
+		return false;
+	}
+
+	function HandleCAPAWeek(CapaWeek) {
+		return CapaWeek;
+		//Matching the WeekNo between UI and WeekNo on [PKMES].T_QC_QUEUE.AssignWeek
+		if (CapaWeek.length > 0) {
+			if (CapaWeek.substr(1, 1) == "0")
+				return "W" + CapaWeek.substr(2, 1);
+			else if (CapaWeek.substr(1, 1) != "0")
+				return "W" + CapaWeek.substr(1, 2);
+		} else
+			return "";
+	}
+
+	function ByteArrayToFile(fileName, fileExtension, byte) {
+		var ContentType = "text/plain";
+
+		switch (fileExtension) {
+			case "pdf":
+				var link = document.createElement('a');
+				link.href = '/' + fileName;
+				link.download = fileName;
+				link.click();
+
+				break;
+			case "xlsx":
+				ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+				var blob = new Blob([byte], { type: ContentType });
+				var link = document.createElement('a');
+				link.href = window.URL.createObjectURL(blob);
+				link.download = fileName;
+				link.click();
+				break;
+		}
+	};
+
+	function base64ToArrayBuffer(base64) {
+		var binaryString = window.atob(base64);
+		var binaryLen = binaryString.length;
+		var bytes = new Uint8Array(binaryLen);
+		for (var i = 0; i < binaryLen; i++) {
+			var ascii = binaryString.charCodeAt(i);
+			bytes[i] = ascii;
+		}
+		return bytes;
+	}
+
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	// Control Events
+	$(window).resize(function () {
+		resizeGrid();
+	});
+
+	$(document).ready(function () {
+		resizeGrid();
+		pimpHeader(QCOCapaGrid);
+
+		$('#charlie_drpFactory,#charlie_Year,#charlie_WeekNo').select2({
+			placeholder: "-Choose One-",
+			allowClear: true,
+			dropdownAutoWidth: true
+		});
+		$('#charlie_StartCAPAWeekNo').select2({
+			placeholder: "-From-",
+			allowClear: true,
+			dropdownAutoWidth: true
+		});
+		$('#charlie_EndCAPAWeekNo').select2({
+			placeholder: "-To-",
+			allowClear: true,
+			dropdownAutoWidth: true
+		});
+
+		var CurDate = new Date();
+		var CurYear = CurDate.getFullYear();
+		var i = CurYear - 5;
+
+		for (i = CurYear; i < CurYear + 6; i++) {
+			if (i == CurDate.getFullYear()) {
+				$('#charlie_Year').append($('<option>',
+					{
+						value: i,
+						text: i,
+						selected: true
+					})
+				);
+				$('#charlie_Year option[value="' + i + '"]').text(i);
+			} else {
+				$('#charlie_Year').append($('<option>',
+					{
+						value: i,
+						text: i
+					})
+				);
+			}
+		}
+
+		let config = ObjectConfigAjaxPost("../QCO/GetYearWeeks", false, JSON.stringify({ vstrYear: $('#charlie_Year').val() }));
+		AjaxPostCommon(config, function (data) {
+			$('#charlie_WeekNo,#charlie_StartCAPAWeekNo,#charlie_EndCAPAWeekNo').append($('<option>',
+				{
+					value: '',
+					text: '----'
+				})
+			);
+			for (var i = 1; i <= data.NumberOfWeeks; i++) {
+				if (i < 10)
+					i = '0' + i;
+				$('#charlie_WeekNo,#charlie_StartCAPAWeekNo,#charlie_EndCAPAWeekNo').append($('<option>',
+					{
+						value: 'W' + i,
+						text: 'W' + i
+					})
+				);
+			}
+			//2019-11-29 Tai Le(Thomas): Assign Current Week
+			$('#charlie_WeekNo').val("W" + data.CurrentWeek).change();
+
+		}).done(function () {
+			config = ObjectConfigAjaxPost("../QCO/GetFactoryList", false, JSON.stringify({ vstrFactory: '' }));
+			AjaxPostCommon(config,
+				function (data) {
+					for (var i = 0; i < data.length; i++) {
+						$('#charlie_drpFactory').append($('<option>',
+							{
+								value: data[i].Factory,
+								text: '[' + data[i].Factory + '] ' + data[i].Name
+								, selected: $("#hdFactoryUser").val() == data[i].Factory
+							})
+						);
+					}
+					////2019-11-29 Tai Le(Thomas)
+					//if ($("#hdFactoryUser").val())
+					//    $('#charlie_drpFactory').val($("#hdFactoryUser").val()).change();
+
+				});
+		});
+	});
+
+	var ReplaceExpress = "[Factory]";
+	$('#modal-FactorySortingSettings').on('show.bs.modal', function (e) {
+		$('#modal-FactorySortingSettings_Factory').text($('#charlie_drpFactory').val());
+	});
+
+	$('#popupColumnSelection').find('button').on('click', function (e) {
+		let $form = $('#popupColumnSelection').find('#popupColumnSelectionBodyFrm');
+
+		if (e.target.name == "popupColumnSelectionConfirm") {
+
+			var charlie_drpFactory = $('#charlie_drpFactory').val();
+			var charlie_Year = $('#charlie_Year').val();
+			var charlie_WeekNo = $('#charlie_WeekNo').val();
+
+			var charlie_StartCAPAWeekNo = $('#charlie_StartCAPAWeekNo').val();
+			var charlie_EndCAPAWeekNo = $('#charlie_EndCAPAWeekNo').val();
+
+			if (charlie_drpFactory.length <= 0 || charlie_Year.length <= 0 || charlie_WeekNo.length <= 0) {
+				Notify('[Factory], [Year] and [Week No] are required. Please check and try again.', 'warning');
+			} else {
+				ShowConfirmYesNo(
+					'BOM Excel Export'
+					, 'BOM To Excel takes a while. Are you sure to proceed?'
+					, function () {
+						var pUrl = '../QCO/QCOCapaBOMToExcel/?FormatOutput=PDF&_searchFieldQCOFACTORY=' + charlie_drpFactory + '&_searchFieldQCOYEAR=' + charlie_Year + '&_searchFieldQCOWEEKNO=' + charlie_WeekNo + '&_searchFieldStrBeginASSIGNWEEK=' + (charlie_StartCAPAWeekNo.length > 0 ? charlie_Year + ' / ' + charlie_StartCAPAWeekNo : '') + '&_searchFieldStrEndASSIGNWEEK=' + (charlie_EndCAPAWeekNo.length > 0 ? (charlie_EndCAPAWeekNo < charlie_StartCAPAWeekNo ? (parseInt(charlie_Year) + 1) : charlie_Year) + ' / ' + charlie_EndCAPAWeekNo : '');
+						let frmColumSelection = getFormData($form);
+						//console.log(frmColumSelection);
+						$.post(pUrl + '&sidx=ranking&rows=9999999', frmColumSelection).done(function (resp) {
+							ByteArrayToFile(resp.fileName, resp.fileExtension, null)
+						});
+					}
+					, function () { });
+			}
+		} else if (e.target.name == "popupColumnSelectionSelAll") {
+			$form.find('input[type="checkbox"]').not(":disabled").prop('checked', true);
+		} else if (e.target.name == "popupColumnSelectionDeselAll") {
+			$form.find('input[type="checkbox"]').not(":disabled").prop('checked', false);
+		} else if (e.target.name == "popupColumnSelectionClose") {
+			ToggleShowColumn('popupColumnSelection');
+		}
+	});
+
+	/* * Create the tooltips only when document ready
+	//$(document).on('mouseenter', function (ev) {
+	//    // MAKE SURE YOUR SELECTOR MATCHES SOMETHING IN YOUR HTML!!!
+	//    $('a[data-role="quickSummary"]').each(function () {
+	//        $(this).qtip({
+	//            content: {
+	//                text: function (event, api) {
+	//                    $.ajax({
+	//                        url: api.elements.target.attr('data-summaryurl') // Use href attribute as URL
+	//                    })
+	//                        .then(function (content) {
+	//                            // Set the tooltip content upon successful retrieval
+	//                            api.set('content.text', content);
+	//                        }, function (xhr, status, error) {
+	//                            // Upon failure... set the tooltip content to error
+	//                            api.set('content.text', status + ': ' + error);
+	//                        });
+	//                    return 'Loading...'; // Set some initial text
+	//                }
+	//            },
+	//            position: {
+	//                viewport: $(window)
+	//            },
+	//            style: 'qtip-wiki'
+	//        });
+	//    });
+	//});
+	//$('#drpFactory , #charlie_drpFactory').on('change', function () {
+	//    var TextAreaID = "";
+	//    if (this.id === 'drpFactory') {
+	//        TextAreaID = "FactorySettingDesc";
+	//    } else if (this.id === 'charlie_drpFactory') {
+	//        TextAreaID = "charlie_FactorySettingDesc";
+	//    }
+	//    $('#' + TextAreaID).val("");
+	//    let selectedValue = $('#' + this.id).val();
+	//    if (selectedValue.length > 0) {
+	//        var config = ObjectConfigAjaxPost("../QCO/GetFactorySettings", false, JSON.stringify({ vstrFactoryId: selectedValue }));
+	//        AjaxPostCommon(config,
+	//            function (data) {
+	//                for (var i = 0; i < data.length; i++) {
+	//                    let j = 0;
+	//                    let tabstr = "";
+	//                    for (j = 1; j <= i + 1; j++) {
+	//                        tabstr += '\t';
+	//                    }
+	//                    let currentPara = data[i];
+	//                    if (i + 1 < data.length) $('#' + TextAreaID).val($('#' + TextAreaID).val() + "Level " + (i + 1) + ": " + currentPara.PARAMETERNAME + "\r\n" + tabstr);
+	//                    else $('#' + TextAreaID).val($('#' + TextAreaID).val() + "Level " + (i + 1) + ": " + currentPara.PARAMETERNAME);
+	//                }
+	//            });
+	//    }
+	//});
+	*/
+
+</script>
+}
+

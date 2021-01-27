@@ -1,0 +1,1501 @@
+﻿@{
+	ViewBag.Title = "QCO Ranking";
+	Layout = "~/Views/Shared/_MesLayout.cshtml";
+}
+@* Fancy Box *@
+<link href="~/Assets/fancybox-master/dist/jquery.fancybox.css" rel="stylesheet" />
+@*<link href="~/assets/DayRangePicker/daterangepicker.min.css" rel="stylesheet" />*@
+<link href="~/Assets/Pikaday/css/pikaday.css" rel="stylesheet" />
+<link href="~/Assets/Pikaday/css/BundleCss.css" rel="stylesheet" />
+<link href="~/js/plugin/dropzone/dropzone.css" rel="stylesheet" />
+@*<link href="~/Assets/qtip/jquery.qtip.min.css" rel="stylesheet" />*@
+<link href="~/Assets/Gridstack/gridstack.min.css" rel="stylesheet" />
+<link href="~/css/MES/QCO/QCOController.css" rel="stylesheet" />
+<style>
+	/*Dropzone customize*/
+	.dz-success-mark,
+	.dz-error-mark {
+		display: none;
+	}
+	/*Fancybox Customize */
+	/*.fancybox-slide {
+		width: 100%;
+		height: 100%;
+		left: 0px;
+	}*/
+	.fancybox-caption-wrap {
+		display: none;
+	}
+	.fancybox-title-caption {
+		position: absolute;
+		font-size: 20px;
+		color: whitesmoke;
+		margin-top: 7px;
+		text-decoration: none;
+	}
+		.fancybox-title-caption:hover {
+			color: whitesmoke;
+			cursor: default;
+		}
+	.fancybox-title-caption-right {
+		/*position: absolute;
+		right: 50px;
+		width: 45px;
+		font-size: 20px;*/
+		color: white !important;
+		text-decoration: none;
+		opacity: 0.75;
+	}
+		.fancybox-title-caption-right:hover {
+			opacity: 1;
+			animation: ease-in;
+			-moz-animation: ease-in;
+		}
+	.fancyboxmessage {
+		color: black !important;
+	}
+	/* Other Customize */
+	#FactorySettingDesc {
+		height: 100px;
+		/*border: 1px solid rgba(0, 0, 0, 0.1);*/
+		background: none;
+		padding-left: 8px;
+	}
+	.jqgrid-row-even {
+		background: whitesmoke;
+	}
+	.SortingPara {
+		border: none !important;
+		font-weight: bold;
+	}
+	.btnCenter {
+		align-content: center;
+		text-align: center;
+		align-items: center;
+	}
+	.mt-1 {
+		margin-top: 1%
+	}
+	.mt-2 {
+		margin-top: 2%
+	}
+	.mt-3 {
+		margin-top: 3%
+	}
+	.mt-4 {
+		margin-top: 4%
+	}
+	.modal-content {
+		background: whitesmoke;
+	}
+	#charlie_FactorySettingDesc {
+		height: 125px !important;
+		resize: none;
+	}
+	.myCenterPopup {
+		display: none;
+		top: 33%;
+		left: 25%;
+		position: fixed;
+		margin: 20px 20px;
+		border: 1px solid black;
+		border-radius: 5px;
+		width: 50%;
+		height: auto;
+		background-color: white;
+		line-height: 1.3em;
+		z-index: 101;
+	}
+		.myCenterPopup > .popup-header {
+			height: 50px;
+			background-color: #2196F3;
+			color: whitesmoke;
+		}
+			.myCenterPopup > .popup-header > div {
+				margin-left: 10px;
+			}
+		.myCenterPopup > .popup-body {
+			margin: 15px 15px;
+			font-size: 14px;
+			text-align: left;
+		}
+		.myCenterPopup > .popup-footer {
+			height: 45px;
+			background-color: #2196F3;
+			color: whitesmoke;
+		}
+			.myCenterPopup > .popup-footer button {
+				margin: 5px 5px;
+			}
+	/*QCO Detail Modal*/
+	#myModal {
+		height: 100vh;
+	}
+		#myModal .modal-dialog {
+			width: calc(97%);
+			height: 93vh;
+		}
+		#myModal .modal-body {
+			height: 85vh;
+			overflow: auto;
+		}
+	#ModalRunQCO {
+		text-align: center;
+		padding: 0 !important;
+	}
+		#ModalRunQCO:before {
+			content: '';
+			display: inline-block;
+			height: 100%;
+			vertical-align: middle;
+			margin-right: -4px; /* Adjusts for spacing */
+		}
+		#ModalRunQCO .modal-dialog {
+			display: inline-block;
+			text-align: left;
+			vertical-align: middle;
+		}
+	.jqgrid-row-qcochanged {
+		background-color: #6495ed3d !important;
+	}
+	.ui-pg-table td[align="left"] {
+		width: unset !important;
+	}
+	body .jqgfirstrow td {
+		padding: 0 0 !important;
+	}
+	/****/
+	.qtip-wiki {
+		max-width: calc(45%);
+		min-width: calc(33%);
+		width: calc(45%);
+		font-size: 15px;
+		color: black;
+	}
+		.qtip-wiki label {
+			font-weight: bold;
+		}
+		.qtip-wiki p {
+			margin: 0 0 6px;
+		}
+		.qtip-wiki h1 {
+			font-size: 20px;
+			line-height: 1.1;
+			margin: 0 0 5px;
+		}
+		.qtip-wiki img {
+			float: left;
+			margin: 10px 10px 10px 0;
+		}
+		.qtip-wiki .info {
+			overflow: hidden;
+		}
+		.qtip-wiki p.note {
+			font-weight: 700;
+		}
+	i[data-role="quickSummary"] {
+		z-index: 100;
+	}
+	/*.grid-stack {
+		margin-bottom: 10px;
+		overflow: hidden;
+	}
+		.grid-stack .grid-stack-item {
+			border: 1px solid rgba(172, 172, 172, 0.22);
+			border-radius: 5px;
+		}
+			.grid-stack .grid-stack-item .grid-stack-item-content {*/
+	/*overflow: hidden;*/
+	/*margin-right: 25px;
+				margin-bottom: 1px;
+			}
+		.grid-stack .gridActions {
+			position: absolute;
+			top: 3px;
+			right: 0;
+		}*/
+</style>
+@*<div class="grid-stack">
+		<div class="grid-stack-item" data-gs-x="0" data-gs-y="0" data-gs-width="12" data-gs-height="4" data-gs-no-move="true" data-gs-no-resize="false">
+			<div class="grid-stack-item-content">
+				<div class="gridActions">
+				</div>
+				<div class="main-content">
+				</div>
+			</div>
+		</div>
+	</div>*@
+<div class="searchingBoxToggleIcon">
+	<i class="fa fa-search fa-2x" onclick="ToggleSearchBox(this,'.searchingBoxToggle');"></i>
+</div>
+<div class="searchingBoxToggleBackground" data-targetDomClass=""></div>
+<div class="searchingBoxToggle" data-targetDomClass="searchingBoxToggleIcon">
+	<div class="searchingBoxToggleHeader">
+		<i class="fa fa-times fa-2x pull-right"></i>
+	</div>
+	<div class="searchingBoxToggleBody">
+		<div class="row">
+			<div class="col-lg-2 col-md-3 col-sm-3 col-xs-6">
+				<div class="">
+					<label for="charlie_drpFactory" class="label-control">
+						Factory
+						@*<i class="fa fa-info-circle txt-color-blueDark" data-toggle="modal" data-target="#modal-FactorySortingSettings" style="font-size: 17px;"></i>*@
+					</label>
+					<select id="charlie_drpFactory" class="form-control form-inline" style="background: white; width:100%;">
+						<option></option>
+					</select>
+				</div>
+			</div>
+			<div class="col-lg-1 col-md-3 col-sm-3 col-xs-6">
+				<div class="form-group">
+					<label for="charlie_Year" class="">Year</label>
+					<select id="charlie_Year" class="form-control form-inline" style="background: white; width:100%;">
+						<option></option>
+					</select>
+				</div>
+			</div>
+			<div class="col-lg-1 col-md-3 col-sm-3 col-xs-6">
+				<div class="form-group">
+					<label for="charlie_WeekNo" class="">Week No</label>
+					<select id="charlie_WeekNo" class="form-control form-inline" style="background: white; width:100%;">
+						<option></option>
+					</select>
+				</div>
+			</div>
+			<div class="col-lg-2 col-md-3 col-sm-3 col-xs-6">
+				<div class="form-group">
+					<label for="QCORankingFilter" class="label-control">QCO Display</label>
+					<select id="QCORankingFilter" name="QCORankingFilter" class="form-control form-inline" style="width:100%;">
+						<option value="All" selected="selected">All</option>
+						<option value="Neg">Negative Ranking</option>
+						<option value="Pos" selected="selected">Positive Ranking</option>
+					</select>
+				</div>
+			</div>
+			<div class="col-lg-2 col-md-3 col-sm-3 col-xs-6">
+				<div class="form-group">
+					<label for="charlie_cbQCOSource" class="label-control">QCO Source</label>
+					<select id="charlie_cbQCOSource" name="charlie_cbQCOSource" class="form-control form-inline" style="width:100%;">
+						<option value="QCO" selected="selected">Published QCO</option>
+						<option value="QCOSim">Live QCO</option>
+					</select>
+				</div>
+			</div>
+			<div class="col-lg-2 col-md-3 col-sm-3 col-xs-6">
+				<div class="form-group">
+					<label for="charlie_DeliveryDate" class="label-control">Delivery Date</label>
+					<input type="text" id="charlie_DeliveryDate" name="charlie_DeliveryDate" class="form-control" data-format="DateRangeOpener" />
+				</div>
+			</div>
+			<div class="col-lg-2 col-md-3 col-sm-3 col-xs-6">
+				<div class="form-group">
+					<label for="charlie_AOType" class="label-control">AO Type</label>
+					<select id="charlie_AOType" name="charlie_AOType" class="form-control form-inline" style="width:100%;" multiple>
+					</select>
+				</div>
+			</div>
+			<div class="col-lg-2 col-md-3 col-sm-3 col-xs-6">
+				<div class="form-group">
+					<label for="charlie_AONo" class="label-control">AO No</label>
+					<input id="charlie_AONo" name="charlie_AONo" class="form-control form-inline" style="width:100%;" /> 
+				</div>
+			</div>
+			<div class="" style="display:none;"> <div class=""> <label for="charlie_cbDeliveryDate" class="label-control">Apply Delivery Date(Y/N)</label> <input type="checkbox" id="charlie_cbDeliveryDate" name="charlie_cbDeliveryDate" class="form-control" value="0" /> </div> </div>
+			<div class="" style="display:none;"> <div class=""> <label for="charlie_cbIncSample" class="label-control">Include "Sample Order"</label> <select id="charlie_cbIncSample" name="charlie_cbIncSample" class="form-control" style="width:100%;"> <option value="Y" selected="selected">Yes</option> <option value="N">No</option> </select> </div> </div>
+		</div>
+		<div class="row mt-1">
+			<div class="col-lg-12">
+				<div class="row" style="">
+					<div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+						<div class="row">
+							<div class="col-lg-6">
+								<div class="form-group">
+									<button class="btn btn-primary btn-block" type="button" id="ShowQCPS">Display QCO</button>
+								</div>
+							</div>
+							<div class="col-lg-6">
+								<div class="form-group">
+									@*<button class="btn btn-primary btn-block" type="button" id="ExportExcel">Export Excel</button>*@
+									<div class="">
+										<button class="btn btn-primary btn-block dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+											Export Excel&nbsp;
+											<span class="caret"></span>
+										</button>
+										<ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+											<li>
+												<a href="javascript:void(0)"
+												   onclick="
+													QCPSToExcel();
+													Notify('Processing. Please wait.', 'info');
+													CloseSearchingBoxToggle();
+													return false;">QCO</a>
+											</li>
+											<li role="separator" class="divider"></li>
+											<li>
+												<a href="javascript:void(0)" onclick="
+													QCOReadinessExcel();
+													Notify('Processing. Please wait.', 'info');
+													CloseSearchingBoxToggle();
+													return false;">QCO Readiness</a>
+											</li>
+										</ul>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+						<div class="row">
+							<div class="col-lg-6">
+								<div class="form-group">
+									@*<button class="btn btn-primary btn-block" type="button" id="UploadExcel">Update Ranking</button>*@
+									<div class="">
+										<button class="btn btn-primary btn-block dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+											Update QCO By Excel&nbsp;
+											<span class="caret"></span>
+										</button>
+										<ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+											<li><a href="javascript:void(0)" onclick="$('#ModalUploadExcelQCO').modal('toggle'); return false;">Custom Ranking</a></li>
+											<li role="separator" class="divider"></li>
+											<li><a href="javascript:void(0)" onclick="$('#ModalUpdateReadiness').modal('toggle'); return false;">QCO Readiness</a></li>
+										</ul>
+									</div>
+								</div>
+							</div>
+							@*<div class="col-lg-6">
+								<div class="form-group">
+									<button class="btn btn-success btn-block" type="button" id="SaveRanking">Save Custom Rank</button>
+								</div>
+							</div>*@
+						</div>
+					</div>
+					<div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+						<div class="row">
+							<div class="col-lg-6">
+								<div class="form-group">
+									<button class="btn btn-success btn-block" type="button" id="RunQCO">Run QCO</button>
+								</div>
+							</div>
+							<div class="col-lg-6">
+								<div class="form-group">
+									<button class="btn btn-success btn-block" type="button" onclick="CentralizeSimQCO();">Publish QCO</button>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="searchingBoxToggleFooter"></div>
+</div>
+<div id="popupColumnSelectionBackground"></div>
+<div id="popupColumnSelection">
+	<div id="popupColumnSelectionHeader">
+		<span style="font-size: 18px;font-weight: bold;">QCO Column Selection</span>
+		<span>Please select the column you wish to visualize QCO.</span>
+	</div>
+	<div id="popupColumnSelectionBody">
+		<form id="popupColumnSelectionBodyFrm">
+			<div class="divTable">
+				<div class="divTableHeading">
+					<div class="divTableRow">
+						<div class="divTableHead"></div>
+					</div>
+				</div>
+				<div class="divTableBody">
+					<!--MORE COLUMNS PART --> 
+					<div class="divTableRow">
+						<div class="divTableCell">
+							<span style="font-size: 17px; font-weight: bold;">Standard Columns</span>
+						</div>
+					</div>
+					<div class="divTableRow">
+						<div class="divTableCell">
+							<label class="custom-control custom-checkbox">
+								<input type="checkbox" class="custom-control-input" checked="" disabled="" >
+								<span class="custom-control-indicator"></span>
+								<span class="custom-control-description">System Ranking</span>
+							</label>
+						</div>
+						<div class="divTableCell">
+							<label class="custom-control custom-checkbox">
+								<input type="checkbox" class="custom-control-input" checked="" disabled="" >
+								<span class="custom-control-indicator"></span>
+								<span class="custom-control-description">Custom Ranking</span>
+							</label>
+						</div>
+						<div class="divTableCell">
+							<label class="custom-control custom-checkbox">
+								<input type="checkbox" class="custom-control-input" checked="" disabled="" >
+								<span class="custom-control-indicator"></span>
+								<span class="custom-control-description">Last Week Ranking</span>
+							</label>
+						</div>
+					</div>
+					<div class="divTableRow">
+						<div class="divTableCell">
+							<label class="custom-control custom-checkbox">
+								<input type="checkbox" class="custom-control-input" checked="" disabled=""  >
+								<span class="custom-control-indicator"></span>
+								<span class="custom-control-description">Production Package</span>
+							</label>
+						</div>
+						<div class="divTableCell">
+							<label class="custom-control custom-checkbox">
+								<input type="checkbox" class="custom-control-input" checked="" disabled=""  >
+								<span class="custom-control-indicator"></span>
+								<span class="custom-control-description">Due Date</span>
+							</label>
+						</div>
+						<div class="divTableCell">
+							<label class="custom-control custom-checkbox">
+								<input type="checkbox" class="custom-control-input" checked="" disabled=""  >
+								<span class="custom-control-indicator"></span>
+								<span class="custom-control-description">Material Readiness</span>
+							</label>
+						</div>
+					</div>
+					<div class="divTableRow">
+						<div class="divTableCell">
+							<label class="custom-control custom-checkbox">
+								<input type="checkbox" class="custom-control-input" checked="" disabled=""  >
+								<span class="custom-control-indicator"></span>
+								<span class="custom-control-description">AO No</span>
+							</label>
+						</div>
+						<div class="divTableCell">
+							<label class="custom-control custom-checkbox">
+								<input type="checkbox" class="custom-control-input" checked="" disabled=""  >
+								<span class="custom-control-indicator"></span>
+								<span class="custom-control-description">Line No</span>
+							</label>
+						</div>
+						<div class="divTableCell">
+							<label class="custom-control custom-checkbox">
+								<input type="checkbox" class="custom-control-input" checked="" disabled="" >
+								<span class="custom-control-indicator"></span>
+								<span class="custom-control-description">Package Qty</span>
+							</label>
+						</div> 
+					</div>
+					<div class="divTableRow">
+						<div class="divTableCell">
+							<label class="custom-control custom-checkbox">
+								<input type="checkbox" class="custom-control-input" checked="" disabled="" >
+								<span class="custom-control-indicator"></span>
+								<span class="custom-control-description">Buyer Style Code</span>
+							</label>
+						</div>
+						<div class="divTableCell">
+							<label class="custom-control custom-checkbox">
+								<input type="checkbox" class="custom-control-input" checked="" disabled="" >
+								<span class="custom-control-indicator"></span>
+								<span class="custom-control-description">Buyer Style Name</span>
+							</label>
+						</div>
+						<div class="divTableCell">
+							<label class="custom-control custom-checkbox">
+								<input type="checkbox" class="custom-control-input" checked="" disabled="" >
+								<span class="custom-control-indicator"></span>
+								<span class="custom-control-description">Style Size</span>
+							</label>
+						</div> 
+					</div>
+					<div class="divTableRow">
+						<div class="divTableCell">
+							<label class="custom-control custom-checkbox">
+								<input type="checkbox" class="custom-control-input" checked="" disabled="" >
+								<span class="custom-control-indicator"></span>
+								<span class="custom-control-description">Style Color Ways</span>
+							</label>
+						</div>
+						<div class="divTableCell">
+							<label class="custom-control custom-checkbox">
+								<input type="checkbox" class="custom-control-input" checked="" disabled="" >
+								<span class="custom-control-indicator"></span>
+								<span class="custom-control-description">Rev No</span>
+							</label>
+						</div>
+						<div class="divTableCell">
+							<label class="custom-control custom-checkbox">
+								<input type="checkbox" class="custom-control-input" checked="" disabled="">
+								<span class="custom-control-indicator"></span>
+								<span class="custom-control-description">QCO Start Date</span>
+							</label>
+						</div> 
+					</div>
+					<div class="divTableRow">
+						 <hr/>
+					</div>
+					<!--MORE COLUMNS PART -->
+					<div class="divTableRow">
+						<div class="divTableCell">
+							<span style="font-size: 17px; font-weight: bold;">More Columns</span>
+						</div>
+						<div class="divTableCell">
+							<button type="button" class="btn btn-primary" name="popupColumnSelectionSelAll">Select All</button>
+						</div>
+						<div class="divTableCell">
+							<button type="button" class="btn btn-warning" name="popupColumnSelectionDeselAll">Deselect All</button>
+						</div>
+					</div>
+					<div class="divTableRow">
+						<div class="divTableCell">
+							<label class="custom-control custom-checkbox">
+								<input type="checkbox" class="custom-control-input" name="MESALLOCATESTATUS">
+								<span class="custom-control-indicator"></span>
+								<span class="custom-control-description">MES Scheduling Status</span>
+							</label>
+						</div>
+						<div class="divTableCell">
+							<label class="custom-control custom-checkbox">
+								<input type="checkbox" class="custom-control-input" name="MESSTARTDATE">
+								<span class="custom-control-indicator"></span>
+								<span class="custom-control-description">MES Start Date</span>
+							</label>
+						</div>
+						<div class="divTableCell">
+							<label class="custom-control custom-checkbox">
+								<input type="checkbox" class="custom-control-input" name="MATPRIORITYA;MATPRIORITYB;MATPRIORITYC">
+								<span class="custom-control-indicator"></span>
+								<span class="custom-control-description">Star-rating Material</span>
+							</label>
+						</div>
+					</div>
+					<div class="divTableRow">
+						<div class="divTableCell">
+							<label class="custom-control custom-checkbox">
+								<input type="checkbox" class="custom-control-input" name="AOPRDSDAT">
+								<span class="custom-control-indicator"></span>
+								<span class="custom-control-description">Start Plan</span>
+							</label>
+						</div>
+						<div class="divTableCell">
+							<label class="custom-control custom-checkbox">
+								<input type="checkbox" class="custom-control-input" name="AOPRDEDAT">
+								<span class="custom-control-indicator"></span>
+								<span class="custom-control-description">Finish Plan</span>
+							</label>
+						</div>
+						<div class="divTableCell">
+							<label class="custom-control custom-checkbox">
+								<input type="checkbox" class="custom-control-input" name="ORDQTY">
+								<span class="custom-control-indicator"></span>
+								<span class="custom-control-description">Order Qty</span>
+							</label>
+						</div>
+					</div>
+					<div class="divTableRow">
+						<div class="divTableCell">
+							<label class="custom-control custom-checkbox">
+								<input type="checkbox" class="custom-control-input" name="ADTYPENAME">
+								<span class="custom-control-indicator"></span>
+								<span class="custom-control-description">AO Type</span>
+							</label>
+						</div>
+						<div class="divTableCell">
+							<label class="custom-control custom-checkbox">
+								<input type="checkbox" class="custom-control-input" name="CREATEDATE">
+								<span class="custom-control-indicator"></span>
+								<span class="custom-control-description">Last Updated Date</span>
+							</label>
+						</div>
+						<div class="divTableCell">
+							<label class="custom-control custom-checkbox">
+								<input type="checkbox" class="custom-control-input" name="REASON">
+								<span class="custom-control-indicator"></span>
+								<span class="custom-control-description">Custom Ranking Reason</span>
+							</label>
+						</div>
+					</div>
+                    <div class="divTableRow">
+                        <div class="divTableCell">
+                            <label class="custom-control custom-checkbox">
+                                <input type="checkbox" class="custom-control-input" name="FINSOREADINESSSHOW">
+                                <span class="custom-control-indicator"></span>
+                                <span class="custom-control-description">Final Sample Order Readiness</span>
+                            </label>
+                        </div>
+                        <div class="divTableCell">
+                            <label class="custom-control custom-checkbox">
+                                <input type="checkbox" class="custom-control-input" name="JIGREADINESSSHOW">
+                                <span class="custom-control-indicator"></span>
+                                <span class="custom-control-description">JIG Readiness</span>
+                            </label>
+                        </div>
+                        <div class="divTableCell">
+                            <label class="custom-control custom-checkbox">
+                                <input type="checkbox" class="custom-control-input" name="SOPREADINESSSHOW">
+                                <span class="custom-control-indicator"></span>
+                                <span class="custom-control-description">SOP Readiness</span>
+                            </label>
+                        </div>
+                        @*<div class="divTableCell">
+                            <label class="custom-control custom-checkbox">
+                                <input type="checkbox" class="custom-control-input" name="CUTTINGREADINESS">
+                                <span class="custom-control-indicator"></span>
+                                <span class="custom-control-description">Cutting Readiness</span>
+                            </label>
+                        </div>*@
+                    </div>
+				</div>
+			</div>
+		</form>
+	</div>
+	<div id="popupColumnSelectionFooter">
+		<div class="pull-right">
+			<button class="btn btn-success" type="button" name="popupColumnSelectionConfirm">Confirm</button>
+			<button class="btn btn-default" type="button" name="popupColumnSelectionClose">Cancel</button>
+		</div>
+	</div>
+</div>
+<div class="" style="width:99%;">
+	@*<div>
+		<button class="btn btn-success">Edit</button>
+	</div>*@
+	<table id="QCPSGrid" class="gridWithNavTab has-qtip"></table>
+	<div id="QCPSGridPager"></div>
+</div>
+<section title="Factory QCO Settings">
+	<!-- Default -->
+	<div class="modal" id="modal-FactorySortingSettings" tabindex="-1">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-body">
+					<div class="container-fluid">
+						<h4 class="label-control">Production package prioritization - (<span id="modal-FactorySortingSettings_Factory"></span>)</h4>
+						<textarea id="charlie_FactorySettingDesc" name="charlie_FactorySettingDesc" class="form-control SortingPara" readonly="" rows="3"></textarea>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+<section title="QCO Priority Change Reason">
+	<div class="myCenterPopup" id="ChangeQCOReason" tabindex="-2">
+		<div class="popup-header">
+			<div class="pull-left">
+				<h2>Priority Change Reason</h2>
+			</div>
+		</div>
+		<div class="popup-body">
+			<div class="container-fluid">
+				<h3>Reason</h3>
+				<input class="form-control" id="myCenterPopupReason" name="" />
+			</div>
+		</div>
+		<div class="popup-footer">
+			<div class="pull-right">
+				<button type="button" class="btn btn-success" id="myCenterPopupConfirm">Confirm</button>
+				<button type="button" class="btn btn-danger" id="myCenterPopupClose">Cancel</button>
+			</div>
+		</div>
+	</div>
+</section>
+<div class="modal fade" id="ModalRunQCO">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4 class="pull-left">QCO Calculation</h4>
+				<button type="button" class="close pull-right" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+			</div>
+			<div class="modal-body">
+				<form>
+					<div class="row">
+						<div class="col-lg-4">
+							<div class="form-group">
+								<label>Factory</label>
+								<select id="QCOFactory" name="QCOFactory" class="form-control" required="" style="background: white; width:100%;">
+									<option></option>
+								</select>
+							</div>
+						</div>
+						<div class="col-lg-2">
+							<div class="form-group">
+								<label>&nbsp;</label>
+								<button type="submit" class="btn btn-block btn-success">Confirm</button>
+							</div>
+						</div>
+					</div>
+				</form>
+			</div>
+			<div class="modal-footer">
+				@*<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+					<button type="button" class="btn btn-primary">Save changes</button>*@
+			</div>
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal-dialog -->
+</div>
+<div class="modal fade" id="ModalUploadExcelQCO">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h3>Upload Custom Ranking</h3>
+				<button type="button" class="close pull-right" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+			</div>
+			<div class="modal-body">
+				<div class="dropzoneModalUploadExcelQCO">
+					<div class="dz-default dz-message">
+						<span>
+							<span class="text-center">
+								<span class="font-lg visible-xs-block visible-sm-block visible-lg-block">
+									<span class="font-lg">
+										<i class="fa fa-caret-right text-danger"></i> Drop Excel (.xlsx) file&nbsp;<span class="font-xs">to upload</span>
+									</span>
+									<span>
+										&nbsp;&nbsp;
+										<h4 class="display-inline"> (Or Click)</h4>
+									</span>
+								</span>
+							</span>
+						</span>
+					</div>
+				</div>
+				<style>
+					.dropzone {
+						border: 2px solid rgba(255, 255, 255, 1);
+						background: grey;
+						padding: 0 20px;
+					}
+						.dropzone .dz-preview {
+							text-align: center;
+						}
+				</style>
+			</div>
+			<div class="modal-footer">
+				@*<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+					<button type="button" class="btn btn-primary">Save changes</button>*@
+			</div>
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal-dialog -->
+</div>
+<div class="modal fade" id="ModalUpdateReadiness">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h3>Update QCO Readiness</h3>
+				<button type="button" class="close pull-right" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+			</div>
+			<div class="modal-body">
+				<div class="dropzoneModalUpdateReadiness">
+					<div class="dz-default dz-message">
+						<span>
+							<span class="text-center">
+								<span class="font-lg visible-xs-block visible-sm-block visible-lg-block">
+									<span class="font-lg">
+										<i class="fa fa-caret-right text-danger"></i> Drop Excel (.xlsx) file&nbsp;<span class="font-xs">to upload</span>
+									</span>
+									<span>
+										&nbsp;&nbsp;
+										<h4 class="display-inline"> (Or Click)</h4>
+									</span>
+								</span>
+							</span>
+						</span>
+					</div>
+				</div>
+				<style>
+					.dropzone {
+						border: 2px solid rgba(255, 255, 255, 1);
+						background: grey;
+						padding: 0 20px;
+					}
+						.dropzone .dz-preview {
+							text-align: center;
+						}
+				</style>
+			</div>
+			<div class="modal-footer">
+				@*<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+					<button type="button" class="btn btn-primary">Save changes</button>*@
+			</div>
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal-dialog -->
+</div>
+@section Scripts{
+	<script src="~/js/mes/QCO/QCOController.js"></script>
+	<script src="~/js/plugin/multiselect/bootstrap-multiselect.min.js"></script>
+	@* Gridstack *@
+	<script src="~/Assets/Gridstack/gridstack.min.js"></script>
+	<script src="~/Assets/Gridstack/gridstack.jQueryUI.min.js"></script>
+	@*JQuery qtip
+		<script src="~/Assets/qtip/jquery.qtip.min.js"></script>*@
+	@*JQuery Grid *@
+	<script src="~/js/plugin/jqgrid/jquery.jqGrid.min.js"></script>
+	<script src="~/js/plugin/jqgrid/grid.locale-en.min.js"></script>
+	<script src="~/js/plugin/jqgrid/Common.js"></script>
+	@*Bootstrap Notify *@
+	<script src="~/Assets/remarkable-bootstrap-notify/dist/bootstrap-notify.min.js"></script>
+	<script src="~/Assets/remarkable-bootstrap-notify/dist/Common.js"></script>
+	@* Fancy Box *@
+	@*<script src="~/Assets/fancybox-master/dist/jquery.fancybox.min.js"></script>*@
+	<script src="~/Assets/fancybox-master/dist/jquery.fancybox.js"></script>
+	@*<script src="~/Assets/fancybox-master/dist/Common.js"></script>*@
+	@*<script src="~/assets/DayRangePicker/daterangepicker.min.js"></script>*@
+	<script src="~/Assets/Pikaday/pikaday.js"></script>
+	<script src="~/Assets/Pikaday/plugins/pikaday.jquery.js"></script>
+	<script src="~/Assets/Pikaday/common.js"></script>
+	<script src="~/js/plugin/dropzone/dropzone.min.js"></script>
+	@*<script type="text/javascript"> var GS; $(function () { GS = $('.grid-stack').gridstack({}); });  $('i[data-role="grid-stack-action-minimize"]').on('click', function (ev) { let $this = $(this);  let $evTarget = $(ev.target); let Class = $evTarget.attr('class'); console.log(Class);  let $gridstackItem = $this.closest('.grid-stack-item'); let GSdata = GS.data('gridstack');  let Height = 1; let classText = "";  if (Class.includes('minus')) { classText = 'fa fa-plus fa-border'; } else if (Class.includes('plus')) { classText = 'fa fa-minus fa-border'; Height = 2; }  GSdata.maxHeight($gridstackItem, Height);  $evTarget.removeClass(); $evTarget.addClass(classText); }); </script>*@
+<script>
+    /***************************/
+    Dropzone.autoDiscover = false;
+    var IsAssignNewRanking = false;
+    var origStyle = "";
+    var frmColumSelection; //2020-04-11 Tai Le(Thomas)
+    var mUrl, charlie_drpFactory, charlie_Year, charlie_WeekNo; //2020-04-11 Tai Le(Thomas)
+    /////////////////////////////////////////////////
+    var QCODetailBox;
+    /**QCPSGrid*********/
+    var lastSel_QCPSGrid;
+    var lastSel;
+    var jqGridDataType = 'local';
+    var QCPSGrid_colModels = [];
+    QCPSGrid_colModels.push({ name: 'RANKING', index: 'RANKING', label: 'ROW<br/>SEQ', align: 'right', hidden: true }); //For change the position purpose
+    QCPSGrid_colModels.push({ name: 'QCOSOURCE', index: 'QCOSOURCE', label: 'QCOSOURCE', align: 'right', hidden: true });//For change the position purpose
+    QCPSGrid_colModels.push({ name: 'QCOVERSION', index: 'QCOVERSION', label: 'QCOVERSION', align: 'right', hidden: true });//For change the position purpose
+    QCPSGrid_colModels.push({ name: 'QCORANKINGNEW', index: 'QCORANKINGNEW', label: 'QCORANKING<br/>NEW', align: 'right', width: 40, hidden: true });//For change the position purpose
+    QCPSGrid_colModels.push({ name: 'QCOFACTORY', index: 'QCOFACTORY', label: 'QCO<BR/>FACTORY', align: 'center', width: 80, hidden: true });//For change the position purpose
+    QCPSGrid_colModels.push({ name: 'QCOYEAR', index: 'QCOYEAR', label: 'QCO<BR/>YEAR', align: 'center', width: 80, hidden: true });//For change the position purpose
+    QCPSGrid_colModels.push({ name: 'QCOWEEKNO', index: 'QCOWEEKNO', label: 'QCO<BR/>WEEK NO', align: 'center', width: 80, hidden: true });//For change the position purpose
+    QCPSGrid_colModels.push({ name: 'QCORANK', index: 'QCORANK', label: 'System<BR/>Ranking', align: 'right', width: 65, sortable: false, classes: 'pointer', key: true });
+    QCPSGrid_colModels.push({ name: 'CHANGEQCORANK', index: 'CHANGEQCORANK', label: 'Custom<BR/>Ranking', align: 'right', width: 65, sortable: false, classes: 'pointer', editable: true });
+    QCPSGrid_colModels.push({ name: 'PRECUSTOMRANK', index: 'PRECUSTOMRANK', label: 'Last Week<br/>Custom Ranking', align: 'right', width: 65, sortable: false, classes: 'pointer', editable: false });
+    QCPSGrid_colModels.push({
+        name: 'PRDPKGSHOW', index: 'PRDPKGSHOW', label: 'Production<BR/>Package', align: 'right', width: 200, sortable: false, classes: '', title: false, formatter: function (cellvalue, options, rowObject) {
+            //console.log(rowObject);
+            let aHref =
+                '<a href="javascript:void(0)" data-role="quickSummary" data-summaryurl="/QCO/POPStyleSummary/?StyleCode=' + rowObject.STYLECODE + '&StyleSize=' + rowObject.STYLESIZE + '&StyleColorSerial=' + rowObject.STYLECOLORSERIAL + '&RevNo=' + rowObject.REVNO + '&PRDPKG=' + rowObject.PRDPKG + '" >' + rowObject.PRDPKG + '</a>';
+            return aHref;
+        }
+    });
+    QCPSGrid_colModels.push({ name: 'QCOSTARTDATE', index: 'QCOSTARTDATE', label: 'QCO<br/>Start Date', align: 'right', width: 80, sortable: false, editable: false });
+    QCPSGrid_colModels.push({ name: 'MESALLOCATESTATUS', index: 'MESALLOCATESTATUS', label: 'MES<br/>Scheduling Status', align: 'center', width: 70, sortable: false, editable: false });
+    QCPSGrid_colModels.push({ name: 'MESSTARTDATE', index: 'MESSTARTDATE', label: 'MES<br/>Start Date', align: 'right', width: 80, sortable: false, editable: false });
+    QCPSGrid_colModels.push({ name: 'PRDPKG', index: 'PRDPKG', label: 'PRDPKG', align: 'right', width: 10, sortable: false, editable: false, hidden: true });
+    QCPSGrid_colModels.push({ name: 'DELIVERYDATE', index: 'DELIVERYDATE', label: 'Due<BR/>Date', align: 'right', width: 80, sortable: false, editable: false, classes: 'pointer' });
+    QCPSGrid_colModels.push({ name: 'MATPRIORITYA', index: 'MATPRIORITYA', label: '<i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i>', align: 'right', width: 90, sortable: false, classes: 'pointer' });
+    QCPSGrid_colModels.push({ name: 'MATPRIORITYB', index: 'MATPRIORITYB', label: '<i class="fa fa-star"></i><i class="fa fa-star"></i>', align: 'right', width: 90, sortable: false, classes: 'pointer' });
+    QCPSGrid_colModels.push({ name: 'MATPRIORITYC', index: 'MATPRIORITYC', label: '<i class="fa fa-star"></i>', align: 'right', width: 90, sortable: false, classes: 'pointer' });
+    QCPSGrid_colModels.push({ name: 'NORMALIZEDPERCENT', index: 'NORMALIZEDPERCENT', label: 'Material<BR/>Readiness', align: 'right', width: 0, sortable: false, classes: 'pointer', hidden: true });
+    QCPSGrid_colModels.push({
+        name: 'NORMALIZEDPERCENTSHOW', index: 'NORMALIZEDPERCENTSHOW', label: 'Material<BR/>Readiness', align: 'right', width: 90, sortable: false,
+        formatter: function (cellvalue, options, rowObject) {
+            let aHref = '<a href="javascript:void(0)" onclick="OpenQCODetailDialog(this);"  data-ulr="/QCO/QCODetailPop/?Factory=' + rowObject.QCOFACTORY + '&LINENO=' + rowObject.LINENO + '&AONO=' + rowObject.AONO +
+                '&STYLECODE=' + rowObject.STYLECODE + '&STYLESIZE=' + rowObject.STYLESIZE + '&STYLECOLORSERIAL=' + rowObject.STYLECOLORSERIAL + '&REVNO=' + rowObject.REVNO +
+                '&PRDPKG=' + rowObject.PRDPKG + '&QCOYEAR=' + rowObject.QCOYEAR + '&QCOWEEKNO=' + rowObject.QCOWEEKNO + '&QCOSOURCE=' + rowObject.QCOSOURCE + '" >' + rowObject.NORMALIZEDPERCENT + '</a>';
+            return aHref;
+        }
+	});
+    QCPSGrid_colModels.push({ name: 'CUTTINGREADINESS', index: 'CUTTINGREADINESS', label: 'Cutting<br/>Readiness', align: 'left', width: 100, sortable: false, classes: 'pointer', hidden: true });
+    QCPSGrid_colModels.push({
+        name: 'CUTTINGREADINESSSHOW', index: 'CUTTINGREADINESSSHOW', label: 'Cutting<BR/>Readiness', align: 'right', width: 100, sortable: false,
+        formatter: function (cellvalue, options, rowObject) {
+            let aHref = '<a href="javascript:void(0)" onclick="OpenQCODetailDialog(this);"  data-ulr="/QCO/MTOPPPCuttingReadinessPop/?PRDPKG=' + rowObject.PRDPKG + '" >' + rowObject.CUTTINGREADINESS + '</a>';
+            return aHref;
+        }
+    });
+    QCPSGrid_colModels.push({ name: 'AOPRDSDAT', index: 'AOPRDSDAT', label: 'Start<BR/>plan', align: 'right', width: 100, sortable: false, editable: false, classes: 'pointer' });
+    QCPSGrid_colModels.push({ name: 'AOPRDEDAT', index: 'AOPRDEDAT', label: 'Finish<BR/>plan', align: 'right', width: 100, sortable: false, editable: false, classes: 'pointer' });
+    QCPSGrid_colModels.push({ name: 'PLANQTY', index: 'PLANQTY', label: 'Pkg<BR/>Qty', align: 'right', width: 80, sortable: false, editable: false, classes: 'pointer' });
+    QCPSGrid_colModels.push({ name: 'ORDQTY', index: 'ORDQTY', label: 'Order<BR/>Qty', align: 'right', width: 80, sortable: false, editable: false, classes: 'pointer' });
+    QCPSGrid_colModels.push({ name: 'CHANGEFACTORY', index: 'CHANGEFACTORY', label: 'Factory', align: 'left', width: 64, sortable: false, classes: 'pointer', hidden: true });
+    QCPSGrid_colModels.push({ name: 'AONO', index: 'AONO', label: 'AO No', align: 'center', width: 100, sortable: false, classes: 'pointer' });
+    QCPSGrid_colModels.push({ name: 'ADTYPENAME', index: 'ADTYPENAME', label: 'AO Type', align: 'left', width: 100, sortable: false, classes: 'pointer' });
+    QCPSGrid_colModels.push({ name: 'LINENO', index: 'LINENO', label: 'Line<BR/>No', align: 'center', width: 80, sortable: false });
+    QCPSGrid_colModels.push({ name: 'STYLECODE', index: 'STYLECODE', label: 'STYLE<BR/>CODE', align: 'left', width: 100, sortable: false, hidden: true });
+    QCPSGrid_colModels.push({ name: 'STYLENAME', index: 'STYLENAME', label: 'STYLE<BR/>NAME', align: 'left', width: 100, sortable: false, hidden: true });
+    QCPSGrid_colModels.push({ name: 'BUYERSTYLECODE', index: 'BUYERSTYLECODE', label: 'Buyer<BR/>Style Code', align: 'left', width: 100, sortable: false, classes: 'pointer' });
+    QCPSGrid_colModels.push({ name: 'BUYERSTYLENAME', index: 'BUYERSTYLENAME', label: 'Buyer<BR/>Style Name', align: 'left', width: 200, sortable: false, classes: 'pointer' });
+    QCPSGrid_colModels.push({ name: 'STYLESIZE', index: 'STYLESIZE', label: 'Style<BR/>Size', align: 'center', width: 64, sortable: false, classes: 'pointer' });
+    QCPSGrid_colModels.push({ name: 'STYLECOLORSERIAL', index: 'STYLECOLORSERIAL', label: 'Style<BR/>Color Serial', align: 'left', width: 120, sortable: false, hidden: true });
+    QCPSGrid_colModels.push({ name: 'STYLECOLORWAYS', index: 'STYLECOLORWAYS', label: 'Style<BR/>Color Ways', align: 'left', width: 200, sortable: false, classes: 'pointer' });
+    QCPSGrid_colModels.push({ name: 'REVNO', index: 'REVNO', label: 'Rev No', align: 'right', width: 64, sortable: false, classes: 'pointer' });
+    QCPSGrid_colModels.push({ name: 'CREATEDATE', index: 'CREATEDATE', label: 'Last Updated Date', align: 'right', width: 140, sortable: false, classes: 'pointer', key: true });
+    QCPSGrid_colModels.push({ name: 'CHANGEBY', index: 'CHANGEBY', label: 'CHANGEBY', align: 'left', width: 1, sortable: false, hidden: true, classes: 'pointer' });
+    QCPSGrid_colModels.push({ name: 'REASON', index: 'REASON', label: 'QCO Change<BR/>Reason', align: 'left', width: 100, sortable: false, classes: 'pointer' });
+    QCPSGrid_colModels.push({ name: 'FINSOREADINESSSHOW', index: 'FINSOREADINESSSHOW', label: 'Final Sample Order<br/>Readiness', align: 'left', width: 100, sortable: false, classes: 'pointer' });
+    QCPSGrid_colModels.push({ name: 'JIGREADINESSSHOW', index: 'JIGREADINESSSHOW', label: 'JIG<br/>Readiness', align: 'left', width: 100, sortable: false, classes: 'pointer' });
+    QCPSGrid_colModels.push({ name: 'SOPREADINESSSHOW', index: 'SOPREADINESSSHOW', label: 'SOP<br/>Readiness', align: 'left', width: 100, sortable: false, classes: 'pointer' });
+
+    var QCPSGrid = CreateJqGridObject('QCPSGrid', '', jqGridDataType, QCPSGrid_colModels, false, '', 100);
+    QCPSGrid.jqGrid('navGrid', '#' + 'QCPSGrid' + 'Pager'
+        , { add: false, edit: false, del: false, search: false }
+        , { /*edit option*/ }
+        , { /*add option*/ }
+        , { /*delete option*/ }
+        , { /*search option*/ }
+        , { /*View option*/ }
+	);
+	///Drag n' drop in jqGrid
+    //QCPSGrid.sortableRows();
+    //QCPSGrid.jqGrid('gridDnD');
+	///::END	Drag n' drop in jqGrid
+
+    customJqGridCss();
+    ///////////
+    var DropzoneOptions = {
+        autoProcessQueue: false
+        , init: function () {
+            this.on("addedfile",
+                function (file) {
+                    var _this = this;
+                    console.log(file);
+                    var fileExtension = file.name.split('.')[1];
+                    if (fileExtension !== 'xlsx') {
+                        Notify('Only Excel(2003+) is acceptable. Please choose another file.', 'warning');
+                        _this.removeFile(file);
+                    }
+                    // Create the manual Upload button
+                    var uploadButton = Dropzone.createElement('<button type="button" class="btn btn-success">Upload</button>');
+                    // Capture the Dropzone instance as closure.
+                    // Listen to the click event
+                    uploadButton.addEventListener("click",
+                        function (e) {
+                            // Make sure the button click doesn't submit the form:
+                            e.preventDefault();
+                            e.stopPropagation();
+                            // Update the file preview.
+                            _this.processFile(file);
+                            // If you want to the delete the file on the server as well,
+                            // you can do the AJAX request here.
+                        });
+                    // Add the button to the file preview element.
+                    file.previewElement.appendChild(uploadButton);
+                    // Create the manual remove button
+                    var removeButton = Dropzone.createElement('<button type="button" class="btn btn-danger">Remove</button>');
+                    // Listen to the click event
+                    removeButton.addEventListener("click",
+                        function (e) {
+                            // Make sure the button click doesn't submit the form:
+                            e.preventDefault();
+                            e.stopPropagation();
+                            // Remove the file preview.
+                            _this.removeFile(file);
+                            // If you want to the delete the file on the server as well,
+                            // you can do the AJAX request here.
+                        });
+                    // Add the button to the file preview element.
+                    file.previewElement.appendChild(removeButton);
+                });
+        }
+        , url: '.'
+        , maxFilesize: 15 //Unit= MB
+    };
+    var dropzoneModalUploadExcelQCO = new Dropzone("div.dropzoneModalUploadExcelQCO",
+        $.extend(DropzoneOptions, { url: '../QCO/QCOExcelUpload' })
+    );
+    //Binding an event
+    dropzoneModalUploadExcelQCO.on("complete",
+        function (file) {
+        }).on('error',
+            function (file, errorMessage) {
+                Notify('danger', errorMessage);
+            }).on('success', function (file, response) {
+                let _Notify_type = 'success';
+                if (!response.retResult)
+                    _Notify_type = 'danger';
+                Notify(response.retMsg, _Notify_type);
+                /*Remove success file */
+                dropzoneModalUploadExcelQCO.removeFile(file);
+                /*2020-04-09 Tai Le(Thomas) Close the Searching pop-up*/
+                CloseSearchingBoxToggle();
+            });
+    var dropzoneModalUpdateReadiness = new Dropzone("div.dropzoneModalUpdateReadiness",
+        $.extend(DropzoneOptions, { url: '../QCO/ExcelUploadReadiness' })
+    );
+    //Binding an event
+    dropzoneModalUpdateReadiness.on("complete",
+        function (file) {
+        }).on('error',
+            function (file, errorMessage) {
+                Notify('danger', errorMessage);
+            }).on('success', function (file, response) {
+                let _Notify_type = 'success';
+                if (!response.retResult)
+                    _Notify_type = 'danger';
+                Notify(response.retMsg, _Notify_type);
+                /*Remove success file */
+                dropzoneModalUpdateReadiness.removeFile(file);
+                /*2020-04-09 Tai Le(Thomas) Close the Searching pop-up*/
+                CloseSearchingBoxToggle();
+            });
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // Defined Functions
+    function CentralizeSimQCO() {
+        var charlie_drpFactory = $('#charlie_drpFactory').val();
+        var charlie_Year = $('#charlie_Year').val();
+        var charlie_WeekNo = $('#charlie_WeekNo').val();
+        if (charlie_drpFactory.length <= 0 || charlie_Year.length <= 0 || charlie_WeekNo.length <= 0) {
+            Notify('[Factory], [Year] and [Week No] are required. Please check and try again.', 'warning');
+        } else {
+            ShowConfirmYesNo(
+                "Confirm"
+                , "Are you sure Publish QCO in Factory [" + charlie_drpFactory + "]?"
+                , function () {
+                    $.ajax({
+                        url: '/QCO/CentralizeSIMQCO',
+                        type: 'POST',
+                        contentType: 'application/json',
+                        data: JSON.stringify({ qCOFACTORY: charlie_drpFactory, qCOYEAR: charlie_Year, qCOWEEKNO: charlie_WeekNo }),
+                        success: function (response) {
+                            Notify(response, 'info', 'top', 'center');
+                        },
+                        complete: function (jqXHR, textStatus) {
+                            console.log(jqXHR, textStatus);
+                            if (jqXHR.status == 401)
+                                Notify(jqXHR.statusText, 'danger', 'top', 'center');
+                        }
+                    });
+                    return false;
+                }
+                , function () {
+                    return false;
+                }
+            );
+        }
+    }
+    function QCPSToExcel() {
+        var charlie_drpFactory = $('#charlie_drpFactory').val();
+        var charlie_Year = $('#charlie_Year').val();
+        var charlie_WeekNo = $('#charlie_WeekNo').val();
+        var QCORankingFilter = $('#QCORankingFilter').val();
+        var charlie_cbQCOSource = $('#charlie_cbQCOSource').val();
+        var pUrl = '../QCO/QCPSToExcel' + "/" + charlie_drpFactory + '?_searchFieldQCOYEAR=' + charlie_Year + '&_searchFieldQCOWEEKNO=' + charlie_WeekNo + '&QCORankingFilter=' + QCORankingFilter + '&QCOSource=' + charlie_cbQCOSource + '&Type=A&sidx=ranking&rows=9999999';
+        if (charlie_drpFactory.length <= 0 || charlie_Year.length <= 0 || charlie_WeekNo.length <= 0) {
+            Notify('[Factory], [Year] and [Week No] are required. Please check and try again.', 'warning');
+        } else {
+            window.location = pUrl;
+        }
+    }
+    function QCOReadinessExcel() {
+        var charlie_drpFactory = $('#charlie_drpFactory').val();
+        var charlie_Year = $('#charlie_Year').val();
+        var charlie_WeekNo = $('#charlie_WeekNo').val();
+        var QCORankingFilter = $('#QCORankingFilter').val();
+        var charlie_cbQCOSource = $('#charlie_cbQCOSource').val();
+        var pUrl = '../QCO/QCPSToExcel' + "/" + charlie_drpFactory + '?_searchFieldQCOYEAR=' + charlie_Year + '&_searchFieldQCOWEEKNO=' + charlie_WeekNo + '&QCORankingFilter=' + QCORankingFilter + '&QCOSource=' + charlie_cbQCOSource + '&Type=B&sidx=ranking&rows=9999999';
+        if (charlie_drpFactory.length <= 0 || charlie_Year.length <= 0 || charlie_WeekNo.length <= 0) {
+            Notify('[Factory], [Year] and [Week No] are required. Please check and try again.', 'warning');
+        } else {
+            window.location = pUrl;
+        }
+    }
+    async function ShowQCO() {
+        charlie_drpFactory = $('#charlie_drpFactory').val();
+        charlie_Year = $('#charlie_Year').val();
+        charlie_WeekNo = $('#charlie_WeekNo').val();
+        var charlie_DeliveryDate = $('#charlie_DeliveryDate').val();
+        var QCORankingFilter = $('#QCORankingFilter').val();
+        var charlie_cbDeliveryDate = $('#charlie_cbDeliveryDate').prop('checked');
+        let charlie_cbQCOSource = $('#charlie_cbQCOSource').val();
+        let charlie_AONo = $('#charlie_AONo').val(); //2020-05-06 Tai Le(Thomas)
+        mUrl = '../QCO/ShowQCPS' + "/" + charlie_drpFactory + '?_searchFieldQCOYEAR=' + charlie_Year + '&_searchFieldQCOWEEKNO=' + charlie_WeekNo + '&QCORankingFilter=' + QCORankingFilter + '&QCOSource=' + charlie_cbQCOSource + '&_searchFieldAONO=' + charlie_AONo;
+        if (charlie_cbDeliveryDate)
+            mUrl = mUrl + '&_searchFieldDateRangeDELIVERYDATE=' + charlie_DeliveryDate;
+        let charlie_AOType = $('#charlie_AOType').val();
+        if (Array.isArray(charlie_AOType)) {
+            if (charlie_AOType.length > 0)
+                mUrl = mUrl + '&_searchFieldStrIncADType=' + charlie_AOType.join(";");
+        }
+        if (charlie_drpFactory.length <= 0 || charlie_Year.length <= 0 || charlie_WeekNo.length <= 0) {
+            Notify('[Factory], [Year] and [Week No] are required. Please check and try again.', 'warning');
+        } else {
+            ToggleShowColumn('popupColumnSelection');
+            //await QCPSGridTrigger(pUrl, pUrlOpt);
+            //await $('#PageBreadcrumb').html(` > ${charlie_drpFactory} - ${charlie_Year} - ${charlie_WeekNo}`);
+            ///*2020-04-09 Tai Le(Thomas) Close the Searching pop-up*/
+            //await CloseSearchingBoxToggle();
+        }
+    }
+    function QCPSGridTrigger(pUrl, pUrlOpt) {
+        QCPSGrid.setGridParam({
+            url: pUrl + pUrlOpt,
+            sortname: 'ranking',
+            datatype: 'json',
+            loadui: 'block',
+            loadtext: '',
+            loadComplete: function (data) {
+                if (data.hasOwnProperty('retResult')) {
+                    if (!data["retResult"]) {
+                        Notify(data["dataRow"], 'warning');
+                    }
+                }
+                QCPSGrid.setGridParam({
+                    url: pUrl
+                }).trigger('reloadGrid');
+            }
+            , loadError: function (xhr, status, error) {
+                console.log('loadError');
+                console.log(xhr);
+                console.log(status);
+                console.log(error);
+            }
+            , onSelectRow: function (id, onselectrow) { }
+            , ondblClickRow: function (id, iRow, iCol, e) { }
+            , gridComplete: function () {
+                var selfgridID = this.id;
+                var ids = jQuery("#" + selfgridID).jqGrid('getDataIDs');
+                var modvalue;
+                for (var i = 0; i < ids.length; i++) {
+                    var dtRow = jQuery("#" + this.id).jqGrid('getRowData', ids[i]);
+                    modvalue = (i + 1) % 2;
+                    /*#Noted: Set row background color for chẵn and lẻ row */
+                    var backgroundColor;
+                    if (modvalue === 0) {
+                        backgroundColor = 'jqgrid-row-even';
+                    } else {
+                        backgroundColor = 'jqgrid-row-odd';
+                    }
+                    if (dtRow.CHANGEBY)
+                        backgroundColor = 'jqgrid-row-qcochanged';
+                    jQuery("#" + selfgridID).jqGrid('setRowData', ids[i], {}, backgroundColor);
+                    if ('Yes' === dtRow.FINSOREADINESSSHOW)
+                        jQuery("#" + selfgridID).setCell(ids[i], 'FINSOREADINESSSHOW', '', { background: 'green', color: 'white' });
+                    if ('Yes' === dtRow.JIGREADINESSSHOW)
+                        jQuery("#" + selfgridID).setCell(ids[i], 'JIGREADINESSSHOW', '', { background: 'green', color: 'white' });
+                    if ('Yes' === dtRow.SOPREADINESSSHOW)
+                        jQuery("#" + selfgridID).setCell(ids[i], 'SOPREADINESSSHOW', '', { background: 'green', color: 'white' });
+                    if ('Not Scheduled' === dtRow.MESALLOCATESTATUS) {
+                        //jQuery("#" + selfgridID).setCell(ids[i], 'MESALLOCATESTATUS', '', { background: 'green', color: 'white' });
+                    } else if ('Fully Scheduled' === dtRow.MESALLOCATESTATUS) {
+                        jQuery("#" + selfgridID).setCell(ids[i], 'MESALLOCATESTATUS', '', { background: 'green', color: 'white' });
+                    }
+                    else if ('Partially Scheduled' === dtRow.MESALLOCATESTATUS) {
+                        jQuery("#" + selfgridID).setCell(ids[i], 'MESALLOCATESTATUS', '', { background: 'orange', color: 'white' });
+                    }
+                }
+                //2020-04-11 Tai Le(Thomas): show/hide the columns here
+                //console.log('frmColumSelection inside gridComplete', frmColumSelection);
+                frmColumSelection.forEach(function (ele, index) {
+                    if (ele.name.length > 0) {
+                        let methodName = ele.value ? 'showCol' : 'hideCol';
+                        let arrName = ele.name.split(';');
+                        arrName.forEach(
+                            element => { jQuery("#" + selfgridID).jqGrid(methodName, element); }
+                        );
+                    }
+                });
+                frmColumSelection = [];
+                //::END		2020-04-11 Tai Le(Thomas): show/hide the columns here
+            }
+        }).trigger("reloadGrid");
+    };
+    function resizeGrid() {
+        var $grid = $(".gridWithNavTab"),
+            newWidth = $grid.closest(".ui-jqgrid").parent().width();
+        $grid.jqGrid("setGridWidth", newWidth, false);
+    }
+    function OpenQCODetailDialog($this) {
+        $.post($($this).attr('data-ulr'))
+            .done(function (res) {
+                //console.log(res);
+                let $mymodal = $("#myModal");
+                //remove modal-header
+                $mymodal.find("div.modal-header").remove();
+                //update the modal's body with the response received
+                $mymodal.find("div.modal-body").html(res);
+                //remove modal-footer
+                //$mymodal.find("div.modal-footer").remove();
+                // Show the modal
+                $mymodal.modal("show");
+            });
+        return false;
+    }
+    function CloseSearchingBoxToggle() {
+        $('.searchingBoxToggle').find('i').trigger('click');
+    }
+    var blShowColumnVisible = false;
+    function ToggleShowColumn(DOM_Ele) {
+        //Reset the form
+        $('#' + DOM_Ele).find('form').trigger('reset');
+        var BackgrDIV = DOM_Ele + 'Background';
+        if (!blShowColumnVisible) {
+            $('#' + BackgrDIV).show();
+            $('#' + DOM_Ele).show(500);
+        } else {
+            $('#' + DOM_Ele).hide();
+            $('#' + BackgrDIV).hide(500);
+        }
+        blShowColumnVisible = !blShowColumnVisible;
+    }
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // Control Events
+    $(window).resize(function () {
+        resizeGrid();
+    });
+    $(document).ready(function () {
+        resizeGrid();
+        $('#charlie_drpFactory,#charlie_Year,#charlie_WeekNo,#QCORankingFilter,#QCOFactory,#charlie_cbQCOSource').select2({
+            placeholder: "-Choose One-",
+            allowClear: true,
+            dropdownAutoWidth: true
+        });
+        var CurDate = new Date();
+        var CurYear = CurDate.getFullYear();
+		var i = 0;
+        for (i = CurYear-5; i <= CurYear; i++) {
+            if (i == CurDate.getFullYear()) {
+                $('#charlie_Year').append($('<option>',
+                    {
+                        value: i,
+                        text: i,
+                        selected: true
+                    })
+                );
+                $('#charlie_Year option[value="' + i + '"]').text(i);
+            } else {
+                $('#charlie_Year').append($('<option>',
+                    {
+                        value: i,
+                        text: i
+                    })
+                );
+            }
+        }
+        let config = ObjectConfigAjaxPost("../QCO/GetYearWeeks", false, JSON.stringify({ vstrYear: $('#charlie_Year').val() }));
+        AjaxPostCommon(config, function (data) {
+            //console.log(data);
+            $('#charlie_WeekNo').append($('<option>',
+                {
+                    value: '',
+                    text: '----'
+                })
+            );
+            for (var i = 1; i <= data.NumberOfWeeks; i++) {
+                if (i < 10)
+                    i = '0' + i;
+                $('#charlie_WeekNo').append($('<option>',
+                    {
+                        value: 'W' + i,
+                        text: 'W' + i
+                    })
+                );
+            }
+            //2019-11-29 Tai Le(Thomas): Assign Current Week
+            $('#charlie_WeekNo').val("W" + data.CurrentWeek).change();
+        }).done(function () {
+            config = ObjectConfigAjaxPost("../QCO/GetFactoryList", false, JSON.stringify({ vstrFactory: '' }));
+            AjaxPostCommon(config,
+                function (data) {
+                    for (var i = 0; i < data.length; i++) {
+                        $('#charlie_drpFactory,#QCOFactory').append($('<option>',
+                            {
+                                value: data[i].Factory,
+                                text: '[' + data[i].Factory + '] ' + data[i].Name
+                                , selected: $("#hdFactoryUser").val() == data[i].Factory
+                            })
+                        );
+                    }
+                    ////2019-11-29 Tai Le(Thomas)
+                    ////Assign the default Factory
+                    //if ($("#hdFactoryUser").val())
+                    //    $('#charlie_drpFactory,#QCOFactory').val($("#hdFactoryUser").val()).change();
+                });
+        });
+        //Bind the ADType
+        $.ajax({
+            url: '/QCO/GetAOTypeList',
+            type: 'POST',
+            contentType: 'application/json',
+            success: function (response) {
+                if (Array.isArray(response)) {
+                    $.each(response, function (i, item) {
+                        $('#charlie_AOType').append(
+                            $('<option>', {
+                                value: item.S_Code
+                                , text: item.Code_Name
+                            })
+                        );
+                    });
+                }
+                //$('#charlie_AOType').select2({
+                //    placeholder: "-AO Type-",
+                //    allowClear: true,
+                //    dropdownAutoWidth: true
+                //});
+                $('#charlie_AOType').multiselect({
+                    includeSelectAllOption: true,
+                    enableFiltering: true,
+                    maxHeight: 500,
+                    buttonWidth: '100%'
+                });
+            },
+            complete: function (jqXHR, textStatus) {
+                //console.log(jqXHR, textStatus);
+            }
+        });
+    });
+    $('button').on('click', function () {
+        let self_ID = this.id;
+        switch (self_ID) {
+            case "UploadReadiness":
+                {
+                    //Final Sample Readiness; SOP Readiness; JIG Readiness
+                    $('#ModalUpdateReadiness').modal('toggle');
+                }
+                break;
+            case "UploadExcel":
+                {
+                    $('#ModalUploadExcelQCO').modal('toggle');
+                }
+                break;
+            case "ExportExcel":
+                {
+                    QCPSToExcel();
+                }
+                break;
+            case "RunQCO":
+                {
+                    let $ModalRunQCO = $('#ModalRunQCO');
+                    $ModalRunQCO.modal('show');
+                }
+                break;
+            case "SaveRanking":
+                {
+                    $('.myCenterPopup').show(1000);
+                }
+                break;
+            case "myCenterPopupClose":
+                {
+                    $('.myCenterPopup').hide(500);
+                }
+                break;
+            case "myCenterPopupConfirm":
+                {
+                    let myCenterPopupReason = $('#myCenterPopupReason').val();
+                    if (myCenterPopupReason && myCenterPopupReason.length > 0) {
+                        //Get jqGrid Data
+                        var GridData = QCPSGrid.getRowData();
+                        var postData = JSON.stringify(GridData);
+                        $.ajax({
+                            contentType: "application/json; charset=utf-8",
+                            dataType: "json",
+                            url: "/QCO/SaveQCPSRanking",
+                            type: "POST",
+                            async: true,
+                            data: JSON.stringify({ data: postData, Reason: myCenterPopupReason }),
+                            success: function (response, textStatus, xhr) {
+                                //console.log(response, textStatus, xhr);
+                                if (response.retResult) {
+                                    Notify('SaveQCPSRanking Success!!!', 'success');
+                                    //Trigger the Grid again
+                                    ShowQCO();
+                                }
+                                else if (!response.retResult)
+                                    Notify(response.retMsg, 'warning');
+                            },
+                            error: function (xhr, textStatus, errorThrown) {
+                                Notify('SaveQCPSRanking Failed!!!', 'danger');
+                            },
+                            complete: function () {
+                                $('.myCenterPopup').hide(500);
+                                //Clear "Reason" textbox
+                                $('#myCenterPopupReason').val('');
+                            }
+                        });
+                    }
+                }
+                break;
+            case "ShowQCPS":
+                {
+                    ShowQCO();
+                }
+                break;
+            case "RunQCPS":
+                {
+                    var charlie_drpFactory = $('#charlie_drpFactory').val();
+                    var pUrl = '../QCO/ShowQCPS' + "/" + charlie_drpFactory;
+                }
+                break;
+        }
+    });
+    $('#drpFactory , #charlie_drpFactory').on('change', function () {
+        var TextAreaID = "";
+        if (this.id === 'drpFactory') {
+            TextAreaID = "FactorySettingDesc";
+        } else if (this.id === 'charlie_drpFactory') {
+            TextAreaID = "charlie_FactorySettingDesc";
+        }
+        $('#' + TextAreaID).val("");
+        let selectedValue = $('#' + this.id).val();
+        if (selectedValue.length > 0) {
+            var config = ObjectConfigAjaxPost("../QCO/GetFactorySettings", false, JSON.stringify({ vstrFactoryId: selectedValue }));
+            AjaxPostCommon(config,
+                function (data) {
+                    for (var i = 0; i < data.length; i++) {
+                        let j = 0;
+                        let tabstr = "";
+                        for (j = 1; j <= i + 1; j++) {
+                            tabstr += '\t';
+                        }
+                        let currentPara = data[i];
+                        if (i + 1 < data.length) $('#' + TextAreaID).val($('#' + TextAreaID).val() + "Level " + (i + 1) + ": " + currentPara.PARAMETERNAME + "\r\n" + tabstr);
+                        else $('#' + TextAreaID).val($('#' + TextAreaID).val() + "Level " + (i + 1) + ": " + currentPara.PARAMETERNAME);
+                    }
+                });
+        }
+    });
+    $('#ModalRunQCO').on('shown.bs.modal', function (e) {
+        let $this = $(this);
+        $this.find('form').find('select').select2('open'); //.focus();
+    });
+    $('#ModalRunQCO').find('form').submit(function () {
+        let $this = $(this);
+        let _qcoQueue = { FACTORY: $this.find('#QCOFactory').val() };
+        ShowConfirmYesNo(
+            "Confirm"
+            , "Are you sure Run QCO in Factory [" + _qcoQueue.FACTORY + "]?"
+            , function () {
+                $.ajax({
+                    url: '/QCO/RunSimulateQCO',
+                    //url: '/QCO/RunQCO',
+                    type: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify({ qcoQueue: _qcoQueue }),
+                    success: function (response) {
+                        //console.log(response);
+                        Notify(response, 'info', 'top', 'center');
+                    },
+                    complete: function (jqXHR, textStatus) {
+                        console.log(jqXHR, textStatus);
+                        $this.trigger("reset");
+                        $this.closest('div.modal-content').find('div.modal-header').find('button[data-dismiss="modal"]').trigger('click');
+                    }
+                });
+            }
+            , function () { }
+        );
+        return false;
+    });
+    var ReplaceExpress = "[Factory]";
+    $('#modal-FactorySortingSettings').on('show.bs.modal', function (e) {
+        $('#modal-FactorySortingSettings_Factory').text($('#charlie_drpFactory').val());
+    });
+    $('#popupColumnSelection').find('button').on('click', function (e) {
+        let $form = $('#popupColumnSelection').find('#popupColumnSelectionBodyFrm');
+        if (e.target.name == "popupColumnSelectionConfirm") {
+            frmColumSelection = getFormData($form, 'array');
+            //console.log(frmColumSelection);
+            //Close Column Selection Popup
+            ToggleShowColumn('popupColumnSelection');
+            //ShowQCO();
+            QCPSGridTrigger(mUrl, '');
+            $('#PageBreadcrumb').html(` > ${charlie_drpFactory} - ${charlie_Year} - ${charlie_WeekNo}`);
+            /*2020-04-09 Tai Le(Thomas) Close the Searching pop-up*/
+            CloseSearchingBoxToggle();
+            $('#charlie_AONo').val(''); //2020-05-06 Tai Le(Thomas) reset AO No
+        } else if (e.target.name == "popupColumnSelectionSelAll") {
+            //Pick all
+            $form.find('input[type="checkbox"]').not(":disabled").prop('checked', true);
+        } else if (e.target.name == "popupColumnSelectionDeselAll") {
+            //Unpick All
+            $form.find('input[type="checkbox"]').not(":disabled").prop('checked', false);
+        } else if (e.target.name == "popupColumnSelectionClose") {
+            //Close
+            ToggleShowColumn('popupColumnSelection');
+        }
+    });
+</script>
+}

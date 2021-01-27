@@ -1,0 +1,353 @@
+﻿@model System.Data.DataTable
+
+@{
+    decimal RequestQty = 0;
+    decimal Received = 0;
+}
+
+<style>
+    div.blueTable {
+        border: 1px solid #1C6EA4;
+        background-color: #EEEEEE;
+        width: 100%;
+        /*text-align: center;*/
+        border-collapse: collapse;
+        color: white;
+    }
+
+    .divTable.blueTable .divTableCell, .divTable.blueTable .divTableHead {
+        border: 1px solid #AAAAAA;
+        padding: 5px 2px;
+    }
+
+    .divTable.blueTable .divTableBody .divTableCell {
+        font-size: 15px;
+    }
+
+    /*.divTable.blueTable .divTableRow:nth-child(even) {
+        background: #D0E4F5;
+    }*/
+
+    .divTable.blueTable .StatusGreen {
+        background: green;
+    }
+
+    .divTable.blueTable .StatusRed {
+        background: red;
+    }
+
+    .divTable.blueTable .StatusYellow {
+        background: orange;
+    }
+
+    .divTable.blueTable .SummaryFooter {
+        font-weight: bold;
+        font-size: 16px;
+        color: black;
+    }
+
+    .divTable.blueTable .divTableHeading {
+        background: #1C6EA4;
+        background: -moz-linear-gradient(top, #5592bb 0%, #327cad 66%, #1C6EA4 100%);
+        background: -webkit-linear-gradient(top, #5592bb 0%, #327cad 66%, #1C6EA4 100%);
+        background: linear-gradient(to bottom, #5592bb 0%, #327cad 66%, #1C6EA4 100%);
+        border-bottom: 2px solid #444444;
+    }
+
+        .divTable.blueTable .divTableHeading .divTableHead {
+            font-size: 17px;
+            font-weight: bold;
+            color: #FFFFFF;
+            border-left: 2px solid #D0E4F5;
+        }
+
+            .divTable.blueTable .divTableHeading .divTableHead:first-child {
+                border-left: none;
+            }
+
+    .blueTable .tableFootStyle {
+        font-size: 14px;
+        font-weight: bold;
+        color: #FFFFFF;
+        background: #D0E4F5;
+        background: -moz-linear-gradient(top, #dcebf7 0%, #d4e6f6 66%, #D0E4F5 100%);
+        background: -webkit-linear-gradient(top, #dcebf7 0%, #d4e6f6 66%, #D0E4F5 100%);
+        background: linear-gradient(to bottom, #dcebf7 0%, #d4e6f6 66%, #D0E4F5 100%);
+        border-top: 2px solid #444444;
+    }
+
+    .blueTable .tableFootStyle {
+        font-size: 14px;
+    }
+
+        .blueTable .tableFootStyle .links {
+            text-align: right;
+        }
+
+            .blueTable .tableFootStyle .links a {
+                display: inline-block;
+                background: #1C6EA4;
+                color: #FFFFFF;
+                padding: 2px 8px;
+                border-radius: 5px;
+            }
+
+    .blueTable.outerTableFooter {
+        border-top: none;
+    }
+
+        .blueTable.outerTableFooter .tableFootStyle {
+            padding: 3px 5px;
+        }
+    /* DivTable.com */
+    .divTable {
+        display: table;
+    }
+
+    .divTableRow {
+        display: table-row;
+    }
+
+    .divTableHeading {
+        display: table-header-group;
+    }
+
+    .divTableCell, .divTableHead {
+        display: table-cell;
+    }
+
+    .divTableHeading {
+        display: table-header-group;
+    }
+
+    .divTableFoot {
+        display: table-footer-group;
+    }
+
+    .divTableBody {
+        display: table-row-group;
+    }
+</style>
+
+<div class="container-fluid">
+    <form>
+        <input class="" type="hidden" id="QCODetailPOPFactory" name="Factory" value="@Model.Rows[0]["FACTORY"].ToString()" />
+
+        <input class="" type="hidden" id="QCODetailPOPAONO" name="AONO" value="@Model.Rows[0]["AONO"].ToString()" />
+        <input class="" type="hidden" id="QCODetailPOPStyleCode" name="StyleCode" value="@Model.Rows[0]["STYLECODE"].ToString()" />
+        <input class="" type="hidden" id="QCODetailPOPStyleSize" name="StyleSize" value="@Model.Rows[0]["STYLESIZE"].ToString()" />
+        <input class="" type="hidden" id="QCODetailPOPStyleColorSerial" name="StyleColorSerial" value="@Model.Rows[0]["STYLECOLORSERIAL"].ToString()" />
+        <input class="" type="hidden" id="QCODetailPOPRevNo" name="RevNo" value="@Model.Rows[0]["REVNO"].ToString()" />
+        <input class="" type="hidden" id="QCODetailPOPPRDPKG" name="PRDPKG" value="@Model.Rows[0]["PRDPKG"].ToString()" />
+
+        <input class="" type="hidden" id="QCODetailPOPQCOFACTORY" name="QCOFACTORY" value="@Model.Rows[0]["QCOFACTORY"].ToString()" />
+        <input class="" type="hidden" id="QCODetailPOPQCOYEAR" name="QCOYEAR" value="@Model.Rows[0]["QCOYEAR"].ToString()" />
+        <input class="" type="hidden" id="QCODetailPOPQCOWEEKNO" name="QCOWEEKNO" value="@Model.Rows[0]["QCOWEEKNO"].ToString()" />
+        <input class="" type="hidden" id="QCODetailPOPLine" name="Line" value="@Model.Rows[0]["LINE"].ToString()" />
+
+    </form>
+
+    <div class="row mt-05">
+        <div class="col-lg-2">
+            <div class="form-group">
+                <label class="">Factory</label>
+                <label class="form-control">@Model.Rows[0]["FACTORY"].ToString()</label>
+            </div>
+        </div>
+        <div class="col-lg-2">
+            <div class="form-group">
+                <label class="">Line No</label>
+                <label class="form-control">@Model.Rows[0]["LINENO"].ToString()</label>
+            </div>
+        </div>
+        <div class="col-lg-2">
+            <div class="form-group">
+                <label class="">AO No</label>
+                <label class="form-control">@Model.Rows[0]["AONO"].ToString()</label>
+            </div>
+        </div>
+        <div class="col-lg-3">
+            <div class="form-group">
+                <label class="">Production Package</label>
+                <label class="form-control">@Model.Rows[0]["PRDPKG"].ToString()</label>
+            </div>
+        </div>
+
+        <div class="col-lg-3">
+            <div class="pull-right">
+                @*<img src="~/img/ExcelLogoSmall.scale-80.png" onclick="ExportExcel();" title="Export to Excel" />*@
+                <div class="dropdown">
+                    <button class="btn btn-success dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown"
+                            aria-haspopup="true" aria-expanded="false">
+                        Export...
+                    </button>
+                    <div class="dropdown-menu pull-right" aria-labelledby="dropdownMenuButton">
+                        <a class="dropdown-item btn-block" href="#" onclick="ExportExcel('ByItem'); return false;" >
+                            Item Summary</a>
+                        
+                        <a class="dropdown-item btn-block" href="#" onclick="ExportExcel('ByPOItem'); return false;" >
+                            PO-Item Summary</a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-05">
+        <div class="col-lg-2">
+            <div class="form-group">
+                <label class="">Style Code</label>
+                <label class="form-control">@Model.Rows[0]["STYLECODE"].ToString()</label>
+            </div>
+        </div>
+        <div class="col-lg-3">
+            <div class="form-group">
+                <label class="">Buyer Style Name</label>
+                <label class="form-control">@Model.Rows[0]["BUYERSTYLENAME"].ToString()</label>
+            </div>
+        </div>
+        <div class="col-lg-3">
+            <div class="form-group">
+                <label class="">Style Color#</label>
+                <label class="form-control">@Model.Rows[0]["STYLECOLORSERIAL"].ToString() - @Model.Rows[0]["STYLECOLORWAYS"].ToString() </label>
+            </div>
+        </div>
+        <div class="col-lg-1">
+            <div class="form-group">
+                <label class="">Style Size</label>
+                <label class="form-control">@Model.Rows[0]["STYLESIZE"].ToString() </label>
+            </div>
+        </div>
+        <div class="col-lg-1">
+            <div class="form-group">
+                <label class="">Rev No</label>
+                <label class="form-control">@Model.Rows[0]["REVNO"].ToString() </label>
+            </div>
+        </div>
+    </div>
+
+    <div class="mt-05">
+        <div class="divTable blueTable">
+            <div class="divTableHeading">
+                <div class="divTableRow">
+                    @*<div class="divTableHead">PO Status</div>*@
+                    <div class="divTableHead">PO No</div>
+                    <div class="divTableHead">Item Code</div>
+                    <div class="divTableHead">Item Name</div>
+                    <div class="divTableHead">Item Color</div>
+                    <div class="divTableHead">Request Quantity</div>
+                    <div class="divTableHead">Received Qty</div>
+                    <div class="divTableHead">ETA within 5 Days</div>
+                    <div class="divTableHead">ETA within 10 Days</div>
+                    <div class="divTableHead">ETA > Package Start Date</div>
+                </div>
+            </div>
+            <div class="divTableBody">
+                @foreach (System.Data.DataRow dataRow in Model.Rows)
+                {
+                    var REQUESTQTY_ = Convert.ToDecimal(dataRow["REQUESTQTY"].ToString());
+                    var RECEIVED_ = Convert.ToDecimal(dataRow["QUANTITY_A"].ToString());
+                    var QUANTITY_B = Convert.ToDecimal(dataRow["QUANTITY_B"].ToString());
+                    var QUANTITY_C = Convert.ToDecimal(dataRow["QUANTITY_C"].ToString());
+                    var QUANTITY_D = Convert.ToDecimal(dataRow["QUANTITY_D"].ToString());
+
+                    if (REQUESTQTY_ <= RECEIVED_)
+                    {
+                        <div class="divTableRow StatusGreen">
+                            @*<div class="divTableCell">  </div>*@
+                            <div class="divTableCell"> @dataRow["PDNO"].ToString() </div>
+                            <div class="divTableCell"> @dataRow["ITEMCODE"].ToString()</div>
+                            <div class="divTableCell"> @dataRow["ITEMNAME"].ToString()</div>
+                            <div class="divTableCell"> @dataRow["ITEMCOLORSERIAL"].ToString()</div>
+                            <div class="divTableCell text-right"> @dataRow["REQUESTQTY"].ToString()</div>
+                            <div class="divTableCell text-right"> @dataRow["QUANTITY_A"].ToString()</div>
+                            <div class="divTableCell text-right"> @dataRow["QUANTITY_B"].ToString()</div>
+                            <div class="divTableCell text-right"> @dataRow["QUANTITY_C"].ToString()</div>
+                            <div class="divTableCell text-right"> @dataRow["QUANTITY_D"].ToString()</div>
+                        </div>
+                    }
+                    else if (RECEIVED_ == 0)
+                    {
+                        if (QUANTITY_B == 0 && QUANTITY_C == 0 && QUANTITY_D == 0)
+                        {
+                            <div class="divTableRow StatusRed">
+                                @*<div class="divTableCell"> </div>*@
+                                <div class="divTableCell"> @dataRow["PDNO"].ToString() </div>
+                                <div class="divTableCell"> @dataRow["ITEMCODE"].ToString()</div>
+                                <div class="divTableCell"> @dataRow["ITEMNAME"].ToString()</div>
+                                <div class="divTableCell"> @dataRow["ITEMCOLORSERIAL"].ToString()</div>
+                                <div class="divTableCell text-right"> @dataRow["REQUESTQTY"].ToString()</div>
+                                <div class="divTableCell text-right"> @dataRow["QUANTITY_A"].ToString()</div>
+                                <div class="divTableCell text-right"> @dataRow["QUANTITY_B"].ToString()</div>
+                                <div class="divTableCell text-right"> @dataRow["QUANTITY_C"].ToString()</div>
+                                <div class="divTableCell text-right"> @dataRow["QUANTITY_D"].ToString()</div>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="divTableRow StatusYellow">
+                                @*<div class="divTableCell">  </div>*@
+                                <div class="divTableCell"> @dataRow["PDNO"].ToString() </div>
+                                <div class="divTableCell"> @dataRow["ITEMCODE"].ToString()</div>
+                                <div class="divTableCell"> @dataRow["ITEMNAME"].ToString()</div>
+                                <div class="divTableCell"> @dataRow["ITEMCOLORSERIAL"].ToString()</div>
+                                <div class="divTableCell text-right"> @dataRow["REQUESTQTY"].ToString()</div>
+
+                                <div class="divTableCell text-right"> @dataRow["QUANTITY_A"].ToString()</div>
+                                <div class="divTableCell text-right"> @dataRow["QUANTITY_B"].ToString()</div>
+                                <div class="divTableCell text-right"> @dataRow["QUANTITY_C"].ToString()</div>
+                                <div class="divTableCell text-right"> @dataRow["QUANTITY_D"].ToString()</div>
+                            </div>
+                        }
+                    }
+                    @*else { <div class="divTableRow StatusYellow"> <div class="divTableCell"> @dataRow["ITEMCODE"].ToString()</div> <div class="divTableCell"> @dataRow["ITEMNAME"].ToString()</div> <div class="divTableCell"> @dataRow["ITEMCOLORSERIAL"].ToString()</div> <div class="divTableCell text-right"> @dataRow["REQUESTQTY"].ToString()</div>  <div class="divTableCell text-right"> @dataRow["QUANTITY_A"].ToString()</div> <div class="divTableCell text-right"> @dataRow["QUANTITY_B"].ToString()</div> <div class="divTableCell text-right"> @dataRow["QUANTITY_C"].ToString()</div> <div class="divTableCell text-right"> @dataRow["QUANTITY_D"].ToString()</div> </div> }*@
+
+                    RequestQty = RequestQty + Convert.ToDecimal(dataRow["REQUESTQTY"].ToString());
+                    Received = Received +
+                        Convert.ToDecimal(dataRow["QUANTITY_A"].ToString()) +
+                        Convert.ToDecimal(dataRow["QUANTITY_B"].ToString()) +
+                        Convert.ToDecimal(dataRow["QUANTITY_C"].ToString()) +
+                        Convert.ToDecimal(dataRow["QUANTITY_D"].ToString());
+                }
+
+            <div class="divTableRow SummaryFooter">
+                @*<div class="divTableCell"></div>*@
+                <div class="divTableCell"></div>
+                <div class="divTableCell"></div>
+                <div class="divTableCell"></div>
+                <div class="divTableCell">Material Readiness</div>
+                <div class="divTableCell text-right"> @Math.Round(Received / RequestQty * 100, 2)</div>
+
+                <div class="divTableCell"></div>
+                <div class="divTableCell"></div>
+                <div class="divTableCell"></div>
+                <div class="divTableCell"></div>
+            </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function ExportExcel(pType) {
+
+            var pUrl = `../QCO/QCPMToExcel?
+Factory=${$('#QCODetailPOPFactory').val()}
+&LINENO=${$('#QCODetailPOPLine').val()}
+&AONO=${$('#QCODetailPOPAONO').val()}
+&STYLECODE=${$('#QCODetailPOPStyleCode').val()}
+&STYLESIZE=${$('#QCODetailPOPStyleSize').val()}
+&STYLECOLORSERIAL=${$('#QCODetailPOPStyleColorSerial').val()}
+&REVNO=${$('#QCODetailPOPRevNo').val()}
+&PRDPKG=${$('#QCODetailPOPPRDPKG').val()}
+&QCOFACTORY=${$('#QCODetailPOPQCOFACTORY').val()}
+&QCOYEAR=${$('#QCODetailPOPQCOYEAR').val()}
+&QCOWEEKNO=${$('#QCODetailPOPQCOWEEKNO').val()}
+&Type=${pType}
+`;
+
+            window.location = pUrl;
+            return false;
+        }
+    </script>
+</div>

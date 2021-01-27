@@ -1,0 +1,146 @@
+﻿/*Css for radio button in upload process file*/
+.rd-pro-file{
+    margin-left:20px;
+    cursor:pointer;
+}
+
+/*customize legend in upload process file*/
+fieldset.pro-file {
+    border: 1px groove #ddd !important;
+    padding: 0 1.4em 0em 1.4em !important;
+    margin: 0 0 1.5em 0 !important;
+    -webkit-box-shadow: 0px 0px 0px 0px #000;
+    box-shadow: 0px 0px 0px 0px #000;
+    min-height: 120px;
+}
+
+legend.pro-file {
+    font-size: 1.2em !important;
+    font-weight: bold !important;
+    text-align: left !important;
+    width: auto;
+    padding: 0 10px;
+    border-bottom: none;
+    margin-bottom: 0px;
+}
+
+#select2-drpTargetEdition-container .select2-selection__clear {
+    display: none;
+}
+
+/*#region menu*/
+#dvOpsRegistration .btnSave, .btnDelete, .btnCancel {
+    display: none;
+}
+
+
+/*#endregion */
+@media screen and (min-width: 600px) {
+    .jqgrid-container {
+        width: 100% !important;
+    }
+}
+
+/*#divOps {
+    height: 300px;
+}*/
+
+.jqgrid-ops-detail {
+    width: 100% !important;
+}
+
+.nav-tabs, .nav-tabs.nav-justified {
+    margin-top: 30px;
+}
+
+/*div Menu*/
+#divOpPlan {
+    margin-bottom: 20px;
+}
+
+@media screen and (min-width: 768px) {
+    .modal:before {
+        display: inline-block;
+        vertical-align: middle;
+        content: " ";
+        height: 100%;
+    }
+}
+
+
+#txtProcessName {
+    background-color: #ffffff !important;
+    cursor: pointer;
+}
+
+.fileupload-buttonbar .btn, .fileupload-buttonbar .toggle {
+    margin-bottom: 5px;
+}
+
+.wrap-div {
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.modal-ops-filter {
+    border: 1px solid red;
+    margin: 5px;
+    padding: 5px;
+}
+
+.modal-ops-copy {
+    border: 1px solid red;
+    margin: 5px;
+    padding: 5px;
+}
+
+.error {
+    color: red;
+}
+
+input.error, span.error {
+    border: 1px solid red !important;
+}
+
+#dvOpsRegistration {
+    margin: 10px 0 10px 0;
+}
+
+@media screen and (min-width: 768px) {
+    #modalUploadFileOpDetail {
+        top: -100px;
+    }
+}
+
+/*Pointer when hover gridview jqgrid.*/
+.pointer {
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.invisible-ele {
+    display: none;
+}
+
+/*background color of jqgrid ops detail*/
+.row-color {
+    background-color: #e6fff2 !important;
+}
+
+#divInputOptime{
+    width:100%;
+}
+
+/*Dropdown list language*/
+#drpLanguageOpMaster_title, #drpLanguageOpMaster_child li {
+    text-align: left;
+}
+
+/*Block UI*/
+div.blockOverlay {
+    z-index: 10000 !important;    
+}
+
+div.blockMsg {
+    opacity: 0.5 !important;
+}

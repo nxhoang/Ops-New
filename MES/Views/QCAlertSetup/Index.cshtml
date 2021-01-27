@@ -1,0 +1,81 @@
+﻿@{
+    ViewBag.Title = "QC Alerts Setup";
+    Layout = "~/Views/Shared/_MesLayout.cshtml";
+}
+@section scripts
+{
+    <script src="~/js/plugin/jqgrid/jquery.jqGrid.min.js"></script>
+    <script src="~/js/plugin/jqgrid/grid.locale-en.min.js"></script>
+    <script src="~/Assets/bootstrap-multiselect/bootstrap-multiselect.min.js"></script>
+    <link href="~/Assets/bootstrap-multiselect/bootstrap-multiselect.min.css" rel="stylesheet" />
+    <script src="~/Assets/jquery.blockUI/jquery.blockUI.js"></script>
+    @*<script src="~/js/mes/mes-common.js"></script>*@
+    <link href="~/css/mes.common-control.min.css" rel="stylesheet" />
+    <link href="~/Assets/qc-alert-setup/css/qc-alert-setup.min.css" rel="stylesheet" />
+    <script src="~/Assets/qc-alert-setup/js/qcas.search-header.min.js"></script>
+    <script src="~/Assets/qc-alert-setup/js/qcas.table.js"></script>
+    <script src="~/Assets/qc-alert-setup/js/qcas.usmt-table.js"></script>
+    <script src="~/Assets/qc-alert-setup/js/qcas.main.js"></script>
+}
+<div class="row">
+    <form id="searchUserForm" name="SearchUserForm">
+        <div class="row" style="margin: 8px 0">
+            <div class="col-sm-3">
+                <div id="divSelFactory" class="form-group op-emp-map__control">
+                    <label class="control-label" for="selFactory">Factory</label>
+                    <select id="selFactory" multiple="multiple"></select>
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div id="divSelBuyer" class="form-group op-emp-map__control">
+                    <label class="control-label" for="selBuyer">Buyer</label>
+                    <select id="selBuyer" multiple="multiple"></select>
+                </div>
+            </div>
+            @*<div class="col-sm-2">
+            <div id="divSelName" class="form-group op-emp-map__control">
+                <label class="control-label" for="selName">Name</label>
+                <select id="selName" multiple="multiple"></select>
+                <input id="txtIdEmp" class="op-emp-map__input" type="text" maxlength="200"/>
+            </div>
+        </div>*@
+            <div class="col-sm-1">
+                <div class="form-group">
+                    <div><label class="control-label">&nbsp;</label></div>
+                    <button type="submit" id="btnOkeFilterUser" class="mes__btn mes__input mes__btn-oke">
+                        <span class="glyphicon glyphicon-ok-sign" aria-hidden="true"></span> OK
+                    </button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<div class="row">
+    @*<table id="tbQcasUser"></table>
+        <div id="tbQcasUserPager"></div>*@
+</div>
+<div class="row">
+    <button type="button" id="btnAddUser" class="mes__btn mes__input mes__btn-add" data-toggle="modal" data-target="#mdAddingUser">
+        <span class="glyphicon glyphicon-ok-sign" aria-hidden="true"></span> Add
+    </button>
+</div>
+
+<!-- User Modal -->
+<div class="modal fade" id="mdAddingUser" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">Pungkook user</h4>
+            </div>
+            <div class="modal-body">
+                <table id="tbUsmt"></table>
+                <div id="tbUsmtPager"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default btn-size" data-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary btn-size">OK</button>
+            </div>
+        </div>
+    </div>
+</div>

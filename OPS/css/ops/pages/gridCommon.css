@@ -1,0 +1,47 @@
+﻿/*FormGrid*/
+.FormGrid .FormData {
+    border-bottom:none;
+}
+    .FormGrid .FormData td {
+        padding-bottom: 0;
+        font-size: 14px;
+    }
+.EditTable > tbody > tr:nth-last-child(2) td {
+    padding-bottom: 6px;
+}
+.ui-jqdialog-content select.FormElement{
+    height:30px;
+}
+.ui-icon-triangle-1-w, .ui-icon-triangle-1-e {
+    width: 16px;
+    height: 16px;
+    background-image: url(../../../img/jquery/ui-icons_228ef1_256x240.png);
+    display: block;
+    text-indent: -99999px;
+    overflow: hidden;
+    background-repeat: no-repeat;
+}
+
+.ui-icon-triangle-1-e {
+    background-position: -32px -16px;
+}
+
+.ui-icon-triangle-1-w {
+    background-position: -96px -16px;
+}
+
+#pData, #nData {
+    border: 1px solid #c5dbec;
+    background-color: #dfeffc;
+    font-weight: bold;
+    color: #2e6e9e;
+}
+
+.DataTD input.FormElement, .DataTD select.FormElement {
+    width: 300px !important;
+    border: 1px solid #bfbfbf;
+    height: 32px;
+}
+textarea.FormElement {
+    width: 688px !important;
+}

@@ -1,0 +1,148 @@
+﻿
+@{
+    ViewBag.Title = "Utilization Defect";
+    Layout = "~/Views/Shared/_MesLayout.cshtml";
+}
+
+<link href="~/Assets/dashboard-dv/dashboard-dv.css" rel="stylesheet" />
+<link href="~/assets/DayRangePicker/daterangepicker.min.css" rel="stylesheet" />
+<link href="~/Assets/bootstrap-multiselect/bootstrap-multiselect.min.css" rel="stylesheet" />
+
+
+<div class="row">
+    <div class="col-sm-12">
+        <div class="form-horizontal bv-form">
+            <div class="form-group">
+
+                <label class="col-sm-1 control-label">Factory</label>
+                <div class="col-sm-2">
+                    <select id="selFactory" name="factoryId" class="form-control" onchange="handleChangeFactory()">
+                        <option>---</option>
+                    </select>
+                </div>
+
+                <label class="col-sm-1 control-label">Date</label>
+                <div class="col-sm-1">
+                    <input type="text" id="beginDate" class="form-control" style="padding-right:0;">
+                </div>
+
+                <div class="col-sm-1">
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="top-buffer"></div>
+
+<div class="row">
+    <!-- NEW WIDGET START -->
+    <div class="col-sm-12 ">
+
+        <table id="list3" class="has-qtip"></table>
+        <div id="pager3"></div>
+
+    </div>
+    <!-- WIDGET END -->
+</div>
+
+<div class="top-buffer"></div>
+
+<section id="widget-grid">
+    <!-- row -->
+    <div class="row">
+        <!-- NEW WIDGET START -->
+        <article class="col-sm-12">
+
+            <!-- Widget ID (each widget will need unique ID)-->
+            <div class="jarviswidget jarviswidget-color-green" id="wid-id-0" data-widget-editbutton="false">
+
+                <header>
+                    <div id="title-buyer-style-name" style="margin-top:9px; margin-left: 12px">Buyer style name: <b id="buyer-style-name"></b></div>
+                </header>
+
+                <!-- widget div-->
+                <div>
+                    <!-- widget content -->
+                    <div class="widget-body">
+
+                        @*drawchart*@
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="wrapper-chart-iot" id="chart-machine-iot">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12" style="overflow-x:auto;">
+                                <div id="info-detail-chart">
+                                </div>
+                            </div>
+                        </div>
+                        @*end drawchart*@
+
+
+                    </div>
+                    <!-- end widget div -->
+
+                </div>
+                <!-- end widget -->
+            </div>
+        </article>
+        <!-- WIDGET END -->
+    </div>
+
+    @*Defect*@
+    <div class="row">
+        <!-- NEW WIDGET START -->
+        <article class="col-sm-12">
+
+            <!-- Widget ID (each widget will need unique ID)-->
+            <div class="jarviswidget jarviswidget-color-green" id="wid-id-1" data-widget-editbutton="false">
+
+                <header>
+                    <div style="margin-top:9px; margin-left: 12px">Defect</div>
+                </header>
+
+                <!-- widget div-->
+                <div>
+                    <!-- widget content -->
+                    <div class="widget-body widget-defect">
+
+                        @*drawchart*@
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div id="info-defect">
+                                </div>
+                            </div>
+                        </div>
+                        @*end drawchart*@
+                    </div>
+                    <!-- end widget div -->
+                </div>
+                <!-- end widget -->
+            </div>
+        </article>
+        <!-- WIDGET END -->
+    </div>
+
+    <!-- end row -->
+</section>
+<!-- end widget grid -->
+
+
+@section Scripts{
+    <script src="~/assets/DayRangePicker/daterangepicker.min.js"></script>
+    <script src="~/Assets/chartjs/Chart.min.js"></script>
+    <script src="~/Assets/chartjs/chartjs-plugin-datalabels.min.js"></script>
+    <script src="~/js/mes/mes-common.js?v=1.0.3"></script>
+    <script src="~/js/mes/utilization-defect/defect.js"></script>
+    <script src="~/Assets/jquery.blockUI/jquery.blockUI.js"></script>
+    <script src="~/js/plugin/jqgrid/jquery.jqGrid.min.js"></script>
+    <script src="~/js/plugin/jqgrid/grid.locale-en.min.js"></script>
+
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+}
+

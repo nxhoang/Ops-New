@@ -1,0 +1,870 @@
+﻿
+@{
+    ViewBag.Title = "KPI Setting";
+    Layout = "~/Views/Shared/_MesLayout.cshtml";
+}
+
+<link href="~/Assets/dhtmlxList_v51_std/codebase/dhtmlxlist.css" rel="stylesheet" />
+<link href="~/Assets/select2/css/select2.min.css" rel="stylesheet" />
+
+<link href="~/Assets/dhtmlxLayout_v51_std/codebase/fonts/font_roboto/roboto.css" rel="stylesheet" />
+<link href="~/Assets/dhtmlxLayout_v51_std/codebase/dhtmlxlayout.css" rel="stylesheet" />
+
+<link href="~/js/plugin/dropzone/dropzone.css" rel="stylesheet" />
+
+<!--Custom CSS-->
+<link href="~/css/SystemAdmin.css" rel="stylesheet" />
+
+
+<style>
+    div#myLayout {
+        position: relative;
+        margin-top: 10px;
+        margin-left: 10px;
+        width: 95%;
+        height: 529px;
+    }
+</style>
+
+
+<!-- widget grid -->
+<section id="widget-grid" class="">
+
+    <!-- another row -->
+    <div class="row">
+        <!-- NEW WIDGET START -->
+        <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            <!-- Widget ID (each widget will need unique ID)-->
+            <div class="jarviswidget jarviswidget-color-greenLight" id="wid-id-002" data-widget-editbutton="false" data-widget-deletebutton="false" data-widget-sortable="false">
+                <!-- widget options:
+                usage: <div class="jarviswidget" id="wid-id-0" data-widget-editbutton="false">
+                data-widget-colorbutton="false"
+                data-widget-editbutton="false"
+                data-widget-togglebutton="false"
+                data-widget-deletebutton="false"
+                data-widget-fullscreenbutton="false"
+                data-widget-custombutton="false"
+                data-widget-collapsed="true"
+                data-widget-sortable="false"
+                -->
+                <header>
+                    <span class="widget-icon"></span>
+                    <h2>KPI Setting (Manually)</h2>
+                </header>
+
+                <!-- widget div-->
+                <div>
+                    <!-- widget edit box -->
+                    <div class="jarviswidget-editbox">
+                        <!-- This area used as dropdown edit box -->
+                    </div>
+                    <!-- end widget edit box -->
+                    <!-- widget content -->
+                    <div class="widget-body no-padding">
+
+                        <div class="RstBody">
+                            <div class="row" style="">
+                                <div class="col-lg-3">
+                                    <div class="row">
+                                        <div class="col-lg-6">
+                                            <div class="DHTMLXListGroup" id="SystemGroup">
+                                                <label>System</label>
+                                                <div class="DHTMLXListObj" id="dhtmlListSystem"></div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-lg-6">
+                                            <div class="DHTMLXListGroup" id="CorporationGroup" style="">
+                                                <label>Corporation</label>
+                                                <div class="DHTMLXListObj" id="dhtmlListCorporation"></div>
+                                            </div>
+
+                                            <div class="DHTMLXListMultipleGroup" style="display:none;">
+                                                <div class="DHTMLXListGroup" id="SaleTeamGroup">
+                                                    <label>Sale Team</label>
+                                                    <div class="DHTMLXListObj" id="dhtmlListSaleTeam"></div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-3">
+                                    <div class="row">
+                                        <div class="col-lg-6">
+                                            <div class="DHTMLXListGroup" id="KPITeamGroup" style="">
+                                                <label>Team</label>
+                                                <div class="DHTMLXListObj" id="dhtmlListKPITeam"></div>
+                                            </div>
+
+                                            <label>Team Director</label> <select id="KPISenior" name="KPISenior" multiple="multiple" class="select2SingleElement" style="width:100%;">
+                                                <option></option>
+                                            </select>
+                                        </div>
+
+                                        <div class="col-lg-6">
+                                            <div class="DHTMLXListGroup" id="BuyerGroup">
+                                                <label>Buyer</label>
+                                                <div class="DHTMLXListObj" id="dhtmlListBuyer"></div>
+                                            </div>
+
+                                            <div class="DHTMLXListGroup" id="FactoryGroup">
+                                                <label>Factory</label>
+                                                <div class="DHTMLXListObj" id="dhtmlListFactory"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-6">
+                                    <div class="row">
+                                        <div class="col-lg-3">
+                                            <div class="row">
+                                                <label>Managers</label> <select id="KPIJunior" name="KPIJunior" multiple="multiple" class="select2obj" style="width:100%;">
+                                                    <option></option>
+                                                </select>
+                                            </div>
+
+                                            <div class="row">
+                                                <label>Local Managers</label> <select id="KPILocalMgr" name="KPILocalMgr" multiple="multiple" class="select2obj" style="width:100%;">
+                                                    <option></option>
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-lg-3">
+                                            <div class="DHTMLXListGroup" id="ModuleGroup">
+                                                <label>System Menu</label>
+                                                <div class="DHTMLXListObj" id="dhtmlListModule"></div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-lg-5">
+                                            <div class="row" style="">
+                                                <div class="DHTMLXListMultipleGroup">
+                                                    <div class="DHTMLXListGroup" id="UsmtGroup">
+
+                                                        <label>Primary Staff</label><select id="KPIPrimary" name="KPIPrimary" multiple="multiple" class="select2obj" style="width:95%;">
+                                                            <option></option>
+                                                        </select>
+
+                                                        <form>
+                                                            <label>Staff In charge</label>
+                                                            <!-- SEARCHING -->
+                                                            <div class="DHTMLXListFilter">
+                                                                <button class="btn btn-success DHTMLXListFilterButtonShow" id="" data-target="dhtmlListUsmt" type="button">Find</button>
+                                                                <button class="btn btn-warning DHTMLXListFilterButtonHide" id="" data-target="" type="button" style="display:none;">Hide</button>
+
+                                                                <button class="btn btn-danger" id="RemoveStaff" data-target="" type="button">Remove</button>
+
+                                                                <div class="popUpUserMaster">
+                                                                    <div class="DHTMLXListFilterContainer">
+                                                                        <input class="DHTMLXListFilterSearchBox" data-target="dhtmlListUsmtResult" />
+
+                                                                        <div class="DHTMLXListFilterResult">
+                                                                            <div class="dhtmlListUsmtResult" id="dhtmlListUsmtResult" data-target="dhtmlListUsmt"></div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                            <!-- TARGET DATA -->
+                                                            <div class="DHTMLXListObj" id="dhtmlListUsmt"></div>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div> 
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-lg-11">
+                                            <div class="pull-right">
+                                                <button id="AddKPISetting" class="btContinue" type="button">Add Selected Setting</button>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <!-- end widget content -->
+                </div>
+                <!-- end widget div -->
+            </div>
+            <!-- end widget -->
+        </article>
+        <!-- WIDGET END -->
+    </div>
+    <!-- end row -->
+
+    <div class="clearfix"></div>
+
+    <!-- row -->
+    <div class="row">
+        <!-- NEW WIDGET START -->
+        <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            <!-- Widget ID (each widget will need unique ID)-->
+            <div class="jarviswidget jarviswidget-color-red" id="wid-id-001" data-widget-editbutton="false" data-widget-deletebutton="false" data-widget-sortable="false">
+                <!-- widget options:
+                usage: <div class="jarviswidget" id="wid-id-0" data-widget-editbutton="false">
+
+                data-widget-colorbutton="false"
+                data-widget-editbutton="false"
+                data-widget-togglebutton="false"
+                data-widget-deletebutton="false"
+                data-widget-fullscreenbutton="false"
+                data-widget-custombutton="false"
+                data-widget-collapsed="true"
+                data-widget-sortable="false"
+
+                -->
+                <header>
+                    <span class="widget-icon"></span>
+                    <h2>KPI Setting (Template)</h2>
+
+                </header>
+
+                <!-- widget div-->
+                <div>
+
+                    <!-- widget edit box -->
+                    <div class="jarviswidget-editbox">
+                        <!-- This area used as dropdown edit box -->
+
+                    </div>
+                    <!-- end widget edit box -->
+                    <!-- widget content -->
+                    <div class="widget-body no-padding">
+                        <!-- Upload Template -->
+                        <div class="dropzone"></div>
+                        <style>
+                            .dropzone {
+                                border: 2px solid rgba(255, 255, 255, 1);
+                                background: grey;
+                                padding: 0 20px;
+                            }
+
+                                .dropzone .dz-preview {
+                                    text-align: center;
+                                }
+
+                                .dropzone .dz-message > span {
+                                    color: white;
+                                    font-size: 16px;
+                                    font-weight: bold;
+                                }
+                        </style>
+
+                    </div>
+                    <!-- end widget content -->
+
+                </div>
+                <!-- end widget div -->
+
+            </div>
+            <!-- end widget -->
+
+        </article>
+        <!-- WIDGET END -->
+    </div>
+    <!-- end row -->
+
+</section>
+<!-- end widget grid -->
+
+
+@section Scripts{
+
+    @*Bootstrap Notify *@
+    <script src="~/Assets/remarkable-bootstrap-notify/dist/bootstrap-notify.min.js"></script>
+    <script src="~/Assets/remarkable-bootstrap-notify/dist/Common.js"></script>
+
+    @*DHTML List *@
+    <script src="~/Assets/dhtmlxList_v51_std/codebase/dhtmlxlist.js"></script>
+    <script src="~/js/plugin/select2/select2.min.js"></script>
+    <script src="~/Assets/dhtmlxLayout_v51_std/codebase/dhtmlxlayout.js"></script>
+
+    @*Dropzone *@
+    <script src="~/js/plugin/dropzone/dropzone.min.js"></script>
+
+    <script>
+        //Objects
+        var isLoadUserList = false;
+
+        var DHTMLXList_KPITeam = new dhtmlXList({
+            container: "dhtmlListKPITeam",
+            drag: false,
+            select: true,
+            type: {
+                template: "<BR/>#CODE_NAME#",
+                //height: 69,
+                height: "auto"
+            }
+        });
+
+        var dhtmlListUsmtResult = new dhtmlXList({
+            container: "dhtmlListUsmtResult",
+            drag: false,
+            //select: true,
+            type: {
+                template: "<BR/>#Name#",
+                //height: 69,
+                height: "auto"
+            }
+        });
+
+        /*Factory List*/
+        var DHTMLXList_Factory = new dhtmlXList({
+            container: "dhtmlListFactory",
+            drag: false,
+            select: true,
+            type: {
+                template: "#FACTORY#<BR/>#NAME#",
+                //height: 69,
+                height: "auto"
+            }
+        });
+
+        /*Corporation List*/
+        var DHTMLXList_Corporation = new dhtmlXList({
+            container: "dhtmlListCorporation",
+            drag: false,
+            select: true,
+            type: {
+                template: "#S_CODE#<BR/>#CODE_NAME#",
+                //height: 69,
+                height: "auto"
+            }
+        });
+        //dhtmlListSaleTeam
+
+        /*Sale-Team List*/
+        var DHTMLXList_SaleTeam = new dhtmlXList({
+            container: "dhtmlListSaleTeam",
+            drag: false,
+            type: {
+                template: "#TeamID#<br/>#TeamDesc#",
+                //height: 69,
+                height: "auto"
+            }
+        });
+
+        /*Buyer List*/
+        var DHTMLXList_Buyer = new dhtmlXList({
+            container: "dhtmlListBuyer",
+            drag: false,
+            select: true,
+            type: {
+                template: "#BuyerCode#<br/>#BuyerName#",
+                //height: 69,
+                height: "auto"
+            }
+        });
+
+        /*System List*/
+        var DHTMLXList_System = new dhtmlXList({
+            container: "dhtmlListSystem",
+            drag: false,
+            select: true,
+            type: {
+                template: "#SYSTEM_ID#<BR/>#SYSTEM_NAME#",
+                //height: 69,
+                height: "auto"
+            }
+        });
+
+        /*Module List (System Menu)*/
+        var DHTMLXList_Menu = new dhtmlXList({
+            container: "dhtmlListModule",
+            drag: false,
+            select: true,
+            type: {
+                template: "#SYSTEM_ID# / #MENU_ID#<BR/>#MENU_NAME#",
+                //height: 69,
+                height: "auto"
+            }
+        });
+
+        /*UserInCharge List*/
+        var DHTMLXList_Usmt = new dhtmlXList({
+            container: "dhtmlListUsmt",
+            drag: false,
+            select: true,
+            type: {
+                template: "#Name#",
+                //height: 69,
+                height: "auto"
+            }
+            //,pager: {
+            //    container: "dhtmlListUsmtPager",
+            //    size: 50,
+            //    group: 4,
+            //    template: "<div class='text-center'><ul class='pagination pagination-sm pagination-alt'>{common.prev()}{common.pages()}{common.next()}</ul></div>"
+            //}
+        });
+
+
+        /*Dropzone Object */
+        Dropzone.autoDiscover = false;
+
+        var myDropzone = new Dropzone("div.dropzone",
+            {
+                autoProcessQueue: false,
+                parallelUploads: 1,
+                init: function () {
+                    this.on("addedfile",
+                        function (file) {
+                            console.log(file);
+                            // Capture the Dropzone instance as closure.
+                            var _this = this;
+
+                            if (file.name.split('.')[1] != 'xlsx') {
+                                _this.removeFile(file);
+                                Notify('Only accept Excel (2003+).<BR/>File "'+ file.name +'" removed.', 'danger', 'top', 'center');
+                            }
+
+                            // Create the manual Upload button
+                            var uploadButton = Dropzone.createElement('<button type="button" class="btn btn-success">OK</button>&nbsp;');
+                             
+                            // Listen to the click event
+                            uploadButton.addEventListener("click",
+                                function (e) {
+                                    // Make sure the button click doesn't submit the form:
+                                    e.preventDefault();
+                                    e.stopPropagation();
+
+                                    // Update the file preview.
+                                    _this.processFile(file);
+
+                                    // If you want to the delete the file on the server as well,
+                                    // you can do the AJAX request here.
+                                });
+
+                            // Add the button to the file preview element.
+                            file.previewElement.appendChild(uploadButton);
+
+                            // Create the manual remove button
+                            var removeButton = Dropzone.createElement('<button type="button" class="btn btn-danger">Delete</button>&nbsp;');
+
+                            // Listen to the click event
+                            removeButton.addEventListener("click",
+                                function (e) {
+                                    // Make sure the button click doesn't submit the form:
+                                    e.preventDefault();
+                                    e.stopPropagation();
+
+                                    // Remove the file preview.
+                                    _this.removeFile(file);
+
+                                    // If you want to the delete the file on the server as well,
+                                    // you can do the AJAX request here.
+                                });
+
+                            // Add the button to the file preview element.
+                            file.previewElement.appendChild(removeButton);
+                        });
+                },
+                url: '/SystemAdmin/AddKPIByTemplate', // 'DropzoneHandler.ashx?Action=UploadFile&Target=T_CT_CTMM&TicketID=' ,
+                maxFilesize: 15 //Unit= MB
+            });
+
+        myDropzone.on("complete",
+            function (file) {
+                console.log(file);
+            }).on('error',
+                function (file, errorMessage) {
+                    console.log(file, errorMessage);
+
+                    Notify('danger', errorMessage);
+                }).on('success',
+                    function (file, response) {
+                        console.log(file, response);
+
+                        if (response.retResult)
+                            Notify('file: ' + file.name + ' uploaded.', 'success', 'top', 'center');
+                        else
+                            Notify(response.retMessage, 'warning', 'top', 'center');
+
+                        /*Remove success file */
+                        myDropzone.removeFile(file);
+                    });
+
+        //Events
+        $(function () {
+
+            $('.select2obj').select2({
+                dropdownAutoWidth: true
+                , placeholder: "Select One Account"
+                , ajax: {
+                    url: '../SystemAdmin/GetHRMEmployees',
+                    data: function (params) {
+                        //console.log(params);
+                        var query = {
+                            keyword: params.term
+                        }
+                        return query;
+                    }
+                    , processResults: function (data) {
+                        //console.log(data);
+                        var ConvertData = [];
+                        $.map(data, function (obj) {
+                            ConvertData.push({ id: obj.UserName, text: obj.Name });
+                        });
+                        // Tranforms the top-level key of the response object from 'items' to 'results'
+                        return {
+                            results: ConvertData
+                        };
+                    }
+                }
+            });
+
+            $('.select2SingleElement').select2({
+                dropdownAutoWidth: true
+                , placeholder: "Select One Account"
+                , maximumSelectionLength: 1
+                , ajax: {
+                    url: '../SystemAdmin/GetHRMEmployees',
+                    data: function (params) {
+                        var query = {
+                            keyword: params.term
+                        }
+                        return query;
+                    }
+                    , processResults: function (data) {
+                        var ConvertData = [];
+                        $.map(data, function (obj) {
+                            ConvertData.push({ id: obj.UserName, text: obj.Name });
+                        });
+                        // Tranforms the top-level key of the response object from 'items' to 'results'
+                        return {
+                            results: ConvertData
+                        };
+                    }
+                }
+            });
+
+            /*Load data into dhtml List*/
+            DHTMLXList_KPITeam.load("/SystemAdmin/GetKPITeamList",
+                function (data) {
+                    var json = JSON.parse(data);
+                    DHTMLXList_KPITeam.parse(json, "json");
+                });
+
+            DHTMLXList_Factory.load("/SystemAdmin/GetFactoryList",
+                function (data) {
+                    var json = JSON.parse(data);
+                    DHTMLXList_Factory.parse(json, "json");
+                });
+
+            DHTMLXList_Corporation.load("/SystemAdmin/GetCorporation",
+                function (data) {
+                    var json = JSON.parse(data);
+                    DHTMLXList_Corporation.parse(json, "json");
+                });
+
+            DHTMLXList_SaleTeam.load("/SystemAdmin/GetSaleTeam",
+                function (data) {
+                    var json = JSON.parse(data);
+                    DHTMLXList_SaleTeam.parse(json, "json");
+                });
+
+            DHTMLXList_Buyer.load("/SystemAdmin/GetBuyerList",
+                function (data) {
+                    var json = JSON.parse(data);
+                    DHTMLXList_Buyer.parse(json, "json");
+                });
+
+            DHTMLXList_System.load("/SystemAdmin/GetSystemList",
+                function (data) {
+                    var json = JSON.parse(data);
+                    DHTMLXList_System.parse(json, "json");
+                });
+
+            DHTMLXList_Menu.load("/SystemAdmin/GetSystemMenuList",
+                function (data) {
+                    var json = JSON.parse(data);
+                    DHTMLXList_Menu.parse(json, "json");
+                });
+
+            //dhtmlListUsmtResult.load("/SystemAdmin/GetUsers", /*GetHRMEmployees*/
+            dhtmlListUsmtResult.load("/SystemAdmin/GetUsers",
+                function (data) {
+                    var json = JSON.parse(data);
+                    /*Data Structure
+                        Email: null
+                        ExpiryDate: null
+                        Name: "000309 - TRƯƠNG  TUYẾT  HƯƠNG"
+                        Password: null
+                        RememberMe: false
+                        RoleID: null
+                        Sex: null
+                        Tel: null
+                        Url: null
+                        UserName: "000309"  << ID
+                     */
+
+                    dhtmlListUsmtResult.parse(json, "json");
+                    //dhtmlListUsmtResultReps.parse(json, "json");
+                });
+        });
+
+        /////////////////////////////////////////////////////////////////////////////////////////////////
+        /// Events
+        $('button').on('click', function () {
+            let self_ID = this.id;
+            let $this = $(this);
+            let CssClass = $this.attr('class');
+
+            //// By ID
+            switch (self_ID) {
+                case "RemoveStaff":
+                    {
+                        if (!DHTMLXList_Usmt.getSelected())
+                            Notify('Please select one staff to Remove', 'info');
+                        else {
+                            let selected_Staff = DHTMLXList_Usmt.get(DHTMLXList_Usmt.getSelected());
+                            DHTMLXList_Usmt.remove(DHTMLXList_Usmt.getSelected());
+                            Notify('Staff ' + selected_Staff.Name + ' Removed.', 'success');
+                        }
+                    }
+                    break;
+                case "AddKPISetting":
+                    //Mandatory Fields
+                    let selected_System = DHTMLXList_System.get(DHTMLXList_System.getSelected());
+                    let selected_Corporation = DHTMLXList_Corporation.get(DHTMLXList_Corporation.getSelected());
+                    let selected_KPITeam = DHTMLXList_KPITeam.get(DHTMLXList_KPITeam.getSelected());
+                    let KPISenior = $('#KPISenior').val();
+                    let KPISeniorData;
+
+                    //if (!(selected_System && selected_Corporation && selected_KPITeam && KPISenior.length > 0))
+                    if (!(selected_System && selected_Corporation && selected_KPITeam))
+                        Notify('System, Corporation, Team, Director are Mandatory Fields', 'danger');
+                    else {
+                        if (KPISenior.length > 0) {
+                            KPISeniorData = KPISenior.join(';');
+                        }
+
+                        //Option Fields
+                        let selected_Buyer = DHTMLXList_Buyer.get(DHTMLXList_Buyer.getSelected()) ? DHTMLXList_Buyer.get(DHTMLXList_Buyer.getSelected()) : '';
+                        let selected_Factory = DHTMLXList_Factory.get(DHTMLXList_Factory.getSelected()) ? DHTMLXList_Factory.get(DHTMLXList_Factory.getSelected()) : '';
+
+                        let KPIJunior = $('#KPIJunior').val(), KPIJuniorData;
+                        KPIJuniorData = (KPIJunior.length > 0) ? KPIJunior.join(';') : '';
+
+                        let KPILocalMgr = $('#KPILocalMgr').val(), KPILocalMgrData;
+                        KPILocalMgrData = (KPILocalMgr.length > 0) ? KPILocalMgr.join(';') : '';
+
+                        let selected_Menu = DHTMLXList_Menu.get(DHTMLXList_Menu.getSelected()) ? DHTMLXList_Menu.get(DHTMLXList_Menu.getSelected()) : '';
+
+                        let KPIPrimary = $('#KPIPrimary').val(), KPIPrimaryData;
+                        KPIPrimaryData = KPIPrimary.length > 0 ? KPIPrimary.join(';') : '';
+
+                        let KPIStaff = DHTMLXList_Usmt.dataCount(), KPIStaffData;
+                        KPIStaffData = (KPIStaff > 0) ? DHTMLXList_Usmt.serialize() : '';
+                        let KPIStaffDataTemp = [];
+
+                        if (typeof KPIStaffData == "object") {
+                            KPIStaffData.forEach(function (element) {
+                                KPIStaffDataTemp.push(element.UserName);
+                            });
+                        }
+
+                        //console.log(selected_System, selected_Corporation, selected_KPITeam, KPISenior, KPISeniorData, selected_Buyer, selected_Factory, KPIJunior, KPIJuniorData, KPILocalMgr, KPILocalMgrData, selected_Menu, KPIPrimary, KPIPrimaryData, KPIStaff, KPIStaffData );
+
+                        let postData = {
+                            selected_System: selected_System.SYSTEM_ID,
+                            selected_Corporation: selected_Corporation.S_CODE,
+                            selected_KPITeam: selected_KPITeam.S_CODE,
+                            KPISeniorData: KPISeniorData,
+                            selected_Buyer: selected_Buyer.hasOwnProperty('BuyerCode') ? selected_Buyer.BuyerCode : '',
+                            selected_Factory: selected_Factory.hasOwnProperty('FACTORY') ? selected_Factory.FACTORY : '',
+                            KPIJuniorData: KPIJuniorData,
+                            KPILocalMgrData: KPILocalMgrData,
+                            selected_Menu: selected_Menu.hasOwnProperty('MENU_ID') ? selected_Menu.MENU_ID : '',
+                            KPIPrimaryData: KPIPrimaryData,
+                            KPIStaffData: KPIStaffDataTemp.join(';')
+                        };
+
+                        $.post("/SystemAdmin/AddNewKPISetting", postData, function (Response) {
+                            //console.log(Response);
+
+                            if (Response.retResult)
+                                Notify(Response.retMsg, 'info');
+                            else
+                                Notify(Response.retMsg, 'danger');
+
+                            //if success, deselect (or clean) all the selected data
+                        });
+                    }
+                    break;
+                default:
+                    break;
+            }
+
+
+            ///// By CssClass
+            if (CssClass.toLowerCase().includes('dhtmlxlistfilterbuttonshow')) {
+                $this.closest("form").find("button.DHTMLXListFilterButtonHide").show();
+                $this.closest("form").find("button.DHTMLXListFilterButtonShow").hide();
+
+                $this.closest("form").find("div.popUpUserMaster")
+                    .removeAttr('style')
+                    .css({
+                        'position': 'block',
+                        'left': $this.offset().left,
+                        'top': $this.height() * 3 + 5
+                    }).show(100);
+
+            } else if (CssClass.toLowerCase().includes('dhtmlxlistfilterbuttonhide')) {
+                $this.closest("form").find("button.DHTMLXListFilterButtonShow").show();
+                $this.closest("form").find("button.DHTMLXListFilterButtonHide").hide();
+
+                $this.closest("form").find("div.popUpUserMaster")
+                    .removeAttr('style')
+                    .css({
+                        'display': 'none'
+                    }).hide(100);
+            }
+        });
+
+        /*Attach Events to DHTMLX-List */
+        DHTMLXList_System.attachEvent("onItemClick",
+            function (id, ev, html) {
+                data = DHTMLXList_System.get(id);
+
+                DHTMLXList_Menu.filter(function (obj, value) {
+                    if (obj.SYSTEM_ID.indexOf(value) == 0) return true;
+                    return false;
+                }, data.SYSTEM_ID);
+
+                return true;
+            });
+
+        dhtmlListUsmtResult.attachEvent("onItemDblClick",
+            function (id, ev, html) {
+                data = dhtmlListUsmtResult.get(id);
+
+                let $CorrespondingDHTMLXList_ID = ev.path[1].id;
+
+                let $ReceivedList_ID = $('#' + $CorrespondingDHTMLXList_ID).closest("form").find("div#" + $CorrespondingDHTMLXList_ID).attr('data-target');
+
+                let DHTMLXListObject;
+                switch ($ReceivedList_ID) {
+                    case "dhtmlListUsmtResp":
+                        {
+                            DHTMLXListObject = DHTMLXList_UsmtResp;
+                        }
+                        break;
+
+                    case "dhtmlListUsmt":
+                        {
+                            DHTMLXListObject = DHTMLXList_Usmt;
+
+                        }
+                        break;
+                }
+
+                let DataCounter = DHTMLXListObject.dataCount();
+                let Max_id = 0;
+                Max_id = DataCounter + 1;
+
+                AddStaff(DHTMLXListObject, Max_id + 1, data);
+
+                return true;
+            });
+
+        $('form').submit(function (e) {
+            let formID = (this.id);
+            let $this = $(this);
+
+            e.preventDefault(e);
+
+            let keyword = $this.find('input.DHTMLXListFilterSearchBox').val();
+
+            let $ReceivedList_ID = $this.find("div.dhtmlListUsmtResult").attr('data-target');
+            let DHTMLXListObject;
+
+            switch ($ReceivedList_ID) {
+                case "dhtmlListUsmtResp":
+                    {
+                        DHTMLXListObject = dhtmlListUsmtResultReps;
+                    }
+                    break;
+
+                case "dhtmlListUsmt":
+                    {
+                        DHTMLXListObject = dhtmlListUsmtResult;
+
+                    }
+                    break;
+            }
+
+            if (keyword !== "") {
+                //show all items where Publisher starts from "Test"
+                DHTMLXListObject.filter(function (obj, value) {
+                    if (obj.Name.toLowerCase().indexOf(value) >= 0) return true;
+                    return false;
+                }, keyword.toLowerCase());
+            } else {
+                //show all items where Publisher starts from "Test"
+                DHTMLXListObject.filter(function (obj, value) {
+                    return false;
+                }, '');
+            }
+
+        });
+
+        $('input.DHTMLXListFilterSearchBox').on("keydown keyup", function (event) {
+            let $this = $(this);
+
+            let $form = $this.closest("form");
+
+            let $ReceivedList_ID = $form.find("div.dhtmlListUsmtResult").attr('data-target');
+            let DHTMLXListObject;
+
+            switch ($ReceivedList_ID) {
+                case "dhtmlListUsmtResp":
+                    {
+                        DHTMLXListObject = dhtmlListUsmtResultReps;
+                    }
+                    break;
+
+                case "dhtmlListUsmt":
+                    {
+                        DHTMLXListObject = dhtmlListUsmtResult;
+                    }
+                    break;
+            }
+
+
+            if ($this.val() === "")
+                if (event.which == 8) {
+                    DHTMLXListObject.filter(function (obj, value) {
+                        return true;
+                    }, '');
+                }
+        });
+
+        /////////////////////////////////////////////////////////////////////////////////////////////////
+        /// Functions
+        function AddStaff(pDHTMLXListObject, pIndex, pData) {
+            pDHTMLXListObject.add({
+                Email: pData.Email,
+                ExpiryDate: pData.ExpiryDate,
+                Name: pData.Name,
+                Password: pData.Password,
+                RememberMe: pData.RememberMe,
+                RoleID: pData.RoleID,
+                Sex: pData.Sex,
+                Tel: pData.Tel,
+                Url: pData.Url,
+                UserName: pData.UserName
+            }, pIndex);
+        }
+
+    </script>
+}

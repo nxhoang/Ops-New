@@ -1,0 +1,140 @@
+[
+  {
+    "outputFileName": "assets/op-management/js/op.video-processing.min.js",
+    "inputFiles": [
+      "assets/op-management/js/op.video-processing.js"
+    ]
+  },
+  {
+    "outputFileName": "assets/op-management/css/op.video-processing.min.css",
+    "inputFiles": [
+      "assets/op-management/css/op.video-processing.css"
+    ]
+  },
+  {
+    "outputFileName": "assets/jquery-msgbox/styles/msgBoxLight.min.css",
+    "inputFiles": [
+      "assets/jquery-msgbox/styles/msgBoxLight.css"
+    ]
+  },
+  {
+    "outputFileName": "assets/ops-layout/css/app.min.css",
+    "inputFiles": [
+      "assets/ops-layout/css/app.css"
+    ]
+  },
+  {
+    "outputFileName": "assets/op-management/js/op.video-process.min.js",
+    "inputFiles": [
+      "assets/op-management/js/op.video-process.js"
+    ]
+  },
+  {
+    "outputFileName": "assets/op-management/css/op.video-process.min.css",
+    "inputFiles": [
+      "assets/op-management/css/op.video-process.css"
+    ]
+  },
+  {
+    "outputFileName": "assets/op-management/css/op_video-process.min.css",
+    "inputFiles": [
+      "assets/op-management/css/op_video-process.css"
+    ]
+  },
+  {
+    "outputFileName": "assets/op-management/js/op_video-process.min.js",
+    "inputFiles": [
+      "assets/op-management/js/op_video-process.js"
+    ]
+  },
+  {
+    "outputFileName": "js/jsPanel/jquery.jspanel.min.css",
+    "inputFiles": [
+      "js/jsPanel/jquery.jspanel.css"
+    ]
+  },
+  {
+    "outputFileName": "assets/ops-layout/js/jsplumbtoolkit.min.js",
+    "inputFiles": [
+      "assets/ops-layout/js/jsplumbtoolkit.js"
+    ]
+  },
+  {
+    "outputFileName": "assets/ops-layout/js/left-popup.min.js",
+    "inputFiles": [
+      "assets/ops-layout/js/left-popup.js"
+    ]
+  },
+  {
+    "outputFileName": "assets/ops-layout/css/left-popup.min.css",
+    "inputFiles": [
+      "assets/ops-layout/css/left-popup.css"
+    ]
+  },
+  {
+    "outputFileName": "assets/ops-layout/css/jsplumbtoolkit.min.css",
+    "inputFiles": [
+      "assets/ops-layout/css/jsplumbtoolkit.css"
+    ]
+  },
+  {
+    "outputFileName": "assets/ops-layout/css/jsplumbtoolkit-defaults.min.css",
+    "inputFiles": [
+      "assets/ops-layout/css/jsplumbtoolkit-defaults.css"
+    ]
+  },
+  {
+    "outputFileName": "assets/ops-layout/css/main.min.css",
+    "inputFiles": [
+      "assets/ops-layout/css/main.css"
+    ]
+  },
+  {
+    "outputFileName": "css/ops/pages/ops-layout.min.css",
+    "inputFiles": [
+      "css/ops/pages/ops-layout.css"
+    ]
+  },
+  {
+    "outputFileName": "assets/ops-layout/js/ops-layout.min.js",
+    "inputFiles": [
+      "assets/ops-layout/js/ops-layout.js"
+    ]
+  },
+  {
+    "outputFileName": "assets/ops-layout/css/ops-layout.min.css",
+    "inputFiles": [
+      "assets/ops-layout/css/ops-layout.css"
+    ]
+  },
+  {
+    "outputFileName": "assets/ops-layout/css/process_detail.min.css",
+    "inputFiles": [
+      "assets/ops-layout/css/process_detail.css"
+    ]
+  },
+  {
+    "outputFileName": "assets/ops-layout/css/demo-op-layout.min.css",
+    "inputFiles": [
+      "assets/ops-layout/css/demo-op-layout.css"
+    ]
+  },
+  {
+    "outputFileName": "assets/ops-layout/js/process-detail.min.js",
+    "inputFiles": [
+      "assets/ops-layout/js/process-detail.js"
+    ]
+  },
+  {
+    "outputFileName": "assets/ops-layout/css/op.video-processing.min.css",
+    "inputFiles": [
+      "assets/ops-layout/css/op.video-processing.css"
+    ]
+  },
+  {
+    "outputFileName": "assets/ops-layout/js/op.video-processing.min.js",
+    "inputFiles": [
+      "assets/ops-layout/js/op.video-processing.js"
+    ]
+  }
+]

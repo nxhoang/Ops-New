@@ -1,0 +1,32 @@
+.op-emp-map {
+    position: relative;
+    height: 900px;
+    width: 100%;
+    border: 1px solid #ccc;
+    overflow: auto;
+}
+
+.op-emp-map__div-agc {
+    position: absolute;
+    z-index: 998;
+    color: #fff
+}
+
+.op-emp-map__div-agc button {
+    margin: 3px;
+    width: 40px;
+    height: 35px;
+    border-radius: 4px;
+    padding: 0;
+    background-color: #5588ee;
+    border-color: #06a7df
+}
+
+.op-emp-map__div-agc button:hover {
+    box-shadow: 2px 2px 8px #000000;
+    box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.7);
+    transform: translate(-1px, -1px);
+    color: #282828;
+    background: #00bfff;
+    border-color: #00bfff;
+}

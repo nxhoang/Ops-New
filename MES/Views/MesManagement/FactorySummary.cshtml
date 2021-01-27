@@ -1,0 +1,97 @@
+﻿
+@{
+    ViewBag.Title = "FactorySummary";
+    Layout = "~/Views/Shared/_MesLayout.cshtml";
+}
+
+<!-- widget grid -->
+<section id="widget-grid" class="">
+
+    <!-- row -->
+    <div class="row">
+
+        <!-- NEW WIDGET START -->
+        <article class="col-xs-12 col-sm-12">
+
+            <!-- Widget ID (each widget will need unique ID)-->
+            <div class="jarviswidget jarviswidget-color-blueDark" id="wid-id-1"
+                 data-widget-colorbutton="false"
+                 data-widget-editbutton="false"
+                 data-widget-togglebutton="false"
+                 data-widget-deletebutton="false"
+                 data-widget-custombutton="false"
+                 data-widget-collapsed="false"
+                 data-widget-sortable="false">
+                <header>
+                    <h2>Factory summary</h2>
+
+                </header>
+
+                <!-- widget div-->
+                <div>
+
+
+                    <!-- end widget edit box -->
+                    <!-- widget content -->
+                    <div class="widget-body no-padding">
+                        <div class="row" style="margin-top:10px">
+                            <div class="col-sm-10"></div>
+                            <div class="col-sm-2">
+                                <div class="form-group">
+                                    <div class="col-sm-12">
+                                        @*<label class="control-label" for="Factory">Corporation:</label>*@
+
+                                        <select id="drpCorporation" class="form-control" data-placeholder="Corporation"></select>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <!-- this is what the user will see -->
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <canvas id="cvFactory" class="chart-bg"></canvas>
+                            </div>
+                        </div>
+
+                        <hr class="margin-5">
+
+                        <div id="saleschart" class="chart"></div>
+
+                    </div>
+                    <!-- end widget content -->
+
+                </div>
+                <!-- end widget div -->
+
+            </div>
+            <!-- end widget -->
+
+        </article>
+        <!-- WIDGET END -->
+
+
+    </div>
+
+
+
+    <!-- end row -->
+
+</section>
+<!-- end widget grid -->
+
+@section Scripts{
+
+    <script src="~/Assets/chartjs/Chart.min.js"></script>
+    <script src="~/Assets/chartjs/chartjs-plugin-datalabels.min.js"></script>
+    <script src="~/Assets/chartjs/chart-custom.js"></script>
+    <script src="~/js/mes/mes-common.js?v=1.0.2"></script>
+    <script src="~/js/mes/factory-summary/factory-summary.js"></script>
+    <script src="~/js/mes/factory-summary/factory-summary-event.js"></script>
+
+    <script>
+        $(function () {
+            InitPage();
+        });
+    </script>
+}

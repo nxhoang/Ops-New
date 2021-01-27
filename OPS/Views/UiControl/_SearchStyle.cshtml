@@ -1,0 +1,158 @@
+﻿<link href="~/css/ops/pages/CAD-Button.css" rel="stylesheet" />
+<style>
+    #sbItemName2, #divtaget {
+        font-family: 'Open Sans';
+    }
+
+    .highlighthave {
+        background-color: #E4EFF1;
+    }
+
+    .btn-group > .btn > .caret {
+        margin-top: -2px;
+    }
+</style>
+<div class="modal fade modal-custom" id="SearchStyleModal" role="dialog" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Search Operation Plan</h4>
+            </div>
+            <div class="modal-body">
+                <div class="modal-body-custom" style="height:670px">
+                    <div class="modal-content-ops">
+                        <div class="row">
+                            <div class="col-md-2 col-sm-2 col-xs-2">
+                                <div class="form-group selec2-custom">
+                                    <select id="drpSearchType" class="form-control" data-placeholder="All">
+                                        <option value="0">All</option>
+                                        <option value="1">All open orders</option>
+                                        <option value="2">Listed in QCO</option>
+                                        <option value="3">Planned orders</option>
+                                        <option value="4">Pending for MPS</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-2 col-sm-2 col-xs-2">
+                                <div class="form-group selec2-custom">
+                                    <select id="cbbSearch" class="form-control" data-placeholder="Select Buyer"></select>
+                                </div>
+                            </div>
+                            <div class="col-md-2 col-sm-2 col-xs-2 ">
+                                <div class="input-group">
+                                    <span class="add-on input-group-addon"><i class="glyphicon glyphicon-calendar fa fa-calendar"></i></span>
+                                    <input id="txtDate" name="txtDate" type="text" class="form-control" placeholder="Developed From">
+                                </div>
+                            </div>
+                            <div class="col-md-2 col-sm-2 col-xs-2 ">
+                                <div class="input-group">
+                                    <span class="add-on input-group-addon"><i class="glyphicon glyphicon-calendar fa fa-calendar"></i></span>
+                                    <input id="txtEndDate" type="text" name="txtEndDate" class="form-control" placeholder="Developed End">
+                                </div>
+                            </div>
+                            <div class="col-md-2 col-sm-2 col-xs-2 ">
+                                <div class="input-group">
+                                    <input id="aoNumber" type="text" name="aoNumber" class="form-control" placeholder="AO Number">
+                                </div>
+                            </div>
+                            <div class="col-md-2 col-sm-2 col-xs-2 pull-right top_search">
+                                <div class="input-group">
+                                    <input id="txtFind" type="text" class="form-control" placeholder="Search For..">
+                                    <span class="input-group-btn">
+                                        <input type="button" value="Find" onclick="SearchClick();" id="btnSearch" class="btn btn-primary btn-modal">
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-content-ops">
+                        <div id="modarow" class="row">
+                            <table id="tb_Grid" class="scroll" style="width:100%;"></table>
+                            <div id="tb_Nav_JqGrid" style="text-align:center; margin:0; padding:0;">
+                            </div>
+                        </div>
+                    </div>
+                    @*START ADD - SON) 22/Sep/2020  *@
+                    <div class="modal-content-ops">
+                        <div id="modarow" class="row">
+                            <table id="tbOpPlan" class="scroll" style="width:100%;"></table>
+                            <div id="divOpPlanPager" style="text-align:center; margin:0; padding:0;">
+                            </div>
+                        </div>
+                    </div>
+                    @*END ADD - SON) 22/Sep/2020  *@
+                    <div style="clear:both; padding-right: 5px; height:37px;">
+                        <div style="width:30%;float: left;margin-left: 6px;">
+                            <input type="checkbox" id="showHiglight" /> Highlight Styles with Operation Plans
+                        </div>
+                        <div class="btn-group dropup" style="float:right; width:160px;">
+                            <button class="btn btn-primary dropdown-toggle" style="width:160px" type="button" data-toggle="dropdown">
+                                Operation Plan
+                                <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li><a href="/Ops/Ops">Plan Management</a></li>
+                                <li><a href="/OpsLayout/OpsLayout">Plan Layout</a></li>
+                                <li><a href="/OpsLink/index">Engineering Data</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@*<div id="CadWindow" class="cd-panel from-right cad-panel">
+        <header class="cd-panel-header">
+            <h4>Search Style</h4>
+            <a href="#" class="cd-panel-close cad-close">Close</a>
+        </header>
+        <div class="cd-panel-container">
+            <div class="cd-panel-content cad-content">
+                <div class="row">
+                    <div class="col-md-3 col-sm-3 col-xs-3">
+                        <div class="input-group">
+                            <span class="add-on input-group-addon"><i class="glyphicon glyphicon-user fa fa-user"></i></span>
+                            <select id="cbbSearch" class="form-control has-feedback-left" style="font-size:smaller;"></select>
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-sm-3 col-xs-3 ">
+                        <div class="input-group">
+                            <span class="add-on input-group-addon"><i class="glyphicon glyphicon-calendar fa fa-calendar"></i></span>
+                            <input id="txtDate" name="txtDate" type="text" class="form-control" placeholder="Start Date ..">
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-sm-3 col-xs-3 ">
+                        <div class="input-group">
+                            <span class="add-on input-group-addon"><i class="glyphicon glyphicon-calendar fa fa-calendar"></i></span>
+                            <input id="txtEndDate" type="text" name="txtEndDate" class="form-control" placeholder="Start Date ..">
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-sm-3 col-xs-3 pull-right top_search">
+                        <div class="input-group">
+                            <input id="txtFind" type="text" class="form-control" placeholder="Search For..">
+                            <span class="input-group-btn">
+                                <input type="button" value="Find!" onclick="SearchClick();" id="btnSearch" class="btn btn-primary">
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <hr />
+                <div class="row">
+                    <table id="tb_Grid" class="scroll" style="width:100%;"></table>
+                    <div id="tb_Nav_JqGrid" style="text-align:center; margin:0; padding:0;">
+                    </div>
+
+                </div>
+                <!-- cd-panel-content -->
+            </div>
+        </div>
+        <!-- cd-panel-container -->
+
+    </div>*@
+
+@section Scripts {
+    <script src="~/js/ops/Pages/VideoLink.js?v=1.0"></script>
+}

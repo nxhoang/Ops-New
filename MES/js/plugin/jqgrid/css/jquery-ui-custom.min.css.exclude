@@ -1,0 +1,103 @@
+
+.ui-jqgrid {
+    background-image: none !important;
+    font-family: "Helvetica Neue", Roboto, Arial, "Droid Sans", sans-serif !important;
+    border-top: none;
+    border-bottom: none;
+    border-left: none;
+    border-right: none;
+    background: none;
+}
+
+    .ui-jqgrid > .ui-jqgrid-pager {
+        background: transparent !important;
+        font-size: 14px !important;
+        font-weight: bold;
+        color: #23465C !important;
+        white-space: nowrap !important;
+    }
+
+.ui-jqgrid-hdiv .ui-th-column {
+    background: #23465C !important;
+    font-size: 14px !important;
+    font-weight: bold;
+    color: White !important;
+    white-space: nowrap !important;
+    border-color: rgba(221, 221, 221, 0.78);
+}
+
+.ui-jqgrid .ui-jqgrid-view .ui-jqgrid-bdiv .ui-jqgrid-btable tr {
+    font-size: 13px !important;
+    line-height: 24px;
+}
+
+    .ui-jqgrid .ui-jqgrid-view .ui-jqgrid-bdiv .ui-jqgrid-btable tr td {
+        border-color: rgba(221, 221, 221, 0.78);
+    }
+
+
+.jqgrid-rownum {
+    background: #23465C !important;
+    color: White !important;
+    white-space: nowrap !important;
+}
+
+.ui-state-highlight, .ui-jqgrid .ui-state-highlight, .ui-jqgrid-titlebar .ui-state-highlight {
+    border: 1px solid #A2DCCA !important;
+    background: #A2DCCA url("images/ui-bg_flat_55_fbec88_40x100.png") 50% 50% repeat-x !important;
+    color: #363636
+}
+
+.ui-jqgrid-titlebar {
+    border: none;
+    font-size: 18px !important;
+    min-height: 40px;
+    color: #FFF;
+    background: #307ecc;
+    line-height: 24px;
+}
+
+    .ui-jqgrid-titlebar .ui-state-hover {
+        background: none !important;
+    }
+
+
+.ui-corner-top  { 
+    border-top-right-radius: 0px;
+    border-top-left-radius: 0px; 
+}
+ .ui-corner-bottom {
+    border-bottom-right-radius: 0px;
+    border-bottom-left-radius: 0px; 
+}
+
+
+/*Grid-Dialog*/
+.ui-dialog-titlebar {
+    font-size: 12px !important;
+    min-height: 20px;
+    color: #FFF;
+    background: #307ecc;
+    line-height: 24px;
+}
+
+/*********************************************/
+/* Subgrid Custom */
+.ui-subgrid .ui-jqgrid .ui-jqgrid-view {
+    font-size: 13px !important;
+    /*font-family: "Helvetica Neue", Roboto, Arial, "Droid Sans", sans-serif !important;*/
+}
+
+.ui-subgrid .subgrid-data .ui-jqgrid .ui-jqgrid-view .ui-jqgrid-hdiv .ui-jqgrid-hbox .ui-jqgrid-htable .ui-th-column {
+    background: green !important;
+    background-image: none !important;
+}
+
+.ui-subgrid .subgrid-data > .ui-jqgrid .ui-jqgrid-view .ui-jqgrid-hdiv .ui-jqgrid-hbox .ui-jqgrid-htable .ui-th-column .ui-jqgrid-sortable {
+    color: white !important;
+}
+
+/* Hide the Group Header on Subgrid */
+.ui-subgrid .subgrid-data .ui-jqgrid .ui-jqgrid-view .ui-jqgrid-bdiv .ui-jqgrid-btable .jqgroup {
+    display: none !important;
+}

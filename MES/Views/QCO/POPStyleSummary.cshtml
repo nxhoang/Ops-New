@@ -1,0 +1,72 @@
+﻿@model MES.Controllers.StyleCodeSummary
+
+
+<style>
+    .POPStyleSummaryContainer {
+        width: 100%; 
+    }
+    table tr {
+        line-height: 23px;
+    }
+
+    
+    span.pull-left {
+         font-weight: bold;
+    }
+
+    
+</style>
+<div class="POPStyleSummaryContainer"> 
+        <table style="width:100%;">
+            <tr style="text-align:center;" >
+                <td colspan="2" style="width:100%"><span style="text-align:center; font-size:18px;font-weight:bold;">@Model.PRDPKG</span></td>
+            </tr>
+            <tr style="text-align:center;" >
+                <td style="width:60%">
+                    <table style="width:90%;margin: 10px; ">
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <span class="pull-left">Buyer Style Code:</span><br /><span class="pull-right">@Model.BuyerStyleCode</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <span class="pull-left">Buyer Style Name:</span><br /><span class="pull-right">@Model.BuyerStyleName</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <span class="pull-left">PK Style Code:</span><br /><span class="pull-right">@Model.StyleCode</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <span class="pull-left">Style Color</span><br /><span class="pull-right">@Model.StyleColorWays</span>
+                                </td>
+                            </tr>
+
+                            @{ if (@Model.OrdQty > 0)
+                                {
+                                    <tr>
+                                        <td>
+                                            <span class="pull-left">Order Qty</span><br /><span class="pull-right">@Model.OrdQty.ToString()</span>
+                                        </td>
+                                    </tr> 
+                                }
+                            }
+
+                            <tr>
+                                <td>
+                                    <span class="pull-left">Package Qty</span><br /><span class="pull-right">@Model.PlanQty.ToString()</span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </td>
+                <td style="width:40%; ">
+                    <img src="@Model.ImgLink" width="300" height="300" style="text-align:center;"/>
+                </td>
+            </tr>
+        </table> 
+</div>

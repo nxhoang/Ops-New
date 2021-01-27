@@ -1,0 +1,408 @@
+﻿
+@{
+    ViewBag.Title = "Ops";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<script src="~/assets/chart/Chart.min.js"></script>
+
+<script src="~/assets/chart/fusioncharts/fusioncharts.js"></script>
+<script src="~/assets/chart/fusioncharts/fusioncharts.theme.fint.js"></script>
+<script src="~/js/ops/Pages/ops-chart.js"></script>
+<div style="width:100%; height: 90%">
+    <input type="button" id="btnChart" value="Get data" />
+    <canvas id="canvas"></canvas>
+</div>
+
+<select id="drpChartType" class="form-control">
+    <option value="dragline">Line chart</option>
+    <option value="dragcolumn2d">Bar chart</option>
+</select>
+
+<div id="chart-container">FusionCharts XT will load here!</div>
+
+
+@section scripts {
+    <script>
+       // #region Scroll
+        FusionCharts.ready(function () {
+            var fusioncharts = new FusionCharts({
+                type: 'column2d',
+                renderAt: 'chart-container',
+                width: '550',
+                height: '350',
+                dataFormat: 'json',
+                dataSource: {
+                    "chart": {
+                        "caption": "Sales Trends",
+                        "subcaption": "FY 2012 - FY 2013",
+                        "xaxisname": "Month",
+                        "yaxisname": "Revenue",
+                        "placeValuesInside": "1",
+                        "rotateValues": "1",
+                        "valueFontColor": "#ffffff",
+                        "numberprefix": "$",
+                        //Configure of gradient scrollbar
+                        "flatScrollBars": "0",
+
+                        "theme": "fint"
+                    },
+                    "categories": [{
+                        "category": [{
+                            "label": "Jan 2012"
+                        }, {
+                            "label": "Feb 2012"
+                        }, {
+                            "label": "Mar 2012"
+                        }, {
+                            "label": "Apr 2012"
+                        }, {
+                            "label": "May 2012"
+                        }, {
+                            "label": "Jun 2012"
+                        }, {
+                            "label": "Jul 2012"
+                        }, {
+                            "label": "Aug 2012"
+                        }, {
+                            "label": "Sep 2012"
+                        }, {
+                            "label": "Oct 2012"
+                        }, {
+                            "label": "Nov 2012"
+                        }, {
+                            "label": "Dec 2012"
+                        }, {
+                            "label": "Jan 2013"
+                        }, {
+                            "label": "Feb 2013"
+                        }, {
+                            "label": "Mar 2013"
+                        }, {
+                            "label": "Apr 2013"
+                        }, {
+                            "label": "May 2013"
+                        }, {
+                            "label": "Jun 2013"
+                        }, {
+                            "label": "Jul 2013"
+                        }, {
+                            "label": "Aug 2013"
+                        }, {
+                            "label": "Sep 2013"
+                        }, {
+                            "label": "Oct 2013"
+                        }, {
+                            "label": "Nov 2013"
+                        }, {
+                            "label": "Dec 2013"
+                        }]
+                    }],
+                    "dataset": [{
+                        "data": [{
+                            "value": "27400"
+                        }, {
+                            "value": "29800"
+                        }, {
+                            "value": "25800"
+                        }, {
+                            "value": "26800"
+                        }, {
+                            "value": "29600"
+                        }, {
+                            "value": "32600"
+                        }, {
+                            "value": "31800"
+                        }, {
+                            "value": "36700"
+                        }, {
+                            "value": "29700"
+                        }, {
+                            "value": "31900"
+                        }, {
+                            "value": "34800"
+                        }, {
+                            "value": "24800"
+                        }, {
+                            "value": "26300"
+                        }, {
+                            "value": "31800"
+                        }, {
+                            "value": "30900"
+                        }, {
+                            "value": "33000"
+                        }, {
+                            "value": "36200"
+                        }, {
+                            "value": "32100"
+                        }, {
+                            "value": "37500"
+                        }, {
+                            "value": "38500"
+                        }, {
+                            "value": "35400"
+                        }, {
+                            "value": "38200"
+                        }, {
+                            "value": "33300"
+                        }, {
+                            "value": "38300"
+                        }]
+                    }]
+                },
+                event: {
+                    "dataPlotClick": function (eventObj, dataObj) {
+                        alert('aa');
+                    }
+                }
+            }
+            );
+          
+            fusioncharts.render();
+        });
+// #endregion
+
+        $(function () {
+            //GenerationChart("dragline", categories, data);
+            //SelectChartType();
+            //Set attribute chart fusion
+            //console.log($("g.raphael-group-110-line").find("path").attr('stroke-width'));
+        });
+
+// #region fusioncharts
+    
+    //FusionCharts.ready(function () {
+    //        var fusioncharts = new FusionCharts({
+    //            type: 'dragline', //'dragcolumn2d', //
+    //            renderAt: 'chart-container',
+    //            width: '1000',
+    //            height: '650',
+    //            dataFormat: 'json',
+    //            dataSource: {
+    //                "chart": {
+    //                    //"caption": "Quarterly Unit Sales - Apple vs Samsung",
+    //                    //"subCaption": "Drag anchors to change estimated values",
+    //                    "subCaptionFontSize": "12",
+    //                    "xAxisName": "Process",
+    //                    "yAxisName": "Process time",
+    //                    "theme": "fint",
+    //                    "showLabels": "0"
+    //                },
+    //                "categories": [{
+    //                    "category": [{
+    //                        "label": "Q1"
+    //                    }, {
+    //                        "label": "Q2"
+    //                    }, {
+    //                        "label": "Q3"
+    //                    }, {
+    //                        "label": "Q4"
+    //                    }]
+    //                }],
+    //                "dataset": [{
+    //                    "seriesname": "Apple",
+    //                    "valuePosition": "ABOVE",
+    //                    "allowDrag": "1",
+    //                    "data": [{                          
+    //                        "value": "1200"
+    //                    }, {
+    //                        "value": "1500"
+    //                        //"dashed": "1"
+    //                    }, {
+    //                        "value": "1300"
+    //                        //"allowDrag": "1",
+    //                        //"dashed": "1"
+    //                    }, {
+    //                        "value": "900"
+    //                        //"allowDrag": "1",
+    //                        //"tooltext": "Predicted sales $value units"
+    //                    }]
+    //                },
+    //                {
+    //                    "seriesname": "Samsung",
+    //                    "allowDrag": "1",
+    //                    "data": [{
+    //                        "value": "300"
+    //                    }, {
+    //                        "value": "850"
+    //                        //"dashed": "1"
+    //                    }, {
+    //                        "value": "1000"
+    //                        //"allowDrag": "1",
+    //                        //"dashed": "1"
+    //                    }, {
+    //                        "value": "1200"
+    //                        //"allowDrag": "1",
+    //                        //"tooltext": "Predicted sales $value units"
+    //                    }]
+    //                }]
+    //            },
+    //            events: {
+    //                'beforeRender': function (event, args) {
+    //                    var tableCont = document.createElement('div'),
+    //                        strHTML = "",
+    //                        thStyle = "background-color: #fece2f;color: #ffffff;border: 1px solid #000;padding: 10px 5px;min-width: 70px;text-align: center;",
+    //                        tdStyleApple = "border: 1px solid #000;color: #008ee4;padding: 10px 5px;min-width: 70px;text-align: center;",
+    //                        tdStyleSamsung = "border: 1px solid #000;color: #6baa01;padding: 10px 5px;min-width: 70px;text-align: center;",
+    //                        rowHeaderApple = " background-color: #008ee4;color: #fff; padding: 10px 5px;",
+    //                        rowHeaderSamsung = " background-color: #6baa01;color: #fff; padding: 10px 5px;";
+    //                    tableCont.setAttribute('id', 'tableCont');
+    //                    tableCont.setAttribute('style', 'padding-left: 10px; width: 470px;');
+    //                    strHTML = "<table style='margin: 25px auto;border-collapse: collapse;border: 1px solid;border-bottom: 2px solid;'><tr><td style='border-top: 1px solid #fff; border-left: 1px solid #fff;'></td><th style='" + thStyle + "'>Q1</th><th style='" + thStyle + "'>Q2</th><th style='" + thStyle + "'>Q3(E)</th><th style='" + thStyle + "'>Q4(E)</th></tr><tr><td style='" + rowHeaderApple + "'>Apple</td><td id='1-1' style='" + tdStyleApple + "'>1200</td><td id='1-2' style='" + tdStyleApple + "'>1500</td><td id='1-3' style='" + tdStyleApple + "'>1300</td><td id='1-4' style='" + tdStyleApple + "'>900</td></tr><tr><td style='" + rowHeaderSamsung + "'>Samsung</td><td id='2-1' style='" + tdStyleSamsung + "'>600</td><td id='2-2' style='" + tdStyleSamsung + "'>850</td><td id='2-3' style='" + tdStyleSamsung + "'>1000</td><td id='2-4' style='" + tdStyleSamsung + "'>1200</td></tr></table><p align = 'center'/> (E) indicates Estimated";
+    //                    tableCont.innerHTML = strHTML;
+    //                    args.container.parentNode.insertBefore(tableCont, args.container.nextSibling);
+    //                },
+    //                'renderComplete': function (evt, arg) {
+    //                    function showData() {
+    //                        var chartIns = evt && evt.sender,
+    //                            data = chartIns && chartIns.getJSONData();
+    //                        //alert(JSON.stringify(data));
+    //                        var dt1 = " Q1: " + data.dataset[1].data[0].value;
+    //                        var dt2 = "; Q2: " + data.dataset[1].data[1].value;                          
+    //                        var dt3 = "; Q3: " + data.dataset[1].data[2].value;
+    //                        var dt4 = "; Q4: " + data.dataset[1].data[3].value;
+    //                        alert("samsung:" + dt1 + dt2 + dt3 + dt4);
+    //                    }
+    //                    document.getElementById("btnChart").addEventListener("click", showData);
+    //                },
+    //                'dataplotdragend': function (evt, arg) {
+    //                    var dsIndx = arg && arg.datasetIndex,
+    //                        dtIndx = arg && arg.dataIndex,
+    //                        val = arg && parseInt(arg.endValue, 10);
+    //                    document.getElementById(dsIndx + '-' + dtIndx).innerHTML = val;
+
+    //                },
+    //                'datarestored': function (evtObj) {
+    //                    var ds1Values = ["1200", "1500", "1300", "900"],
+    //                        ds2Values = ["600", "850", "1000", "1200"],
+    //                        update = function (arr, rowNum) {
+    //                            var i = 0,
+    //                                arrLen = arr.length;
+
+    //                            for (i; i < arrLen; i += 1) {
+    //                                val = arr[i];
+    //                                document.getElementById(rowNum + '-' + (i + 1)).innerHTML = val;
+    //                            }
+    //                        };
+    //                    update(ds1Values, 1);
+    //                    update(ds2Values, 2);
+    //                }
+    //            }
+    //        }
+    //        );
+    //        fusioncharts.render();
+    //    });
+
+
+// #endregion
+
+// #region chart js
+
+
+    /*
+        var chartColors = {
+            red: 'rgb(255, 99, 132)',
+            orange: 'rgb(255, 159, 64)',
+            yellow: 'rgb(255, 205, 86)',
+            green: 'rgb(75, 192, 192)',
+            blue: 'rgb(54, 162, 235)',
+            purple: 'rgb(153, 102, 255)',
+            grey: 'rgb(201, 203, 207)'
+        };
+
+        $(function () {
+      
+            var arrDataOpTime = [50, 60, 120, 300, 256, 198, 1089];
+            var arrDataMaxOpTime = [100, 100, 200, 300, 250, 300, 2000];
+            var arrLabelOpTime = ["Runsitich 2 sides of shoes bag 40+35cm,1,ENM,0.5845,ENM,0.5845",
+                "Attach zipper to under panel with lining straight 15cm +notch 2 conner - Ráp DK vào thân có lót +bấm góc 15cm",
+                "ack corner of opening pocket 2 sides 3.5+3.5cm - Chốt 2 góc túi mổ",
+                "Topstitch attachment line zipper to under flap through lining 3 sides straight 3+15+3cm ( Overlap 12cm) - Gấp + Nhiễu hoàn chỉnh miệng túi mổ ( 3 cạnh)",
+                "Attach shoulder strap, carry handle & length adjuster to back panel 20+5+5cm - Đính QĐ + Đính QX + đai tăng giảm vào TS",
+                "Fold & staystitch lining to back panel 3 sides 45+30+45cm (2.36 Stch/CM) - Gập+Lược lót TS lên TS (3 cạnh)",
+                "taystitch foam to bottom 15+30+15+20cm-2.36stitch - Lược foam vào đáy 15+30+15+30"
+            ];
+
+            var arrLabelOpTime2 = ["", "", "", "", "", "", ""];
+            var config = {
+                type: 'line',
+                data: {
+                    labels: arrLabelOpTime,
+                    datasets: [{
+                        label: "Operation time",
+                        backgroundColor: chartColors.red,
+                        borderColor: chartColors.red,
+                        data: arrDataOpTime,
+                        fill: false
+                    }, {
+                        label: "Max Operation Time",
+                        fill: false,
+                        backgroundColor: chartColors.blue,
+                        borderColor: chartColors.blue,
+                        data: arrDataMaxOpTime
+                    }]
+                },
+                options: {
+                    onClick: function () {  },
+                    responsive: true,
+                    title: {
+                        display: true,
+                        text: 'Operation Time Line Chart'
+                    },
+                    tooltips: {
+                        mode: 'index',
+                        intersect: false
+                    },
+                    hover: {
+                        mode: 'nearest',
+                        intersect: true
+                    },
+                    scales: {
+                        xAxes: [{
+                            display: false,
+                            scaleLabel: {
+                                display: true,
+                                labelString: 'Proccess'
+                            }
+                        }],
+                        yAxes: [{
+                            display: true,
+                            scaleLabel: {
+                                display: true,
+                                labelString: 'Operation time'
+                            }
+                        }]
+                    },
+                    zoom: {
+                        enabled: true,
+                        drag: true,
+                        mode: 'x',
+                        limits: {
+                            max: 10,
+                            min: 0.5
+                        }
+                    }
+                }
+            };
+
+            var ctx = document.getElementById("canvas").getContext("2d");
+            window.myLine = new Chart(ctx, config);
+
+            ctx.getElementAtEvent(e);
+
+        });
+
+        function clickHandler(evt) {
+            var item = myChart.getElementAtEvent(evt)[0];
+
+            if (item) {
+                var label = myChart.data.labels[firstPoint._index];
+                var value = myChart.data.datasets[firstPoint._datasetIndex].data[firstPoint._index];
+            }
+        }
+*/
+
+// #endregion
+
+    </script>
+}

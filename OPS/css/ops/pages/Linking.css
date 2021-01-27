@@ -1,0 +1,122 @@
+﻿#dragItemID {
+    z-index: 1001;
+}
+
+#divtaget, .modal-boxtitle {
+    float: left;
+    font-weight: bold;
+    width: 100%;
+}
+
+.contain {
+    width: 100%;
+}
+
+.imgpattern {
+    width: 60px;
+    height: 20px;
+}
+
+.sopened:before {
+    font-family: 'FontAwesome';
+    content: "\f068";
+}
+
+.sgcollapsed a span.ui-icon-plus:before {
+    font-family: 'FontAwesome';
+    content: "\f067";
+}
+
+.sgexpanded a span.ui-icon-minus:before {
+    font-family: 'FontAwesome';
+    content: "\f068";
+}
+/*
+    .dropactive {
+        background-color: aqua;
+    }*/
+.drophover, .drophover * {
+    background-color: aqua;
+}
+
+table.table tr {
+    background-color: #d8f5da;
+    color: blue;
+}
+
+.tb-contain {
+    width: 100%;
+}
+
+.table-title {
+    padding-left: 10px;
+}
+
+.aling {
+    margin: 5px;
+}
+
+.spandpattern {
+    color: Green;
+}
+
+.modal.modal-custom.pattern-bom .modal-lg {
+    max-width: 1150px;
+}
+
+.memberAction {
+    color: blue;
+    cursor: pointer;
+}
+
+.rowdragg {
+    display: table-cell;
+    vertical-align: middle;
+}
+
+.DraggAllItem {
+    cursor: move;
+    display: table;
+    width: 200px;
+    height: 50px;
+    text-align: center;
+    border: 1px solid red;
+    background-color: #d8f5da;
+    font-size: 18px;
+    color: blue;
+}
+
+.Linked {
+    background-color: #FAAC58;
+}
+
+.child-droppable .jqgrow {
+    cursor: pointer;
+}
+
+.jsPanel-btn-close {
+    display: none !important;
+}
+
+.ui-jqgrid .ui-icon-plus:before {
+    content: "\2b";
+}
+
+h4.category {
+    margin: 0;
+    padding: 0;
+    margin-top: 2px;
+}
+#imgMachine {
+    width: 100%;
+    height: 100%;
+}
+#ImagePath {
+    float: left;
+    border: none;
+}
+.imgMachine {
+    border: 1px solid #bfbfbf;
+    width: 300px;
+    height: 125px;
+}

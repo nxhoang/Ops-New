@@ -1,0 +1,157 @@
+﻿@{
+    ViewBag.Title = "Dashboard";
+    Layout = "~/Views/Shared/_MesLayout.cshtml";
+}
+
+<link href="~/Assets/DayRangePicker/daterangepicker.css" rel="stylesheet" />
+
+<!-- widget grid -->
+<section id="widget-grid" class="">
+
+    <!-- row -->
+    <div class="row">
+
+        <!-- NEW WIDGET START -->
+        <article class="col-xs-12 col-sm-12">
+
+            <!-- Widget ID (each widget will need unique ID)-->
+            <div class="jarviswidget jarviswidget-color-blueDark" id="wid-id-1"
+                 data-widget-colorbutton="false"
+                 data-widget-editbutton="false"
+                 data-widget-togglebutton="false"
+                 data-widget-deletebutton="false"
+                 data-widget-custombutton="false"
+                 data-widget-collapsed="false"
+                 data-widget-sortable="false">
+                <header>
+                    <h2>Machine Opearation</h2>
+
+                </header>
+
+                <!-- widget div-->
+                <div>
+
+
+                    <!-- end widget edit box -->
+                    <!-- widget content -->
+                    <div class="widget-body no-padding">
+
+                        <!-- this is what the user will see -->
+                        <div class="row" style="margin-top:5px">
+                            <div class="col-sm-2">
+                                <select id="drpShowType" class="form-control" onselect="">
+                                    <option value="1">No Of Machine</option>
+                                    <option value="2">Machine Hours</option>
+                                </select>
+                            </div>
+
+                            <div class="col-sm-1">
+                                <select id="drpShowBy" class="form-control">
+                                    <option value="1">Monthly</option>
+                                    <option value="2">Weekly</option>
+                                </select>
+                            </div>
+
+                            <div class="col-sm-1">
+                                <select id="drpYear" class="form-control">
+                                    <option value="2019">2019</option>
+                                    <option value="2020">2020</option>
+                                </select>
+                            </div>
+
+                            <div class="col-sm-1" id="divMonth">
+                                <select id="drpMonth" class="form-control">
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                    <option value="4">4</option>
+                                    <option value="5">5</option>
+                                    <option value="6">6</option>
+                                    <option value="7">7</option>
+                                    <option value="8">8</option>
+                                    <option value="9">9</option>
+                                    <option value="10">10</option>
+                                    <option value="11">11</option>
+                                    <option value="12">12</option>
+                                </select>
+                            </div>
+
+                            <div class="col-sm-1" id="divWeekNo" style="display:none">
+                                <select id="drpWeekNo" class="form-control">
+                                </select>
+                            </div>
+
+                            <div class="col-sm-1">
+                                <input type="button" id="btnShowMachineCount" class="btn btn-default" value="Show" onclick="showMachineCount()" />
+                            </div>
+
+                            <div class="col-sm-3">
+                            </div>
+                            <div class="col-sm-2">
+                                <div class="input-group">
+                                    <input type="text" placeholder="Select a date" class="form-control" id="txtYearMonth">
+                                    <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                                </div>
+                            </div>
+                            <div class="col-sm-1">
+                                <input type="button" id="btnUpdateMachineCount" class="btn btn-default" value="Update" onclick="updateMachineCount()" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <canvas id="cvCorp" class="chart-bg"></canvas>
+                            </div>
+                        </div>
+
+                        <hr class="margin-5">
+
+                        <div id="saleschart" class="chart"></div>
+
+                    </div>
+                    <!-- end widget content -->
+
+                </div>
+                <!-- end widget div -->
+
+            </div>
+            <!-- end widget -->
+
+        </article>
+        <!-- WIDGET END -->
+
+
+    </div>
+
+
+
+    <!-- end row -->
+
+</section>
+<!-- end widget grid -->
+
+@section Scripts{
+
+    <!--block UI-->
+    <script src="~/Assets/jquery.blockUI/jquery.blockUI.js"></script>
+
+    <script src="~/Assets/chartjs/Chart.min.js"></script>
+    <script src="~/Assets/chartjs/chartjs-plugin-datalabels.min.js"></script>
+    <script src="~/Assets/chartjs/chart-custom.js?v1.0.2"></script>
+
+    <script src="~/js/mes/mes-common.js"></script>
+
+    <script src="~/js/mes/dashboard/dashboard.js?v=1.0.2"></script>
+
+    <script src="~/js/plugin/bootstrap-timepicker/bootstrap-timepicker.min.js"></script>
+    <script src="~/assets/DayRangePicker/daterangepicker.min.js"></script>
+
+    <script>
+        // unblock when ajax activity stops
+        $(document).ajaxStop($.unblockUI);
+
+        $(function () {
+            InitPage();
+        });
+    </script>
+}
+

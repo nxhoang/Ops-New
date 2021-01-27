@@ -1,0 +1,19 @@
+﻿@{
+}
+@Html.Partial("_SearchStyle")
+@section Scripts {
+<script src="~/js/ops/Pages/ops-common.js?v=2.0.7"></script>
+<script src="~/js/ops/uicontrol/SearchStyle.js?v=1.0.5"></script>
+    <script>
+        $(document).ready(function () {
+            OpenReadySearch();
+        });
+        function GetKeyCodeStyle(styleCode, styleSize, styleColorSerial, revNo) {
+            var url = "/OpsLink/index";
+            window.location.href = url + "?styleCode=" + styleCode + "&styleSize=" + styleSize + "&serial=" + styleColorSerial + '&revNo=' + revNo;
+        }
+
+        function GetStyleMaster() {}
+    </script>
+}
+

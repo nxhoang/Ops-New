@@ -1,0 +1,546 @@
+﻿
+@{
+    ViewBag.Title = "MesManagement";
+    Layout = "~/Views/Shared/_MesLayout.cshtml";
+}
+
+
+<!--START date range picker-->
+<link href="~/assets/DayRangePicker/daterangepicker.min.css" rel="stylesheet" />
+<link href="~/css/mes.css" rel="stylesheet" />
+
+<style>
+    /*QCO Detail Modal*/
+    #myModal .modal-dialog {
+        width: calc(95%);
+    }
+
+    tr.ui-row-ltr td button {
+        padding: 2px 5px !important;
+    }
+
+    /*.ui-jqgrid tr.ui-row-ltr td {
+        padding: 3px 2px;
+    }
+*/
+    .chk-pro-readiness {
+        margin-bottom: 0 !important;
+    }
+
+    .txt-pro-readiness {
+        padding: 0 !important;
+        height: 25px;
+    }
+</style>
+
+<!-- Modal Mes package line detail -->
+<div class="modal fade" id="mdlMesPackageLineDt" role="dialog" aria-labelledby="mdlMesPackageLineDt" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    &times;
+                </button>
+                <h4 class="modal-title" id="mdlPpDivideTitle">MES package line detail</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+
+                    <div class="col-sm-2">
+                        <div class="form-group">
+                            <label> Line</label>
+                            <select id="drpLineDt" class="form-control" data-placeholder=""></select>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-3">
+                        <div class="form-group">
+                            <label> Module</label>
+                            <select id="drpModuleLineDt" class="form-control" data-placeholder=""></select>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-3">
+                        <div class="form-group">
+                            <label> Process Group</label>
+                            <select id="drpProGroupLineDt" class="form-control" data-placeholder=""></select>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-2">
+                        <div class="form-group">
+                            <label> Production Date</label>
+                            <input id="txtProDateLineDt" type="text" class="form-control" />
+                        </div>
+                    </div>
+
+                    <div class="col-sm-2">
+                        <div class="form-group">
+                            <label> &nbsp;</label>
+                            <button type="button" id="btnAddLineDetail" class="btn btn-primary btn-sm form-control">
+                                <span class="glyphicon glyphicon-plus"></span> Add Line
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <table id="tbLineDetail"></table>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="btnDeleteLineDt" style="margin-bottom: 0" class="btn btn-warning">
+                    Delete
+                </button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">
+                    Cancel
+                </button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.end modal -->
+<!-- Modal Mes production log -->
+
+<div class="modal fade" id="mdlMesProductionLog" role="dialog" aria-labelledby="mdlMesProductionLog" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    &times;
+                </button>
+                <h4 class="modal-title">MES production log</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="form-horizontal bv-form">
+                        <div class="form-group">
+                            <label class="col-sm-1 control-label">Package</label>
+                            <label id="lblMxPkgMdl" class="col-sm-4 control-label"></label>
+
+                            <label class="col-sm-2 control-label">Actual Qty</label>
+                            <div class="col-sm-1">
+                                <input type="text" id="txtManualQty" onkeypress="return isNumber(event)" maxlength="3" class="form-control">
+                            </div>
+
+                            <div class="col-sm-2">
+                                <button type="button" id="btnUpdateMxQty" class="btn btn-primary btn-sm form-control">
+                                    <span class="glyphicon glyphicon-save"></span> Save
+                                </button>
+                            </div>
+
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row" style="display: none">
+                    <label id="lblPkgGroupMdl"></label>
+                    <label id="lblSeqMdl"></label>
+                </div>               
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">
+                    Cancel
+                </button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.end modal -->
+
+<!--START modal MES production log-->
+<div class="modal fade" id="mdlMesProductionLog2" role="dialog" aria-labelledby="mdlMesProductionLog2" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    &times;
+                </button>
+                <h4 class="modal-title">MES production log (<label id="lblMxPkgPrLogMdl"></label> - Target Qty:  <label id="lblMxTargetProLogMdl"></label>) </h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="form-horizontal bv-form">
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">Machines</label>
+                            <div class="col-sm-3">
+                                <input type="text" id="txtMachinePrLogMdl" onkeypress="return isNumber(event)" maxlength="5" class="form-control">
+                            </div>
+
+                            <label class="col-sm-2 control-label">Achieved</label>
+                            <div class="col-sm-3">
+                                <input type="text" id="txtAchievedPrLogMdl" onkeypress="return isNumber(event)" maxlength="5" class="form-control">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-horizontal bv-form">
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">Workers</label>
+                            <div class="col-sm-3">
+                                <input type="text" id="txtWorkerPrLogMdl" onkeypress="return isDecimalNumber(event)" maxlength="5" class="form-control">
+                            </div>
+
+                            <label class="col-sm-2 control-label">O/T Workers</label>
+                            <div class="col-sm-3">
+                                <input type="text" id="txtWorkerOTPrLogMdl" onkeypress="return isDecimalNumber(event)" maxlength="5" class="form-control">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-horizontal bv-form">
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">Working Hours</label>
+                            <div class="col-sm-3">
+                                <input type="text" id="txtWorkingHoursPrLogMdl" onkeypress="return isDecimalNumber(event)" maxlength="5" class="form-control">
+                            </div>
+
+                            <label class="col-sm-2 control-label">O/T Hours</label>
+                            <div class="col-sm-3">
+                                <input type="text" id="txtOTHourPrLogMdl" onkeypress="return isDecimalNumber(event)" maxlength="5" class="form-control">
+                            </div>
+                        </div>
+                    </div>
+                </div>               
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="btnSaveProLog" class="btn btn-primary">
+                    <span class="glyphicon glyphicon-save"></span> Save
+                </button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.end modal -->
+<!--END modal MES production log-->
+
+<!--Add Package Group partial view-->
+@Html.Partial("~/Views/PartialView/PackageGroup.cshtml", null)
+
+<div class="top-buffer"></div>
+
+<!-- widget grid -->
+<section id="widget-grid" class="">
+
+    <!-- row -->
+    <div class="row">
+        <!-- NEW WIDGET START -->
+        <article class="col-sm-4">
+
+            <!-- Widget ID (each widget will need unique ID)-->
+            <div class="jarviswidget jarviswidget-color-green" id="wid-id-0" data-widget-editbutton="false" data-widget-sortable="false">
+
+                <header>
+                    <h2><strong>AOMTOPS P. Packages</strong></h2>
+
+                </header>
+
+                <!-- widget div-->
+                <div>
+
+                    <!-- widget content -->
+                    <div class="widget-body">
+                        <table id="tbPPackage"></table>
+                        <div id="divPPackagePage"></div>
+
+                    </div>
+                    <!-- end widget content -->
+
+                </div>
+                <!-- end widget div -->
+
+            </div>
+            <!-- end widget -->
+
+        </article>
+        <!-- WIDGET END -->
+        <!-- NEW WIDGET START -->
+        <article class="col-sm-4">
+
+            <!-- Widget ID (each widget will need unique ID)-->
+            <div class="jarviswidget jarviswidget-color-green" id="wid-id-1" data-widget-editbutton="false" data-widget-sortable="false">
+
+                <header>
+                    <h2><strong>MES P. Packages</strong></h2>
+
+                </header>
+
+                <!-- widget div-->
+                <div>
+
+                    <!-- widget content -->
+                    <div class="widget-body">
+
+                        <table id="tbMesPackage"></table>
+                        <div id="divMesPackagePage"></div>
+
+                    </div>
+                    <!-- end widget content -->
+
+                </div>
+                <!-- end widget div -->
+
+            </div>
+            <!-- end widget -->
+
+        </article>
+        <!-- WIDGET END -->
+        <!-- NEW WIDGET START -->
+        <article class="col-sm-4">
+
+            <!-- Widget ID (each widget will need unique ID)-->
+            <div class="jarviswidget jarviswidget-color-green" id="wid-id-2" data-widget-editbutton="false" data-widget-sortable="false">
+
+                <header>
+                    <h2><strong>Production readiness</strong></h2>
+
+                </header>
+
+                <!-- widget div-->
+                <div>
+
+                    <!-- widget content -->
+                    <div class="widget-body">
+
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="row">
+                                    <div class="col-sm-9">1. MES Operation Plan</div>
+                                    <div class="col-sm-3">
+                                        <form class="smart-form">
+                                            <section class="chk-pro-readiness">
+                                                <label class="checkbox">
+                                                    <input type="checkbox" id="chkMesOpCheck" name="checkbox-inline">
+                                                    <i></i>
+                                                </label>
+                                            </section>
+                                        </form>
+                                    </div>
+
+                                    @*<div class="col-sm-3">
+
+                                            <input type="button" id="btnMesOpCheck" class="btn-pro-readiness" value="0%" />
+                                        </div>*@
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="row">
+                                    <div class="col-sm-8">6. Treatments</div>
+                                    <div class="col-sm-4">
+                                        <input type="text" id="txtTreatment" value="100%" class="form-control txt-pro-readiness" readonly />
+                                        @*<input type="button" id="btnTreatments" class="btn-pro-readiness" value="0%" />*@
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="top-buffer10"></div>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="row">
+                                    <div class="col-sm-9">2. BOM, Patterns</div>
+                                    <div class="col-sm-3">
+                                        <form class="smart-form">
+                                            <section class="chk-pro-readiness">
+                                                <label class="checkbox">
+                                                    <input type="checkbox" id="chkBomPatterns" name="checkbox-inline">
+                                                    <i></i>
+                                                </label>
+                                            </section>
+                                        </form>
+                                    </div>
+
+                                    @*<div class="col-sm-3">
+                                            <input type="button" id="btnBOMPatterns" class="btn-pro-readiness" value="0%" />
+                                        </div>*@
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="row">
+                                    <div class="col-sm-8">7. Tools</div>
+                                    <div class="col-sm-4">
+                                        <form class="smart-form">
+                                            <section class="chk-pro-readiness">
+                                                <label class="checkbox">
+                                                    <input type="checkbox" id="chkToolReadiness" name="checkbox-inline">
+                                                    <i></i>
+                                                </label>
+                                            </section>
+                                        </form>
+                                    </div>
+                                    @*<div class="col-sm-4">
+                                            <input type="button" id="btnToolReadiness" class="btn-pro-readiness" value="0%" />
+                                        </div>*@
+                                </div>
+                            </div>
+
+
+                        </div>
+                        <div class="top-buffer10"></div>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="row">
+                                    <div class="col-sm-9">3. PP Meeting Confirm</div>
+                                    <div class="col-sm-3">
+                                        <form class="smart-form">
+                                            <section class="chk-pro-readiness">
+                                                <label class="checkbox">
+                                                    <input type="checkbox" id="chkPpMeetingCnf" name="checkbox-inline">
+                                                    <i></i>
+                                                </label>
+                                            </section>
+                                        </form>
+                                    </div>
+                                    @*<div class="col-sm-3">
+                                            <input type="button" id="btnPPMeetingCnf" class="btn-pro-readiness" value="0%" />
+                                        </div>*@
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="row">
+                                    <div class="col-sm-8">8. Machines</div>
+                                    <div class="col-sm-4">
+                                        <form class="smart-form">
+                                            <section class="chk-pro-readiness">
+                                                <label class="checkbox">
+                                                    <input type="checkbox" id="chkMachineReadiness" name="checkbox-inline">
+                                                    <i></i>
+                                                </label>
+                                            </section>
+                                        </form>
+                                    </div>
+                                    @*<div class="col-sm-4">
+                                            <input type="button" id="btnMachineReadiness" class="btn-pro-readiness" value="0%" />
+                                        </div>*@
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="top-buffer10"></div>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="row">
+                                    <div class="col-sm-9">4. Material readiness</div>
+                                    <div class="col-sm-3">
+                                        @* disable by Tai Le (Thomas)
+                                            <input type="button" id="btnMatReadiness" class="btn-pro-readiness" value="0%" />*@
+                                        <input type="button" id="btnCheckMatReadiness" class="btn-pro-readiness" value="Detail" />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-6">
+                                <div class="row">
+                                    <div class="col-sm-8">9. Jig (Requested)</div>
+                                    <div class="col-sm-4">
+                                        <form class="smart-form">
+                                            <section class="chk-pro-readiness">
+                                                <label class="checkbox">
+                                                    <input type="checkbox" id="chkJigRegistered" name="checkbox-inline">
+                                                    <i></i>
+                                                </label>
+                                            </section>
+                                        </form>
+                                    </div>
+                                    @*<div class="col-sm-4">
+                                            <input type="button" id="btnJigRegistered" class="btn-pro-readiness" value="0%" />
+                                        </div>*@
+                                </div>
+                            </div>
+
+
+                        </div>
+                        <div class="top-buffer10"></div>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="row">
+                                    <div class="col-sm-9">5. Cutting Status</div>
+                                    <div class="col-sm-3">
+                                        <input type="text" id="txtCutting" style="min-width: 49px;" value="100%" class="form-control txt-pro-readiness" readonly />
+                                        @*<input type="button" id="btnCuttingStatus" class="btn-pro-readiness" value="0%" />*@
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="row">
+                                    <div class="col-sm-8">10. Line Setup</div>
+                                    <div class="col-sm-4">
+                                        <form class="smart-form">
+                                            <section class="chk-pro-readiness">
+                                                <label class="checkbox">
+                                                    <input type="checkbox" id="chkLineSetup" name="checkbox-inline">
+                                                    <i></i>
+                                                </label>
+                                            </section>
+                                        </form>
+                                    </div>
+                                    @*<div class="col-sm-4">
+                                            <input type="button" id="btnLineSetup" class="btn-pro-readiness" value="0%" />
+                                        </div>*@
+                                </div>
+
+                            </div>
+
+                        </div>
+                        <div class="top-buffer"></div>
+                        <div class="row">
+                            <div class="col-sm-2"></div>
+                            <div class="col-sm-2">
+                                <button type="button" id="btnResetProReadiness" class="btn btn-warning">Reset</button>
+                            </div>
+                            <div class="col-sm-2">
+                                <button type="button" id="btnStartExecution" class="btn btn-primary">Start</button>
+                            </div>
+                            <div class="col-sm-2">
+                                <button type="button" id="btnExcelWorkingProcess" class="btn btn-success">Excel</button>
+                            </div>
+                            <div class="col-sm-2">
+                                <button type="button" id="btnUpdateProReadiness" class="btn btn-success">Update</button>
+                            </div>
+                            <div class="col-sm-2"></div>
+                        </div>
+
+                    </div>
+                    <!-- end widget content -->
+
+                </div>
+                <!-- end widget div -->
+
+            </div>
+            <!-- end widget -->
+
+        </article>
+        <!-- WIDGET END -->
+
+    </div>
+
+    <!-- end row -->
+
+</section>
+<!-- end widget grid -->
+
+
+@section Scripts{
+
+    <script src="~/assets/DayRangePicker/daterangepicker.min.js"></script>
+
+    <script src="~/js/plugin/jqgrid/jquery.jqGrid.min.js"></script>
+    <script src="~/js/plugin/jqgrid/grid.locale-en.min.js"></script>
+
+    <script src="~/js/mes/mes-common.js?v=1.0.3"></script>
+    <script src="~/js/mes/mes-management/mes-management.js?v=1.1.1"></script>
+    <script src="~/js/mes/mes-management/mes-management-event.js?v=1.0.7"></script>
+
+    <!--package group partial view-->
+    <script src="~/js/mes/partial-view/package-group.js?v=1.0.4"></script>
+    <script src="~/js/mes/partial-view/package-group-event.js?v=1.0.2"></script>
+
+    <script>
+
+        $(function () {
+            InitMesManagementPage();
+        });
+    </script>
+
+}

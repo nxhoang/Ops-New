@@ -1,0 +1,53 @@
+﻿@{
+    ViewBag.Title = "Tools management";
+    ViewBag.PageTitle = "Tools management";
+}
+@Html.Partial("~/Views/OpsMasterData/_machine.cshtml")
+@Html.Partial("~/Views/UIControl/_SearchStyle.cshtml")
+
+@section Scripts
+{
+<script src="~/js/ops/uicontrol/SearchStyle.js?v=1.0.5"></script>
+    <script src="~/js/ops/generic/SmSgManager.js"></script>
+    <script src="~/js/ops/Pages/Machine.js?v=1.0.6"></script>
+    <script>
+        $(document).ready(function () {
+            CreateMcGrid($("#cbBuyerId").val(),MachineType.tool, "Tools management");
+            AppendMcmtByCode(MachineType.tool);
+            AppendBuyerTocb();
+            AppendBrand();
+            AppendSuppiers(MachineType.tool);
+            ChangeType(MachineType.tool);
+            OpenReadySearch();
+            AppendUnit("UnitCode");
+        });
+
+        var arrMc = {
+            ItemCode: "Code",
+            ItemName: "Name",
+            Model: "Model/Serial",
+            Cost: "Price",
+            CategId: "Category",
+            Category: "Category",
+            Buyer: "Buyer",
+            Brand: "Brand",
+            Machine: "Tools",
+            Sos: "Supplier",
+            ImagePath: "Image"
+        };
+
+        var arrAcction = {
+            editTitle: CheckRoleEdit()?"Edit tool":"Tool",
+            submintBtn: "Update",
+            cancelBtn: "Close",
+            addTitle: "Add tool",
+            addBtn: "Add"
+        }
+        function GetKeyCodeStyle(styleCode, styleSize, styleColorSerial, revNo) {
+
+        }
+        function GetStyleMaster() {
+
+        }
+    </script>
+}

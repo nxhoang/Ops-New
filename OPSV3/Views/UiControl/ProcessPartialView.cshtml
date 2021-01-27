@@ -1,0 +1,740 @@
+﻿<!--Keep image name and video name -->
+<input id="hdImageName" type="hidden" />
+<input id="hdVideoName" type="hidden" />
+
+<!---Keep operation name value for saving into database-->
+@*<input id="hdOpNameVal" type="hidden" />*@
+<input id="hdOpNameTex" type="hidden" />
+
+<style>
+    #mdlInputOpTime {
+        z-index: 1500;
+    }
+
+    .fieldset-pro-par{
+        min-height: 120px;
+    }
+</style>
+
+<!-- Modal Add New Process -->
+<div class="modal modal-custom fade" id="proccesModal" role="dialog" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-lg">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Process Detail</h4>
+            </div>
+            <div class="modal-body">
+                <div class="modal-body-custom">
+                    <div class="row">
+                        <div class="col-sm-6 col-xs-12">
+                            <form class="form-horizontal" role="form">
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label no-padding-right" for="txtProcessNo"> Process no </label>
+                                    <div class="col-sm-9">
+                                        <input type="text" id="txtProcessNo" readonly="readonly" style="display:none" placeholder="" class="form-control">
+                                        <input type="text" id="txtProcessNumber" onkeypress="return isDecimalNumber(event)" maxlength="10" placeholder="" class="form-control">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label no-padding-right"> Module </label>
+                                    <div class="col-sm-9 selec2-custom">
+                                        <select id="drpModule" class="form-control" data-placeholder="Select module"></select>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label no-padding-right"> Job type</label>
+                                    <div class="col-sm-9 selec2-custom">
+                                        <select id="drpJobCode" class="form-control" data-placeholder="Select action process"></select>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label no-padding-right"> Action code </label>
+                                    <div class="col-sm-4 selec2-custom">
+                                        <select id="drpActionCode" class="form-control" data-placeholder="Select action code"></select>
+                                    </div>
+                                    <div class="col-sm-4 selec2-custom" style="display:normal">
+                                        <select id="drpTemplate" class="form-control" data-placeholder="Select Template"></select>
+                                    </div>
+                                    <div class="col-sm-1" style="display:normal">
+                                        <button type="button" id="btnGetProNameTemp" class="btn btn-default btn-default-modal form-control">...</button>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label no-padding-right"> Factory </label>
+                                    <div class="col-sm-9 selec2-custom">
+                                        <select id="drpFactory" class="form-control" data-placeholder="Select Factory"></select>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label no-padding-right" for="">
+                                        Process name <span class="star-color">*</span>
+                                        <a href="http://203.113.146.146:775/Func/Article/?prjid=1&mnid=17&art=37" target="_blank" title="How to add new process"><i class="fa fa-question-circle" aria-hidden="true"></i></a>
+                                    </label>
+                                    <div class="col-sm-4 selec2-custom" style="display:none">
+                                        <select id="drpOpName" class="form-control" data-placeholder="Select process name" multiple="multiple"></select>
+                                    </div>
+                                    <div class="col-sm-2" style="display:none">
+                                        <button type="button" id="btnLoadAllProcessName" class="btn btn-default btn-default-modal form-control">Load all</button>
+                                    </div>
+                                    @*START ADD HA*@
+                                    <div class="col-sm-3">
+                                        <button type="button" id="btnEnterProcess" class="btn btn-default btn-default-modal form-control" @*style="display:none" *@>Select Process</button>
+
+                                    </div>
+                                    @*END ADD HA*@
+                                    <div class="col-sm-3" style="display:none">
+                                        <button type="button" id="btnOpTime" class="btn btn-default btn-default-modal form-control"><span class="star-color">*</span> Sub-Process</button>
+                                    </div>
+                                    @*START ADD) SON - 2019.03.1.0 - 08/Mar/2019:*@
+                                    <div class="col-sm-6">
+                                        <input type="text" id="txtProcessName" value="" readonly="readonly" class="form-control">
+                                    </div>
+                                    @*END ADD) SON - 2019.03.1.0 - 08/Mar/2019:*@
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label no-padding-right"> Machine </label>
+                                    <div class="col-sm-4 selec2-custom">
+                                        <select id="drpCategoryMachine" class="form-control" multiple="multiple" data-placeholder="Category"></select>
+                                    </div>
+                                    <div class="col-sm-5 selec2-custom">
+                                        <select id="drpMachine" class="form-control" multiple="multiple"></select>
+                                    </div>
+
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label no-padding-right"> Main Machine </label>
+                                    <div class="col-sm-9 selec2-custom">
+                                        <select id="drpMachineDefault" class="form-control" data-placeholder="Main machine"></select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label no-padding-right"> Tool </label>
+                                    <div class="col-sm-4 selec2-custom">
+                                        <select id="drpCategoryTool" class="form-control" multiple="multiple" data-placeholder="Category"></select>
+                                    </div>
+                                    <div class="col-sm-5 selec2-custom">
+                                        <select id="drpTool" class="form-control" multiple="multiple"></select>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label no-padding-right"> Main Tool </label>
+                                    <div class="col-sm-9 selec2-custom">
+                                        <select id="drpToolMain" class="form-control" data-placeholder="Main tool"></select>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label no-padding-right" for="txtMachineCount"> Machine(s) <span class="star-color">*</span></label>
+                                    <div class="col-sm-9">
+                                        <input type="text" id="txtMachineCount" placeholder="" value="1" maxlength="2" onkeypress="return isNumber(event)" class="form-control">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label no-padding-right" for="txtWorker"> Worker(s) <span class="star-color">*</span> </label>
+                                    <div class="col-sm-9">
+                                        <input type="text" id="txtWorker" placeholder="" value="1" maxlength="4" onkeypress="return isDecimalNumber(event)" class="form-control">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label no-padding-right" for="txtProcessTime"> Process time <span class="star-color">*</span> </label>
+                                    <div class="col-sm-4">
+                                        <input type="text" id="txtProcessTime" onkeypress="return isNumber(event)" maxlength="3" placeholder="" class="form-control">
+                                    </div>
+                                    @*START ADD: HA*@
+                                    <div class="col-sm-5">
+                                        <input type="text" id="txtStitchCount" onkeypress="return isNumber(event)" maxlength="3" placeholder="Stitch Count" class="form-control">
+                                    </div>
+                                    @*END ADD: HA*@
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label no-padding-right" for="txtMaxTime"> Max time <span class="star-color">*</span> </label>
+                                    <div class="col-sm-9">
+                                        <input type="text" id="txtMaxTime" value="0" placeholder="" maxlength="3" onkeypress="return isDecimalNumber(event)" class="form-control">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label no-padding-right" for="txtBenchmarkTime"> Benchmark time </label>
+                                    <div class="col-sm-9">
+                                        <input type="text" id="txtBenchmarkTime" onkeypress="return isNumber(event)" maxlength="3" placeholder="" class="form-control">
+                                    </div>
+                                </div>
+
+                            </form>
+                        </div>
+                        <div class="col-sm-6 col-xs-12">
+                            <div class="row">
+                                <div class="col-sm-12 col-xs-12">
+                                    <form class="form-horizontal" role="form">
+                                        <div class="form-group">
+                                            <label class="col-sm-3 control-label no-padding-right" for="txtProcessCost"> Process cost </label>
+                                            <div class="col-sm-9">
+                                                <input type="text" id="txtProcessCost" onkeypress="return isDecimalNumber(event)" maxlength="7" placeholder="" class="form-control">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-3 control-label no-padding-right" for="txtOfferPrice"> Offer price </label>
+                                            <div class="col-sm-9">
+                                                <input type="text" id="txtOfferPrice" onkeypress="return isDecimalNumber(event)" maxlength="7" placeholder="" class="form-control">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-3 control-label no-padding-right" for="txtCostingGroup"> Costing group </label>
+                                            <div class="col-sm-9">
+                                                <input type="text" id="txtCostingGroup" placeholder="" class="form-control">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-3 control-label no-padding-right"> Old grouping @*<span class="star-color">*</span>*@ </label>
+                                            <div class="col-sm-9 selec2-custom">
+                                                <select id="drpProcessGroup" class="form-control" data-placeholder="Select old grouping" disabled></select>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-3 control-label no-padding-right">  </label>
+                                            <div class="col-sm-7">
+                                                <label class="checkbox-inline"><input type="checkbox" id="chkOutsourcing" value="">Outsourcing</label>
+                                                <label class="checkbox-inline"><input type="checkbox" id="chkHotSpot" value="">Hot Spot</label>
+                                            </div>
+                                            @*START ADD) SON - (2019.08.29) - 29 August 2019*@
+                                            <div class="col-sm-2">
+                                                <button type="button" id="btnShowPaiting" class="btn btn btn-primary btn-modal form-control">Painting</button>
+                                            </div>
+                                            @*END ADD) SON - (2019.08.29) - 29 August 2019*@
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12 col-xs-12">
+                                    <form class="form-horizontal" role="form">
+                                        @*<div class="form-group">
+                                                <label class="col-sm-3 control-label no-padding-right">  </label>
+                                                <div class="col-sm-7">
+                                                    <label class="checkbox-inline"><input type="checkbox" id="chkOutsourcing" value="">Outsourcing</label>
+                                                    <label class="checkbox-inline"><input type="checkbox" id="chkHotSpot" value="">Hot Spot</label>
+                                                </div>
+                                                <div class="col-sm-2">
+                                                    <button type="button" id="btnShowPaiting" class="btn btn btn-primary btn-modal form-control">Painting</button>
+                                                </div>
+                                            </div>*@
+                                    </form>
+                                </div>
+                            </div>
+                            <div class="space-5"></div>
+                            <div class="row">
+                                <div class="col-sm-6 col-xs-12">
+                                    <div class="upload-image">
+                                        <div class="row">
+                                            <div class="wrap-div">
+                                                <label id="lblImageName">No image.</label>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="div-img-preview">
+                                                <img id="imgPreview" src="~/img/no-image.png" alt="Image upload" class="img-preview" />
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="div-bnt-upload-image">
+                                                <div class="col-sm-9 nopadding">
+                                                    <label class="btn btn-success fileinput-button btn-upload-file">
+                                                        <i class="glyphicon glyphicon-plus"></i>
+                                                        <span>Add image...</span>
+                                                        <input type="file" id="flProcessImage" accept="image/*" style="display: none;">
+                                                    </label>
+                                                </div>
+                                                <div class="col-sm-3 nopadding">
+                                                    <button id="btnRemoveImg" class="btn btn-danger btn-modal btn-trash" data-toggle="tooltip" title="Remove image">
+                                                        <i class="glyphicon glyphicon-trash"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-6 col-xs-12">
+                                    <div class="upload-video">
+
+                                        <div class="row">
+                                            <div class="">
+                                                <label id="lblVideoName">No video.</label>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="div-video-preview">
+                                                <video class="video-preview" poster="/img/no-video.png" id="vidPreview" controls>
+                                                    <source src="" id="videoPreview" type="video/mp4">
+                                                    Your browser does not support HTML5 video.
+                                                </video>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="div-bnt-upload-video">
+                                                <div class="col-sm-9 nopadding">
+                                                    <label class="btn btn-success fileinput-button btn-upload-file">
+                                                        <i class="glyphicon glyphicon-plus"></i>
+                                                        <span>Add video...</span>
+                                                        <input type="file" id="flProcessVideo" accept="video/*" style="display: none;">
+                                                    </label>
+
+                                                </div>
+                                                <div class="col-sm-3 nopadding">
+                                                    <button id="btnRemoveVideo" class="btn btn-danger btn-modal btn-trash" data-toggle="tooltip" title="Remove video">
+                                                        <i class="glyphicon glyphicon-trash"></i>
+                                                    </button>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="row">
+                                        <div class="modal-process-remarks">
+                                            <textarea class="form-control" id="txtRemarks" placeholder="Remarks"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="row">
+                                        <fieldset class="iottype">
+                                            <legend class="iottype">IoT tracking device type</legend>
+                                            <label class="radio-inline"><input type="radio" id="rdNormal" name="assemblyradio">Normal Process</label>
+                                            <label class="radio-inline"><input type="radio" id="rdAssembly" name="assemblyradio">Assembly</label>
+                                            <label class="radio-inline"><input type="radio" id="rdFinalAssembly" name="assemblyradio">Final Assembly</label>
+                                            <label class="radio-inline"><input type="radio" id="rdQa" name="assemblyradio">QA</label>
+                                            <div style="margin-bottom:5px"></div>
+                                        </fieldset>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="btnUpdateProcess" class="btn btn btn-primary btn-modal">Save</button>
+                <button type="button" id="btnSaveProcess" class="btn btn btn-primary btn-modal">Save</button>
+                <button type="button" class="btn btn btn-primary btn-modal" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Input Operation time -->
+<div class="modal fade modal-custom modal-custom-width" id="mdlInputOpTime" role="dialog" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-lg">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Input Operation Time</h4>
+            </div>
+            <div class="modal-body">
+                <div class="modal-body-custom">
+                    @*<div class="modal-content-ops">
+                    *@
+                    <div class="row">
+                        <div id="divInputOptime" class="col-sm-12 col-xs-12">
+                            <table id="tbInputOptime"></table>
+                        </div>
+                    </div>
+                    @*
+                        </div>*@
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="btnGetOptime" class="btn btn btn-primary btn-modal">Ok</button>
+                <button type="button" class="btn btn btn-primary btn-modal" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Clone Process -->
+<div class="modal fade modal-custom modal-custom-width" id="mdlCloneProcess" role="dialog" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-lg">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Clone Process</h4>
+            </div>
+            <div class="modal-body">
+                <div class="modal-body-custom">
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <table id="tblProcessClone"></table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="btnCloneProcess" class="btn btn btn-primary btn-modal">
+                    <i class="glyphicon glyphicon-copy"> </i> Clone
+                </button>
+                <button type="button" class="btn btn btn-primary btn-modal" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!-- Modal Process Name Tempalte -->
+<div class="modal fade modal-custom modal-custom-width" id="mdlProcessNameTemplate" role="dialog" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-lg">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Process Name Template</h4>
+            </div>
+            <div class="modal-body">
+                <div class="modal-body-custom">
+                    <div class="row">
+                        <div class="col-sm-12 col-xs-12">
+                            <table id="tbProcessNameTemplate"></table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="btnUsingProTemp" class="btn btn btn-primary btn-modal">Using Template</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- START ADD) SON (2019.08.29) - 29 August 2019 -->
+<div class="modal fade modal-custom modal-custom-width" id="mdlPaitingDetail" role="dialog" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-lg">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button"id="btnClosePaitingDtMdl" class="close">&times;</button>
+                <h4 class="modal-title">Paiting Detail</h4>
+            </div>
+            <div class="modal-body">
+                <div class="modal-body-custom">
+                    <div class="row">
+                        <div class="col-sm-6">
+
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <fieldset class="iottype fieldset-pro-par">
+                                        <legend class="iottype">Material Type</legend>
+                                        <div class="radio">
+                                            <label><input type="radio" id="rdNormalMaterial" name="materialType">Normal</label>
+                                        </div>
+                                        <div class="radio">
+                                            <label><input type="radio" id="rdHeatSenMaterial" name="materialType">Heat Sensitive</label>
+                                        </div>
+                                        <div style="margin-bottom:5px"></div>
+                                    </fieldset>
+                                </div>
+                                <div class="col-sm-6">
+                                    <fieldset class="iottype fieldset-pro-par">
+                                        <legend class="iottype">Painting Type</legend>
+                                        <div class="radio">
+                                            <label><input type="radio" id="rdPromoter" name="paitingType">Promoter</label>
+                                        </div>
+                                        <div class="radio">
+                                            <label><input type="radio" id="rdPrimer" name="paitingType">Primer</label>
+                                        </div>
+                                        <div class="radio">
+                                            <label><input type="radio" id="rdPaint" name="paitingType">Paint</label>
+                                        </div>
+                                        <div style="margin-bottom:5px"></div>
+                                    </fieldset>
+                                </div>
+                            </div>                            
+                        </div>
+                        <div class="col-sm-6">
+                            <form class="form-horizontal" role="form">
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label no-padding-right"> Temperature </label>
+                                    <label id="lblTemperatureRange" class="col-sm-3 control-label no-padding-right">  </label>
+                                    <div class="col-sm-6 selec2-custom">
+                                        <select id="drpTemperature" class="form-control" data-placeholder="Select temprature"></select>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label no-padding-right"> Drying Time </label>
+                                    <label id="lblDryingTimeRange" class="col-sm-3 control-label no-padding-right">  </label>
+                                    <div class="col-sm-6 selec2-custom">
+                                        <select id="drpDryingTime" class="form-control" data-placeholder="Select drying time"></select>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label no-padding-right"> Cooling Time </label>
+                                    <label id="lblCoolingTimeRange" class="col-sm-3 control-label no-padding-right"> </label>
+                                    <div class="col-sm-6 selec2-custom">
+                                        <select id="drpCoolingTime" class="form-control" data-placeholder="Select cooling time"></select>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="btnPaitingDtCancle" class="btn btn btn-primary btn-modal">Cancel</button>
+                <button type="button" id="btnPaintingDtOK" class="btn btn btn-primary btn-modal" data-dismiss="modal">OK</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- END ADD) SON (2019.08.29) - 29 August 2019 -->
+<!-- Modal Add Process Template - HA-->
+<div class="modal modal-custom fade" id="mdlProccesTemplate" role="dialog" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-lg">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Process Template</h4>
+            </div>
+            <div class="modal-body">
+                <div class="modal-body-custom">
+                    @*<div class="row">
+                            <div class="row">
+                                <form class="form-horizontal" role="form">
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label no-padding-right"> Main Level </label>
+                                        <div class="col-sm-2 selec2-custom">
+                                            <select id="drpMainLevel" class="form-control" data-placeholder="Select level"></select>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <br>*@
+                    <table style="width:100%;" id="tbProcessTemplate"></table>
+                    <div id="pager4"></div>
+
+                </div>
+            </div>
+            <div class="row">
+                <div class="modal-footer">
+                    <button type="button" id="btnAddTemplate" class="btn btn btn-primary btn-modal">Add</button>
+                    <button type="button" class="btn btn btn-primary btn-modal" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Sub Process Detail - HA-->
+<div class="modal modal-custom fade" id="mdlProcessTemplateDetail" style="z-index:9999" role="dialog" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-lg">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Detail</h4>
+            </div>
+            <div class="modal-body">
+                <div class="modal-body-custom">
+
+                    <div class="row">
+                        <div class="col-sm-6 col-xs-12">
+                            <form class="form-horizontal" role="form">
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label no-padding-right"> Machine type </label>
+                                    <div class="col-sm-9 selec2-custom">
+                                        <select id="selectMachineTypeSubDetail" class="form-control" style="width: 100%"></select>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label no-padding-right" for="txtMachineCount"> Machine count </label>
+                                    <div class="col-sm-9 selec2-custom">
+                                        <input type="text" id="txtMachineCountSubDetail" class="form-control" onkeypress="return isDecimalNumber(event)" maxlength="2">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label no-padding-right" for="txtRemarks"> Remarks </label>
+                                    <div class="col-sm-9">
+                                        <input type="text" id="txtRemarksSubDetail" class="form-control">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label no-padding-right" for="txtMaxTime"> Max time </label>
+                                    <div class="col-sm-3">
+                                        <input type="text" id="txtMaxTimeSubDetail" class="form-control" onkeypress="return isDecimalNumber(event)" maxlength="7">
+                                    </div>
+                                    <label class="col-sm-3 control-label no-padding-right" for="txtMaxTime"> Stitching count </label>
+                                    <div class="col-sm-3">
+                                        <input type="text" id="txtStitchCountSubDetail" class="form-control" onkeypress="return isDecimalNumber(event)" maxlength="10">
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="col-sm-6 col-xs-12">
+                            <form class="form-horizontal" role="form">
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label no-padding-right" for="txtManCount"> Man count </label>
+                                    <div class="col-sm-9 selec2-custom">
+                                        <input type="text" id="txtManCountSubDetail" onkeypress="return isDecimalNumber(event)" maxlength="7" class="form-control">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label no-padding-right"> Job type </label>
+                                    <div class="col-sm-9 selec2-custom">
+                                        <select id="drpJobTypeSubDetail" class="form-control" data-placeholder="Select job type"></select>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label no-padding-right"> Tool ID </label>
+                                    <div class="col-sm-9 selec2-custom">
+                                        <select id="selectToolIdSubDetail" class="form-control" style="width: 100%"></select>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label no-padding-right"> Action code </label>
+                                    <div class="col-sm-9 select2-third-modal selec2-custom">
+                                        <select id="drpActionCodeSubDetail" class="form-control" data-placeholder="Select action code"></select>
+                                    </div>
+                                </div>
+                            </form>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="btnSaveProcessDetail" class="btn btn btn-primary btn-modal">Ok</button>
+                <button type="button" class="btn btn btn-primary btn-modal" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@*START ADD: HA*@
+<!-- Modal Input Operation time -->
+<div class="modal fade modal-custom modal-custom-width" id="mdlProcess" role="dialog" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-lg">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" id="btnCloseOpTime1" class="close">&times;</button>
+                <h4 class="modal-title">Input Operation Time</h4>
+            </div>
+            <div class="modal-body">
+                <div class="modal-body-custom">
+                    <div class="row">
+                        <div id="divInputOptime" class="col-sm-12 col-xs-12">
+                            <table id="tbAllOpName"></table>
+                            <div id="pagerOpName"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-body">
+                <div class="modal-body-custom">
+                    <div class="row">
+                        <div id="divInputOptime" class="col-sm-12 col-xs-12">
+                            <table id="tbOpTime"></table>
+                            @*<table id="tbInputOptime"></table>*@
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="btnGetProDt" class="btn btn btn-primary btn-modal">Ok</button>
+                <button type="button" id="btnCloseOpTime" class="btn btn btn-primary btn-modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Enter Process Detail - HA-->
+@*<div class="modal modal-custom fade" id="mdlEnterProcessDetail" style="z-index:9999" role="dialog" data-backdrop="static" data-keyboard="false">
+        <div class="modal-dialog modal-lg">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Detail</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="modal-body-custom">
+
+                        <div class="row">
+                            <div class="col-sm-6 col-xs-12">
+                                <form class="form-horizontal" role="form">
+                                    <div class="form-group">
+                                        <label class="col-sm-3 control-label no-padding-right"> Machine type </label>
+                                        <div class="col-sm-9 selec2-custom">
+                                            <select id="selectMachineTypeProcessDetail" class="form-control" style="width: 100%"></select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-sm-3 control-label no-padding-right" for="txtMachineCount"> Machine count </label>
+                                        <div class="col-sm-9 selec2-custom">
+                                            <input type="text" id="txtMachineCountProcessDetail" class="form-control" onkeypress="return isDecimalNumber(event)" maxlength="7">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-sm-3 control-label no-padding-right" for="txtRemarks"> Remarks </label>
+                                        <div class="col-sm-9">
+                                            <input type="text" id="txtRemarksSubDetail" class="form-control" maxlength="7">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-sm-3 control-label no-padding-right" for="txtMaxTime"> Max time </label>
+                                        <div class="col-sm-9">
+                                            <input type="text" id="txtMaxTimeSubDetail" class="form-control" onkeypress="return isDecimalNumber(event)" maxlength="7">
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="col-sm-6 col-xs-12">
+                                <form class="form-horizontal" role="form">
+                                    <div class="form-group">
+                                        <label class="col-sm-3 control-label no-padding-right" for="txtManCount"> Man count </label>
+                                        <div class="col-sm-9 selec2-custom">
+                                            <input type="text" id="txtManCountSubDetail" onkeypress="return isDecimalNumber(event)" maxlength="7" class="form-control">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-sm-3 control-label no-padding-right"> Job type </label>
+                                        <div class="col-sm-9 selec2-custom">
+                                            <select id="drpJobTypeSubDetail" class="form-control" data-placeholder="Select job type"></select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-sm-3 control-label no-padding-right"> Tool ID </label>
+                                        <div class="col-sm-9 selec2-custom">
+                                            <select id="selectToolIdSubDetail" class="form-control" style="width: 100%"></select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-sm-3 control-label no-padding-right"> Action code </label>
+                                        <div class="col-sm-9 select2-third-modal selec2-custom">
+                                            <select id="drpActionCodeSubDetail" class="form-control" data-placeholder="Select action code"></select>
+                                        </div>
+                                    </div>
+                                </form>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="btnSaveProcessDetail" class="btn btn btn-primary btn-modal">Ok</button>
+                    <button type="button" class="btn btn btn-primary btn-modal" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>*@
+@*END ADD: HA*@
+

@@ -1,0 +1,214 @@
+﻿
+@{
+    ViewBag.Title = "SuperMarket";
+    Layout = "~/Views/Shared/_MesLayout.cshtml";
+}
+
+<!--Styling-->
+<link href="~/Assets/jspanel-4.7.0/jspanel.min.css" rel="stylesheet" />
+
+<style>
+    form[data-role="RstSearch"] input,
+    form[data-role="RstSearch"] textarea,
+    form[data-role="RstSearch"] select {
+        color: #b94a48 !important
+    }
+
+    .ui-pg-table td[align="left"] {
+        width: unset !important;
+    } 
+    body .jqgfirstrow td {
+        padding: 0 2px !important;
+    }
+</style>
+<!--::END Styling-->
+<div class="row" style="display:none;">
+    <div class="col-lg-6 col-md-8 col-sm-12">
+        <div style="align-content:center; align-items:center;  text-align:center;">
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-12">
+        <h3>Super Market Stock</h3>
+        <form class="form-horizontal" role="form" data-role="RstSearch">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div style="text-align:center; margin-right:8px; align-content:center; align-items:center;">
+                        <button type="submit" class="btn btn-primary">Search</button>&nbsp;
+                        <button type="reset" class="btn btn-default">Reset</button>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-2 col-md-3 col-sm-6 col-xs-12">
+                    <label class="text-primary">Warehouse</label>
+                    <select id="_searchFieldWarehouse" name="_searchFieldWarehouse" class="form-control" style="width:100%;" data-binding="WarehouseList" required="">
+                        <option></option>
+                    </select>
+                </div>
+                <div class="col-lg-2 col-md-3 col-sm-6 col-xs-12">
+                    <label class="text-primary">AO No</label>
+                    <input id="_searchFieldAONo" name="_searchFieldAONo" class="text-danger form-control" style="" />
+                </div>
+                <div class="col-lg-2 col-md-3 col-sm-6 col-xs-12">
+                    <label class="text-primary">Style Code</label>
+                    <input id="_searchFieldStyleCode" name="_searchFieldStyleCode" class="text-danger form-control" style="" />
+                </div>
+                <div class="col-lg-2 col-md-3 col-sm-6 col-xs-12">
+                    <label class="text-primary">Style Size</label>
+                    <input id="_searchFieldStyleSize" name="_searchFieldStyleSize" class="text-danger form-control" style="" />
+                </div>
+                <div class="col-lg-2 col-md-3 col-sm-6 col-xs-12">
+                    <label class="text-primary">Style Color Serial</label>
+                    <input id="_searchFieldStyleColorSerial" name="_searchFieldStyleColorSerial" class="text-danger form-control" style="" />
+                </div>
+                <div class="col-lg-2 col-md-3 col-sm-6 col-xs-12">
+                    <label class="text-primary">Rev No</label>
+                    <input id="_searchFieldRevNo" name="_searchFieldRevNo" class="text-danger form-control" style="" />
+                </div>
+            </div>
+
+        </form>
+    </div>
+</div>
+
+<div class="row" style="margin-top:10px;">
+    <div class="col-lg-12">
+        <table id="RealTimeStockGrid" class="gridWithNavTab"></table>
+        <div id="RealTimeStockGridPager"></div>
+    </div>
+</div>
+
+
+@section Scripts{
+    <!-- JSPanel 4.7-->
+    <script src="~/Assets/jspanel-4.7.0/jspanel.min.js"></script>
+    <script src="~/Assets/jspanel-4.7.0/extensions/modal/jspanel.modal.min.js"></script>
+    <!--::END  JSPanel 4.7-->
+    <!-- jqGrid-->
+    <script src="~/js/plugin/jqgrid/jquery.jqGrid.min.js"></script>
+    <script src="~/js/plugin/jqgrid/grid.locale-en.min.js"></script>
+    <script src="~/js/plugin/jqgrid/Common.js"></script>
+
+    <script>
+        //Declare Page_objects
+        var lastSel_QCPSGrid;
+        var RealTimeStockGrid_colModels = [];
+
+        RealTimeStockGrid_colModels.push({ name: 'WAREHOUSE', index: 'WAREHOUSE', label: 'Warehouse', align: 'left', width: 100, sortable: false, classes: 'pointer' });
+
+        RealTimeStockGrid_colModels.push({ name: 'ITEMCODE', index: 'ITEMCODE', label: 'Item code', align: 'left', width: 100, sortable: false, classes: 'pointer' });
+        RealTimeStockGrid_colModels.push({ name: 'ITEMNAME', index: 'ITEMNAME', label: 'Item name', align: 'left', width: 100, sortable: false, classes: 'pointer' });
+
+        RealTimeStockGrid_colModels.push({ name: 'ITEMCOLORSERIAL', index: 'ITEMCOLORSERIAL', label: 'Item<BR/>color serial', align: 'left', width: 100, sortable: false, hidden: true });
+        RealTimeStockGrid_colModels.push({ name: 'ITEMCOLORWAYS', index: 'ITEMCOLORWAYS', label: 'Item<BR/>color ways', align: 'left', width: 100, sortable: false, hidden: true });
+
+        RealTimeStockGrid_colModels.push({ name: 'PIECEUNIQUE', index: 'PIECEUNIQUE', label: 'Piece Unique', align: 'left', width: 350, sortable: false, classes: 'pointer' });
+        RealTimeStockGrid_colModels.push({ name: 'PIECE', index: 'PIECE', label: 'Piece', align: 'left', width: 100, sortable: false, classes: 'pointer' });
+
+        RealTimeStockGrid_colModels.push({ name: 'LOCATION', index: 'LOCATION', label: 'Location', align: 'left', width: 64, sortable: false, classes: 'pointer' });
+        RealTimeStockGrid_colModels.push({ name: 'STOCKQTY', index: 'STOCKQTY', label: 'Stock Qty', align: 'right', width: 64, sortable: false, classes: 'pointer' });
+
+
+        //--------------------------------------------------------------------------
+        RealTimeStockGrid_colModels.push({ name: 'AONO', index: 'AONO', label: 'AO No.', align: 'center', width: 100, sortable: false, classes: 'pointer' });
+
+        RealTimeStockGrid_colModels.push({ name: 'STYLECODE', index: 'STYLECODE', label: 'Style code', align: 'left', width: 100, sortable: false, hidden: true });
+        RealTimeStockGrid_colModels.push({ name: 'STYLENAME', index: 'STYLENAME', label: 'Style name', align: 'left', width: 100, sortable: false, hidden: true });
+
+        RealTimeStockGrid_colModels.push({ name: 'BUYERSTYLECODE', index: 'BUYERSTYLECODE', label: 'Buyer<BR/>style code', align: 'left', width: 100, sortable: false, classes: 'pointer' });
+        RealTimeStockGrid_colModels.push({ name: 'BUYERSTYLENAME', index: 'BUYERSTYLENAME', label: 'Buyer<BR/>style name', align: 'left', width: 350, sortable: false, classes: 'pointer' });
+
+        RealTimeStockGrid_colModels.push({ name: 'STYLESIZE', index: 'STYLESIZE', label: 'Style<BR/>size', align: 'left', width: 64, sortable: false, classes: 'pointer' });
+
+        RealTimeStockGrid_colModels.push({ name: 'STYLECOLORSERIAL', index: 'STYLECOLORSERIAL', label: 'Style<BR/>color serial', align: 'left', width: 120, sortable: false, hidden: true });
+        RealTimeStockGrid_colModels.push({ name: 'STYLECOLORWAYS', index: 'STYLECOLORWAYS', label: 'Style<BR/>color ways', align: 'left', width: 250, sortable: false, classes: 'pointer' });
+
+        RealTimeStockGrid_colModels.push({ name: 'REVNO', index: 'REVNO', label: 'Rev No.', align: 'left', width: 64, sortable: false, classes: 'pointer' });
+
+        var $RealTimeStockGrid = CreateJqGridObject('RealTimeStockGrid', '', 'local', RealTimeStockGrid_colModels, false, '', 30);
+
+        $RealTimeStockGrid.jqGrid('navGrid', '#' + 'RealTimeStockGrid' + 'Pager'
+            , { add: false, edit: false, del: false, search: false }
+            , { /*edit option*/ }
+            , { /*add option*/ }
+            , { /*delete option*/ }
+            , { /*search option*/ }
+            , { /*View option*/ }
+        );
+
+        customJqGridCss();
+         
+        //Declare Functions
+
+
+        //Declare Events
+        $(document).ready(function () {
+            $.when(
+                $.ajax({
+                    type: "POST",
+                    async: true,
+                    url: '../CommonAPI/GetWarehouseList',
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: function (response) {
+                        //console.log(response)
+                        response.forEach(function (element) { 
+                                $('select[data-binding="WarehouseList"]').append(new Option('[' + element.WHCode + '] ' + element.WHName, element.WHCode));
+                        }); 
+                    } 
+                })
+            ).done(function () { });
+        });
+
+        $('form[data-role="RstSearch"]').submit(function () {
+            let $this = $(this);
+            $RealTimeStockGrid.setGridParam({
+                url:  '../WHTransaction/RealTimeStockGrid' ,
+                postData: $this.serialize(),
+                sortname: 'ranking',
+                datatype: 'json',
+                rowNum: 30,
+                loadui: 'block',
+                loadtext: '',
+                loadComplete: function (data) {
+                },
+                loadError: function (xhr, status, error) {
+                    console.log('loadError');
+                    console.log(xhr);
+                    console.log(status);
+                    console.log(error);
+                },
+                onSelectRow: function (id, onselectrow) {
+                }, gridComplete: function () {
+                    var selfgridID = this.id;
+                    var ids = jQuery("#" + selfgridID).jqGrid('getDataIDs');
+                    var modvalue;
+
+                    for (var i = 0; i < ids.length; i++) {
+                        var dtRow = jQuery("#" + this.id).jqGrid('getRowData', ids[i]);
+
+                        modvalue = (i + 1) % 2;
+
+                        /*#Noted: Set row background color for chẵn and lẻ row */
+                        var backgroundColor;
+                        if (modvalue === 0) {
+                            backgroundColor = 'jqgrid-row-even';
+                        } else {
+                            backgroundColor = 'jqgrid-row-odd';
+                        }
+
+                        if (dtRow.CHANGEBY)
+                            backgroundColor = 'jqgrid-row-qcochanged';
+
+                        jQuery("#" + selfgridID).jqGrid('setRowData', ids[i], {}, backgroundColor);
+                    }
+                }
+            }).trigger("reloadGrid");
+
+            return false;
+        });
+    </script>
+}

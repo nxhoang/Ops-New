@@ -1,0 +1,160 @@
+﻿
+@{
+    ViewBag.Title = "Defection dashboard";
+    Layout = "~/Views/Shared/_MesLayout.cshtml";
+}
+<!--Search condition production line dashboard-->
+<div class="abc">
+    <div class="row">
+        <!-- Searching Criteria: Cutting Factory-->
+        <div class="col-sm-2">
+            <div class="form-group">
+                <label for="">Factory:</label>
+                <select id="drpFactory" name="factoryId" class="form-control">
+                    <option>---</option>
+                    @foreach (var factory in ViewBag.LstFactories)
+                    {
+                        <option value="@factory.Factory">@factory.Name</option>
+                    }
+                </select>
+            </div>
+        </div>
+
+        <div class="col-sm-2 ">
+            <div class="form-group">
+                <label for="">Date:</label>
+                <div class="form-control">
+                    <input type="text" id="chooseDate" name="chooseDate" />
+                </div>
+
+                @*<select id="drpFactoryMdl" class="form-control" data-placeholder=""></select>*@
+            </div>
+        </div>
+
+        <div class="col-sm-2">
+            <div class="form-group">
+                <label class="control-label">AO No:</label>
+                <input type="text" id="txtAONo" class="form-control">
+            </div>
+        </div>
+
+        <!-- Searching Criteria: Buyer Code-->
+        <div class="col-sm-2">
+            <div class="form-group">
+                <label class="control-label">Buyer:</label>
+                <select id="drpBuyer" class="form-control" data-placeholder="">
+                    @*<option>---</option>
+                        @foreach (var buyer in ViewBag.LstBuyerCodes)
+                        {
+                            <option value="@buyer.CodeDetail">@buyer.CodeName</option>
+                        }*@
+                </select>
+            </div>
+        </div>
+
+        <!--  Searching Criteria: Button -->
+        <div class="col-sm-1">
+            <div class="form-group">
+                <div><label class="control-label">&nbsp;</label></div>
+                <button type="button" id="btnSearch" class="btn btn-primary">Search</button>
+            </div>
+        </div>
+        @*<div class="col-sm-1">
+            <div class="form-group">
+                <div><label class="control-label">&nbsp;</label></div>
+                <button type="button" id="btnExport" class="btn btn-primary">Export</button>
+            </div>
+        </div>*@
+    </div>
+
+    <div class="row" style="margin-top:10px">
+        <div class="col-sm-12">
+            <table class="col-sm-12" id="jstree_demo_div">
+                <colgroup>
+                    <col width="650" />
+                    <col width="180" />
+                    <col width="250" />
+                    <col width="400" />
+                    <col width="50" />
+                    <col width="50" />
+                    <col width="100" />
+                    <col width="100" />
+                    <col width="100" />
+                    <col width="120" />
+                    <col width="20" />
+                </colgroup>
+                <thead>
+                    <tr>
+                        <th>Package</th>
+                        <th>AO No</th>
+                        <th>Style</th>
+                        <th>Buyer Style</th>
+                        <th>Color</th>
+                        <th>Rev</th>
+                        <th>Buyer</th>
+                        <th>Line</th>
+                        <th>Target</th>
+                        <th>Total defect</th>
+                        <th style="text-align:center">#</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+
+    </div>
+
+    <div id="mediaPopup" title="Media">
+
+    </div>
+
+    <!-- end row -->
+</div>
+<!-- /Search conditon-->
+
+
+
+
+@section Scripts{
+
+    <script src="~/js/plugin/jqgrid/jquery.jqGrid.min.js"></script>
+    <script src="~/js/plugin/jqgrid/grid.localtete-en.min.js"></script>
+    e
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/pikaday/pikaday.js"></script>
+    <link rel="stylesheet"
+          type="text/css"
+          href="https://cdn.jsdelivr.net/npm/pikaday/css/pikaday.css" />
+
+    <link rel="stylesheet" href="~/Assets/magnific-popup/magnific-popup.css">
+    <script src="~/Assets/magnific-popup/jquery.magnific-popup.min.js"></script>
+
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+    <link rel="stylesheet" href="~/Assets/jquery-ui-1.12.1/jquery-ui.min.css" />
+    <script src="~/Assets/jquery-ui-1.12.1/jquery-ui.min.js"></script>
+
+    <link href="~/Assets/fancytree/skin-win8/ui.fancytree.min.css" rel="stylesheet">
+    <script src="~/Assets/fancytree/modules/jquery.fancytree.ui-deps.js"></script>
+    <script src="~/Assets/fancytree/jquery.fancytree-all-deps.min.js"></script>
+    <script src="~/Assets/fancytree/modules/jquery.fancytree.table.js"></script>
+    <script src="~/Assets/fancytree/modules/jquery.fancytree.gridnav.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
+
+    <link href="~/css/mes.css" rel="stylesheet" />
+
+
+    <script src="~/js/mes/mes-common.js?v=1.0.2"></script>
+    <script src="~/js/mes/defectiondashboard/defectiondashboard.event.js"></script>
+    <script src="~/js/mes/defectiondashboard/defectiondashboard.js"></script>
+
+
+    <script>
+        $(function () {
+
+            initPage();
+
+        });
+    </script>
+}

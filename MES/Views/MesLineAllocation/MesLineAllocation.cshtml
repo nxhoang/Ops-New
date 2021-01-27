@@ -1,0 +1,417 @@
+﻿@{
+    ViewBag.Title = "MesLineLocation";
+    Layout = "~/Views/Shared/_MesLayout.cshtml";
+}
+
+<!--date range picker-->
+<link href="~/assets/DayRangePicker/daterangepicker.min.css" rel="stylesheet" />
+
+@section Scripts{
+    <!--jqgrid libary-->
+    <script src="~/js/plugin/jqgrid/jquery.jqGrid.min.js"></script>
+    <script src="~/js/plugin/jqgrid/grid.locale-en.min.js"></script>
+
+    <!-- Common files -->
+    <script src="~/js/editJqgrid.js"></script>
+    <link href="~/Assets/country-dropdown/css/msdropdown/dd.css" rel="stylesheet" />
+    <link href="~/Assets/country-dropdown/css/msdropdown/flags.css" rel="stylesheet" />
+    <script src="~/Assets/jquery.blockUI/jquery.blockUI.js"></script>
+    <link href="~/Assets/ops-layout/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="~/css/ui-bootstrap-csp.css" rel="stylesheet" />
+    <link href="~/css/glyphicons/glyphicons.css" rel="stylesheet" />
+    <script src="~/Scripts/angular.min.js"></script>
+    <script src="~/Scripts/angular-animate.min.js"></script>
+    <script src="~/Scripts/angular-sanitize.min.js"></script>
+    <script src="~/js/angular/angular-resource.min.js"></script>
+    <script src="~/js/angular/ui-bootstrap-tpls.min.js"></script>
+    <script src="~/js/angular/angular-ui-router.min.js"></script>
+    <script src="~/js/angular/angular-ui.min.js"></script>
+    <link href="~/Assets/ops-layout/css/custom-colorpicker.css" rel="stylesheet" />
+    <script src="~/Assets/ops-layout/js/mes.common.js?v=1.2"></script>
+    <script src="~/js/common/SmSgManager.js"></script>
+    <link href="~/Assets/ops-layout/css/ops-customize.css" rel="stylesheet" />
+
+    <link href="~/Assets/bootstrap-multiselect/bootstrap-multiselect.min.css" rel="stylesheet" />
+    <script src="~/Assets/bootstrap-multiselect/bootstrap-multiselect.min.js"></script>
+
+    <!-- Angular Multiselect-Dropdown list files -->
+    <script src="~/Assets/ops-layout/js/multiselect.js"></script>
+
+    <!-- Angular Bootstrap Colorpicker files -->
+    <link href="~/assets/angular-bootstrap-colorpicker/css/colorpicker.min.css" rel="stylesheet" />
+    <script src="~/assets/angular-bootstrap-colorpicker/js/bootstrap-colorpicker-module.min.js"></script>
+
+    <!-- JsPanel files -->
+    <link href="~/Assets/jsPanel/jquery.jspanel.min.css" rel="stylesheet" />
+    <script src="~/Assets/jsPanel/jquery.jspanel.min.js"></script>
+
+    <!-- JsPlumb files -->
+    <link rel="stylesheet" href="~/Assets/ops-layout/css/jsplumbtoolkit-defaults.min.css">
+    <link rel="stylesheet" href="~/Assets/ops-layout/css/jsplumbtoolkit.min.css">
+    <script src="~/Assets/ops-layout/js/braintree.js"></script>
+    <script src="~/Assets/ops-layout/js/ops-layout-angular.js"></script>
+    <script src="~/Assets/ops-layout/js/jsplumbtoolkit.min.js"></script>
+    <script src="~/Assets/ops-layout/js/syntax-highlighter.js"></script>
+
+    <!-- Ops Layout page files -->
+    <link href="~/Assets/ops-layout/css/main.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="~/Assets/ops-layout/css/app.min.css">
+    <link href="~/Assets/ops-layout/css/ops-layout.min.css?v=2.7.5" rel="stylesheet" />
+    <script src="~/Assets/ops-layout/js/ops-video.js?v=1.3"></script>
+
+    <script src="~/Scripts/jquery.signalR-2.4.1.min.js"></script>
+    <script src="~/signalr/hubs/"></script>
+    <script src="~/js/Entities/JsEntity.js"></script>
+
+    <!-- Video processing-->
+    <link href="~/Assets/op-video-processing/css/op_video-process.min.css?v=2.0" rel="stylesheet" />
+    <script src="~/Assets/op-video-processing/js/op_video-process.min.js?v=2.1"></script>
+
+    <script src="~/assets/ops-layout/js/ops-layout-process.js?v=1.3"></script>
+    <script src="~/Assets/ops-layout/js/process-partial-view.js?v=1.5"></script>
+    <script src="~/Assets/ops-layout/js/mes.ops.layout.js?v=2.9.1"></script>
+
+    <!--Print PNG-->
+    <script src="~/js/html2canvas.js"></script>
+    <script src="~/Assets/ops-layout/js/printer-layout.js?v=1.1"></script>
+    <script src="~/js/dom-to-image.js"></script>
+
+    <!-- date range picker-->
+    <script src="~/assets/DayRangePicker/daterangepicker.min.js"></script>
+    <script src="~/js/mes/mes-common.js?v=1.0.2"></script>
+
+    <!--package group partial view-->
+    <script src="~/js/mes/partial-view/package-group.js?v=1.0.4"></script>
+    <script src="~/js/mes/partial-view/package-group-event.js?v=1.0.2"></script>
+
+    <script src="~/js/mes/mes-line-location/mes-line-location.js?v=1.0.1"></script>
+    <script src="~/js/mes/mes-line-location/mes-line-location-event.js?v=20190124"></script>
+
+    <script src="~/Assets/ops-layout/js/ops.js?v=1.0"></script>
+    <script src="~/Assets/ops-layout/js/ops-event.js"></script>
+
+    <link href="~/Assets/country-dropdown/css/msdropdown/dd.css" rel="stylesheet" />
+    <link href="~/Assets/country-dropdown/css/msdropdown/flags.css" rel="stylesheet" />
+    <script src="~/Assets/country-dropdown/js/msdropdown/jquery.dd.min.js"></script>
+
+    <script src="~/Assets/factory-visualizer/js/fac.pre-define.min.js?v=1.6"></script>
+    <script src="~/Assets/factory-visualizer/js/go.js"></script>
+    <script src="~/Assets/bootstrap-multiselect/bootstrap-multiselect.min.js?v=1.1"></script>
+    <link href="~/Assets/bootstrap-multiselect/bootstrap-multiselect.css" rel="stylesheet" />
+    <link href="~/Assets/factory-visualizer/css/factory-visualizer.min.css" rel="stylesheet" />
+
+    <script src="~/Assets/factory-visualizer/js/jquery.op-group.min.js"></script>
+    <script src="~/Assets/factory-visualizer/js/layout-seating-chart.js?v=1.5"></script>
+
+    <link href="~/Assets/jquery.human-task-map/css/op-emp.min.css" rel="stylesheet" />
+    <script src="~/Assets/jquery.human-task-map/js/jquery.task-worker.min.js?v=2.0"></script>
+    <script src="~/Assets/factory-visualizer/js/op-emp-map.min.js?v=2.2"></script>
+
+    <script>
+        $(function () {
+            initPackageGroupPartialView();
+
+            //Init grid mes package
+            bindDataToJqGridMesPackage(null);
+
+            //Set factory base on factory of user role.
+            $("#drpFactory").val($("#hdFactoryUser").val()).trigger('change');
+        });
+
+        //InitPage();
+        ClickButonFilter();
+        ClickButtonRegisterOps();
+
+        SelectRadioCopySelectPlan();
+        SelectRadioRegisterEmptyPlan();
+        SelectRadioImportFileCsv();
+        ClickButonImportCsvFile();
+
+        // Initialize registration operation plan modal
+        InitDataForAddNewOpsModal();
+        ClickButtonDeleteOpsMaster();
+        ButtonClickEnterProcess();
+        CloseOpTime();
+        jqGridProcessName("df");
+        ClickCbRegNeuColor();
+    </script>
+}
+
+@Html.Partial("~/Views/PartialView/MesOpmt.cshtml", null)
+
+<section id="widget-grid">
+    <article class="row">
+        <div class="jarviswidget jarviswidget-color-blueLight" id="wid-op-grids" data-widget-editbutton="true">
+            <header>
+                <h2><strong></strong></h2>
+            </header>
+            <!-- widget div-->
+            <div>
+                <!-- widget content -->
+                <div class="widget-body">
+                    <!--Add Package Group partial view-->
+                    @Html.Partial("~/Views/PartialView/PackageGroup.cshtml", null)
+                    <div class="top-buffer"></div>
+                    <div class="row">
+                        <div class="col-sm-12" id="divMesPackage">
+                            <table id="tbMesPackage"></table>
+                            <div id="divMesPackagePage"></div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <button class="btn btn-info op-layout__btn" id="btnCreateOpmt" title="Registry Operation Plan">
+                            Register plan
+                        </button>
+                        <button class="btn btn-danger op-layout__btn" id="btnDeleteOpmt" title="Delete Operation Plan">
+                            Delete plan
+                        </button>
+                    </div>
+                </div>
+                <!-- end widget content -->
+            </div>
+            <!-- end widget div -->
+        </div>
+        <!-- end widget -->
+    </article>
+    <article class="row">
+        <div class="jarviswidget jarviswidget-color-blueLight hide" id="wid-op-layout"
+             data-widget-editbutton="true">
+            <header id="layoutTabHeader">
+                <h2><strong>Plan Layout</strong></h2>
+            </header>
+            <!-- widget div-->
+            <div>
+                <!-- widget content -->
+                <div class="widget-body">
+                    <div class="row">
+                        <article class="col-sm-12">
+                            <!-- new widget -->
+                            <div class="jarviswidget hide" id="wid-id-mtop-tap" data-widget-togglebutton="false" data-widget-editbutton="false"
+                                 data-widget-fullscreenbutton="false" data-widget-colorbutton="false" data-widget-deletebutton="false">
+                                <header>
+                                    <ul class="nav nav-tabs pull-right in" id="mesOpTab">
+                                        <li class="active" id="liOpLayout">
+                                            <a data-toggle="tab" href="#mesOpLayout">
+                                                <i class="fa fa-list-ol"></i>
+                                                <span class="hidden-mobile hidden-tablet">MES Operation Layout</span>
+                                            </a>
+                                        </li>
+                                        <li id="liOpLineMapping">
+                                            <a id="opLineMappingLink" data-toggle="tab" href="#opLineMappingTab">
+                                                <i class="fa fa-clock-o"></i>
+                                                <span class="hidden-mobile hidden-tablet">OP Line Mapping</span>
+                                            </a>
+                                        </li>
+                                        <li id="liEmployeeOpMapping">
+                                            <a id="opEmployeeMappingLink" data-toggle="tab" href="#opEmployeeMappingTab">
+                                                <i class="far fa-address-book"></i>
+                                                <span class="hidden-mobile hidden-tablet">OP Worker Mapping</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </header>
+                                <!-- widget div-->
+                                <div class="no-padding">
+                                    <div class="widget-body">
+                                        <!-- content -->
+                                        <div id="myTabContent" class="tab-content">
+                                            <div class="tab-pane fade active in padding-10 no-padding-bottom" id="mesOpLayout">
+                                                <div class="row no-space">
+                                                    <div class="col-sm-12">
+                                                        @Html.Partial("~/Views/PartialView/MesOpLayout.cshtml")
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- end s1 tab pane -->
+
+                                            <div class="tab-pane fade" id="opLineMappingTab">
+                                                <div class="row no-space">
+                                                    <div class="col-sm-12">
+                                                        <div class="fac-line-setup">
+                                                            <button id="btnToggleProcess" class="fac-vs__btn--togle-process" onclick="toggleProcessDiv()">
+                                                                <i id="iChevron" class="glyphicon glyphicon-chevron-left"></i>
+                                                            </button>
+                                                            <select id="selOpView" class="fac-vs__select--op-view">
+                                                                <option value="1">Process View</option>
+                                                                <option value="2">OpGroup View</option>
+                                                            </select>
+                                                            <div id="divDisplayOpGroup" style="position: absolute; top: 0; right: 0; z-index: 1049"
+                                                                 class="fac-vs__div-max--opgroup">
+                                                            </div>
+                                                            <div class="fac-vs__border-color fac-vs__worker" id="facWorkerDiv"></div>
+                                                            <div class="fac-vs__border-color fac-vs__diagram" id="facDiagramDiv"></div>
+                                                        </div>
+                                                        <div id="divNav">
+                                                            <div style="width: 35%; display: inline-block"></div>
+                                                            <div style="width: 64%; display: inline-block">
+                                                                <label for="cbLine">Displaying&#8594;</label><select id="cbLine" multiple="multiple"></select>
+
+                                                                <div style="float: right">
+                                                                    <button type="button" id="btnShowModuleModal" style="height: 40px" class="btn btn-success"
+                                                                            data-toggle="modal" data-target="#modalTlModule">
+                                                                        <span class="glyphicon glyphicon-blackboard" aria-hidden="true"></span> Timeline
+                                                                    </button>
+                                                                    <button type="button" id="btnRefresh" style="height: 40px" class="btn btn-primary"
+                                                                            data-toggle="modal">
+                                                                        <span class="glyphicon glyphicon-refresh" aria-hidden="true"></span> Refresh
+                                                                    </button>
+                                                                    <button type="button" id="btnSaveChanges" style="height: 40px" class="btn btn-info"
+                                                                            disabled="disabled" data-toggle="modal">
+                                                                        <span class="glyphicon glyphicon-floppy-save" aria-hidden="true"></span> Save Changes
+                                                                    </button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- end s2 tab pane -->
+                                            <!-- Operation worker mapping Tab-->
+                                            <div class="tab-pane fade" id="opEmployeeMappingTab">
+                                                <div class="row no-space">
+                                                    <div class="col-sm-12">
+                                                        <div class="fac-line-setup">
+                                                            <div id="divDisplayOpGroupEmp" style="position: absolute; top: 0; right: 0; z-index: 1049"
+                                                                 class="fac-vs__div-max--opgroup">
+                                                                <button id="btnDisplayOpGroupEmp" style="position: absolute; top: 0; right: 0">
+                                                                    <i id="iDopSignEmp" class="glyphicon glyphicon-plus-sign"></i>
+                                                                </button>
+                                                            </div>
+                                                            <div>
+                                                                <form id="searchEmpForm" name="SearchEmpForm">
+                                                                    <div class="row" style="margin: 8px 0">
+                                                                        <div class="col-sm-2">
+                                                                            <div class="form-group op-emp-map__control">
+                                                                                <label class="control-label" for="selSection">Team</label>
+                                                                                <select id="selSection" multiple="multiple"></select>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="col-sm-3">
+                                                                            <div id="divSelEmp" class="form-group op-emp-map__control" style="margin-right: 5px">
+                                                                                <label class="control-label" for="selEmp">ID - Name - Gender</label>
+                                                                                <select id="selEmp" multiple="multiple"></select>
+                                                                            </div>
+                                                                        </div>
+                                                                        @*<div class="col-sm-2">
+                                                                                <div class="form-group">
+                                                                                    <label for="divGender" class="control-label">Gender</label>
+                                                                                    <div id="divGender" class="radio op-emp-map__div-gender">
+                                                                                        <label for="rdMale" class="op-emp-map__lb-gender">Male&nbsp;</label>
+                                                                                        <input type="radio" class="op-emp-map__rd-cb--size op-emp-map__rd" name="rdGender" id="rdMale" value="Male">
+                                                                                        <label for="rdFemale" style="padding-left: 0; margin-left: 30px;">Female&nbsp;</label>
+                                                                                        <input type="radio" class="op-emp-map__rd-cb--size op-emp-map__rd" name="rdGender" id="rdFemale" value="Female">
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>*@
+                                                                        <div class="col-sm-1">
+                                                                            <div class="form-group">
+                                                                                <label class="control-label" for="chkAttendEmp">Attendance </label>
+                                                                                <input type="checkbox" id="chkAttendEmp" style="margin-top: 5px" class="form-control op-emp-map__rd-cb--size" />
+                                                                            </div>
+                                                                        </div>
+                                                                        <div id="divAttDate" class="col-sm-2 op-emp-map__div-date">
+                                                                            <div class="form-group">
+                                                                                <label for="txtAttendDate" id="lbAttendDate" class="control-label">Date&nbsp;</label>
+                                                                                <input type="date" id="txtAttendDate" class="form-control op-emp-map__input" />
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="col-sm-2">
+                                                                            <div class="form-group op-emp-map__control">
+                                                                                <label class="control-label" for="selSkill">Skill - Level</label>
+                                                                                <select id="selSkill"></select>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="col-sm-1">
+                                                                            <div class="form-group">
+                                                                                <div><label class="control-label">&nbsp;</label></div>
+                                                                                <button type="submit" id="btnOkeFilterEmp" class="op-emp-map__btn op-emp-map__input op-emp-map__btn-oke">
+                                                                                    <span class="glyphicon glyphicon-ok-sign" aria-hidden="true"></span> OK
+                                                                                </button>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </form>
+                                                            </div>
+                                                            <div id="facWorkerDivEmp"></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- end content -->
+                                    </div>
+                                </div>
+                                <!-- end widget div -->
+                            </div>
+                            <!-- end widget -->
+                        </article>
+                    </div>
+                </div>
+                <!-- end widget content -->
+            </div>
+            <!-- end widget div -->
+        </div>
+        <!-- end widget -->
+    </article>
+</section>
+
+<div class="modal fade" id="seatDetailModal" tabindex="-1" role="dialog" aria-labelledby="seatDetailLabel">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-header fac-vs__modal--header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <label><b><i>Seat Number: </i></b><span id="lbSeatNo"></span></label><br />
+                <label><b><i>Line: </i></b><span id="lbLine"></span></label><br />
+                <label><b><i>Process: </i></b><span id="lbProcess"></span></label><br />
+                <label><b><i>Worker: </i></b><span id="lbWorker"></span></label><br />
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="startTimeModal" tabindex="-1" role="dialog" aria-labelledby="startTimeLabel" style="z-index: 1500">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+            <form id="startTimeForm">
+                <div class="modal-header fac-vs__modal--header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title" id="startTimeLabel">Starting working time</h4>
+                </div>
+                <div class="modal-body">
+                    <input id="fInputStartTime" type="time" value="07:00" required="required" />
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary" id="btnSubmitStartTime">OK</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div id="modalTlModule" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+    <div class="modal-dialog modal-lg" style="margin: 5px auto" role="document">
+        <div class="modal-content" style="height: 100%">
+            <div class="modal-header fac-vs__modal--header">
+                <button id="btnToggleFreeze">
+                    <i id="iLock" class="fas fa-lock-open"></i>
+                </button>
+                <button id="btnSaveTlm">
+                    <i class="glyphicon glyphicon-floppy-save"></i>
+                </button>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" style="height: 100%">
+                <div id="divTlModal" style="width: 100%; height: 100%"></div>
+            </div>
+        </div>
+    </div>
+</div>

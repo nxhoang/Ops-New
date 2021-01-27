@@ -1,0 +1,125 @@
+﻿@{
+    ViewBag.Title = "Ops linking";
+    ViewBag.PageTitle = "Ops linking";
+}
+<link href="~/css/ops/pages/ops.css" rel="stylesheet" />
+<link href="~/js/jsPanel/jquery.jspanel.css" rel="stylesheet" />
+<style>
+    .tabbable {
+        font-family: 'Open Sans';
+    }
+</style>
+@Html.Partial("~/Views/UIControl/_SearchStyle.cshtml")
+<div class="row">
+    <div class="col-xs-12">
+        <!-- PAGE CONTENT BEGINS -->
+        <table id="gridOpsTable"></table>
+        <div id="gridOpsPaper"></div>
+        <!-- PAGE CONTENT ENDS -->
+    </div><!-- /.col -->
+</div><!-- /.row -->
+
+<div class="clearfix"></div>
+
+<div class="space-4" style="clear:both"></div>
+
+<div class="row">
+    <div class="col-sm-6">
+        <div id="dvPatternLink">
+            @Html.Partial("~/Views/Menu/MenuPartialView.cshtml")
+
+        </div>
+    </div>
+    <div class="col-sm-6 pull-right">
+        <div style="float:right">
+            @Html.Partial("~/Views/Menu/_LangLocal.cshtml")
+        </div>
+        <div style="float:right; padding:4px 10px 0 ">
+            @Html.Partial("~/Views/UIControl/_OpdtGroup.cshtml")
+        </div>
+    </div>
+</div>
+
+
+@Html.Partial("_PatternLinking")
+<div class="clearfix"></div>
+<div class="space-4" style="clear:both"></div>
+
+@section Scripts
+{
+    <script src="~/js/ops/uicontrol/SearchStyle.js?v=1.0.5"></script>
+    <script src="~/js/ops/Pages/LinkingPattern.js?v=1.0.2"></script>
+    <script src="~/js/ops/Pages/LinkingTools.js?v=1.0.2"></script>
+    <script src="~/js/ops/Pages/LinkingMachine.js?v=1.0.2"></script>
+    <script src="~/js/ops/menu/menu.js"></script>
+    <script src="~/js/jsPanel/jquery.jspanel.js"></script>
+    <script src="~/js/ops/Pages/Linking.js?v=1.2"></script>
+    <script src="~/js/ops/menu/LocalLanguages.js"></script>
+    <script>
+        $(document).ready(function () {
+            $("#drpLanguages").msDropdown();
+            Selection2("drpGroupShow");
+            // UserRole = GetUserRoleInfo();
+            window.OpenReadySearch();
+            ShowObjectLinking();
+            AppendMcmtByCode("cbTool", 0);
+            AppendMcmtByCode("cbMachine", 1);
+            ShowConTrucGrid();
+            RegisterTabClick();
+            UpdateProt();
+            AppendMcmt();
+            CheckedChekBox();
+            ChangeCbTools();
+            ChangePage();
+            ChangeLocalLang([OperationGridTb, Operation_Grid_TB, OperationGridTbMc]);
+            VisibleMenuButton("dvPatternLink", false, true, true, false, false, true);
+            CheckRoleCurrent(EditOnly);
+            SelectChangeGroupShow();
+            $(".modal-body").click(function () {
+                $(".msgBox").hide();
+            });
+            SelectEditionOpsMaster();
+           // Test();
+        });
+        
+
+        function CheckRoleLink(edition, opsConfirm, SystemId, MenuId, divName, role) {
+            var mn = MenuId;
+            // (edition === editionAom && factoryId !== FactoryRoleId)
+            if (edition === editionAom || edition === editionMes) { //ADD) SON - 1/Jul/2019 - add edition MES
+                mn = MenuIdAom
+            }
+            UserRole = GetUserRoleInfo(SystemId, mn);
+            //START MOD) SON - 1/Jul/2019 - check role for MES edition
+            if (!isEmptyOrWhiteSpace(opsConfirm)) {               
+                // opsConfirm: is confirm
+                SetMenuActionMode(divName, ReadOnly, UserRole);
+            } else {
+                SetMenuActionMode(divName, role, UserRole);
+            }
+
+            //if (edition === editionMes || !isEmptyOrWhiteSpace(opsConfirm) ) {
+            //    // editionMes: outsoucer
+            //    // opsConfirm: is confirm
+            //    SetMenuActionMode(divName, ReadOnly, UserRole);
+            //} else {
+            //    SetMenuActionMode(divName, role, UserRole);
+            //}
+            //START MOD) SON - 1/Jul/2019 
+        }
+
+        function CheckRoleCurrent(role) {
+            CheckRoleLink(editionRow, confChk, Ops, Obl, "dvPatternLink", role);
+        }
+
+        //START ADD) SON - 07/May/2019
+        function GetModulesByStyleCode(styleCode) {
+           
+        }
+        //END ADD) SON - 07/May/2019
+    </script>
+}
+
+
+
+

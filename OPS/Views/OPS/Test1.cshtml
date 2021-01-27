@@ -1,0 +1,1042 @@
+﻿
+@{
+    ViewBag.Title = "Test";
+    //Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Test Partial Ops master</h2>
+<!--Search Style-->
+@Html.Partial("~/Views/UIControl/_SearchStyle.cshtml")
+
+@Html.Partial("~/Views/UiControl/OpsMasterPartialView.cshtml")
+
+
+
+<style>
+    .select2-container--default .select2-selection--multiple .select2-selection__choice {
+        background-color: #e4e4e4;
+        border: 1px solid #aaa;
+        border-radius: 4px;
+        cursor: default;
+        float: left;
+        margin-right: 5px;
+        margin-top: 5px;
+        padding: 0 5px;
+        width: 100px;
+    }
+    .select2-hidden-accessible {
+        border: 0 !important;
+        clip: rect(0 0 0 0) !important;
+        /*height: 1px !important;*/
+        height: 10px !important;
+        margin: -1px !important;
+        overflow: hidden !important;
+        padding: 0 !important;
+        position: absolute !important;
+        width: 1px !important;
+    }
+    .select2-search.select2-search--inline::after {
+        display: none;
+        vertical-align: top;
+        width: 100%
+    }
+
+</style>
+
+@*<div class="row">
+    <button id="btnPlayVideo" style="width:300px">Play Video</button>
+</div>*@
+<div class="row">
+    <iframe width="320" height="240"
+            src="https://www.youtube.com/embed/tgbNymZ7vqY"></iframe>
+</div>
+@*<div class="row">
+    <video width="320" height="240"
+            src="blob:http://ops.pungkookvn.com/9803b156-a089-4148-95c5-f337d189d6fd"></video>
+</div*@>
+<div class="row">
+    <div class="col-sm-6 col-xs-12">
+        <div class="row">
+            <div class="div-video-preview">
+                <video class="video-preview" poster="/img/no-video.png" id="videoPreview" controls>
+                    <source src="~/VideoTest/testvideo.mp4" id="videoPreview" type="video/mp4">
+                </video>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <video width="320" height="240" controls>
+        <source src="~/VideoTest/testvideo.mp4" type="video/mp4">
+    </video>
+</div>
+
+    <!--Play Video Modal-->
+    <div class="modal modal-custom fade" id="mdPlayVideo" role="dialog" data-backdrop="static" data-keyboard="false">
+        <div class="modal-dialog modal-lg">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Play Video</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="modal-body-custom">
+                        <div class="row">
+                            <input id="addLink" placeholder="Add link to play" style="width:500px" />
+                            <button id="btnPlay" style="width:100px">Play</button>
+                        </div>
+                        <div class="row">
+                            <video class="video-preview"></video>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="btnSaveProcess" class="btn btn btn-primary btn-modal">Ok</button>
+                    <button type="button" class="btn btn btn-primary btn-modal" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <select multiple id="e1" style="width:300px">
+            <option value="AL">Alabama</option>
+            <option value="Am">Amalapuram</option>
+            <option value="An">Anakapalli</option>
+            <option value="Ak">Akkayapalem</option>
+            <option value="WY">Wyoming</option>
+        </select>
+        <input type="checkbox" id="checkbox">Select All
+
+        <input type="button" id="button" value="check Selected">
+    </div>
+
+    <div class="row">
+        <select multiple id="selectTest" style="width:300px"></select>
+
+    </div>
+
+    <div class="row">
+        <select multiple="multiple" id="selectMachine" style="width:350px"></select>
+        <button id="btnSelectMachine">Get selected Machines</button>
+        <select class="select2-selection--multiple" multiple="multiple" id="drpSelectMachine" style="width:350px"></select>
+    </div>
+
+    <div class="row">
+        <label id="lbProcessName" style="color:orangered">Select Process Name</label>
+        <select multiple="multiple" id="selectProcessName" style="width: 300px"></select>
+    </div>
+
+    <div class="row">
+
+        <button id="btn-test">Test</button>
+        <button id="btn-showId">Show Id</button>
+        <button id="btn-processTemplate">Process Template</button>
+
+    </div>
+
+    <div class="row">
+        <div class="col-sm-2 col-xs-12">
+            <select id="drpTempName" class="form-control" data-placeholder="Select TempName"></select>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-2 col-xs-12">
+            <text id="text">Text</text>
+        </div>
+        <div class="col-sm-2 col-xs-12">
+            <select id="drpValue" class="form-control" data-placeholder="Select value"></select>
+        </div>
+        <div class="col-sm-2 col-xs-12">
+            <input type="text" id="txtText" onkeypress="return isDecimalNumber(event)" maxlength="7" class="form-control">
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-6 col-xs-12">
+            <select id="drpAllProcess" class="form-control" data-placeholder="Select Process"></select>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-2 col-xs-12">
+            <button class="form-control" id="btnLoadData">Load Data</button>
+        </div>
+        <div class="col-sm-2 col-xs-12">
+            <select id="drpLanguage" class="form-control" data-placeholder="Select language"></select>
+        </div>
+    </div>
+    <table id="jqGrid"></table>
+    <div id="pager1"></div>
+
+    <!-- Modal Add New Process -->
+    <div class="modal modal-custom fade" id="proccesModal" role="dialog" data-backdrop="static" data-keyboard="false">
+        <div class="modal-dialog modal-lg">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Process Detail</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="modal-body-custom">
+
+                        <div class="row">
+                            <div class="col-sm-6 col-xs-12">
+                                <form class="form-horizontal" role="form">
+                                    <div class="form-group">
+                                        <label class="col-sm-3 control-label no-padding-right"> Machine </label>
+                                        <div class="col-sm-9 selec2-custom">
+                                            <select id="drpMachine" class="form-control" data-placeholder="Select machine"></select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-sm-3 control-label no-padding-right"> Tool </label>
+                                        <div class="col-sm-9 selec2-custom">
+                                            <select id="drpTool" class="form-control" data-placeholder="Select tool"></select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-sm-3 control-label no-padding-right" for="txtMachines"> Machines </label>
+                                        <div class="col-sm-9">
+                                            <input type="text" id="txtMachines" onkeypress="return isDecimalNumber(event)" maxlength="7" placeholder="" class="form-control">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-sm-3 control-label no-padding-right" for="txtTools"> Tools </label>
+                                        <div class="col-sm-9">
+                                            <input type="text" id="txtTools" onkeypress="return isDecimalNumber(event)" maxlength="7" placeholder="" class="form-control">
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="col-sm-6 col-xs-12">
+                                <form class="form-horizontal" role="form">
+                                    <div class="form-group">
+                                        <label class="col-sm-3 control-label no-padding-right"> Action code </label>
+                                        <div class="col-sm-9 selec2-custom">
+                                            <select id="drpActionCode" class="form-control" data-placeholder="Select action code"></select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-sm-3 control-label no-padding-right"> Process group <span class="star-color">*</span> </label>
+                                        <div class="col-sm-9 selec2-custom">
+                                            <select id="drpProcessGroup" class="form-control" data-placeholder="Select process group"></select>
+                                        </div>
+                                    </div>
+                                </form>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="btnSaveProcess" class="btn btn btn-primary btn-modal">Ok</button>
+                    <button type="button" class="btn btn btn-primary btn-modal" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="modal-footer">
+            <button type="button" id="btnOk" class="btn btn btn-primary btn-modal">Ok</button>
+            <button type="button" class="btn btn btn-primary btn-modal" data-dismiss="modal">
+                Close
+            </button>
+        </div>
+    </div>
+
+    <div id="showIdModal" class="modal modal-custom fade" role="dialog" data-backdrop="static" data-keyboard="false">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Show Id</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="modal-body-custom">
+                        <div class="row">
+                            <div class="col-sm-6 col-xs-12">
+                                <form class="form-horizontal" role="form">
+                                    <div class="form-group">
+                                        <label class="col-sm-6 control-label no-padding-right"> Id </label>
+                                        <div class="col-sm-6 selec2-custom">
+                                            <input type="text" id="Id" />
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-sm-6 control-label no-padding-right"> Name </label>
+                                        <div class="col-sm-6 selec2-custom">
+                                            <input type="text" id="Name" />
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-sm-6 control-label no-padding-right"> Amount </label>
+                                        <div class="col-sm-6 selec2-custom">
+                                            <input type="text" id="Amount" />
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <table id="list2"></table>
+    <div id="pager2"></div>
+    <br />
+    <a href="#" id="a1">Get data from selected row</a>
+
+    <!-- Modal Add Process Template -->
+    <div class="modal modal-custom fade" id="proccesTemplate" role="dialog" data-backdrop="static" data-keyboard="false">
+        <div class="modal-dialog modal-lg">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Process Template</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="modal-body-custom">
+                        <div class="row">
+                            <div class="row">
+                                <form class="form-horizontal" role="form">
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label no-padding-right"> Main Level </label>
+                                        <div class="col-sm-2 selec2-custom">
+                                            <select id="drpMainLevel" class="form-control" data-placeholder="Select level"></select>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <br>
+                        <table style="width:100%;" id="jqGridProcess"></table>
+                        <div id="pager4"></div>
+
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="modal-footer">
+                        <button type="button" id="btn-OkTemplate" class="btn btn btn-primary btn-modal">Ok</button>
+                        <button type="button" class="btn btn btn-primary btn-modal" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="modal-footer">
+            <button type="button" id="btn-OkTemplate" class="btn btn btn-primary btn-modal">Ok</button>
+            <button type="button" class="btn btn btn-primary btn-modal" data-dismiss="modal">Close</button>
+        </div>
+    </div>
+
+    @section Scripts
+{
+        <script src="~/js/ops/uicontrol/OpsMaster.js"></script>
+
+        <script>
+        function jqGridProcessTemplate(actioncode, tempid) {
+            jQuery("#jqGridProcess").jqGrid({
+                url: '/OPS/GetTemplate',
+                datatype: "json",
+                postData: {
+                    opActionCode: actioncode,
+                    opTempId: tempid
+                },
+                width: 1150,
+                shrinkToFit: false,
+                height: 250,
+                colModel: [
+                    { name: 'OpNameId', index: 'OpNameId', width: 450 },
+                    { name: 'VietNam', index: 'VietNam', width: 700 },
+                ],
+                rowNum: 10,
+                rowList: [10, 20, 30],
+                pager: '#pager4',
+                sortname: 'id',
+                viewrecords: true,
+                loadonce: true,
+                multiselect: true,
+                sortorder: "desc",
+                caption: "Process Template",
+                gridview: true,
+                autowidth: false,
+
+                //onSelectRow: function (id) {
+                //    var rowData = $("#jqGridProcess").jqGrid("getRowData", id);
+                //    var value = rowData.OpNameId;
+                //    var text = rowData.VietNam;
+
+                //    alert(value + ", " + text);
+
+                //    //$("#drpAllProcess").val(value).trigger('change');
+                //},
+            });
+        }
+
+        function GetActionItemMainLevel() {
+            var config = ObjectConfigAjaxPost("/Ops/GetItemMainLevel", true, JSON.stringify({}));
+            AjaxPostCommon(config, function (respone) {
+                FillDataToDropDownlist("drpMainLevel", respone, "MainLevel", "MainLevelName");
+            });
+        }
+
+        function EventButtonClickTemplate() {
+
+            $("#btn-processTemplate").click(function () {
+                var actioncode = '001';
+                //var tempid = '1';
+
+                var tempid = $("#drpTempName").val();
+
+                var data = { opActionCode: actioncode, opTempId: tempid };
+
+                ReloadJqGrid2LoCal("jqGridProcess", data);
+
+                ShowModal("proccesTemplate");
+
+            });
+
+
+            $("#btn-OkTemplate").click(function () {
+                SaveChangeMainLevel();
+            });
+
+        }
+        function SaveChangeMainLevel() {
+            var arrObject = [{}];
+            var value = $("#drpMainLevel").val();
+
+            //var myGrid = $("#jqGridProcess");
+            //var selRowId = myGrid.jqGrid("getGridParam", "selrow");
+            //var rowData = myGrid.jqGrid("getRowData", selRowId);
+
+            var a = GetSelectedMultipleRowsData("#jqGridProcess");
+            //for (var i = 0; i < selRowId.length; i++) {
+
+            //var object = { mainlevel: value, id: rowData.OpNameId, name: rowData.VietNam };
+
+            var object = { mainlevel: value, a };
+                arrObject.push(object);
+            //}
+        }
+
+        //function GetSelectedOneRowData(gridId) {
+
+        //    var myGrid = $(gridId);
+        //    var selRowId = myGrid.jqGrid("getGridParam", "selrow");
+        //    var rowData = myGrid.jqGrid("getRowData", selRowId);
+
+        //    var arrObject = [{}];
+        //    for (var i = 0; i < selRowId.length; i++) {
+        //        var object = { id: rowData.OpNameId, name: rowData.VietNam };
+        //        arrObject.push(object);
+        //    }
+        //    //return arrObject;
+
+        //    //alert(rowData.OpNameId + ", " + rowData.VietNam);
+        //    //alert("id=" + rowData.id + " \ninvdate=" + rowData.invdate + "\nname=" + rowData.name);
+        //    //var objects = (rowData.id, rowData.name);
+
+        //}
+
+
+        </script>
+
+        <script>
+
+        function Text() {
+            var opToolConfig = {
+                url: "/Default/Text",
+                postData: JSON.stringify({ a: 123 })
+            };
+            AjaxPostCommon(opToolConfig, function (myList) {
+                $.each(myList, function (a, b) {
+                    console.log("Index: " + a + "\nValue: " + b.UserId + ", " + b.UserName);
+                });
+            });
+        }
+
+        var lastsel2
+        jQuery("#list2").jqGrid({
+            datatype: "json",
+            height: 250,
+            colName: ['Inv No', 'Date', 'Client', 'Amount', 'Tax', 'Total', 'Note'],
+            colModel: [
+                { name: 'id', index: 'id', width: 55 },
+                { name: 'invdate', index: 'invdate', width: 90 },
+                { name: 'name', index: 'name asc, invdate', width: 100 },
+                { name: 'amount', index: 'amount', width: 80, align: "right" },
+                { name: 'tax', index: 'tax', width: 80, align: "right" },
+                { name: 'total', index: 'total', width: 80, align: "right" },
+                { name: 'note', index: 'note', width: 80, sorttable: false },
+                {
+                    name: 'textbox', index: 'textbox', label: 'input', width: 90, sortable: false,
+                    formatter: function (cellValue, option) {
+                        return '<input type="text" id="rowId_' + option.rowId + '" size="7" name="txtBox" />';
+                    }
+                },
+                {
+                    name: 'button', index: 'button', label: 'button', width: 90, sortable: false, jsonmap: "CityId",
+                    formatter: function (cellvalue, options, rowObject) {
+                        return "<button type='button' class='btn btn-info btn-modal' onclick='ButtonClick(" + JSON.stringify(rowObject) + ")'>";
+                    }
+                },
+                {
+                    name: 'Decision', selected: 'selected', width: 90, editable: true, formatter: 'select',
+                    edittype: 'select', editoptions: {
+                        value:  getAllSelectOptions(),
+                        dataEvents: [
+                                {
+                                    type: 'change',
+                                    fn: function (e) {
+                                        var row = $(e.target).closest('tr.jqgrow');
+                                        var rowId = row.attr('id');
+                                        jQuery("#list2").saveRow(rowId, false, 'clientArray');
+                                    }
+                                }
+                        ]
+                    }
+                }
+            ],
+            rowNum: 10,
+            rowList: [10, 20, 30],
+            pager: '#pager2',
+            sortname: 'id',
+            viewrecords: true,
+            loadonce: true,
+            multiselect: false,
+            sortorder: "desc",
+            caption: "Manipulating Array Data",
+            gridview: true,
+            datatype: 'json',
+            //onSelectRow: function(id) {
+                //var ret = jQuery("#list2").jqGrid('getRowData', id);
+                //alert("id=" + ret.id + " \ninvdate=" + ret.invdate + "\nname=" + ret.name);
+
+            //},
+            onSelectRow: function (id) {
+                if (id && id !== lastsel2) {
+                    jQuery('#list2').jqGrid('restoreRow', lastsel2);
+                    jQuery('#list2').jqGrid('editRow', id, true);
+                    lastsel2 = id;
+                }
+                var ret = jQuery("#list2").jqGrid('getRowData', id);
+            },
+        });
+        function getAllSelectOptions() {
+            var states = {
+                '1': 'Alabama', '2': 'California', '3': 'Florida',
+                '4': 'Hawaii', '5': 'London', '6': 'Oxford'
+            };
+            return states;
+        }
+
+        function loadProcessName(language) {
+
+        //DATAGRIDVIEW LANGUAGE
+            jQuery("#jqGrid").jqGrid({
+                url: '/OPS/GetOpName',
+                datatype: "json",
+                postData: {
+                    languageId: language
+                },
+                height: 250,
+                colModel: [
+                    { name: 'OpNameId', index: 'OpNameId', width: 140 },
+                    { name: 'OpName', index: 'OpName', width: 300 },
+                ],
+                rowNum: 10,
+                rowList: [10, 20, 30],
+                pager: '#pager1',
+                sortname: 'id',
+                viewrecords: true,
+                loadonce: true,
+                multiselect: false,
+                sortorder: "desc",
+
+                caption: "Loading Data by jqGrid",
+                gridview: true,
+
+                onSelectRow: function (id) {
+                    var rowData = $("#jqGrid").jqGrid("getRowData", id);
+                    var value = rowData.OpNameId;
+
+                    $("#drpAllProcess").val(value).trigger('change');
+                },
+            });
+        }
+
+        jQuery("#btn-showId").click(function () {
+            //ShowModal("showIdModal");
+            s = jQuery("#list2").jqGrid('getGridParam', 'selarrrow');
+            //var total = "";
+            var objects = [];
+            var arrName = [];
+            for (var i = 0; i < s.length; i++) {
+                var rowId = s[i];
+                var rowData = jQuery("#list2").jqGrid('getRowData', rowId);
+
+                //arrName.push(objects);
+                //total += "-" + rowData.id + " " + rowData.name;
+            }
+            //alert("id=" + total);
+        });
+
+        function ButtonClick(rowid) {
+            //GetSelectedOneRowData("#list2");
+            //test(3, 2);
+            //ShowInputTextbox("#list2", rowObject);
+            //var rowData = $("#list2").jqGrid("getRowData", rowid);
+            //var s = $("#list2").text(rowid);
+            //click button show name
+            //var rowdata = rowid;
+            //alert(rowdata.ship);
+            //var dropdown = $('#list2' + rowid + 'pdInstanceType' + 'option:selected').text();
+            //var selectedOption = dropdown.options[dropdown.selectedIndex];
+            //var selectedText = selectedOption.text;
+            var gridData = $("#list2").jqGrid("getGridParam", "data");
+
+        }
+
+
+        var mydata = [
+		{ id: "27", invdate: "2007-10-01", name: "test", note: "note", amount: "200.00", tax: "10.00", total: "210.00"},
+		{ id: "2", invdate: "2007-10-02", name: "test2", note: "note2", amount: "300.00", tax: "20.00", total: "320.00" },
+		{ id: "3", invdate: "2007-09-01", name: "test3", note: "note3", amount: "400.00", tax: "30.00", total: "430.00" },
+		{ id: "4", invdate: "2007-10-04", name: "test", note: "note", amount: "200.00", tax: "10.00", total: "210.00" },
+		{ id: "5", invdate: "2007-10-05", name: "test2", note: "note2", amount: "300.00", tax: "20.00", total: "320.00" },
+		{ id: "6", invdate: "2007-09-06", name: "test3", note: "note3", amount: "400.00", tax: "30.00", total: "430.00" },
+		{ id: "7", invdate: "2007-10-04", name: "test", note: "note", amount: "200.00", tax: "10.00", total: "210.00" },
+		{ id: "8", invdate: "2007-10-03", name: "test2", note: "note2", amount: "300.00", tax: "20.00", total: "320.00" },
+		{ id: "9", invdate: "2007-09-01", name: "test3", note: "note3", amount: "400.00", tax: "30.00", total: "430.00" },
+        { id: "10", invdate: "2007-10-01", name: "test", note: "note", amount: "200.00", tax: "10.00", total: "210.00" },
+        { id: "11", invdate: "2007-10-01", name: "test", note: "note", amount: "200.00", tax: "10.00", total: "210.00" },
+        { id: "12", invdate: "2007-10-02", name: "test2", note: "note2", amount: "300.00", tax: "20.00", total: "320.00" },
+        { id: "13", invdate: "2007-09-01", name: "test3", note: "note3", amount: "400.00", tax: "30.00", total: "430.00" },
+        { id: "14", invdate: "2007-10-04", name: "test", note: "note", amount: "200.00", tax: "10.00", total: "210.00" },
+        { id: "15", invdate: "2007-10-05", name: "test2", note: "note2", amount: "300.00", tax: "20.00", total: "320.00" },
+        { id: "16", invdate: "2007-09-06", name: "test3", note: "note3", amount: "400.00", tax: "30.00", total: "430.00" },
+        { id: "17", invdate: "2007-10-04", name: "test", note: "note", amount: "200.00", tax: "10.00", total: "210.00" },
+        { id: "18", invdate: "2007-10-03", name: "test2", note: "note2", amount: "300.00", tax: "20.00", total: "320.00" },
+        { id: "19", invdate: "2007-09-01", name: "test3", note: "note3", amount: "400.00", tax: "30.00", total: "430.00" },
+        { id: "21", invdate: "2007-10-01", name: "test", note: "note", amount: "200.00", tax: "10.00", total: "210.00" },
+        { id: "22", invdate: "2007-10-02", name: "test2", note: "note2", amount: "300.00", tax: "20.00", total: "320.00" },
+        { id: "23", invdate: "2007-09-01", name: "test3", note: "note3", amount: "400.00", tax: "30.00", total: "430.00" },
+        { id: "24", invdate: "2007-10-04", name: "test", note: "note", amount: "200.00", tax: "10.00", total: "210.00" },
+        { id: "25", invdate: "2007-10-05", name: "test2", note: "note2", amount: "300.00", tax: "20.00", total: "320.00" },
+        { id: "26", invdate: "2007-09-06", name: "test3", note: "note3", amount: "400.00", tax: "30.00", total: "430.00" },
+        { id: "27", invdate: "2007-10-04", name: "test", note: "note", amount: "200.00", tax: "10.00", total: "210.00" },
+        { id: "28", invdate: "2007-10-03", name: "test2", note: "note2", amount: "300.00", tax: "20.00", total: "320.00" },
+        { id: "9", invdate: "2007-09-01", name: "test3", note: "note3", amount: "400.00", tax: "30.00", total: "430.00" }
+        ];
+
+        for (var i = 0; i <= mydata.length; i++) {
+            jQuery("#list2").jqGrid('addRowData', i + 1, mydata[i]);
+        }
+        </script>
+
+        @*Play Video*@
+        <script>
+        function ShowPlayVideoModal() {
+            $("#btnPlayVideo").click(function () {
+                ShowModal("mdPlayVideo");
+            })
+
+        }
+        </script>
+        <script>
+        $(document).ready(function () {
+
+            ShowPlayVideoModal();
+
+            EventButtonClickTemplate();
+            jqGridProcessTemplate("", "");
+            GetActionItemMainLevel();
+
+            GetActionCode(OpType);
+            GetActionCodeOpType(OpType);
+            GetFactory();
+            GetMasterCodeOpGroup(OpGroup);
+            EventButtonClick();
+            ShowId();
+            GetLanguage();
+            loadProcessName('vn');
+            GetAllProcess();
+            SaveProcessText();
+            //EventOkTemplateButton();
+            GetTempName();
+            Select2Example();
+            TestSelect2();
+            selectMachine();
+            GetSelectedMachine();
+            //GetOpName();
+            GetSelectedProcessName();
+            //PlayVideo();
+
+        });
+
+        function PlayVideo() {
+            //var posterPath = "/img/no-video.png";
+            var srtSrc = "https://ksolution.tw1.quickconnect.to/vs/sharing/XHkhC9om#!bW92aWUtMg==";
+            $("#videoPreview").attr("src", srtSrc);
+            //$("#videoPreview").attr("poster", posterPath);
+        }
+
+        var ArrOpName = [];
+        function GetOpName() {
+
+            var config = ObjectConfigAjaxPost("/Ops/GetOpName", true, JSON.stringify({ languageId: 'vn' }));
+            AjaxPostCommon(config, function (respone) {
+
+                ArrOpName = respone;
+
+                var lstOpName = [];
+                for (var i = 0; i < ArrOpName.length; i++) {
+                    var obj = { id: ArrOpName[i].OpNameId, text: ArrOpName[i].OpName };
+                    lstOpName.push(obj);
+                }
+
+                $("#selectProcessName").select2({
+                    data: lstOpName,
+                });
+            });
+        }
+
+        //Get selected Process Name
+        function GetSelectedProcessName() {
+
+            $("#selectProcessName").select2({
+                minimumInputLength: 3,
+                ajax: {
+                    url: '/Ops/GetProcessName',
+                    delay: 250,
+                    data: function (params) {
+                        return {
+                            searchTerm: params.term, // search term
+                            languageId: 'vn',
+                        };
+                    },
+                    processResults: function (data) {
+
+                        var dataMod = [];
+                        if ($.isEmptyObject(data)) {
+                            dataMod = { id: "1", text: "2" };
+                        }
+                        else {
+                            $.each(data, function (index, value) {
+                                var newItem = { id: value.OpNameId, text: value.OpName };
+                                dataMod.push(newItem);
+                            });
+                        }
+
+                        return {
+                            results: dataMod
+                        };
+
+                    },
+                    allowClear: true,
+                }
+            });
+
+
+        }
+
+        //Get selected Machine
+        function GetSelectedMachine() {
+            $("#drpSelectMachine").select2();
+            var lstSelect = [];
+            var obj = { id: '', text: '' };
+            $("#btnSelectMachine").click(function () {
+
+                var lstValue = $("#selectMachine").select2("val");
+                var lstText = $('#selectMachine').select2('data').map(function (elem) {
+                    return elem.text;
+                });
+
+                for (var i = 0; i < lstValue.length; i++) {
+                    obj = { id: lstValue[i], text: lstText[i] };
+                    lstSelect.push(obj);
+                }
+
+                $('#drpSelectMachine').select2({
+                    data: lstSelect
+                });
+
+                $("#drpSelectMachine").find('option').prop("selected", true);
+                $("#drpSelectMachine").trigger('change');
+            });
+        }
+
+        //mySelect2 Example
+        function Select2Example() {
+            $("#e1").select2(
+                //data: data
+            );
+            $("#checkbox").click(function () {
+                if ($("#checkbox").is(':checked')) {
+                    //$("#e1 > option").prop("selected", "selected");// Select All Options
+                    //$("#e1").trigger("change");// Trigger change to select 2
+                    $("#e1").find('option').prop("selected", true);
+                    $("#e1").trigger('change');
+                } else {
+                    //$("#e1 > option").removeAttr("selected");
+                    //$("#e1").trigger("change");// Trigger change to select 2
+                    $("#e1").find('option').prop("selected", false);
+                    $("#e1").trigger('change');
+                }
+            });
+
+            $("#button").click(function () {
+                alert($("#e1").val());
+            });
+        }
+
+        var testdata = [{ id: 0, text: 'enhancement' }, { id: 1, text: 'bug' },
+            { id: 2, text: 'duplicate' }, { id: 3, text: 'invalid' }, { id: 4, text: 'wontfix' }];
+
+
+        function selectMachine() {
+            $("#selectMachine").select2({
+                minimumInputLength: 3,
+                ajax: {
+                    url: '/Ops/SearchMachineName',
+                    delay: 250,
+                    data: function (params) {
+                        return {
+                            q: params.term, // search term
+                        };
+                    },
+                    processResults: function (data) {
+
+                        var dataMod = [];
+                        if ($.isEmptyObject(data))
+                        {
+                            dataMod =  { id: "1", text: "2" };
+                        }
+                        else
+                        {
+                            $.each(data.items, function (index, item) {
+                                var newItem = { id: item.ItemCode, text: item.ItemName };
+                                dataMod.push(newItem);
+                            });
+                        }
+
+                        return {
+                            results: dataMod
+                        };
+
+                    },
+                    allowClear: true,
+                },
+                editrules: { edithidden: true, required: true }
+
+            });
+        }
+
+        //Test select2
+        function TestSelect2() {
+            $("#selectTest").select2({
+                placeholder: "Search...",
+                minimumInputLength: 1,
+                dataType: 'json',
+                //data: testdata,
+                ajax: {
+                    url: 'https://api.github.com/search/repositories',
+                    delay: 250,
+                    data: function (params) {
+                        return {
+                            q: params.term, // search term
+                            page: params.page
+                        };
+                    },
+
+                    processResults: function (data, params) {
+
+                        params.page = params.page || 1;
+
+                        var dataMod = [];
+
+                        $.each(data.items, function (index, item) {
+                            var newItem = { id: item.id, text: item.name };
+                            dataMod.push(newItem);
+                        });
+
+                        return {
+                            results: dataMod
+                        };
+                    },
+                    allowClear: true,
+
+                },
+                 editrules: { edithidden: true, required: true }
+            });
+        }
+
+        function GetTempName() {
+            var config = ObjectConfigAjaxPost("/Ops/GetTempName", true, JSON.stringify({}));
+            AjaxPostCommon(config, function (respone) {
+                FillDataToDropDownlist("drpTempName", respone, "TempId", "TempName");
+            });
+
+        }
+
+        function GetAllProcess() {
+
+            var config = ObjectConfigAjaxPost("/Ops/GetOpName", true, JSON.stringify({ languageId: 'vn' }));
+            AjaxPostCommon(config, function (respone) {
+                FillDataToDropDownlist("drpAllProcess", respone, "OpNameId", "OpName");
+            });
+
+        }
+
+        function GetLanguage() {
+            var arrLanguage = [];
+            var object = { id: 'vn', name: 'Vietnam' };
+            var object1 = { id: 'gb', name: 'English' };
+            var object2 = { id: 'id', name: 'Indonesia' };
+            var object3 = { id: 'mm', name: 'Myanmar' };
+            //var object4 = { id: '5', name: 'Korea' };
+            var object5 = { id: 'et', name: 'Ethiopia' };
+            arrLanguage.push(object);
+            arrLanguage.push(object1);
+            arrLanguage.push(object2);
+            arrLanguage.push(object3);
+            //arrLanguage.push(object4);
+            arrLanguage.push(object5);
+
+            FillDataToDropDownlist("drpAllLanguage", arrLanguage, "id", "name");
+        }
+
+        function GetSelectText() {
+            var arrName = [];
+            for (var i = 0; i < mydata.length; i++) {
+                var rowId = mydata[i];
+                var objects = { id: rowId.id, name: rowId.name };
+                arrName.push(objects);
+            }
+            FillDataToDropDownlist("getSelect", arrName, "id", "name");
+        }
+
+        function GetIdAndName() {
+            var arrName = [];
+            for (var i = 0; i < mydata.length; i++) {
+                var rowId = mydata[i];
+                var objects = { id: rowId.id, name: rowId.name };
+                arrName.push(objects);
+            }
+            FillDataToDropDownlist("drpValue", arrName, "id", "name");
+        }
+
+        function ShowId() {
+            var s;
+            s = jQuery("#list2").jqGrid('getGridParam', 'selarrrow');
+            $("#ID").text(s);
+
+        }
+
+        function SaveProcessText() {
+            $("#btnSaveProcess").click(function () {
+                $("#drpMachine").change(function () {
+                    var machineText = $(this).text();
+                    var machineVal = $(this).val();
+                    //var data = { languageId: lag };
+
+                    //ReloadJqGrid2LoCal("jqGrid", data);
+                    process['type'] = machineText;
+                    process['value'] = machineVal;
+                });
+                alert(process);
+            });
+        }
+
+        function EventButtonClick() {
+
+            $("#btn-test").click(function () {
+                ShowModal("proccesModal");
+
+                var gridData = jQuery('#list2').getGridParam('data');
+
+                allRowsInGrid = $('#list2').jqGrid('getRowData', Id);
+                //s = jQuery("#list2").jqGrid('getGridParam', 'selarrrow');
+                //var total = "";
+                //for (var i = 1; i <= mydata.length; i++) {
+                //    var rowId = i;
+                //    //var rowData = jQuery("#list2").jqGrid('getRowData', rowId);
+
+                //    total += "-" + $("#rowId_" + rowId).val();
+                //}
+                //alert(total);
+                //alert("id=" + total);
+
+                //alert($("#rowId_" + "1").val());
+            });
+            $("#drpLanguage").change(function () {
+                var lag = $(this).val();
+                var data = { languageId: lag };
+
+                ReloadJqGrid2LoCal("jqGrid", data);
+            });
+        }
+
+        function GetActionCode(OpType) {
+            var config = ObjectConfigAjaxPost("/Ops/GetMasterCode", true, JSON.stringify({ mCode: OpType }));
+            AjaxPostCommon(config, function (respone) {
+                FillDataToDropDownlist("drpMachine", respone, "SubCode", "CodeName");
+            });
+        }
+
+        function GetActionCodeOpType(OpType) {
+            var config = ObjectConfigAjaxPost("/Ops/GetMasterCode", true, JSON.stringify({ mCode: OpType }));
+            AjaxPostCommon(config, function (respone) {
+                FillDataToDropDownlist("drpActionCode", respone, "SubCode", "CodeName");
+            });
+        }
+
+        function GetFactory() {
+            var config = ObjectConfigAjaxPost("/Ops/GetFactory", true);
+            AjaxPostCommon(config, function (respone) {
+                FillDataToDropDownlist("drpTool", respone, "FactoryId", "FactoryName");
+            });
+        }
+
+        function GetMasterCodeOpGroup(OpGroup) {
+            var config = ObjectConfigAjaxPost("/Ops/GetMasterCode", true, JSON.stringify({ mCode: OpGroup }));
+            AjaxPostCommon(config, function (respone) {
+                FillDataToDropDownlist("drpProcessGroup", respone, "SubCode", "CodeName");
+            });
+        }
+        //Event click on row of grid OPS master.
+        //Parameter: row - contain data row.
+        //Example get style code data: row.StyleCode
+        function ClickRowOpsCon(row) {
+            //alert(row.StyleCode);
+        }
+
+        //Get style master information
+        function GetStyleMaster() {
+        }
+
+        //Get key code of style. Define GetKeyCodeStyle again.
+        function GetKeyCodeStyle(styleCode, styleSize, styleColor, revNo) {
+
+            //Reload girdview Ops
+            var data = CreateObjStyleKeyCode(styleCode, styleSize, styleColor, revNo);
+            ReloadJqGrid(gridOpsTableNameCon, data);
+
+
+        }
+        function GetModulesByStyleCode(styleCode) {
+            var config = ObjectConfigAjaxPost("/Ops/GetModulesListByStyleCode", true, JSON.stringify({ styleCode: styleCode }));
+            AjaxPostCommon(config, function (respone) {
+                FillDataToDropDownlist("drpModule", respone, "ModuleId", "ModuleName");
+            });
+        }
+
+        </script>
+    }

@@ -1,0 +1,185 @@
+﻿@model IEnumerable<OPS_DAL.SystemEntities.KPISetting>
+
+@{ 
+    Layout = "~/Views/Shared/_MesLayout.cshtml";
+}
+
+<style>
+    div.blueTable {
+        border: 1px solid #1C6EA4;
+        background-color: #EEEEEE;
+        width: 100%;
+        text-align: center;
+        border-collapse: collapse;
+    }
+
+    .divTable.blueTable .divTableCell, .divTable.blueTable .divTableHead {
+        border: 1px solid #AAAAAA;
+        padding: 5px 2px;
+    }
+
+    .divTable.blueTable .divTableBody .divTableCell {
+        font-size: 15px;
+    }
+
+    .divTable.blueTable .divTableRow:nth-child(even) {
+        background: #D0E4F5;
+    }
+
+    .divTable.blueTable .divTableHeading {
+        background: #1C6EA4;
+        background: -moz-linear-gradient(top, #5592bb 0%, #327cad 66%, #1C6EA4 100%);
+        background: -webkit-linear-gradient(top, #5592bb 0%, #327cad 66%, #1C6EA4 100%);
+        background: linear-gradient(to bottom, #5592bb 0%, #327cad 66%, #1C6EA4 100%);
+        border-bottom: 2px solid #444444;
+    }
+
+        .divTable.blueTable .divTableHeading .divTableHead {
+            font-size: 17px;
+            font-weight: bold;
+            color: #FFFFFF;
+            border-left: 2px solid #D0E4F5;
+        }
+
+            .divTable.blueTable .divTableHeading .divTableHead:first-child {
+                border-left: none;
+            }
+
+    .blueTable .tableFootStyle {
+        font-size: 14px;
+        font-weight: bold;
+        color: #FFFFFF;
+        background: #D0E4F5;
+        background: -moz-linear-gradient(top, #dcebf7 0%, #d4e6f6 66%, #D0E4F5 100%);
+        background: -webkit-linear-gradient(top, #dcebf7 0%, #d4e6f6 66%, #D0E4F5 100%);
+        background: linear-gradient(to bottom, #dcebf7 0%, #d4e6f6 66%, #D0E4F5 100%);
+        border-top: 2px solid #444444;
+    }
+
+    .blueTable .tableFootStyle {
+        font-size: 14px;
+    }
+
+        .blueTable .tableFootStyle .links {
+            text-align: right;
+        }
+
+            .blueTable .tableFootStyle .links a {
+                display: inline-block;
+                background: #1C6EA4;
+                color: #FFFFFF;
+                padding: 2px 8px;
+                border-radius: 5px;
+            }
+
+    .blueTable.outerTableFooter {
+        border-top: none;
+    }
+
+        .blueTable.outerTableFooter .tableFootStyle {
+            padding: 3px 5px;
+        }
+    /* DivTable.com */
+    .divTable {
+        display: table;
+    }
+
+    .divTableRow {
+        display: table-row;
+    }
+
+    .divTableHeading {
+        display: table-header-group;
+    }
+
+    .divTableCell, .divTableHead {
+        display: table-cell;
+    }
+
+    .divTableHeading {
+        display: table-header-group;
+    }
+
+    .divTableFoot {
+        display: table-footer-group;
+    }
+
+    .divTableBody {
+        display: table-row-group;
+    }
+</style>
+ 
+
+<div class="row">
+    <form>
+        <div class="col-lg-3">
+            <div class="form-control"></div>
+        </div>
+        <div class="col-lg-3">
+            <div class="form-control"></div>
+        </div>
+        <div class="col-lg-3">
+            <div class="form-control"></div>
+        </div>
+        <div class="col-lg-3">
+            <div class="form-control"></div>
+        </div>
+    </form>
+</div>
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="divTable blueTable">
+            <div class="divTableHeading">
+                <div class="divTableRow">
+                    <div class="divTableHead">ID</div>
+                    <div class="divTableHead">System</div>
+                    <div class="divTableHead">Team</div>
+                    <div class="divTableHead">Corporation</div>
+                    <div class="divTableHead">Director</div>
+                    <div class="divTableHead">Buyer</div>
+                    <div class="divTableHead">Factory</div>
+                    <div class="divTableHead">Menu</div>
+                    <div class="divTableHead">In-charge Staff</div>
+                </div>
+            </div>
+            <div class="divTableBody">
+
+                @foreach (var item in Model)
+                {
+                    <div class="divTableRow">
+                        <div class="divTableCell">@item.MasterID</div>
+                        <div class="divTableCell">@item.SYSTEM_NAME</div>
+                        <div class="divTableCell">@item.TEAM_NAME</div>
+                        <div class="divTableCell">@item.CORP_NAME</div>
+                        <div class="divTableCell">@item.DIRE_NAME</div>
+                        <div class="divTableCell">@item.BUYER_NAME</div>
+                        <div class="divTableCell">@item.FACTORY_NAME</div>
+                        <div class="divTableCell">@item.MENU_NAME</div>
+                        <div class="divTableCell">@item.UserName</div>
+                    </div>
+                }
+
+            </div>
+        </div>
+        @*<div class="blueTable outerTableFooter">
+            <div class="tableFootStyle">
+                <div class="links">
+                    <a href="#">&laquo;</a>
+                    <a class="active" href="#">1</a>
+                    <a href="#">2</a> <a href="#">3</a>
+                    <a href="#">4</a>
+                    <a href="#">&raquo;</a>
+                </div>
+            </div>
+        </div>*@  
+    </div>
+</div>
+
+
+@section Scripts{
+    <script>
+        $(function () {
+        });
+    </script>
+}

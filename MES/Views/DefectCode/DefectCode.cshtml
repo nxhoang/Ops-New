@@ -1,0 +1,58 @@
+﻿
+@{
+    ViewBag.Title = "DefectCodes";
+    Layout = "~/Views/Shared/_MesLayout.cshtml";
+}
+
+<style>
+    /*align plus icon*/
+    .ui-jqgrid tr.ui-row-ltr td.ui-sgcollapsed a>span {
+        margin: 0px -6px;
+    }
+</style>
+
+<div class="row">
+    <div class="form-horizontal">
+        <label class="col-sm-1 control-label">Category:</label>
+        <div class="col-sm-3">
+            <select id="drpDefectCat" class="form-control" data-placeholder="Defect category"></select>
+        </div>
+
+        <label class="col-sm-1 control-label">Language:</label>
+        <div class="col-sm-2">
+            <select id="drpLanguage" class="form-control">
+                <option value="vn">Việt Nam</option>
+                <option value="id">Bahasa</option>
+                <option value="mm">Burmese</option>
+                <option value="et">Amharic</option>
+            </select>
+        </div>
+    </div>   
+</div>
+
+<div class="top-buffer"></div>
+
+<div class="row">
+    <div class="col-sm-12">
+        <table id="tbDefectCode"></table>
+        <div id="divDefectCodePage"></div>
+    </div>
+</div>
+
+@section Scripts{
+
+    <script src="~/js/plugin/jqgrid/jquery.jqGrid.min.js"></script>
+    <script src="~/js/plugin/jqgrid/grid.locale-en.min.js"></script>
+
+    <script src="~/js/mes/mes-common.js?v=1.0.2"></script>
+
+    <script src="~/js/mes/quality/defect-code.js?v=1.0.1"></script>
+    <script src="~/js/mes/quality/defect-code-event.js?v=1.0.0"></script>
+
+    <script>
+        $(function () {
+            InitPage();
+        });
+    </script>
+
+}

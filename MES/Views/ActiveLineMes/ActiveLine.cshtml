@@ -1,0 +1,171 @@
+﻿
+@{
+    ViewBag.Title = "ActiveLine";
+    Layout = "~/Views/Shared/_MesLayout.cshtml";
+}
+
+<link href="~/assets/DayRangePicker/daterangepicker.min.css" rel="stylesheet" />
+
+<style>
+    #divLine .progress .progress-bar {
+        position: relative;
+        /*overflow:unset !important;*/
+    }
+
+    #divLine .progress, .progress-bar {
+        /*position: inherit !important;*/
+        overflow: unset !important;
+    }
+
+    [data-tooltip]:before {
+        /* needed - do not touch */
+        content: attr(data-tooltip);
+        position: absolute;
+        opacity: 0;
+        /* customizable */
+        transition: all 0.15s ease;
+        padding: 3px 5px;
+        color: #333;
+        border-radius: 10px;
+        box-shadow: 2px 2px 1px silver;
+    }
+
+    [data-tooltip]:hover:before {
+        /* needed - do not touch */
+        opacity: 1;
+        /* customizable */
+        background: #f7f7cf;
+        margin-top: -28px;
+        margin-left: -70px;
+    }
+
+    [data-tooltip]:not([data-tooltip-persistent]):before {
+        pointer-events: none;
+    }
+</style>
+
+<!-- widget grid -->
+<section id="widget-grid" class="">
+
+    <!-- row -->
+    <div class="row">
+        <!-- NEW WIDGET START -->
+        <article class="col-sm-12">
+
+            <!-- Widget ID (each widget will need unique ID)-->
+            <div class="jarviswidget jarviswidget-color-green" id="wid-id-mtop" data-widget-editbutton="false" data-widget-togglebutton="false" data-widget-deletebutton="false" data-widget-sortable="false">
+
+                <header>
+                    <h2><strong>Active Line</strong></h2>
+                </header>
+
+                <!-- widget div-->
+                <div>
+
+                    <!-- widget content has-feedback-->
+                    <div class="widget-body">
+                        <div class="row">
+                            <div class="form-horizontal bv-form">
+                                <div class="form-group">
+                                    <label class="col-sm-1 control-label">Factory</label>
+                                    <div class="col-sm-2">
+                                        <select id="drpFactory2" class="form-control" data-placeholder=""></select>
+                                    </div>
+                                    <div class="col-sm-2"></div>
+
+                                    <div class="col-sm-2">
+                                        <select id="drpReceiveData" class="form-control" data-placeholder="">
+                                            <option value="1">IoT data received in last 30 mins</option>
+                                            <option value="2">IoT data received today</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="col-sm-1"></div>
+                                    
+                                    <label class="col-sm-1 control-label">Date</label>
+                                    <div class="col-sm-1">
+                                        <input type="text" id="txtDate" class="form-control" placeholder="Date" style="padding-right:0;">
+                                    </div>
+
+                                    <div class="col-sm-1">
+                                        <button id="btnSearchLine" class="form-control btn btn-primary">Display</button>
+                                    </div>
+
+                                    @*<label class="col-sm-1 control-label">Display Option</label>*@
+                                    @*<div class="col-sm-2">
+                                            <select id="drpShowBy" class="form-control" data-placeholder="">
+                                                <option value="1">MES line mapping by IoT</option>
+                                                <option value="2">MES line mapping by Operation Plan</option>
+                                            </select>
+                                        </div>*@
+
+                                    <label id="lblDisplayOption" class="col-sm-1 control-label">Display Option</label>
+                                    <div id="divDisplayOption" class="col-sm-1">
+                                        <select id="drpDisplayOption" class="form-control" data-placeholder="">
+                                            <option value="1">Target</option>
+                                            <option value="2">Workers</option>
+                                        </select>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="divProAlias" class="row" style="display:none">
+                            <div class="col-sm-5"></div>
+                            <label class="col-sm-1 control-label" style="text-align:right; padding-right: 0">Connected IoT</label>
+                            <div class="col-sm-1">
+                                <div style="border: 1px dashed #b09b5b; background-color: #b09b5b; height: 20px"></div>
+                            </div>
+
+                            <label class="col-sm-1 control-label" style="text-align:right; padding-right: 0">Mapped Seat</label>
+                            <div class="col-sm-1">
+                                <div style="border: 1px dashed #71843f; background-color: #71843f; height: 20px"></div>
+                            </div>
+
+                            <label class="col-sm-1 control-label float-right" style="text-align:right; padding-right: 0">Remain Seat</label>
+                            <div class="col-sm-1">
+                                <div style="border: 1px dashed #92a2a8; background-color: #92a2a8; height: 20px"></div>
+                            </div>
+                            <div class="col-sm-1"></div>
+                        </div>
+                        <div class="top-buffer"></div>
+
+                        <div class="row" id="divLine">
+
+                        </div>
+
+                    </div>
+                    <!-- end widget content -->
+
+                </div>
+                <!-- end widget div -->
+
+            </div>
+            <!-- end widget -->
+        </article>
+        <!-- WIDGET END -->
+    </div>
+    <!-- end row -->
+
+</section>
+<!-- end widget grid -->
+
+@section Scripts{
+
+    <script src="~/assets/DayRangePicker/daterangepicker.min.js"></script>
+
+    <script src="~/js/mes/mes-common.js?v=1.0.2"></script>
+
+    <script src="~/js/mes/active-line/active-line.js?v=1.0.4"></script>
+    <script src="~/js/mes/active-line/active-line-event.js?v=1.0.4"></script>
+
+    <script>
+        $(function () {
+            initActiveLineMesPage();
+        });
+
+
+    </script>
+
+}

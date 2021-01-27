@@ -1,0 +1,57 @@
+﻿@{ 
+    ViewBag.Title = "Machine management";
+    ViewBag.PageTitle = "Machine management";
+}
+@Html.Partial("~/Views/OpsMasterData/_machine.cshtml")
+@Html.Partial("~/Views/UIControl/_SearchStyle.cshtml")
+@section Scripts
+{
+    <script src="~/js/ops/uicontrol/SearchStyle.js?v=1.0.5"></script>
+    <script src="~/js/ops/generic/SmSgManager.js"></script>
+    <script src="~/js/ops/Pages/Machine.js?v=1.0.4"></script>
+    <script>
+        $(document).ready(function () {
+            CreateMcGrid($("#cbBuyerId").val(),MachineType.machine, "Machine management");
+            AppendMcmtByCode(MachineType.machine);
+            AppendBuyerTocb();
+            AppendBrand();
+            AppendSuppiers(MachineType.machine);
+            ChangeType(MachineType.machine);
+            OpenReadySearch();
+            AppendUnit("UnitCode");
+            GetProcessCode("ProcessCode"); //ADD - SON) 28/Feb/2020
+            //START ADD - SON) 8/Oct/2020
+            getOperationGroup("0", '');
+            //END ADD - SON) 8/Oct/2020
+        });
+        var arrMc = {
+            ItemCode: "Code",
+            ItemName: "Name",
+            Model: "Model/Serial",
+            Cost: "Price",
+            CategId: "Category",
+            Category: "Category",
+            Buyer: "Buyer",
+            Brand: "Brand",
+            Machine: "Machine",
+            Sos: "Supplier",
+            ImagePath: "Image"
+        };
+
+        var arrAcction = {
+            editTitle: CheckRoleEdit()?"Edit machine":"Machine",
+            submintBtn: "Update",
+            cancelBtn: "Close",
+            addTitle: "Add machine",
+            addBtn:"Add"
+        }
+
+        function GetKeyCodeStyle(styleCode, styleSize, styleColorSerial, revNo) {
+
+        }
+
+        function GetStyleMaster() {
+
+        }
+    </script>
+}

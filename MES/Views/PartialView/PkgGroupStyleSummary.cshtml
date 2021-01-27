@@ -1,0 +1,104 @@
+﻿@model OPS_DAL.MesBus.Mpmt
+<style>
+    .POPStyleSummaryContainer {
+        width: 100% !important;
+    }
+
+    table tr {
+        line-height: 23px;
+    }
+    
+    span.pull-left {
+        font-weight: bold;
+    }
+
+    .qtip-wiki {
+        max-width: calc(45%);
+        min-width: calc(33%);
+        width: calc(45%);
+        font-size: 15px;
+        color: black;
+    }
+
+    .qtip-wiki label {
+        font-weight: bold;
+    }
+
+    .qtip-wiki p {
+        margin: 0 0 6px;
+    }
+
+    .qtip-wiki h1 {
+        font-size: 20px;
+        line-height: 1.1;
+        margin: 0 0 5px;
+    }
+
+    .qtip-wiki img {
+        float: left;
+        margin: 10px 10px 10px 0;
+    }
+
+    .qtip-wiki .info {
+        overflow: hidden;
+    }
+
+    .qtip-wiki p.note {
+        font-weight: 700;
+    }
+
+
+    i[data-role="quickSummary"] {
+        z-index: 100;
+    }
+</style>
+<div class="POPStyleSummaryContainer" style="width:100%">
+    <table style="width:100%;">
+        <tr style="text-align:center; width:100%">
+            <td colspan="2" style="width:100%"><span style="text-align:center; font-size:18px;font-weight:bold;">@Model.PackageGroup</span></td>
+        </tr>
+        <tr style="text-align:center;">
+            <td style="width:60%">
+                <table style="width:90%;margin: 10px; ">
+                    <tbody>
+                        <tr>
+                            <td>
+                                <span class="pull-left">Buyer Style Code:</span><br /><span class="pull-right">@Model.BuyerStyleCode</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <span class="pull-left">Buyer Style Name:</span><br /><span class="pull-right">@Model.BuyerStyleName</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <span class="pull-left">PK Style Code:</span><br /><span class="pull-right">@Model.StyleCode</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <span class="pull-left">Style Color</span><br /><span class="pull-right">@Model.StyleColorways</span>
+                            </td>
+                        </tr>
+
+                        @{ if (@Model.TargetQty > 0)
+                            {
+                                <tr>
+                                    <td>
+                                        <span class="pull-left">Target Qty</span><br /><span class="pull-right">@Model.TargetQty.ToString()</span>
+                                    </td>
+                                </tr>
+
+                            }
+                        }
+
+                    </tbody>
+                </table>
+            </td>
+            <td style="width:40%; ">
+                <img src="@Model.ImgLink" width="200" height="200" style="text-align:center;" />
+            </td>
+        </tr>
+    </table>
+</div>

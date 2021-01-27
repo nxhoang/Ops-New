@@ -1,0 +1,8 @@
+{
+  "Files": [
+    {
+      "SourceFile": "MES\\Views\\MesLineAllocation\\MesLineAllocation.edit.cshtml",
+      "OutputFile": "MES\\Views\\MesLineAllocation\\MesLineAllocation.cshtml"
+    }
+  ]
+}

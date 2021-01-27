@@ -1,0 +1,261 @@
+﻿
+<div class="container-fluid">
+    <div class="row mt-1"> <div class="col-lg-12"> <h2>QCO Detail</h2> <p style="font-size: 15px;">Distribute Material of the following Production Package</p> </div> </div> 
+
+    <div class="">
+        <form class="form-inline">
+            <div class="col-lg-2">
+                <div class="form-group">
+                    <label class="col-3">Factory</label>
+                    <input class="readonlyInput form-control col-9" type="text" id="Factory" disabled="disabled" />
+                </div>
+            </div>
+            <div class="col-lg-2">
+                <div class="form-group">
+                    <label class="col-3">LineNo</label>
+                    <input class="readonlyInput form-control col-9" type="text" id="LineNo" disabled="disabled" />
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="form-group">
+                    <label class="col-3">AONO - Production Package</label>
+                    <input class="readonlyInput form-control col-9" type="text" id="AONO" disabled="disabled" />
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <div class="">
+        <form class="form-inline">
+            <div class="col-lg-4">
+                <div class="form-group">
+                    <label class="col-4">Style Code - Buyer Style Code</label>
+                    <input class="readonlyInput form-control col-8" type="text" id="StyleCode" disabled="disabled" />
+                </div>
+            </div>
+            <div class="col-lg-2">
+                <div class="form-group">
+                    <label class="col-6">Style Color#</label>
+                    <input class="readonlyInput form-control col-6" type="text" id="StyleColorSerial" disabled="disabled" />
+                </div>
+            </div>
+            <div class="col-lg-3">
+                <div class="form-group">
+                    <label class="col-6">Style Size - Rev No</label>
+                    <input class="readonlyInput form-control col-6" type="text" id="StyleSize" disabled="disabled" />
+                </div>
+            </div> 
+        </form>
+    </div>
+
+
+    <div class="mt-3"></div>
+
+    <table id="QCODetailGrid"></table>
+    <div id="QCODetailGridPager"></div>
+</div>
+
+@section Scripts{
+    <script>
+        /*********************************************************************/
+        //Object Decleration
+        /////////////////////////////
+        var Grid;
+        var jqGridElem = 'QCODetailGrid';
+        var jqGridURL = 'BindGridHandler.ashx?Action=bindgriddata&GridID=' + jqGridElem
+            + '&Factory=' + getParameterByName('Factory') + '&LineNo=' + getParameterByName('LineNo') + '&AoNo=' + getParameterByName('AoNo')
+            + '&StyleCode=' + getParameterByName('StyleCode') + '&StyleSize=' + getParameterByName('StyleSize')
+            + '&StyleColorSerial=' + getParameterByName('StyleColorSerial') + '&RevNo=' + getParameterByName('RevNo')
+            + '&PrdPkg=' + getParameterByName('PrdPkg');
+        var jqGridDataType = 'json';
+
+        var jqGridcolModels = [];
+        jqGridcolModels.push({ name: 'FACTORY', index: 'FACTORY', label: 'FACTORY', align: 'center', width: 80, hidden: true });
+        jqGridcolModels.push({ name: 'LINENO', index: 'LINENO', label: 'LINE<BR/>NO', align: 'center', width: 80, hidden: true });
+
+        jqGridcolModels.push({ name: 'AONO', index: 'AONO', label: 'AONO', align: 'center', width: 100, hidden: true });
+
+        jqGridcolModels.push({ name: 'STYLECODE', index: 'STYLECODE', label: 'STYLE<BR/>CODE', align: 'right', width: 100, hidden: true });
+        jqGridcolModels.push({ name: 'STYLENAME', index: 'STYLENAME', label: 'STYLE<BR/>NAME', align: 'left', width: 100, hidden: true });
+
+        jqGridcolModels.push({ name: 'STYLESIZE', index: 'STYLESIZE', label: 'STYLE<BR/>SIZE', align: 'center', width: 100, hidden: true });
+        jqGridcolModels.push({ name: 'STYLECOLORSERIAL', index: 'STYLECOLORSERIAL', label: 'STYLE<BR/>COLOR SERIAL', align: 'left', width: 200, hidden: true });
+        jqGridcolModels.push({ name: 'REVNO', index: 'REVNO', label: 'REVNO', align: 'center', width: 80, hidden: true });
+
+        jqGridcolModels.push({ name: 'PRDPKG', index: 'PRDPKG', label: 'PACKAGE ID', align: 'center', width: 300, hidden: true });
+
+        //jqGridcolModels.push({ name: 'MAINITEMCODE', index: 'MAINITEMCODE', label: 'MAIN<BR/>ITEM CODE', align: 'center', width: 125 });
+        //jqGridcolModels.push({ name: 'MAINITEMCOLORSERIAL', index: 'MAINITEMCOLORSERIAL', label: 'MAIN ITEM<BR/>COLOR SERIAL', align: 'center', width: 125 });
+
+        jqGridcolModels.push({ name: 'ITEMCODE', index: 'ITEMCODE', label: 'ITEM CODE', align: 'left', width: 125 });
+        jqGridcolModels.push({ name: 'ITEMNAME', index: 'ITEMNAME', label: 'ITEM NAME', align: 'left', width: 500 });
+
+        jqGridcolModels.push({ name: 'ITEMCOLORSERIAL', index: 'ITEMCOLORSERIAL', label: 'ITEM<BR/>COLOR SERIAL', align: 'left', width: 200 });
+
+        jqGridcolModels.push({ name: 'REQUESTQTY', index: 'REQUESTQTY', label: 'REQUEST<BR/>QTY', align: 'right', width: 125, formatter: 'number' });
+
+        jqGridcolModels.push({ name: 'QUANTITY_A', index: 'QUANTITY_A', label: 'RECEIVED QTY', align: 'right', width: 125, formatter: 'number' });
+        jqGridcolModels.push({ name: 'QUANTITY_B', index: 'QUANTITY_B', label: 'ETA IN 5 DAYS', align: 'right', width: 125, formatter: 'number' });
+        jqGridcolModels.push({ name: 'QUANTITY_C', index: 'QUANTITY_C', label: 'ETA IN 10 DAYS', align: 'right', width: 125, formatter: 'number' });
+        jqGridcolModels.push({ name: 'QUANTITY_D', index: 'QUANTITY_D', label: 'ETA > PACKAGE<br/>START DATE', align: 'right', width: 125, formatter: 'number' });
+        jqGridcolModels.push({ name: 'PLANQUANTITY', index: 'PLANQUANTITY', label: 'PLAN<BR/>QUANTITY', align: 'right', width: 125, formatter: 'number', hidden: true });
+
+        jqGridcolModels.push({
+            name: 'MATERIALREADINESS', index: 'MATERIALREADINESS', label: 'WEIGHTAGE', align: 'right', width: 125, formatter: function (cellValue, opts, rowObject) {
+                console.log(rowObject); return (rowObject.QUANTITY_A + rowObject.QUANTITY_B + rowObject.QUANTITY_C + rowObject.QUANTITY_D) / rowObject.REQUESTQTY;
+            }
+        });
+
+        Grid = CreateJqGridObjectWithRowFooter(jqGridElem, jqGridURL, jqGridDataType, jqGridcolModels, false, '', 500);
+         
+        Grid.jqGrid('setGridHeight', 'auto');
+
+        /*********************************************************************/
+        //Events
+        $(document).ready(function () {
+            $('#Factory').val(getParameterByName('Factory'));
+            $('#LineNo').val(getParameterByName('LineNo'));
+            $('#AONO').val(getParameterByName('AONO') + ' - ' + getParameterByName('PRDPKG'));
+            $('#StyleCode').val(getParameterByName('StyleCode') + ' (PKERP) - ' + '<%= mstrBuyerStyleCode %>');
+            $('#StyleSize').val(getParameterByName('StyleSize') + ' - ' + getParameterByName('RevNo'));
+            $('#StyleColorSerial').val(getParameterByName('StyleColorSerial')); 
+        });
+
+        /*********************************************************************/
+        //User-defined Function
+        function getParameterByName(name, url) {
+            if (!url) url = window.location.href;
+            url = url.toLowerCase();
+
+            name = name.toLowerCase();
+            name = name.replace(/[\[\]]/g, "\\$&");
+            var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+                results = regex.exec(url);
+            if (!results) return null;
+            if (!results[2]) return '';
+            return decodeURIComponent(results[2].replace(/\+/g, " ")).toUpperCase();
+        }
+
+        function CreateJqGridObjectWithRowFooter(vElemID, vURL, vDataType, vcolModel, vMultiselect = false, vMultikey = '', vrowNum = 0) {
+
+            var LcMultikey = '', LcrowNum = 20;
+            if (typeof vMultikey === "string")
+                if (vMultikey.length > 0)
+                    LcMultikey = vMultikey;
+
+            if (typeof vrowNum === "number")
+                if (vrowNum > 0)
+                    LcrowNum = vrowNum;
+
+            if (typeof vElemID == "string" && typeof vURL == "string" && typeof vDataType == "string" && typeof vcolModel == 'object') {
+                try {
+                    var $grid = jQuery("#" + vElemID);
+
+                    $grid.jqGrid({
+                        mtype: 'GET'
+                        , url: vURL
+                        , datatype: vDataType
+                        , colModel: vcolModel
+
+                        , ajaxGridOptions: { contentType: 'application/json; charset=utf-8' }
+                        , loadonce: false
+                        , loadui: 'block'
+
+                        , autowidth: true
+                        , shrinkToFit: false
+                        , forceFit: false
+                        , height: window.innerHeight * 0.5
+
+                        , multiselect: vMultiselect
+                        , 'multiselectWidth': 35
+                        , multikey: LcMultikey /*shiftKey;altKey;ctrlKey*/
+
+                        , iconSet: "fontAwesome"
+                        , rowNum: LcrowNum //20
+                        , rowList: [20, 25, 30, 35, 40, 50, 100, 200, 500, "-1"]
+                        , footerrow: true
+                        , pager: '#' + vElemID + 'Pager'
+
+                        , viewrecords: true
+                        , rownumbers: true
+                        , rownumWidth: 30
+
+                        , loadComplete: function (xhr) {
+                            console.log(xhr);
+
+                            var selfgridID = this.id;
+
+                            var sumPLANQUANTITY = $('#' + selfgridID).jqGrid('getCol', 'PLANQUANTITY', false, 'sum');
+                            var sumREQUESTQTY = $('#' + selfgridID).jqGrid('getCol', 'REQUESTQTY', false, 'sum');
+
+                            console.log(sumPLANQUANTITY, sumREQUESTQTY);
+
+                            $('#' + selfgridID).jqGrid('footerData', 'set',
+                                {
+                                    ITEMCOLORSERIAL: 'Material Readiness', REQUESTQTY: (sumPLANQUANTITY / sumREQUESTQTY) * 100
+                                });
+                        }
+
+                        , gridComplete: function () {
+                            $("#" + vElemID + "Pager option[value=-1]").text('All');
+
+                            var selfgridID = this.id;
+                            var ids = jQuery("#" + selfgridID).jqGrid('getDataIDs');
+                            var modvalue;
+
+                            for (var i = 0; i < ids.length; i++) {
+                                var rowData = jQuery("#" + selfgridID).jqGrid('getRowData', ids[i]);
+                                modvalue = (i + 1) % 2;
+
+                                /*#Noted: Set row background color for chẵn and lẻ row */
+                                var backgroundColor;
+                                if (modvalue === 0) {
+                                    backgroundColor = 'jqgrid-row-even';
+                                } else {
+                                    backgroundColor = 'jqgrid-row-odd';
+                                }
+
+                                if (rowData.PLANQUANTITY == 0)
+                                    backgroundColor = "jqgrid-row-Warning";
+                                else if (rowData.PLANQUANTITY < rowData.REQUESTQTY && rowData.PLANQUANTITY > 0)
+                                    backgroundColor = "jqgrid-row-WIP";
+                                else if (rowData.PLANQUANTITY >= rowData.REQUESTQTY)
+                                    backgroundColor = "jqgrid-row-Complete";
+
+
+                                //jQuery("#" + selfgridID).jqGrid('setRowData', ids[i], {}, { 'background': 'yellow' });
+                                jQuery("#" + this.id).jqGrid('setRowData', ids[i], {}, backgroundColor);
+                            }
+                        }
+                        , loadError: function (xhr, status, error) {
+                            if (xhr.responseText.length > 0)
+                                alert(xhr.responseText);
+                        }
+                    });
+
+                    $grid.jqGrid('navGrid', '#' + vElemID + 'Pager'
+                        , { add: true, edit: true, del: true, search: true }
+                        , { /*edit option*/ }
+                        , { /*add option*/ }
+                        , { /*delete option*/ }
+                        , {/*search option*/ }
+                        , {/*View option*/ }
+                    );
+
+                    return $grid;
+
+                } catch (err) {
+                    alert(err.message);
+                    return null;
+                }
+
+
+            } else {
+                alert("Invalid Input");
+                return null;
+            }
+        }
+
+        
+    </script>
+}

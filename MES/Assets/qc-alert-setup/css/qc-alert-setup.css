@@ -1,0 +1,30 @@
+﻿.op-emp-map__control ul.multiselect-container.dropdown-menu {
+    max-height: 350px !important;
+    overflow: scroll;
+    z-index: 999
+}
+
+.op-emp-map__control div.btn-group {
+    width: 100% !important
+}
+
+.op-emp-map__control span.input-group-addon {
+    cursor: move
+}
+
+.op-emp-map__control button.multiselect.dropdown-toggle, input.form-control.multiselect-search, .multiselect-clear-filter {
+    height: 33px !important
+}
+
+.op-emp-map__control button.multiselect.dropdown-toggle {
+    width: 100% !important;
+    padding: 3px 10px !important
+}
+
+#gview_tbQcasUser .ui-jqgrid-titlebar.ui-jqgrid-caption.ui-widget-header.ui-corner-top.ui-helper-clearfix {
+    padding: 5px 6px;
+}
+
+.btn-size {
+    width: 67px;
+}

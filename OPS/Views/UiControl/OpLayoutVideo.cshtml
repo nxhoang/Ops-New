@@ -1,0 +1,157 @@
+﻿<style type="text/css">
+    .tooltip-vdo {
+        position: relative;
+        display: inline-block;
+    }
+
+        .tooltip-vdo .tooltiptext {
+            visibility: hidden;
+            width: 140px;
+            background-color: #555;
+            color: #fff;
+            text-align: center;
+            border-radius: 6px;
+            padding: 5px;
+            position: absolute;
+            z-index: 1;
+            bottom: 150%;
+            left: 50%;
+            margin-left: -75px;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+            .tooltip-vdo .tooltiptext::after {
+                content: "";
+                position: absolute;
+                top: 100%;
+                left: 50%;
+                margin-left: -5px;
+                border-width: 5px;
+                border-style: solid;
+                border-color: #555 transparent transparent transparent;
+            }
+
+        .tooltip-vdo:hover .tooltiptext {
+            visibility: visible;
+            opacity: 1;
+        }
+</style>
+
+<!-- Modal Play Video-->
+<div class="modal fade modal-custom modal-custom-width" id="mdlPlayVideo" role="dialog" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-lg ">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" onclick="PauseProcessVideo()" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Play video</h4>
+            </div>
+            <div class="modal-body">
+                <div class="modal-body-custom">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div id="dvVideoOpsDetail">
+                                <video @*width="400"*@ controls id="vdoOpsDetail" autoplay>
+                                    <source src="" type="video/mp4">
+                                </video>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-10">
+                            <input type="text" id="txtVideoLink" class="form-control" readonly />
+                        </div>
+                        <div class="col-sm-2">
+                            <div class="tooltip-vdo">
+                                <button type="button" id="btnCopyVideoLink" class="btn btn btn-primary pull-right btn-modal" onclick="CopyVideoLinkProcess()" onmouseout="outCopyProcessLink()">
+                                    <span class="tooltiptext" id="spToolTipCopyLink">Copy to clipboard</span>
+                                    Copy Link
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="divOpVideoList" class="row vd-list">
+                        @*<video src="http://203.113.151.204:8080/BETAPDM/test/UNI0037LRG001001016007P.mp4" class="op-vd-tag" onclick="clickOpVideo(event)"></video>
+                        <video src="http://203.113.151.204:8080/BETAPDM/test/UNI0037LRG0010010160071P.mp4" class="op-vd-tag" onclick="clickOpVideo(event)"></video>*@
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <div class="col-sm-6" style="text-align:left">
+                    <button type="button" id="btnSendEmailProcessVideo" class="btn btn btn-danger btn-modal">Send Email</button>
+                </div>
+                <div class="col-sm-6">
+                    <button type="button" class="btn btn btn-primary btn-modal" onclick="PauseProcessVideo()" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade modal-custom modal-custom-width" id="mdlEmailProcess" role="dialog" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-lg ">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Send email</h4>
+            </div>
+            <div class="modal-body">
+                <div class="modal-body-custom">
+                    <div class="row">
+                        <label id="lblProcessInfo"> </label>
+                    </div>
+                    <div class="row">
+                        <label id="lblProcessName"> </label>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <form class="form-horizontal" role="form">
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label"> To </label>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control " id="txtToAddress" placeholder="abc@pungkookvn.com; bcd@pungkookvn.com">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label"> CC </label>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control " id="txtCcAddress" placeholder="abc@pungkookvn.com; bcd@pungkookvn.com">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label"> Subject </label>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control " id="txtSubject" placeholder="Subject" value="Ops - Process video">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-sm-2"></div>
+                                    <div class="col-sm-10">
+                                        <button type="button" id="btnSendEmail" class="btn btn btn-primary btn-modal">Send Email</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <textarea class="form-control" rows="4" id="txtEmailContent" placeholder="Email content"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn btn-primary btn-modal" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+

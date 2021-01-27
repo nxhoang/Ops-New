@@ -1,0 +1,381 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{916AA9F1-780A-4796-87A0-7AB12C2C6641}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>OPS_DAL</RootNamespace>
+    <AssemblyName>OPS_DAL</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet />
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.Build.Framework" />
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.6.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="MySql.Data, Version=6.6.6.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Library\MySql.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="Oracle.ManagedDataAccess, Version=4.122.1.0, Culture=neutral, PublicKeyToken=89b483f429c47342, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Library\Oracle.ManagedDataAccess.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.Entity" />
+    <Reference Include="System.Data.OracleClient, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Library\System.Data.OracleClient.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="APIBus\BomtAPIBus.cs" />
+    <Compile Include="APIBus\DormAPIBus.cs" />
+    <Compile Include="APIBus\IcmtAPIBus.cs" />
+    <Compile Include="APIBus\OpdtAPIBus.cs" />
+    <Compile Include="APIBus\OpmtAPIBus.cs" />
+    <Compile Include="APIBus\OpntAPIBus.cs" />
+    <Compile Include="APIBus\OtmtAPIBus.cs" />
+    <Compile Include="APIBus\PatternAPIBus.cs" />
+    <Compile Include="APIBus\SamtAPIBus.cs" />
+    <Compile Include="APIBus\UsmtAPIBus.cs" />
+    <Compile Include="APIEntities\BomtAPI.cs" />
+    <Compile Include="APIEntities\DormAPI.cs" />
+    <Compile Include="APIEntities\OpdtAPI.cs" />
+    <Compile Include="APIEntities\OpmtAPI.cs" />
+    <Compile Include="APIEntities\OpntAPI.cs" />
+    <Compile Include="APIEntities\OtmtAPI.cs" />
+    <Compile Include="APIEntities\PatternAPI.cs" />
+    <Compile Include="APIEntities\SamtAPI.cs" />
+    <Compile Include="APIEntities\UsmtAPI.cs" />
+    <Compile Include="Business\ActlBus.cs" />
+    <Compile Include="Business\ActpBus.cs" />
+    <Compile Include="Business\AdsmBus.cs" />
+    <Compile Include="Business\BomhBus.cs" />
+    <Compile Include="Business\BomtBus.cs" />
+    <Compile Include="Business\BuyerBus.cs" />
+    <Compile Include="Business\CalmstBus.cs" />
+    <Compile Include="Business\ColorMasterBus.cs" />
+    <Compile Include="Business\DfdtBus.cs" />
+    <Compile Include="Business\DfmtBus.cs" />
+    <Compile Include="Business\DictBus.cs" />
+    <Compile Include="Business\DormBus.cs" />
+    <Compile Include="Business\ErrlBus.cs" />
+    <Compile Include="Business\FactoryBus.cs" />
+    <Compile Include="Business\FcmdBus.cs" />
+    <Compile Include="Business\FcmtBus.cs" />
+    <Compile Include="Business\FileSdBus.cs" />
+    <Compile Include="Business\FldtBus.cs" />
+    <Compile Include="Business\FtpInfoBus.cs" />
+    <Compile Include="Business\IccmBus.cs" />
+    <Compile Include="Business\IclmBus.cs" />
+    <Compile Include="Business\IcmtBus.cs" />
+    <Compile Include="Business\IlhmBus.cs" />
+    <Compile Include="Business\MbohBus.cs" />
+    <Compile Include="Business\MBomBus.cs" />
+    <Compile Include="Business\MccaBus.cs" />
+    <Compile Include="Business\McmtBus.cs" />
+    <Compile Include="Business\MrulBus.cs" />
+    <Compile Include="Business\OnamBus.cs" />
+    <Compile Include="Business\OpColorBus.cs" />
+    <Compile Include="Business\OpdtBus.cs" />
+    <Compile Include="Business\OpflBus.cs" />
+    <Compile Include="Business\SdSamtBus.cs" />
+    <Compile Include="Business\SgmcBus.cs" />
+    <Compile Include="Business\UrlmBus.cs" />
+    <Compile Include="CuttingPlanEntity\CutTicket.cs" />
+    <Compile Include="CuttingPlanEntity\GridDataResult.cs" />
+    <Compile Include="CuttingPlanEntity\ProductionPackage.cs" />
+    <Compile Include="CuttingPlanRepository\CutTicketRepository.cs" />
+    <Compile Include="CuttingPlanRepository\CuttingBaseRepo.cs" />
+    <Compile Include="CuttingPlanService\CutTicketService.cs" />
+    <Compile Include="DgsBus\IotMachineTimeBus.cs" />
+    <Compile Include="DgsBus\IotMappingBus.cs" />
+    <Compile Include="DgsEntities\IotMachineTime.cs" />
+    <Compile Include="DgsEntities\IotMapping.cs" />
+    <Compile Include="APIEntities\IcmtAPI.cs" />
+    <Compile Include="Entities\Mboh.cs" />
+    <Compile Include="Entities\Mcca.cs" />
+    <Compile Include="Entities\OpMaster.cs" />
+    <Compile Include="Entities\SdSamt.cs" />
+    <Compile Include="Entities\Sgmc.cs" />
+    <Compile Include="Entities\VideoOpdt.cs" />
+    <Compile Include="MesBus\AttendEmpBus.cs" />
+    <Compile Include="MesBus\DeptTeamBus.cs" />
+    <Compile Include="MesBus\DeptBus.cs" />
+    <Compile Include="MesBus\DfmpBus.cs" />
+    <Compile Include="MesBus\EmployeeBus.cs" />
+    <Compile Include="MesBus\JgrqBus.cs" />
+    <Compile Include="MesBus\MXOpdtBus.cs" />
+    <Compile Include="MesBus\OplsBus.cs" />
+    <Compile Include="Business\OpmtBus.cs" />
+    <Compile Include="Business\OpnmBus.cs" />
+    <Compile Include="Business\OpntBus.cs" />
+    <Compile Include="Business\OpTimeBus.cs" />
+    <Compile Include="Business\OptpBus.cs" />
+    <Compile Include="Business\OtmtBus.cs" />
+    <Compile Include="Business\OptlBus.cs" />
+    <Compile Include="Business\PadtBus.cs" />
+    <Compile Include="Business\PatternBus.cs" />
+    <Compile Include="Business\ProtBus.cs" />
+    <Compile Include="Business\PrthBus.cs" />
+    <Compile Include="Business\SsmtBus.cs" />
+    <Compile Include="Business\WrkmanBus.cs" />
+    <Compile Include="Entities\Bomh.cs" />
+    <Compile Include="Entities\Calmst.cs" />
+    <Compile Include="Entities\Dfdt.cs" />
+    <Compile Include="Entities\Dfmt.cs" />
+    <Compile Include="Entities\Iccm.cs" />
+    <Compile Include="Entities\Lwtmw.cs" />
+    <Compile Include="MesBus\OpsmBus.cs" />
+    <Compile Include="MesBus\OpstBus.cs" />
+    <Compile Include="MesBus\PrlgBus.cs" />
+    <Compile Include="MesBus\PrrdBus.cs" />
+    <Compile Include="MesEntities\AttendEmp.cs" />
+    <Compile Include="MesEntities\Defe.cs" />
+    <Compile Include="MesEntities\Defect.cs" />
+    <Compile Include="MesEntities\DeptTeam.cs" />
+    <Compile Include="MesEntities\DeptEntity.cs" />
+    <Compile Include="MesEntities\Dfmp.cs" />
+    <Compile Include="MesEntities\Jgrq.cs" />
+    <Compile Include="MesEntities\KApiEntities.cs" />
+    <Compile Include="MesEntities\KonvaJSMapping.cs" />
+    <Compile Include="MesEntities\MXOpdt.cs" />
+    <Compile Include="MesEntities\Opls.cs" />
+    <Compile Include="Entities\OpTimeEntity.cs" />
+    <Compile Include="Entities\Padt.cs" />
+    <Compile Include="Entities\Ssmt.cs" />
+    <Compile Include="DAL\MySqlParams.cs" />
+    <Compile Include="DAL\MySqlDBManager.cs" />
+    <Compile Include="DgsBus\OhisBus.cs" />
+    <Compile Include="DgsBus\SchlBus.cs" />
+    <Compile Include="DgsEntities\Ohis.cs" />
+    <Compile Include="DgsEntities\Schl.cs" />
+    <Compile Include="Entities\Adsm.cs" />
+    <Compile Include="Entities\Wrkman.cs" />
+    <Compile Include="MesBus\ConfigBus.cs" />
+    <Compile Include="MesBus\CsdtBus.cs" />
+    <Compile Include="MesBus\CstpBus.cs" />
+    <Compile Include="MesBus\FawkBus.cs" />
+    <Compile Include="MesBus\FwtsBus.cs" />
+    <Compile Include="MesBus\LndtBus.cs" />
+    <Compile Include="MesBus\MccnBus.cs" />
+    <Compile Include="MesBus\MgclBus.cs" />
+    <Compile Include="MesBus\OpdtMcBus.cs" />
+    <Compile Include="MesBus\PpdpBus.cs" />
+    <Compile Include="MesBus\QueueBus.cs" />
+    <Compile Include="MesEntities\Csdt.cs" />
+    <Compile Include="MesEntities\Cstp.cs" />
+    <Compile Include="MesEntities\Fawk.cs" />
+    <Compile Include="MesEntities\FileDto.cs" />
+    <Compile Include="MesEntities\Fwcp.cs" />
+    <Compile Include="MesEntities\Fwts.cs" />
+    <Compile Include="MesEntities\Ioht.cs" />
+    <Compile Include="MesEntities\Config.cs" />
+    <Compile Include="Entities\MBom.cs" />
+    <Compile Include="MesBus\AdsmBus.cs" />
+    <Compile Include="MesBus\FcmtBus.cs" />
+    <Compile Include="MesBus\TableSpaceBus.cs" />
+    <Compile Include="MesBus\LineBus.cs" />
+    <Compile Include="MesBus\McmtBus.cs" />
+    <Compile Include="MesEntities\Adsm.cs" />
+    <Compile Include="MesEntities\Fcmt.cs" />
+    <Compile Include="MesEntities\Flsm.cs" />
+    <Compile Include="MesEntities\LineEntity.cs" />
+    <Compile Include="MesEntities\Lndt.cs" />
+    <Compile Include="MesEntities\Mccn.cs" />
+    <Compile Include="MesEntities\Mcmt.cs" />
+    <Compile Include="MesEntities\Mgcl.cs" />
+    <Compile Include="MesEntities\Opsm.cs" />
+    <Compile Include="MesEntities\Opst.cs" />
+    <Compile Include="MesEntities\OpdtMc.cs" />
+    <Compile Include="MesEntities\Ppdp.cs" />
+    <Compile Include="MesEntities\Prlg.cs" />
+    <Compile Include="MesEntities\Prrd.cs" />
+    <Compile Include="MesEntities\QueueEntity.cs" />
+    <Compile Include="MesEntities\SeatEntity.cs" />
+    <Compile Include="MesEntities\TableSpaceEntity.cs" />
+    <Compile Include="MtopBus\FATWRKRBus.cs" />
+    <Compile Include="MtopEntities\FATWRKR.cs" />
+    <Compile Include="QCOBus\FLWSBus.cs" />
+    <Compile Include="QCOBus\FWCPBus.cs" />
+    <Compile Include="QCOBus\McmtBus.cs" />
+    <Compile Include="QCOBus\QcfoBus.cs" />
+    <Compile Include="QCOBus\QcopBus.cs" />
+    <Compile Include="Business\SamtBus.cs" />
+    <Compile Include="Business\ScmtBus.cs" />
+    <Compile Include="Business\SfdtBus.cs" />
+    <Compile Include="Business\SmSgBus.cs" />
+    <Compile Include="Business\SrmtBus.cs" />
+    <Compile Include="Business\SsCmBus.cs" />
+    <Compile Include="Business\StmtBus.cs" />
+    <Compile Include="Business\StyleColorBus.cs" />
+    <Compile Include="Business\StyleMasterBus.cs" />
+    <Compile Include="Business\UfmtBus.cs" />
+    <Compile Include="Business\UrmtBus.cs" />
+    <Compile Include="Business\UsmtBus.cs" />
+    <Compile Include="DAL\ListOracleParams.cs" />
+    <Compile Include="Entities\Actl.cs" />
+    <Compile Include="Entities\Actp.cs" />
+    <Compile Include="Entities\Bomt.cs" />
+    <Compile Include="Entities\Fcmd.cs" />
+    <Compile Include="Entities\Fcmt.cs" />
+    <Compile Include="Entities\Onam.cs" />
+    <Compile Include="Entities\Ilhm.cs" />
+    <Compile Include="Entities\OpColor.cs" />
+    <Compile Include="Entities\ColorMaster.cs" />
+    <Compile Include="Entities\Dict.cs" />
+    <Compile Include="Entities\Dorm.cs" />
+    <Compile Include="Entities\Errl.cs" />
+    <Compile Include="Entities\FactoryEntity.cs" />
+    <Compile Include="Entities\FileSd.cs" />
+    <Compile Include="Entities\Fldt.cs" />
+    <Compile Include="Entities\Iclm.cs" />
+    <Compile Include="Entities\Icmt.cs" />
+    <Compile Include="Entities\Mcmt.cs" />
+    <Compile Include="Entities\FtpInfo.cs" />
+    <Compile Include="Entities\Mrul.cs" />
+    <Compile Include="Entities\Opdt.cs" />
+    <Compile Include="Entities\Opfl.cs" />
+    <Compile Include="Entities\Opmt.cs" />
+    <Compile Include="DAL\OracleDBManager.cs" />
+    <Compile Include="Entities\Buyer.cs" />
+    <Compile Include="Entities\Opnm.cs" />
+    <Compile Include="Entities\Opnt.cs" />
+    <Compile Include="Entities\Optl.cs" />
+    <Compile Include="Entities\Optp.cs" />
+    <Compile Include="Entities\Otmt.cs" />
+    <Compile Include="Entities\Pattern.cs" />
+    <Compile Include="Entities\ProcessSummary.cs" />
+    <Compile Include="Entities\Prot.cs" />
+    <Compile Include="Entities\Prth.cs" />
+    <Compile Include="QCOEntities\Fcmt.cs" />
+    <Compile Include="QCOEntities\FLWS.cs" />
+    <Compile Include="QCOEntities\FWCP.cs" />
+    <Compile Include="QCOEntities\FWES.cs" />
+    <Compile Include="QCOEntities\Mcmt.cs" />
+    <Compile Include="QCOEntities\Qcfo.cs" />
+    <Compile Include="QCOEntities\Qcop.cs" />
+    <Compile Include="Entities\Report.cs" />
+    <Compile Include="Entities\Samt.cs" />
+    <Compile Include="Entities\Scmt.cs" />
+    <Compile Include="Entities\Sfdt.cs" />
+    <Compile Include="Entities\SmSg.cs" />
+    <Compile Include="Entities\Srmt.cs" />
+    <Compile Include="Entities\SsCm.cs" />
+    <Compile Include="Entities\Stmt.cs" />
+    <Compile Include="Entities\StyleColor.cs" />
+    <Compile Include="Entities\StyleMaster.cs" />
+    <Compile Include="Entities\Ufmt.cs" />
+    <Compile Include="Entities\Urlm.cs" />
+    <Compile Include="Entities\Urmt.cs" />
+    <Compile Include="Entities\Usmt.cs" />
+    <Compile Include="MesBus\DcmtBus.cs" />
+    <Compile Include="MesBus\MpclBus.cs" />
+    <Compile Include="MesEntities\Mpcl.cs" />
+    <Compile Include="MesBus\MpdtBus.cs" />
+    <Compile Include="MesBus\MpmtBus.cs" />
+    <Compile Include="MesBus\PpkgBus.cs" />
+    <Compile Include="MesBus\VeppBus.cs" />
+    <Compile Include="MesEntities\Vepp.cs" />
+    <Compile Include="MesEntities\Dcmt.cs" />
+    <Compile Include="MesEntities\Mpdt.cs" />
+    <Compile Include="MesEntities\Mpmt.cs" />
+    <Compile Include="MesEntities\Ppkg.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
+    <Compile Include="QCOEntities\Qcops.cs" />
+    <Compile Include="QCOEntities\WHMT.cs" />
+    <Compile Include="Repository\IGenericRepository.cs" />
+    <Compile Include="SystemBus\BuyerBus.cs" />
+    <Compile Include="SystemBus\CorporationBus.cs" />
+    <Compile Include="SystemBus\KPITeamBus.cs" />
+    <Compile Include="SystemBus\MenuBus.cs" />
+    <Compile Include="SystemBus\SaleTeamBus.cs" />
+    <Compile Include="SystemBus\SystemAdminBus.cs" />
+    <Compile Include="SystemBus\SystemBus.cs" />
+    <Compile Include="SystemEntities\Buyer.cs" />
+    <Compile Include="SystemEntities\Corporation.cs" />
+    <Compile Include="SystemEntities\KPISetting.cs" />
+    <Compile Include="SystemEntities\Menu.cs" />
+    <Compile Include="SystemEntities\SaleTeam.cs" />
+    <Compile Include="SystemEntities\System.cs" />
+    <Compile Include="SystemEntities\SystemAdmin.cs" />
+    <Compile Include="TpmBus\MchnDtlBus.cs" />
+    <Compile Include="TpmBus\MchnMstBus.cs" />
+    <Compile Include="TpmEntities\MchnDtl.cs" />
+    <Compile Include="TpmEntities\MchnMst.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\OPS_Utils\OPS_Utils.csproj">
+      <Project>{81ef1081-7c26-4d2c-a9ce-c3b29d388434}</Project>
+      <Name>OPS_Utils</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="packages.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Library\MySql.Data.dll" />
+    <Content Include="Library\Oracle.ManagedDataAccess.dll" />
+    <Content Include="Library\System.Data.OracleClient.dll" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Repository.Implement\" />
+    <Folder Include="Responsive\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

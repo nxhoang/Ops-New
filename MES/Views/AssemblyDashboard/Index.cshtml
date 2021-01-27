@@ -1,0 +1,201 @@
+﻿
+@{
+    ViewBag.Title = "Assembly Dashboard";
+    Layout = "~/Views/Shared/_MesLayout.cshtml";
+}
+
+<style>
+    .kpi-widget {
+        background-color: #edf2f6;
+        color: black;
+        text-align: center;
+        border-radius: 5px;
+    }
+
+    .kpi-header {
+        font-size: 2rem;
+        font-weight: 400;
+        color: #8c8e90;
+        font-family: Lato,sans-serif
+    }
+
+    .kpi-sub-header {
+        color: #8c8e90;
+        margin-top: -15px;
+    }
+
+    .kpi-value {
+        font-size: 4rem;
+        color: #3d4f5f;
+    }
+
+    .font-size {
+        font-size: 60px;
+    }
+
+    .dashboard-header {
+        font-size: 30px
+    }
+
+    .dashboard-value {
+        font-size: 30px;
+        color: blue
+    }
+
+    .target-font-color {
+        color: black;
+    }
+
+    .achieve-color {
+        color: green;
+    }
+
+    .pending-color {
+        color: red;
+    }
+
+    .ui-jqgrid .ui-jqgrid-htable th {
+        text-align: center;
+    }
+
+    .modal-open .modal {
+        z-index: 1051;
+    }
+
+    .ui-jqgrid tr.ui-row-ltr td {
+        font-size: 30px !important;
+    }
+
+    .ui-jqgrid .ui-jqgrid-htable th {
+        font-size: 30px;
+    }
+</style>
+
+
+<!--Search condition production line dashboard-->
+<div class="row">
+    <!-- Searching Criteria: Cutting Factory-->
+    <div class="col-sm-2 ">
+        <div class="form-group">
+            <label for="">Factory:</label>
+            <select id="drpFactory" name="factoryId" class="form-control">
+                <option>---</option>
+                @foreach (var factory in ViewBag.LstFactories)
+                {
+                    <option value="@factory.Factory">@factory.Name</option>
+                }
+            </select>
+        </div>
+    </div>
+
+    <div class="col-sm-2 ">
+        <div class="form-group">
+            <label for="">Date:</label>
+            <input type="text" id="chooseDate" name="chooseDate" class="form-control">
+            @*<div class="form-control">
+                <div class="row" style="text-align:center">
+                    <button type="button" id="btnPreDate" style="display:inline;" class="col-2"><</button>
+                    <input type="text" id="chooseDate" name="chooseDate" style="display:inline" class="col-8" />
+                    <button type="button" id="btnNextDate" style="display:inline" class="col-2">></button>
+                </div>
+            </div>*@
+        </div>
+    </div>
+
+    <div class="col-sm-4">
+        <div class="form-group">
+            <label for="">Package:</label>
+            <select id="drpPackage" class="form-control" data-placeholder="">
+                <option></option>
+            </select>
+        </div>
+    </div>
+
+    @if (!string.IsNullOrWhiteSpace(ViewBag.Cstp.IOT_DATA_SOURCE_TYPE) && ViewBag.Cstp.IOT_DATA_SOURCE_TYPE.ToUpper() != "A")
+    {
+        var dataSourceValue = "direct";
+        var dataSourceDisplay = "IoT Direct";
+        if (ViewBag.Cstp.IOT_DATA_SOURCE_TYPE.ToUpper() == "DGS")
+        {
+            dataSourceValue = "dgs";
+            dataSourceDisplay = "DGS";
+        }
+        <div class="col-sm-2" style="display:none">
+            <div class="form-group">
+                <label for="">Data source:</label>
+                <select id="drpDataSource" name="datasource" class="form-control">
+                    <option value="@dataSourceValue">@dataSourceDisplay</option>
+                </select>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="col-sm-2">
+            <div class="form-group">
+                <label for="">Data source:</label>
+                <select id="drpDataSource" name="datasource" class="form-control">
+                    <option value="direct">IoT Direct</option>
+                    <option value="dgs">DGS</option>
+                </select>
+            </div>
+        </div>
+    }
+
+</div>
+<!-- /Search conditon-->
+
+<div class="top-buffer"></div>
+
+<!-- widget grid -->
+<section id="widget-grid" class="">
+
+    <!-- row -->
+    <div class="row">
+
+        <!-- NEW WIDGET START -->
+        <article class="col-sm-12">
+
+            <!-- Widget ID (each widget will need unique ID)-->
+            <div class="jarviswidget jarviswidget-color-green" id="wid-id-0" data-widget-editbutton="false">
+
+                <header>
+                    <div style="margin-top:9px; margin-left: 12px">Factory: <b id="lblFactory">---</b>   |  Line: <b id="lblLine">---</b>  | Package: <b id='lblPackage'>---</b></div>
+                </header>
+
+                <!-- widget div-->
+                <div>
+                    <table id="tbAssemblyDashboard"></table>
+                </div>
+                <!-- end widget -->
+            </div> 
+        </article>
+        <!-- WIDGET END -->
+
+    </div>
+
+    <!-- end row -->
+
+</section>
+<!-- end widget grid -->
+
+
+@section Scripts{
+
+    <script src="~/js/plugin/jqgrid/jquery.jqGrid.min.js"></script>
+    <script src="~/js/plugin/jqgrid/grid.localtetee-en.min.js"></script>
+
+    <link rel="stylesheet" href="~/Assets/jquery-ui-1.12.1/jquery-ui.min.css" />
+    <script src="~/Assets/jquery-ui-1.12.1/jquery-ui.min.js"></script>
+
+    <script src="~/js/mes/mes-common.js?v=1.0.2"></script>
+    <script src="~/js/mes/assemblydashboard/assemblydashboard.event.js"></script>
+    <script src="~/js/mes/assemblydashboard/assemblydashboard.js"></script>
+
+    <script>
+    $(function () {
+
+            initPage();
+
+        });</script>
+}

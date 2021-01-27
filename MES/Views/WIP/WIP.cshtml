@@ -1,0 +1,118 @@
+﻿
+@{
+    ViewBag.Title = "WIP";
+    Layout = "~/Views/Shared/_MesLayout.cshtml";
+}
+
+<!--START date range picker-->
+<link href="~/assets/DayRangePicker/daterangepicker.min.css" rel="stylesheet" />
+
+<!--Add Package Group partial view-->
+@Html.Partial("~/Views/PartialView/PackageGroup.cshtml", null)
+
+<div class="top-buffer"></div>
+<div class="row">
+    <div class="col-sm-12">
+        <table id="tbMesPackage"></table>
+        <div id="divMesPackagePage"></div>
+    </div>
+</div>
+
+<div class="top-buffer"></div>
+
+<div class="row">
+
+    <!-- START WIDGET WIP-->
+    <article class="col-sm-12">
+
+        <!-- Widget ID (each widget will need unique ID)-->
+        <div class="jarviswidget jarviswidget-color-green" id="wid-id-1" data-widget-editbutton="false" data-widget-sortable="false">
+
+            <header>
+                <h2><strong>Work In Process</strong></h2>
+
+            </header>
+
+            <!-- widget div-->
+            <div>
+
+                <!-- widget content -->
+                <div class="widget-body">
+
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <form class="smart-form">
+                                <section>
+                                    <label class="label"></label>
+                                    <div class="inline-group">
+                                        <label class="radio">
+                                            <input type="radio" id="rdModuleWIP" name="radio-wip" checked="checked">
+                                            <i></i>Module
+                                        </label>
+                                        <label class="radio">
+                                            <input type="radio" id="rdOpGroupWIP" name="radio-wip">
+                                            <i></i>OPGroup
+                                        </label>                                        
+                                    </div>
+                                </section>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!--Gridview work in process-->
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <table id="tbWIP"></table>
+                            <div id="divWIPPage"></div>
+                        </div>
+                    </div>
+
+                    <div class="top-buffer"></div>
+
+                    <!--Button excel-->
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="pull-right">
+                                <button type="button" id="btnExcelWorkingProcess" class="btn btn-success">Excel</button>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <!-- end widget content -->
+
+            </div>
+            <!-- end widget div -->
+
+        </div>
+        <!-- end widget -->
+
+    </article>
+    <!-- WIDGET END -->
+</div>
+
+@section Scripts{
+    <!--Date range picker-->
+    <script src="~/assets/DayRangePicker/daterangepicker.min.js"></script>
+
+    <!--jqgrid libary-->
+    <script src="~/js/plugin/jqgrid/jquery.jqGrid.min.js"></script>
+    <script src="~/js/plugin/jqgrid/grid.locale-en.min.js"></script>
+
+    <script src="~/js/mes/mes-common.js?v=1.0.2"></script>
+
+    <!--work in process-->
+    <script src="~/js/mes/wip/wip.js?v=1.0.2"></script>
+    <script src="~/js/mes/wip/wip-event.js?v=1.0.1"></script>
+
+    <!--package group partial view-->
+    <script src="~/js/mes/partial-view/package-group.js?v=1.0.4"></script>
+    <script src="~/js/mes/partial-view/package-group-event.js?v=1.0.2"></script>
+
+    <script>
+        $(function () {
+            //Init page work in process
+            initPageWIP();
+        });
+    </script>
+}

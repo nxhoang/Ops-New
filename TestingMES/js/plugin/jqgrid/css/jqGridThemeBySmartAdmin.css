@@ -1,0 +1,92 @@
+﻿.smart-style-1 .ui-jqgrid .ui-jqgrid-htable th,
+.smart-style-2 .ui-jqgrid .ui-jqgrid-htable th,
+.smart-style-5 .ui-jqgrid .ui-jqgrid-htable th {
+    font-family: "Open Sans",Arial,Helvetica,Sans-Serif !important
+}
+
+.smart-style-3 .ui-jqgrid .ui-jqgrid-htable th {
+    font-family: Arial,sans-serif !important
+}
+
+.smart-style-4 .ui-jqgrid .ui-jqgrid-htable th {
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif !important
+}
+
+.smart-style-6 .ui-jqgrid .ui-jqgrid-htable th {
+    font-family: RobotoDraft,Roboto,sans-serif !important
+}
+
+
+
+/*
+    jqGrid Header Handle
+    jqGrid Row:hover ; Row:selected  Handle
+*/
+
+.ui-jqgrid .ui-state-highlight td {
+    background: none !important;
+    color: unset !important;
+}
+
+.smart-style-1 .ui-jqgrid .ui-jqgrid-htable th,
+.smart-style-1 .ui-state-highlight, .smart-style-1 .ui-widget-content .ui-state-highlight, .smart-style-1 .ui-widget-header .ui-state-highlight {
+    background: none !important;
+    background-color: #3a4558 !important;
+    color: #8b91a0 !important;
+}
+
+    .smart-style-1 .ui-state-highlight a, .smart-style-1 .ui-widget-content .ui-state-highlight a, .smart-style-1 .ui-widget-header .ui-state-highlight a {
+        background: none !important;
+        color: #8b91a0 !important;
+    }
+
+.smart-style-2 .ui-jqgrid .ui-jqgrid-htable th
+/*,.smart-style-2 .ui-state-highlight, .smart-style-2 .ui-widget-content .ui-state-highlight, .smart-style-2 .ui-widget-header .ui-state-highlight*/ {
+    background: none !important;
+    background-color: whitesmoke !important;
+    color: black !important; 
+}
+
+    /*.smart-style-2 .ui-state-highlight a, .smart-style-2 .ui-widget-content .ui-state-highlight a, .smart-style-2 .ui-widget-header .ui-state-highlight a {
+        background: none !important;
+        color: black !important;
+    }*/
+
+.smart-style-3 .ui-jqgrid .ui-jqgrid-htable th,
+.smart-style-3 .ui-state-highlight, .smart-style-3 .ui-widget-content .ui-state-highlight, .smart-style-3 .ui-widget-header .ui-state-highlight {
+    background: none !important;
+    background-color: #f78c40 !important;
+    color: white !important;
+}
+
+    .smart-style-3 .ui-state-highlight a, .smart-style-3 .ui-widget-content .ui-state-highlight a, .smart-style-3 .ui-widget-header .ui-state-highlight a {
+        background: none !important; 
+        color: white !important;
+    }
+
+.smart-style-4 .ui-jqgrid .ui-jqgrid-htable th,
+.smart-style-4 .ui-state-highlight, .smart-style-4 .ui-widget-content .ui-state-highlight, .smart-style-4 .ui-widget-header .ui-state-highlight {
+    background: none !important;
+    background-color: #bbc0cf !important;
+    color: black !important;
+}
+
+    .smart-style-4 .ui-state-highlight a, .smart-style-4 .ui-widget-content .ui-state-highlight a, .smart-style-4 .ui-widget-header .ui-state-highlight a {
+        background: none !important;
+        color: black !important;
+    }
+
+.smart-style-5 .ui-jqgrid .ui-jqgrid-htable th {
+}
+
+.smart-style-6 .ui-jqgrid .ui-jqgrid-htable th,
+.smart-style-6 .ui-state-highlight, .smart-style-6 .ui-widget-content .ui-state-highlight, .smart-style-6 .ui-widget-header .ui-state-highlight {
+    background: none !important;
+    background-color: #2196f3 !important;
+    color: white !important;
+}
+
+    .smart-style-6 .ui-state-highlight a, .smart-style-6 .ui-widget-content .ui-state-highlight a, .smart-style-6 .ui-widget-header .ui-state-highlight a {
+        background: none !important; 
+        color: white !important;
+    }

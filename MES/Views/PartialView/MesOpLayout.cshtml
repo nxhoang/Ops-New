@@ -1,0 +1,841 @@
+﻿@Html.Partial("~/Views/PartialView/ProcessPartialView.cshtml")
+@Html.Partial("~/Views/PartialView/PlayVideoPartialView.cshtml")
+
+<div class="ng-cloak jtk-page-container" ng-app="opsApp" ng-controller="OpsLayoutController as OpsLayoutController" id="opsDiv">
+    <div floating-panel title="Grouping" parent-tag="loadLayoutDiv" html-tag="lcontent" panel-id="panel-load-layout" remove-content="true">
+        <div class="modal-groupmode border hide" id="loadLayoutDiv">
+            <div id="lcontent">
+                <label ng-repeat="mode in opMode" class="radio-inline" title="{{mode.title}}">
+                    <input type="radio" class="panel-load-radio" ng-value="mode.id"
+                           ng-model="$parent.opdtMode" ng-change="changeOpdtMode(mode.id, '{{opdtMode}}')">
+                    {{mode.name}}
+                </label>
+            </div>
+        </div>
+    </div>
+
+    <div floating-panel title="Font and color" parent-tag="leftDiv" html-tag="hcontent" panel-id="panel-colorpicker">
+        <div class="modal-layout border hide" id="leftDiv">
+            <div id="hcontent" style="margin: 5px;">
+                <table>
+                    <tr>
+                        <td class="font-layout-col">
+                            <table>
+                                <tr>
+                                    <td>Show/Hide flows</td>
+                                    <td>
+                                        <input type="checkbox" class="modal-layout-checkbox" ng-checked="isShowFlow" ng-model="isShowFlow" ng-change="showHideConnection(isShowFlow)" title="Show/Hide flows" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Flow Line Color</td>
+                                    <td>
+                                        <div class="minicolors minicolors-theme-bootstrap minicolors-position-bottom minicolors-position-left">
+                                            <input class="form-control minicolors-input" colorpicker ng-model="opsColor.flow" type="text" ng-change="changeColorFlow(opsColor.flow)">
+                                            <span class="minicolors-swatch" ng-click="showFlowCp = !showFlowCp">
+                                                <span class="minicolors-swatch-color" style="opacity: 1; background-color: {{opsColor.flow}};"></span>
+                                            </span>
+                                        </div>
+                                        <div class="div-color">
+                                            <ul class="language-ul">
+                                                <li>
+                                                    <div class="div-color-list" ng-show="showFlowCp">
+                                                        <div class="color-body">
+                                                            <a class="list-group-item" ng-repeat="opColor in opsColors" ng-click="colorFlowChanged(opColor.value)">
+                                                                <span class="items-color" style="background-color: {{opColor.value}};"></span>
+                                                                <span class="panel-color">{{opColor.name}}</span>
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Height of canvas</td>
+                                    <td>
+                                        <input type="number" min="1" max="7456123" ng-model="canvasStyle.height" ng-pattern="/^-?[0-9][^\.]*$/" value="1" class="number-input" ng-change="changeCanvasHeight(canvasStyle.height)">
+                                        <span id="basic-addon1">px</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Process font size</td>
+                                    <td>
+                                        <input type="number" min="1" max="2147483647" ng-model="opsFont.fontSize" ng-pattern="/^-?[0-9][^\.]*$/" value="1" class="number-input" ng-change="changeFontSize(opsFont.fontSize)">
+                                        <span id="basic-addon2">px</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Show/Hide groups</td>
+                                    <td>
+                                        <input type="checkbox" class="modal-layout-checkbox" ng-model="isShowGroups" ng-change="showHideGroups(isShowGroups)" title="Show/Hide groups" />
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                        <td class="font-layout-col">
+                            <table>
+                                <tr>
+                                    <td>Color by brush</td>
+                                    <td>
+                                        <div class="minicolors minicolors-theme-bootstrap minicolors-position-bottom minicolors-position-left">
+                                            <input class="form-control minicolors-input" colorpicker ng-model="opsColor.hexPicker" type="text">
+                                            <span class="minicolors-swatch" ng-click="showColorList = !showColorList">
+                                                <span class="minicolors-swatch-color" style="opacity: 1; background-color: {{opsColor.hexPicker}};"></span>
+                                            </span>
+                                        </div>
+                                        <div class="div-color">
+                                            <ul class="language-ul">
+                                                <li>
+                                                    <div class="div-color-list" ng-show="showColorList">
+                                                        <div class="color-body">
+                                                            <a class="list-group-item" ng-repeat="opColor in opsColors" ng-click="selectColor(opColor.value)">
+                                                                <span class="items-color" style="background-color: {{opColor.value}};"></span>
+                                                                <span class="panel-color">{{opColor.name}}</span>
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Apply standard color</td>
+                                    <td>
+                                        <button type="button" ng-model="isApplyStandardColor" ng-click="applyStandardColor()"
+                                                title="Apply standard color" style="width: 50px; height: 30px; color: black">
+                                            Apply
+                                        </button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Process text color</td>
+                                    <td>
+                                        <div class="minicolors minicolors-theme-bootstrap minicolors-position-bottom minicolors-position-left">
+                                            <input class="form-control minicolors-input" colorpicker ng-model="opsColor.processText" type="text" ng-change="changeColorNodeText(opsColor.processText)">
+                                            <span class="minicolors-swatch" ng-click="showNodeTextCp = !showNodeTextCp">
+                                                <span class="minicolors-swatch-color" style="opacity: 1; background-color: {{opsColor.processText}};"></span>
+                                            </span>
+                                        </div>
+                                        <div class="div-color">
+                                            <ul class="language-ul">
+                                                <li>
+                                                    <div class="div-color-list" ng-show="showNodeTextCp">
+                                                        <div class="color-body">
+                                                            <a class="list-group-item" ng-repeat="opColor in opsColors" ng-click="colorNodeTextChanged(opColor.value)">
+                                                                <span class="items-color" style="background-color: {{opColor.value}};"></span>
+                                                                <span class="panel-color">{{opColor.name}}</span>
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Group text color</td>
+                                    <td>
+                                        <div class="minicolors minicolors-theme-bootstrap minicolors-position-bottom minicolors-position-left">
+                                            <input class="form-control minicolors-input" colorpicker ng-model="opsColor.groupText" type="text" ng-change="changeColorGroupText(opsColor.groupText)">
+                                            <span class="minicolors-swatch" ng-click="showGroupTextCp = !showGroupTextCp">
+                                                <span class="minicolors-swatch-color" style="opacity: 1; background-color: {{opsColor.groupText}};"></span>
+                                            </span>
+                                        </div>
+                                        <div class="div-color">
+                                            <ul class="language-ul">
+                                                <li>
+                                                    <div class="div-color-list" ng-show="showGroupTextCp">
+                                                        <div class="color-body">
+                                                            <a class="list-group-item" ng-repeat="opColor in opsColors" ng-click="colorGroupTextChanged(opColor.value)">
+                                                                <span class="items-color" style="background-color: {{opColor.value}};"></span>
+                                                                <span class="panel-color">{{opColor.name}}</span>
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div floating-panel title="Process" parent-tag="panelProcess" html-tag="ppContent" panel-id="panel-process">
+        <div class="modal-process border hide" id="panelProcess">
+            <div id="ppContent">
+                <div class="row">
+                    <div class="col-lg-4 modal-process-col">
+                        <fieldset class="modal-fieldset">
+                            <legend class="scheduler-border">Dimension</legend>
+                            <table>
+                                <tr>
+                                    <td><span>Height&nbsp;</span></td>
+                                    <td>
+                                        <span>
+                                            <input type="number" min="1" ng-model="pLayoutModifier.pHeight" ng-pattern="/^-?[0-9][^\.]*$/"
+                                                   value="1" class="number-input" ng-change="changeProcessHeight(pLayoutModifier.pHeight)">&nbsp;px
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><span>Width&nbsp;</span></td>
+                                    <td>
+                                        <span>
+                                            <input type="number" min="1" ng-model="pLayoutModifier.pWidth" ng-pattern="/^-?[0-9][^\.]*$/"
+                                                   value="1" class="number-input" ng-change="changeProcessWidth(pLayoutModifier.pWidth)">&nbsp;px
+                                        </span>
+                                    </td>
+                                </tr>
+                            </table>
+                        </fieldset>
+                    </div>
+                    <div class="col-lg-4 modal-process-col">
+                        <fieldset class="modal-fieldset">
+                            <legend class="scheduler-border">Distance</legend>
+                            <table>
+                                <tr>
+                                    <td><span>Horizontal&nbsp;</span></td>
+                                    <td>
+                                        <span>
+                                            <input type="number" min="1" ng-model="pLayoutModifier.pVerticalDistance"
+                                                   ng-pattern="/^-?[0-9][^\.]*$/" value="1" class="number-input">
+                                            px
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><span>Vertical&nbsp;</span></td>
+                                    <td>
+                                        <span>
+                                            <input type="number" min="1" ng-model="pLayoutModifier.pHorizontalDistance"
+                                                   ng-pattern="/^-?[0-9][^\.]*$/" value="1" class="number-input">
+                                            px
+                                        </span>
+                                    </td>
+                                </tr>
+                            </table>
+                        </fieldset>
+                    </div>
+                    <div class="col-lg-4 modal-process-col">
+                        <fieldset class="modal-fieldset">
+                            <legend class="scheduler-border">Orientation</legend>
+                            <table>
+                                <tr>
+                                    <td><span>Direction&nbsp;</span></td>
+                                    <td>
+                                        <button ng-click="isVertical=!isVertical" class="modal-process-btn-toggle">
+                                            <i ng-class="{'fa fa-caret-down': isVertical, 'fa fa-caret-right': !isVertical}" aria-hidden="true"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><span>No of processes&nbsp;</span></td>
+                                    <td>
+                                        <input type="number" min="1" maxlength="2" ng-model="pLayoutModifier.noProcessInRow"
+                                               ng-pattern="/^-?[0-9][^\.]*$/" class="number-input">
+                                    </td>
+                                </tr>
+                            </table>
+                        </fieldset>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/ng-template" id="grModalContent.html">
+        <div class="modal-header">
+            <h3 class="modal-title" id="modal-title">Select a group</h3>
+        </div>
+        <div class="modal-body" id="modal-body">
+            <label>
+                Group:
+                <select name="groupSelect" id="groupSelect" style="height: 33px"
+                        ng-options="option.CodeName for option in $ctrl.items track by option.SubCode"
+                        ng-model="$ctrl.selectedGroup"></select>
+            </label>
+            <br />
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-primary" type="button" ng-click="$ctrl.ok()">OK</button>
+            <button class="btn btn-warning" type="button" ng-click="$ctrl.cancel()">Cancel</button>
+        </div>
+    </script>
+
+    <script type="text/ng-template" id="changePageNoModalContent.html">
+        <div class="modal-header">
+            <button type="button" ng-click="$ctrl.cancel()" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            <h3 class="modal-title" id="modal-title">Move process to other page</h3>
+        </div>
+        <div class="modal-body" id="modal-body">
+            <div class="row" style="padding: 5px 0">
+                <div class="col-lg-3">
+                    <label for="txtPageNo">Page Number: </label>
+                </div>
+                <div class="col-lg-9">
+                    <input id="txtPageNo" type="number" value="$ctrl.processPage.pageNo" ng-model="$ctrl.processPage.pageNo" title="Page of process" />
+                </div>
+            </div>
+            <div class="row" style="padding: 5px 0" ng-show="$ctrl.isShowBtnUpdateModule">
+                <div class="col-lg-3">
+                    <label for="ddlModule">Modules: </label>
+                </div>
+                <div class="col-lg-9">
+                    <select name="ddlModule" id="ddlModule" style="height: 33px"
+                            ng-options="option.ModuleName for option in $ctrl.modules track by option.ModuleId"
+                            ng-model="$ctrl.selectedModule"></select>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-primary" type="button" ng-click="$ctrl.updatePage()">Update Page</button>
+            <button class="btn btn-primary" type="button" ng-click="$ctrl.updateModule()" ng-show="$ctrl.isShowBtnUpdateModule">Update Module</button>
+            <button class="btn btn-warning" type="button" ng-click="$ctrl.cancel()">Close</button>
+        </div>
+    </script>
+
+    <div class="jtk-container">
+        <!-- content -->
+        <div class="jtk-ops-main" id="jtk-ops-groups">
+            <div ng-style="canvasStyle" class="jtk-ops-canvas" style="font-size: 16px">
+                <div id="divVerticalLine" class="vertical-line" ng-show="showPrintingLine"></div>
+                <jsplumb-toolkit ng-cloak class="opslayout-surface" init="OpsLayoutController.init" jtk-id="opsToolkit"
+                                 params="OpsLayoutController.toolkitParams" surface-id="opsLayOutSurface"
+                                 render-params="OpsLayoutController.renderParams">
+                    <div class="op__control-div">
+                        <div class="op__slide-down-menu--divider" style="left: 178px"></div>
+                        <div class="op__slide-down-menu--divider" style="left: 346px"></div>
+                        <div class="op__slide-down-menu--divider" style="left: 516px"></div>
+                        <div class="op__slide-down-menu--divider" style="left: 680px"></div>
+
+                        <div class="op__control-child" id="controls-mode">
+                            <span class="glyphicons glyphicons-fit-image-to-frame" reset title="Zoom To Fit"></span>
+                        </div>
+
+                        <div style="left: 20px" class="op__control-child node-palette" jsplumb-palette selector="li"
+                             surface-id="opsLayOutSurface" type-extractor="OpsLayoutController.typeExtractor">
+                            <ul>
+                                <li ng-repeat="obj in draggableTypes" jtk-node-type="{{ obj.type }}" jtk-group="{{ obj.group }}">
+                                    <div ng-if="obj.type == 'group'">
+                                        <span class="glyphicons glyphicons-folder-new" title="New Group"></span>
+                                    </div>
+                                    <div ng-if="obj.type == 'node'">
+                                        <span class="glyphicons glyphicons-server-new" title="New Process"></span>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div style="left: 130px" class="op__control-child">
+                            <span id="cloneProcess" class="fa fa-clone span-fa" title="Clone Process" ng-click="changeToCloneMode()"></span>
+                            <span style="margin-left: 40px" class="glyphicons glyphicons-package" aria-hidden="true"
+                                  ng-click="showLoadLayoutPanel()" title="Grouping"></span>
+                            <span class="fa fa-paint-brush span-fa" aria-hidden="true" ng-click="showColorPicker()" title="Font and layout"></span>
+                            <span class="fa fa-linode span-fa" aria-hidden="true" ng-click="showProcessModal()" title="Process"></span>
+                            <span class="fa fa-bars span-fa" aria-hidden="true" title="Show Remarks" ng-click="showOptionModal(showOptions.isShowOpt)"></span>
+                        </div>
+
+                        <div style="left: 370px" class="op__control-child">
+                            <span class="glyphicons glyphicons-notes-2" title="Show Summaries" ng-click="showSummaryModal(showOpsModal.isShowSummaries)"></span>
+                            <span class="fa fa-floppy-o span-fa" aria-hidden="true" title="Save data" ng-click="showSaveModal(false)" ng-show="showSaveData.isShowSaveData"></span>
+                            <span class="fa fa-file-pdf-o span-fa" aria-hidden="true" title="Export PDF" ng-click="exportPdf()"></span>
+                            <span class="fa fa-image span-fa" aria-hidden="true" title="Export PNG" onclick="exportPng()"></span>
+                        </div>
+
+                        <div style="left: 540px" class="op__control-child">
+                            <span class="fa fa-pencil span-fa" aria-hidden="true" title="Show Printing Line" ng-click="showVerticalLine()"></span>
+                            <span class="fa fa-window-close span-fa" aria-hidden="true" title="Show Delete Flow" ng-click="showDeleteFlow(isShowDeleteFlow)"></span>
+                            <span class="fa fa-arrow-right span-fa" aria-hidden="true" title="Show/Hide Flow" ng-click="showHideConnection(isShowFlow, true)"></span>
+                            <span class="fa fa-header span-fa" aria-hidden="true" title="Show/Hide Groups" ng-click="showHideGroups(isShowGroups, true)"></span>
+                        </div>
+
+                        <div style="left: 710px" class="op__control-child">
+                            <span class="glyphicon glyphicon-film" title="Splitting video" ng-click="showProcessVideoModal()"></span>
+                        </div>
+
+                        <div class="controls-language">
+                            <div id="div-lang" class="div-lang" title="Click to select language" ng-click="layoutLang.showLangCb =! layoutLang.showLangCb">
+                                <div class="selected-lang"><span id="selected-flag" value="{{layoutLang.selectedLang}}" class="flag selected-flag flag-{{layoutLang.selectedLang}}"></span></div>
+                                <ul class="language-ul">
+                                    <li>
+                                        <div id="div-lang-list" class="div-lang-list" ng-show="layoutLang.showLangCb">
+                                            <div class="lang-body">
+                                                <a ng-repeat="lang in layoutLang.opsLanguages" class="list-group-item" ng-click="selectLang(lang.value)">
+                                                    <img ng-if="$index == 0" ng-src="~/assets/country-dropdown/images/msdropdown/icons/{{lang.imgSrc}}" alt="{{lang.value}}" />
+                                                    <img ng-if="$index > 0" ng-src="~/assets/country-dropdown/images/msdropdown/icons/{{lang.imgSrc}}" class="flag flag-{{lang.value}}" alt="{{lang.value}}" />
+                                                    <span class="contacts-title">{{lang.name}}</span>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+
+                            <!-- miniview -->
+                            <jsplumb-miniview id="miniview" surface-id="opsLayOutSurface" class="miniview"></jsplumb-miniview>
+                        </div>
+                    </div>
+
+                    <div id="opsmodal" class="ops-modal ops-modal--summaries" ng-show="showOpsModal.isShowSummaries"
+                         style="font-size: 13px">
+                        <div class="save-modal-tittle">
+                            <span class="save-modal-tittle-content">Summaries</span>
+                            <button class="ops-modal-btn-close" ng-click="showOpsModal.isShowSummaries=!
+                                showOpsModal.isShowSummaries">
+                                ✖
+                            </button>
+                        </div>
+                        <div class="save-modal-row" style="padding: 0 5px">
+                            <div class="node-palette ops-modal-controls" jsplumb-palette selector="li"
+                                 surface-id="opsLayOutSurface" type-extractor="OpsLayoutController.typeExtractor"
+                                 style="margin-top: 4px">
+                                <ul>
+                                    <li ng-repeat="obj in draggableTypes"
+                                        jtk-node-type="{{ obj.type }}" jtk-group="{{ obj.group }}">
+                                        <div ng-if="obj.type == 'sumTitle'">
+                                            <label>
+                                                <i class="fa fa-file-text-o" title="Drag and drop to generate summary"></i>
+                                                Main summary
+                                            </label>
+                                        </div>
+                                        <div ng-if="obj.type == 'sumEditable'">
+                                            <label>
+                                                <i class="fa fa-file-text-o" title="Drag and drop to generate summary"></i>
+                                                Editable summary
+                                            </label>
+                                        </div>
+                                        <div ng-if="obj.type == 'sumWorker'">
+                                            <label title="Drag and drop to generate summary">
+                                                <i class="fa fa-file-text-o"></i> Action process summary
+                                            </label>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="ops-modal-controls" style="margin-left: 4px; color: white">
+                                <label title="Click to show the summary" ng-click="summarizeByGroup()"
+                                       style="cursor: pointer">
+                                    <i class="fa fa-file-text-o"></i>
+                                    Group summary
+                                </label>
+                            </div>
+                            <div class="node-palette ops-modal-controls" jsplumb-palette selector="li"
+                                 surface-id="opsLayOutSurface" type-extractor="OpsLayoutController.typeExtractor">
+                                <ul>
+                                    <li ng-repeat="obj in draggableTypes"
+                                        jtk-node-type="{{ obj.type }}" jtk-group="{{ obj.group }}">
+                                        <div ng-if="obj.type == 'sumMainMachines'">
+                                            <i class="fa fa-file-text-o" title="Drag and drop to generate summary"></i>
+                                            <label>Main machine summary</label>
+                                        </div>
+                                        <div ng-if="obj.type == 'sumAllMachines'">
+                                            <i class="fa fa-file-text-o" title="Drag and drop to generate summary"></i>
+                                            <label>All machine summary</label>
+                                        </div>
+                                        <div ng-if="obj.type == 'sumTool'">
+                                            <i class="fa fa-file-text-o" title="Drag and drop to generate summary"></i>
+                                            <label>Tool summary</label>
+                                        </div>
+                                        <div ng-if="obj.type == 'showPattern'">
+                                            <i class="fa fa-file-text-o"></i>
+                                            <label title="Drag and drop to generate summary">Pattern Summary</label>
+                                        </div>
+                                        <div ng-if="obj.type == 'sumBom'">
+                                            <i class="fa fa-file-text-o"></i>
+                                            <label title="Drag and drop to generate summary">Material Summary</label>
+                                        </div>
+                                        <div ng-if="obj.type == 'jigSum'">
+                                            <i class="fa fa-file-text-o"></i>
+                                            <label title="Drag and drop to generate summary">Jig Summary</label>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="optionModal" class="ops-modal ops-modal--opt" ng-show="showOptions.isShowOpt" style="font-size: 13px">
+                        <div class="save-modal-tittle">
+                            <span class="save-modal-tittle-content" style="font-size: 13px">PROCESS NAME DISPLAY OPTIONS</span>
+                            <button class="ops-modal-btn-close" ng-click="showOptions.isShowOpt=!showOptions.isShowOpt">✖</button>
+                        </div>
+                        <div class="save-modal-row" style="padding: 0 5px">
+                            <div class="ops-modal-palette node-palette ops-modal-controls" jsplumb-palette selector="li"
+                                 surface-id="opsLayOutSurface" type-extractor="OpsLayoutController.typeExtractor"
+                                 style="margin-top: 4px">
+                            </div>
+                            <div class="ops-modal-palette node-palette ops-modal-controls" jsplumb-palette selector="li"
+                                 surface-id="opsLayOutSurface" type-extractor="OpsLayoutController.typeExtractor">
+                                <div class="radio ops-modal-controls--radio">
+                                    <label>
+                                        <input type="radio" name="opNameRadios" id="rdOpNameRemarks" value="1"
+                                               ng-model="rdOpName" ng-change='selectOpNameRadio(rdOpName)'>
+                                        Operation Name and Remarks
+                                    </label>
+                                </div>
+                                <div class="radio ops-modal-controls--radio">
+                                    <label>
+                                        <input type="radio" name="opNameRadios" id="rdOpName" value="2" ng-model="rdOpName"
+                                               ng-change='selectOpNameRadio(rdOpName)'>
+                                        Only Operation Name
+                                    </label>
+                                </div>
+                                <div class="radio ops-modal-controls--radio">
+                                    <label>
+                                        <input type="radio" name="opNameRadios" id="rdRemarks" value="3" ng-model="rdOpName"
+                                               ng-change='selectOpNameRadio(rdOpName)'>
+                                        Only Remarks
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="op__paging">
+                        <div class="fifth-controls">
+                            <i class="fa fa-file-o" title="Create new page" ng-click="newPage()"></i>
+                            <i class="fa fa-caret-left" aria-hidden="true" title="Previous page" ng-click="previousPage(layoutPage.pageNo)"></i>
+                            <span>Page</span>
+                            <input type="number" class="fifth-controls-input-page" ng-model="layoutPage.pageNo" title="Page of Layout" />
+                            <span>of {{layoutPage.maxPage}}</span>
+                            <i class="fa fa-caret-right" aria-hidden="true" title="Next page" ng-click="nextPage(layoutPage.pageNo)"></i>
+                        </div>
+                    </div>
+
+                    <!-- Right short list video-->
+                    <div id="divRightVideoList" class="vdp__right-vd-list" jsplumb-palette selector="li" surface-id="opsLayOutSurface"
+                         type-extractor="OpsLayoutController.typeExtractor">
+                        <div class="row vdp__right-vd-header">
+                            <button id="btnCloseRightVdList" type="button" class="vdp__btn-right-vd" ng-click="closeRightShortListVideo()"><span>×</span></button>
+                        </div>
+                        <div class="row vdp__video-list">
+                            <ul>
+                                <li ng-repeat="v in OpVideo">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="vdp__number" draggable="true" ondragstart="dragStartVideo(event)">{{v.PartNo}}</div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <span class="glyphicon glyphicon-film"></span>
+                                        </div>
+                                    </div>
+                                    <div class="row vdp__range-time">
+                                        {{v.StartTime}} - {{v.EndTime}}
+                                    </div>
+                                    <div class="row vdp__total-time">
+                                        <svg width="26" height="22" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 1000 800" enable-background="new 0 0 1000 1000" xml:space="preserve">
+                                        <g><path d="M499.9,159.8C229.3,159.8,10,374.5,10,639.4c0,100.4,32.4,200.8,32.4,200.8h890.8v-0.5h15C977,778.5,990,711.1,990,639.4C989.9,374.5,770.6,159.8,499.9,159.8z M112.2,764.5c-8-24.1-11.5-54.9-13.1-84.9h104.3V631H98.1c1-90.3,35.4-175.2,91.3-242.8l77.2,70.3l35.4-36.7l-77.9-70.9c65.2-61.8,150.5-103.3,243.2-111.7v102.4h53.4V238c61.3,2.9,119.9,20.4,172.2,48.9L449.2,655.3l80.2,39.8l164.2-408c35.5,19.4,68.2,43.9,96.7,72.3l-76.6,68.5l32.9,39l77.7-69.4c51.8,65.7,83.7,146.6,85.1,232.2H804.1v49.6h102c-3.9,29.9-11.2,60.8-19.2,85.3H112.2z" /><path d="M584.2,593.3L538,712L432,657.6l65-104.4c-7,0.7-19.5,2.1-26.5,4.2c-54.5,16.9-85.4,73.8-68.8,127.2c16.5,53.4,74.2,83,128.8,66.1c54.5-16.9,85.4-73.8,68.8-127.2C596.3,613.9,589.4,601.1,584.2,593.3z" /></g>
+                                </svg>
+                                        {{v.TotalTimeStr}}
+                                    </div>
+                                </li>
+                            </ul>
+                            @*<div class="row" ng-repeat="v in OpVideo">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="vdp__number">1</div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <span class="glyphicon glyphicon-film"></span>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        00:00:05 - 00:00:35
+                                    </div>
+                                    <div class="row">
+                                        <span>Total: 00:00:30</span>
+                                    </div>
+                                </div>*@
+                        </div>
+                        <div class="row vdp_div-save">
+                            <button id="btnSaveVideo" type="button" class="btn--save-video" ng-click="saveProcessVideo()">💾 Save</button>
+                        </div>
+                    </div>
+                </jsplumb-toolkit>
+            </div>
+
+            <script type="text/ng-template" id="node_template.tpl">
+                <div id="divP{{node.id}}" ondrop="dropVideo(event)" ondragover="allowDropVideo(event)" class="name ops-node" style="font-size: {{node.LayoutFontSize}}px; height:{{node.ProcessHeight}}px; width: {{node.ProcessWidth}}px;
+                     background-color: white !important">
+                    <div class="ops__process-title" style="height: 31px; background-color: {{node.DisplayColor}} !important;
+                         background: linear-gradient(0deg, {{node.DisplayColor}} 5%, rgba(245,245,245,1) 50%, {{node.DisplayColor}} 95%);
+                         border-bottom: 1px solid #073150; white-space: nowrap; font-size: 14px; font-weight: 600;" title="{{node.Title}}">
+                        {{node.Title}}
+                    </div>
+                    <div class="ops__process-text">
+                        <div class="ops-node-change-page hidden-print" title="Click to move to another page"
+                             ng-click="changeNodePage($event,node)">
+                            <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
+                        </div>
+                        <span id="spOpName{{node.id}}" title="{{node.name}}">&nbsp; {{node.name}}</span><br />
+                    </div>
+                    <div class="ops__process--machine-name">
+                        <span class="node-text-hightlight">[{{node.OpTime}}] [{{node.ManCount}}][{{node.MachineName}}]</span>
+                    </div>
+                    <div class="mes__layout--achieve-taget" style="width: 100%; height: 20%; text-align: center; color: red; font-size: 18px;">
+                        {{node.Achieve}}/{{node.Target}}
+                    </div>
+                    <div class="ops__process-bottom"></div>
+                </div>
+
+                <!--START ADD - SON-->
+                <div class="play-video" ng-click="playVideoProcess(node)" ng-show="node.ShowButtonPlayVideo" title="Click to play video">
+                    <span class="glyphicon glyphicon-film" aria-hidden="true"></span>
+                </div>
+                <!--END ADD - SON-->
+
+                <div class="ops__delete-process" title="Click to delete" ng-click="removeProcess(node)" ng-show="node.CanDelete">
+                    <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+                </div>
+
+                <span class="ops-node-tool" ng-repeat="tool in node.Tools" style="left: {{tool.left}}px">
+                    [{{tool.Ordinal}}]
+                </span>
+                <div class="connect hidden-print"></div>
+
+                <jtk-source filter=".connect"></jtk-source>
+                <jtk-target></jtk-target>
+            </script>
+            <script type="text/ng-template" id="group_template.tpl">
+                <div class="group-title" title="{{group.title}}">
+                    {{group.title}}
+                    <button class="expand" ng-click="toggleGroup($event, group); $event.stopPropagation();"
+                            data-text-swap="+" data-text-original="-">
+                        -
+                    </button>
+                </div>
+                <div jtk-group-content="true">
+                    <div class="op__hide grp-sum">
+                        Processes: {{group.Processes}}<br />Machines: {{group.Machines}}<br />
+                        Workers: {{group.Workers}}<br />Total time: {{group.TotalOpTime}}(s)
+                    </div>
+                </div>
+            </script>
+        </div>
+    </div>
+
+    <div id="opslayoutModal" style="display:none" class="opslayout-modal">
+        <div id="saveModal" class="save-modal">
+            <div class="save-modal-tittle">
+                <span class="save-modal-tittle-content">Saving Options</span>
+                <button class="ops-modal-btn-close" ng-click="showSaveModal(true)">✖</button>
+            </div>
+            <div class="save-modal-row" ng-show="isShowGetMxPk">
+                <button type="button" style="width: 100%">Select MES Package</button>
+            </div>
+            <div class="save-modal-row">
+                <textarea ng-model="opmt.remarks" ng-maxlength="200" ng-trim="true" class="save-modal-remarks"
+                          placeholder="Please enter comments / summary here."></textarea>
+            </div>
+            <div class="save-modal-row">
+                <div class="save-modal-col">
+                    <button class="save-modal-btn" ng-disabled="disableButtons.btnSave" ng-click="saveOp('/OpsLayout/SaveData')">Save</button>
+                </div>
+                <div class="save-modal-col">
+                    <button class="save-modal-btn" ng-disabled="disableButtons.btnSaveAsNewOpRev" ng-click="saveOp('/OpsLayout/CopyToNewOps', false, true)">Save as new OpRev</button>
+                </div>
+            </div>
+            <div class="save-modal-row">
+                <div class="save-modal-col">
+                    <button class="save-modal-btn" ng-disabled="disableButtons.btnSaveAsFacEdition"
+                            ng-click="saveOp('/OpsLayout/CopyToNewOps', true, false)">
+                        Save as Factory Edition
+                    </button>
+                </div>
+                <div class="save-modal-col">
+                    <button class="save-modal-btn" ng-disabled="disableButtons.btnSaveAndConfirm" ng-click="confirmOpmt()">Confirm</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Video processing -->
+<div id="vdpModal" class="modal fade vdp-modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button id="btnCloseVdpModal" type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true" style="line-height: 30px; font-size: 28px; margin-right: 5px">×</span>
+                </button>
+                <button id="btnHideOpVideoModal" type="button" class="vdp__btn-hide"><span class="glyphicon glyphicon-new-window"></span></button>
+                <h4 class="modal-title" id="myLargeModalLabel">&nbsp;🎦 Operation Video</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-8" id="divVideoSide">
+                        <div class="hide" id="divVideoTag">
+                            <button id="btnCloseVdPreview" type="button" class="vdp__btn-close-pv">
+                                @*❌*@@*<span aria-hidden="true">❎</span>*@
+                                <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                            </button>
+                            <video id="vdProcess" src="" class="op-vdp__video">
+                                Your browser doesn't support the video tag.
+                            </video>
+                            @*<div class="progress" style="margin-top: 20px">
+                                    <div class="progress-bar progress-bar-success" style="width: 35%">
+                                        <span class="sr-only">35% Complete (success)</span>
+                                    </div>
+                                    <div class="progress-bar progress-bar-warning progress-bar-striped" style="width: 20%">
+                                        <span class="sr-only">20% Complete (warning)</span>
+                                    </div>
+                                    <div class="progress-bar progress-bar-danger" style="width: 10%">
+                                        <span class="sr-only">10% Complete (danger)</span>
+                                    </div>
+                                </div>*@
+                            <div class="filter-item">
+                                <div class="vdp__bar-part" id="divBarPart">
+                                    @*<div style="background-color: bisque; left: 24.21%; width: 20%">Part 1</div>
+                                        <div style="background-color: #3fd100; left: 0; width: 20%">Part 2</div>
+                                        <div style="background-color: #ffd33f; left: 50%; width: 30%">Part 3</div>*@
+                                </div>
+                                <div id="divSliderWrap" class="slider-wrap">
+                                    <a id="aVdPlay" class="video-preview"></a>
+                                    <input type="hidden" value="0">
+                                    <input type="hidden" value="100">
+                                    @*<div class="slider-bar" style="left: 24.21%; width: 20%;"></div>*@
+                                    @*<span class="slider-split" style="left: 4.21%; width: 20%;"></span>*@
+                                    <span id="spSplitBar" class="slider-split slider-bar" style="left: 0%; width: 20%;"></span>
+                                    <div id="sliderLeft" class="slider-button-wrap-left" style="left: 0%;">
+                                        <div class="tooltip">
+                                            <div class="tooltip-rel">
+                                                <div tabindex="0" class="slider-button"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div id="sliderRight" class="slider-button-wrap-right" style="left: 44.21%;">
+                                        <div class="tooltip">
+                                            <div class="tooltip-rel">
+                                                <div tabindex="0" class="slider-button"></div>
+                                                @*<div class="slider-start-wrap triangle-start"></div>
+                                                    <div class="slider-start-wrap rect-start"></div>*@
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div id="divCurrentSlider" class="slider-button-wrap-current " style="left: 0;">
+                                        <div class="tooltip">
+                                            <div class="tooltip-rel">
+                                                <div tabindex="0" class="slider-button"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    @*<div><span tabindex="-1" data="about:blank" type="text/html" class="slider-line"></span></div>*@
+                                    <div class="video-Time">
+                                        <span id="spCurentTime">00:00:00</span> / <span id="spTotalTime">00:00:00</span>
+                                    </div>
+                                </div>
+                                <div class="crop-range">
+                                    <div class="start-splitting-controls">
+                                        <button id="btnSplit" type="button" class="start-splitting">✂️ Crop</button>
+                                    </div>
+                                    <div class="vdp__total-second">
+                                        <input type="number" id="txtCropSecond" min="1" value="60" placeholder="Second"
+                                               style="width: 60px; border-width: 0 0 1px 0; text-align: center" />
+                                    </div>
+                                    <div class="crop-input">
+                                        <input id="startH" type="text" placeholder="00" maxlength="2" value="00"> <span>：</span>
+                                        <input id="startM" type="text" placeholder="00" maxlength="2" value="00"> <span>：</span>
+                                        <input id="startS" type="text" placeholder="00" maxlength="2" value="00">
+                                    </div> <span>一</span>
+                                    <div class="crop-input">
+                                        <input id="endH" type="text" placeholder="00" maxlength="2" value="00"> <span>：</span>
+                                        <input id="endM" type="text" placeholder="00" maxlength="2" value="00"> <span>：</span>
+                                        <input id="endS" type="text" placeholder="00" maxlength="2" value="00">
+                                    </div>
+                                    <div id="msgBox" class="row" style="display: none; color: red">Minimum length is 1 second!</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="divLoadVideo">
+                            <div id="divDropVideo" class="vdp__div-input-file">
+                                <input class="vdp-input--upload" id="inputUploadVideo" accept="video/mp4,video/webm,video/*,video/3gpp,video/avi,video/x-flv,.mkv,video/x-ms-wmv" type="file">
+                                <label id="lbUploadVideo" for="inputUploadVideo" class="vdp-input--label">
+                                    Click to upload
+                                    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1em" width="1em" style="display: inline-block">
+                                        <path d="M9 16h6v-6h4l-7-7-7 7h4zm-4 2h14v2H5z"></path>
+                                    </svg>
+                                    <br />or, drag and drop a video file here
+                                </label>
+                            </div>
+                            <div class="vdp_div--input-url">
+                                <div class="form-group has-success has-feedback">
+                                    <label class="control-label sr-only" for="txtInputUrl">Video URL</label>
+                                    <div class="input-group">
+                                        <span class="input-group-addon">🔗</span>
+                                        <input type="text" class="form-control vdp__input-url" id="txtInputUrl" aria-describedby="inputUrlStatus"
+                                               placeholder="Paste an image or video URL (e.g. http://video.pungkookvn.com:8888/api/Media/Play?fol=UNI0037LRG001001&f=58X3YVwxgBqqvgU.mp4)">
+                                    </div>
+                                    <span class="glyphicon glyphicon-ok form-control-feedback hide" aria-hidden="true"></span>
+                                    <span id="inputUrlStatus" class="sr-only">(success)</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4" id="divPartVideoSide">
+                        <div id="divVideoRightList" class="row vdp-modal--part-col">
+                            @*<div class="row vdp-modal--each-vd">
+                                    <div class="row">
+                                        <button class="vdp__btn-close-part-video"><span>✖</span></button>
+                                        <div class="col-md-9">
+                                            <video src="http://video.pungkookvn.com:8888/api/Media/Play?fol=10102001&f=7c76afbd-a971-4a5c-9027-b6c2ada299a4.mp4" class="op-vdp__video" controls></video>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="row">Part 2</div>
+                                            <div class="row">Duration: 5:15 - 7:30</div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+
+                                    </div>
+                                </div>
+                                <div class="row vdp-modal--each-vd">
+                                    <button class="vdp__btn-close-part-video"><span>✖</span></button>
+                                    <div class="col-md-9">
+                                        <video src="http://video.pungkookvn.com:8888/api/Media/Play?fol=10102001&f=7c76afbd-a971-4a5c-9027-b6c2ada299a4.mp4" class="op-vdp__video" controls></video>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="row">Part 2</div>
+                                        <div class="row">Duration: 5:15 - 7:30</div>
+                                    </div>
+                                </div>*@
+                        </div>
+                        <div class="vdp__div-process-vd hide" id="divProcessVideo">
+                            <button id="btnUploadVideo" type="button" class="btn--process-video">💾 Save</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div>
+
+@Html.Partial("~/Views/PartialView/_Print.cshtml")
+
+<!-- Modal -->
+<div class="modal fade" id="mdlPatternPreview" role="dialog">
+    <div class="modal-dialog  modal-lg">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <img width="350" height="400" id="imgPattern" src="~/img/no-image.png" />
+            </div>
+        </div>
+    </div>
+</div>
+
+<div style="display: none" id="divGlobe" class="op__processing-video">
+    <img style="width: 70px; height: 35px" src="~/img/globe.gif" />
+</div>
+
+<div id="vdpAlerts" class="vdp__alerts"></div>

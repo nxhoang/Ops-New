@@ -1,0 +1,388 @@
+﻿
+@{
+    ViewBag.Title = "LineDashboard";
+    Layout = "~/Views/Shared/_MesLayout.cshtml";
+}
+
+<style>
+
+    .kpi-widget {
+        background-color: #edf2f6;
+        color: black;
+        text-align: center;
+        border-radius: 5px;
+    }
+
+    .kpi-header {
+        font-size: 2rem;
+        font-weight: 400;
+        color: #8c8e90;
+        font-family: Lato,sans-serif
+    }
+
+    .kpi-sub-header {
+        color: #8c8e90;
+        margin-top: -15px;
+    }
+
+    .kpi-value {
+        /*        font-size: 20rem;*/
+        font-size: 7vw;
+        color: #3d4f5f;
+    }
+
+    .font-size {
+        font-size: 60px;
+    }
+
+    .dashboard-header {
+        font-size: 30px
+    }
+
+    .dashboard-value {
+        font-size: 30px;
+        color: blue
+    }
+
+    .target-font-color {
+        color: black;
+    }
+
+    .achieve-color {
+        color: green;
+    }
+
+    .pending-color {
+        color: red;
+    }
+
+    .ui-jqgrid .ui-jqgrid-htable th {
+        text-align: center;
+    }
+
+    .modal-open .modal {
+        z-index: 1051;
+    }
+
+    .stl-inf-header {
+        font-size: 1vw;
+    }
+
+    .stl-inf-value {
+        font-size: 2vw;
+        font-weight: 600;
+        line-height: 1.4;
+    }
+
+    .img-style {
+        width: 70%;
+    }
+
+    #myTable {
+        margin-left: 10px;
+        margin-bottom: 10px;
+    }
+
+    #tableLbl table, th, td {
+        border: 1px solid #101010;
+        border-collapse: collapse;
+    }
+
+    #tableLbl th, td {
+        padding: 10px;
+        font-size: 2vw;
+        font-weight: 600;
+        line-height: 1.4;
+    }
+
+    #tableLbl table#alter tr:nth-child(even) {
+        background-color: #eee;
+    }
+
+    #tableLbl table#alter tr:nth-child(odd) {
+        background-color: #fff;
+    }
+
+    #tableLbl table#alter th {
+        color: white;
+        background-color: gray;
+    }
+</style>
+
+<!--Search condition production line dashboard-->
+<div class="row">
+    <!-- Searching Criteria: Cutting Factory-->
+    <div class="col-sm-2">
+        <div class="form-group">
+            <label for="">Factory:</label>
+            <select id="drpFactory" name="factoryId" class="form-control">
+                <option>---</option>
+                @foreach (var factory in ViewBag.LstFactories)
+                {
+                    <option value="@factory.Factory">@factory.Name</option>
+                }
+            </select>
+        </div>
+    </div>
+    @*START ADD - SON) 5/Sep/2020*@
+    <div class="col-sm-2">
+        <div class="form-group">
+            <label for="">Line:</label>
+            <select id="drpLine" class="form-control" data-placeholder=""></select>
+        </div>
+    </div>
+    @*END ADD - SON) 5/Sep/2020*@
+
+    <div class="col-sm-2 ">
+        <div class="form-group">
+            <label for="">Date:</label>
+            <button type="button" id="btnPreDate" style="display:none;" class="col-sm-2"><</button>
+            <input type="text" id="chooseDate" name="chooseDate" class="form-control" />
+            <button type="button" id="btnNextDate" style="display:none" class="col-sm-2">></button>
+            @*<div class="row" style="text-align:center">
+                    <button type="button" id="btnPreDate" style="display:inline;" class="col-sm-2"><</button>
+                    <input type="text" id="chooseDate" name="chooseDate" style="display:inline" class="col-sm-8" />
+                    <button type="button" id="btnNextDate" style="display:inline" class="col-sm-2">></button>
+                </div>*@
+
+        </div>
+    </div>
+
+    <div class="col-sm-4">
+        <div class="form-group">
+            <label for="">Package:</label>
+            <select id="drpPackage" class="form-control" data-placeholder="">
+                <option></option>
+            </select>
+        </div>
+    </div>
+
+    @if (!string.IsNullOrWhiteSpace(ViewBag.Cstp.IOT_DATA_SOURCE_TYPE) && ViewBag.Cstp.IOT_DATA_SOURCE_TYPE.ToUpper() != "A")
+    {
+        var dataSourceValue = "direct";
+        var dataSourceDisplay = "IoT Direct";
+        if (ViewBag.Cstp.IOT_DATA_SOURCE_TYPE.ToUpper() == "DGS")
+        {
+            dataSourceValue = "dgs";
+            dataSourceDisplay = "DGS";
+        }
+        <div class="col-sm-2" style="display:none">
+            <div class="form-group">
+                <label for="">Data source:</label>
+                <select id="drpDataSource" name="datasource" class="form-control">
+                    <option value="@dataSourceValue">@dataSourceDisplay</option>
+                </select>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="col-sm-2">
+            <div class="form-group">
+                <label for="">Data source:</label>
+                <select id="drpDataSource" name="datasource" class="form-control">
+                    <option value="direct">IoT Direct</option>
+                    <option value="dgs">DGS</option>
+                </select>
+            </div>
+        </div>
+    }
+
+    @*<div class="col-sm-1">
+            <div class="form-group">
+                <label for="tags"> &nbsp;</label>
+                <button type="button" id="btnSearchStyle" class="btn btn-primary btn-sm form-control">
+                    <span class="glyphicon glyphicon-search"></span> Search
+                </button>
+            </div>
+        </div>*@
+
+</div>
+<!-- /Search conditon-->
+
+<div class="top-buffer"></div>
+
+<!-- widget grid -->
+<section id="widget-grid" class="">
+
+    <!-- row -->
+    <div class="row">
+        <!-- NEW WIDGET START -->
+        <article class="col-sm-12">
+
+            <!-- Widget ID (each widget will need unique ID)-->
+            <div class="jarviswidget jarviswidget-color-green" id="wid-id-0" data-widget-colorbutton="false" data-widget-togglebutton="false" data-widget-editbutton="false" data-widget-fullscreenbutton="false" data-widget-deletebutton="false">
+
+                <header >
+                    <h4 style="margin-top:9px; margin-left: 12px; display:inline;">Factory: <b id="lblFactory">---</b>   |  Line: <b id="lblLine">---</b>  | Package: <b id='lblPackage'>---</b></h4>
+
+                    <div class="widget-toolbar">
+                        <div class="btn-group">
+                            <button class="btn dropdown-toggle btn-xs btn-warning" data-toggle="dropdown">
+                                By Final Assembly <i class="fa fa-caret-down"></i>
+                            </button>
+                            <ul id="ddlReportBy" class="dropdown-menu pull-right">
+                                <li>
+                                    <a id="FA" href="javascript:void(0);">By Final Assembly</a>
+                                </li>
+                                <li>
+                                    <a id="QA" href="javascript:void(0);">By End line QC</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                </header>
+
+                <!-- widget div-->
+                <div>
+                    <!-- widget content -->
+                    <div class="widget-body">
+                        @*<div class="row">
+                                <div class="col-sm-6 col-lg-3">
+                                    <div class="kpi-widget">
+                                        <p class="kpi-header">Target</p>
+                                        <p class="kpi-sub-header">(units)</p>
+                                        <p class="kpi-value" id="lblTarget">0</p>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6 col-lg-3">
+                                    <div class="kpi-widget">
+                                        <p class="kpi-header">Achieved</p>
+                                        <p class="kpi-sub-header">(units)</p>
+                                        <p class="kpi-value" id="lblAchieve">0</p>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6 col-lg-3">
+                                    <div class="kpi-widget">
+                                        <p class="kpi-header">Defect</p>
+                                        <p class="kpi-sub-header">(units)</p>
+                                        <p class="kpi-value" id="lblDefect">0</p>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6 col-lg-3">
+                                    <div class="kpi-widget">
+                                        <p class="kpi-header">Pending</p>
+                                        <p class="kpi-sub-header">(units)</p>
+                                        <p class="kpi-value" id="lblPending">0</p>
+                                    </div>
+                                </div>
+                            </div>*@
+                        <div class="row">
+                            <div class="col-sm-5">
+                                <div class="row" id="tableLbl">
+
+                                </div>
+                                @*style information*@
+                                @*<div class="row">
+                                        <div class="col-sm-12">
+
+                                            <label class="stl-inf-value" id="lblStyleName"></label>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <label class="stl-inf-value" id="lblStyleColor"></label>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <label class="stl-inf-value" id="lblBuyerStyleName"></label>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <label class="stl-inf-value" id="lblAONumber"></label>
+                                        </div>
+                                    </div>*@
+
+                                @*style image*@
+                                <div class="row">
+                                    <div class="col-sm-12" style="text-align: center">
+                                        <img id="imgStyleImage" src="~/img/no-image.png" height="400" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-7">
+                                <div class="row">
+                                    <div class="col-sm-12 col-lg-12">
+                                        <div class="kpi-widget">
+                                            <p class="kpi-header">Target</p>
+                                            <p class="kpi-sub-header">(units)</p>
+                                            <p class="kpi-value" id="lblTarget">0</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12 col-lg-12">
+                                        <div class="kpi-widget">
+                                            <p class="kpi-header">Completed</p>
+                                            <p class="kpi-sub-header">(units)</p>
+                                            <p class="kpi-value" style="color:forestgreen" id="lblAchieve">0</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-6 col-lg-6">
+                                        <div class="kpi-widget">
+                                            <p class="kpi-header">Defect</p>
+                                            <p class="kpi-sub-header">(units)</p>
+                                            <p class="kpi-value" id="lblDefect">0</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6 col-lg-6">
+                                        <div class="kpi-widget">
+                                            <p class="kpi-header">Pending</p>
+                                            <p class="kpi-sub-header">(units)</p>
+                                            <p class="kpi-value" id="lblPending">0</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- end widget content -->
+
+                    </div>
+                    <!-- end widget div -->
+
+                </div>
+                <!-- end widget -->
+            </div>
+        </article>
+        <!-- WIDGET END -->
+    </div>
+
+    <!-- end row -->
+
+</section>
+<!-- end widget grid -->
+
+
+@section Scripts{
+
+    <script src="~/js/plugin/jqgrid/jquery.jqGrid.min.js"></script>
+    @*<script src="~/js/plugin/jqgrid/grid.localtetee-en.min.js"></script>*@
+    <script src="~/js/plugin/jqgrid/grid.locale-en.min.js"></script>
+
+    @*<link rel="stylesheet" href="~/Assets/jquery-ui-1.12.1/jquery-ui.min.css" />
+        <script src="~/Assets/jquery-ui-1.12.1/jquery-ui.min.js"></script>*@
+
+    <script src="~/Assets/daterangepicker-master-4/moment.min.js"></script>
+    <script src="~/Assets/daterangepicker-master-4/daterangepicker.js"></script>
+    <link href="~/Assets/daterangepicker-master-4/daterangepicker.css" rel="stylesheet" />
+
+    <script src="~/js/mes/mes-common.js?v=1.0.2"></script>
+    <script src="~/js/mes/linedashboard/linedashboard.event.js?v=1.0.1"></script>
+    <script src="~/js/mes/linedashboard/linedashboard.js?v=1.0.1"></script>
+
+
+    <script>
+        $(function () { 
+            initPage(); 
+        });
+
+
+       
+    </script>
+}

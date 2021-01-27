@@ -1,0 +1,65 @@
+﻿
+
+@section scripts{
+    <script type="text/javascript">
+        $(document).ready(function () {
+                      
+            //if (typeof sessionStorage.token === 'undefined') {
+            //    getAccessToken();
+            //}
+
+            //let token = JSON.parse(sessionStorage.token);
+            //if (token.expires_in < 60) {
+            //    getAccessToken();
+            //}
+
+            //console.log(token.access_token);
+            //console.log(token.expires_in);
+            //console.log(token.token_type);
+
+            //getMachineList("CTM");
+        });
+
+        function getMachineList(machineType) {
+
+            $.ajax({
+                type: 'GET',
+                url: '/api/visualops/machine-tool?category=ctm',
+                //url: 'http://10.102.23.59:5555/api/visualops/getmachines',
+                dataType: 'json',
+                data: { machineType: 'CTM' },
+                headers: {"Authorization": 'Bearer ' + sessionStorage.getItem('accessToken')}
+            }).done(function (data) {
+                console.log(data);
+            }).fail(function (data) {
+                alert(data);
+            });
+        }
+
+        function getAccessToken() {
+            var loginData = {
+                grant_type: 'password',
+                username: "visualapi2020",
+                password: 'api@@%)(2020$#'
+            };
+
+            $.ajax({
+                type: 'POST',
+                url: '/token',
+                //url: 'http://10.102.23.59:5555/token',
+                dataType: 'json',
+                async: true,
+                data: loginData
+            }).done(function (data) {
+                //alert(data.username);
+                sessionStorage.setItem("accessToken", data.access_token);
+                sessionStorage.setItem("token",JSON.stringify(data));
+
+                console.log(data);
+                console.log(data.access_token);
+            }).fail(function (data) {
+                alert(data);
+            });
+        }
+    </script>
+}

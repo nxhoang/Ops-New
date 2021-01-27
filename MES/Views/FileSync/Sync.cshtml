@@ -1,0 +1,310 @@
+﻿
+@{
+    ViewBag.Title = "Sync";
+    Layout = "~/Views/Shared/_MesLayout.cshtml";
+}
+
+<style>
+    fieldset.fieldset-border {
+        border: 1px groove #ddd !important;
+        padding: 0 1.4em 1.4em 1.4em !important;
+        margin: 0 0 1.5em 0 !important;
+        -webkit-box-shadow: 0px 0px 0px 0px #000;
+        box-shadow: 0px 0px 0px 0px #000;
+    }
+
+    legend.fieldset-border {
+        font-size: 1.2em !important;
+        font-weight: bold !important;
+        text-align: left !important;
+        width: auto;
+        padding: 0 10px;
+        border-bottom: none;
+    }
+</style>
+
+<div class="row">
+    <div id="divProcessBarSync" class="progress">
+        <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width:0%">
+           0%
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-3">
+
+        <div class="form-horizontal">
+            <div class="form-group">
+                <label class="control-label col-sm-2" for="drpBuyer">Buyer*</label>
+                <div class="col-sm-10">
+                    <select id="drpBuyer" class="form-control" data-placeholder="Buyer"></select>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label col-sm-2" for="txtAoNumber"> AO*</label>
+                <div class="col-sm-10">
+                    <input type="text" id="txtAoNumber" class="form-control" placeholder="AO Number" />
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label col-sm-2" for="txtStyleCode"> Style</label>
+                <div class="col-sm-10">
+                    <input type="text" id="txtStyleInfo" class="form-control" placeholder="Style Info" />
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10 checkbox">
+                    <label>
+                        <input id="chkOverwrite" type="checkbox" class="checkbox style-0">
+                        <span>Overwrite if exist</span>
+                    </label>
+                </div>
+            </div>
+
+        </div>
+
+
+    </div>
+    <div class="col-sm-3">
+
+        <div class="form-horizontal">
+
+            <div class="form-group">
+                <div class="col-sm-offset-1 col-sm-10 checkbox">
+                    <label>
+                        <input id="chkIndonesia" type="checkbox" class="checkbox style-0" checked>
+                        <span>Indonesia</span>
+                    </label>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-sm-offset-1 col-sm-10 checkbox">
+                    <label>
+                        <input id="chkEthiopia" type="checkbox" class="checkbox style-0">
+                        <span>Ethiopia</span>
+                    </label>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-sm-offset-1 col-sm-10 checkbox">
+                    <label>
+                        <input id="chkMyanmar" type="checkbox" class="checkbox style-0">
+                        <span>Myanmar</span>
+                    </label>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="col-sm-2">
+
+        <div class="form-horizontal">
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10 checkbox">
+                    <label>
+                        <input id="chkSelectAll" type="checkbox" class="checkbox style-0">
+                        <span>Select All</span>
+                    </label>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10 checkbox">
+                    <label>
+                        <input id="chkCad" type="checkbox" class="checkbox style-0" checked>
+                        <span>CAD</span>
+                    </label>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10 checkbox">
+                    <label>
+                        <input id="chkMarker" type="checkbox" class="checkbox style-0">
+                        <span>Marker</span>
+                    </label>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10 checkbox">
+                    <label>
+                        <input id="chkPrinting" type="checkbox" class="checkbox style-0">
+                        <span>Printing</span>
+                    </label>
+                </div>
+            </div>
+
+        </div>
+        
+    </div>
+    <div class="col-sm-2">
+        <div class="form-horizontal">
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10 checkbox">
+                    @*<label>
+                        <input id="chkSelectAll" type="checkbox" class="checkbox style-0">
+                        <span>Select All</span>
+                    </label>*@
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10 checkbox">
+                    <label>
+                        <input id="chkJig" type="checkbox" class="checkbox style-0">
+                        <span>Jig</span>
+                    </label>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10 checkbox">
+                    <label>
+                        <input id="chkEmbroidery" type="checkbox" class="checkbox style-0">
+                        <span>Embroidery</span>
+                    </label>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10 checkbox">
+                    <label>
+                        <input id="chkOther" type="checkbox" class="checkbox style-0">
+                        <span>Other</span>
+                    </label>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+<div class="row">
+    <div class="form-group">
+        <div class="col-sm-offset-11 col-sm-1">
+            <button id="btnSysnFile" class="btn btn-default form-control">Sync</button>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+ 
+<script src="~/Assets/jquery.blockUI/jquery.blockUI.js"></script>
+
+<script src="~/js/mes/mes-common.js"></script>
+<script src="~/js/mes/file-sync/file-sync.js"></script>
+<script src="~/js/mes/file-sync/file-sync-event.js"></script>
+
+<!--Script references. -->
+<!--The jQuery library is required and is referenced by default in _Layout.cshtml. -->
+<!--Reference the SignalR library. -->
+<script src="~/Scripts/jquery.signalR-2.4.1.min.js"></script>
+<!--Reference the autogenerated SignalR hub script. -->
+<script src="~/signalr/hubs"></script>
+<!--SignalR script to update the chat page and send messages.-->
+
+    <script>
+        $(function () {
+
+            // Reference the auto-generated proxy for the hub.
+            var chat = $.connection.syncFileHub;
+
+
+            chat.client.updateProcess = function (percent) {
+                $('#divProcessBarSync .progress-bar').text(percent + '%');
+                $('#divProcessBarSync .progress-bar').css({ 'width': percent + '%' });
+                console.log("update: " + percent);               
+            };
+
+            chat.client.syncFileError = function (counti) {
+                $('#btnSysnFile').prop("disabled", false);
+                console.log("error: " + counti);
+                return;
+            };
+
+            chat.client.syncFileComplete = function (counti) {
+                //Enable button synchronization
+                $('#btnSysnFile').prop("disabled", false);
+                console.log("completed: " + counti);
+                return;
+            };
+            
+            // Start the connection.
+            $.connection.hub.start().done(function () {
+                $('#btnSysnFile').click(function () {
+
+                    //Get list of files type which want to synchornize
+                    let listFileSync = [];
+                    let listCountrySync = [];
+
+                    let buyer = $("#drpBuyer").val();
+                    let ao = $("#txtAoNumber").val();
+                    let style = $("#txtStyleInfo").val();
+
+                    if (isEmpty(buyer) || isEmpty(ao)) {
+                        ShowMessage("Synchronize files", "Please select buyer and enter AO.", ObjMessageType.Info);
+                        return;
+                    }
+
+                    let overwrite = $("#chkCad").is(":checked") === true ? "1" : "0";
+
+                    //Check list of file type
+                    if ($("#chkCad").is(":checked")) {
+                        listFileSync.push(FileTypeList.Cad);
+                    }
+
+                    if ($("#chkMarker").is(":checked")) {
+                        listFileSync.push(FileTypeList.Marker);
+                    }
+
+                    if ($("#chkPrinting").is(":checked")) {
+                        listFileSync.push(FileTypeList.Printing);
+                    }
+
+                    if ($("#chkEmbroidery").is(":checked")) {
+                        listFileSync.push(FileTypeList.Embroidery);
+                    }
+
+                    if ($("#chkOther").is(":checked")) {
+                        listFileSync.push(FileTypeList.Other);
+                    }
+
+                    if ($("#chkJig").is(":checked")) {
+                        listFileSync.push(FileTypeList.Jig);
+                    }
+
+                    //Get country list
+                    if ($("#chkIndonesia").is(":checked")) {
+                        listCountrySync.push(CountryList.Indonesia);
+                    }
+
+                    if ($("#chkEthiopia").is(":checked")) {
+                        listCountrySync.push(CountryList.Ethiopia);
+                    }
+
+                    if ($("#chkMyanmar").is(":checked")) {
+                        listCountrySync.push(CountryList.Myanmar);
+                    }
+
+                    //Check country list and file type list
+                    if (listCountrySync.length === 0 || listFileSync.length === 0) {
+                        ShowMessage("Synchronize files", "Please select country or file type.", ObjMessageType.Info);
+                        return;
+                    }
+                    //Disable button synchronization
+                    $('#btnSysnFile').prop("disabled", true);
+                    //string buyer, string ao, string style, string overwrite
+                    //, List < string > countryList, List < string > fileTypeList
+                    chat.server.syncFile("LLB", "AD-LLB-5554", "", "0", listFileSync, listCountrySync);
+
+                });
+            });
+
+            initPage();
+        });
+    </script>
+
+}

@@ -1,0 +1,43 @@
+﻿
+    <div id="mediaContainer" style="min-height: 500px">
+        <div class="container">
+            <div class="col-sm-6" style="">
+                <div>
+                    <table id="tbImage"></table>
+                </div>
+               
+                <div style="margin-top:20px">
+                    <table id="tbVideo" ></table>
+                </div>
+                
+                <div style="margin-top:20px">
+                    <table id="tbAudio"></table>
+                </div>
+                
+            </div>
+
+
+            <div class="col-sm-6">
+
+                <div id="imageDiv">
+                    <img id="imagePlayer" style="width:100%;height:100%;">
+                </div>
+                <div id="videoDiv">
+                    <video id="videoPlayer" poster="/path/to/poster.jpg"  playsinline controls style="width:100%; height: 400px">
+                        <source src="/path/to/video.mp4" type="video/mp4" />
+
+                        <!-- Captions are optional -->
+                        <track kind="captions" label="English captions" src="/path/to/captions.vtt" srclang="en" default />
+                    </video>
+                </div>
+                <div id="audioDiv">
+                    <audio id="audioPlayer" controls>
+                        <source src="/path/to/audio.mp3" type="audio/mp3" />
+                    </audio>
+                </div>
+
+
+                
+            </div>
+        </div>
+    </div>

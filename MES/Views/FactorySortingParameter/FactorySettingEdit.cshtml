@@ -1,0 +1,188 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Factory Setting Edit</title>
+
+    <link href="~/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="~/Assets/material-design-iconic-font/css/material-design-iconic-font.min.css" rel="stylesheet" />
+
+    <script src="~/js/libs/jquery-3.2.1.min.js"></script>
+
+    @* FancyBox *@
+    <link href="~/Assets/fancybox-master/dist/jquery.fancybox.css" rel="stylesheet" />
+
+    <!--START DHTMLX List-->
+    <script src="~/Assets/dhtmlxList_v51_std/codebase/dhtmlxlist.js"></script>
+    <link href="~/assets/dhtmlxList_v51_std/codebase/dhtmlxlist.css" rel="stylesheet" />
+
+
+    <!--Bootstrap Notify-->
+    <script src="~/Assets/remarkable-bootstrap-notify/dist/bootstrap-notify.min.js"></script>
+    <script src="~/Assets/remarkable-bootstrap-notify/dist/Common.js"></script>
+
+    <style>
+    #Edit_MasterSettings, #Edit_FactorySettings {
+        background: white;
+        width: 50%;
+        height: 500px;
+        border: 1px solid grey;
+        border-radius: 8px;
+        text-align:left;
+        margin-left: 25%;
+    }
+
+    .dhx_list .dhx_list_default_item_selected {
+        background: green;
+        color: white;
+        font-weight: bold;
+    }
+
+    body {
+        margin: 20px 20px;
+        background-color: rgb(237, 236, 236);
+        text-align: center;
+        justify-content: center;
+        align-items: center; 
+        min-height:800px;
+        height:800px;
+    }
+
+    h1,h3{
+        text-align:left; 
+    }
+  </style>
+
+</head>
+<body>
+    @*<h1>Factory Setting Edit</h1>*@
+    <div>
+        <div class="row">
+            <div class="col-lg-6">
+                <h3>Master QCO Setting</h3>
+                <div id="Edit_MasterSettings" style=""></div>
+            </div>
+
+            <div class="col-lg-6">
+                <h3>Factory QCO Setting</h3>
+                <div class="row">
+                    <div id="Edit_FactorySettings" style=""></div>
+                </div>
+
+                <div class="row">
+                    <div style="margin-top: 20px;">
+                        <button type="button" class="btn btn-danger" id="btnRemoveFactorySetting">Remove</button>
+                        <button type="button" class="btn btn-success" id="btnSaveFactorySetting">Save</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <script>
+
+            var _ID = '@ViewBag.id';
+            /*Left List: Master Settings */
+            DHTMLXList_EditMasterSettings = new dhtmlXList({
+                container: "Edit_MasterSettings",
+                drag: false,
+                select: true,
+                type: {
+                    template: "Factor: #PARAMETERNAME#<br/>&nbsp;",
+                    height: 69
+                }
+            });
+
+            /*Right List: Factory Settings*/
+            DHTMLXList_EditFactorySettings = new dhtmlXList({
+                container: "Edit_FactorySettings",
+                drag: true,
+                select: true,
+                type: {
+                    //template: "Factory: #FACTORY#<br/>Sorting Level: #PARAMETERNAME#",
+                    template: "#PARAMETERNAME#",
+                    height: 69
+                }
+            });
+
+            //Load data into MasterSettings
+            DHTMLXList_EditMasterSettings.load("/FactorySortingParameter/GetMasterSettings",
+                function (data) {
+                    var json = JSON.parse(data);
+                    DHTMLXList_EditMasterSettings.parse(json, "json");
+                });
+
+            //Load data into FactorySettings
+            DHTMLXList_EditFactorySettings.load("/FactorySortingParameter/GetFactorySettings/"+ _ID ,
+                function (data) {
+                    var json = JSON.parse(data);
+                    DHTMLXList_EditFactorySettings.parse(json, "json");
+                });
+
+            //Attach event "double click"
+            DHTMLXList_EditMasterSettings.attachEvent("onItemDblClick",
+                function (id, ev, html) {
+                    let self = this;
+
+                    // copy to DHTMLXList_FactorySettings
+                    let RowData = self.get(id);
+                    let count = DHTMLXList_EditFactorySettings.dataCount();
+
+                    DHTMLXList_EditFactorySettings.add({
+                        FACTORY: _ID,
+                        PARAMETERNAME: RowData.PARAMETERNAME
+                    }, count + 1);
+                    return true;
+                });
+
+            $('#btnRemoveFactorySetting').on('click', function () {
+                var Select_id = DHTMLXList_EditFactorySettings.getSelected();
+                DHTMLXList_EditFactorySettings.remove(Select_id);
+                 Notify('Please "Save Setting" Before Leave The Page.');
+            });
+
+          $('#btnSaveFactorySetting').on('click',
+            function (e) {
+                let count = DHTMLXList_EditFactorySettings.dataCount();
+
+                if (count == 0) {
+                    alert('Please at least 1 Setting For Factory.');
+                } else {
+                    let DataRows = DHTMLXList_EditFactorySettings.serialize();
+                    let postData = "";
+
+                    for (var i = 0; i < DataRows.length; i++) {
+                        if (i == 0)
+                            postData = DataRows[i].PARAMETERNAME;
+                        else
+                            postData = postData + "_A2LF_" + DataRows[i].PARAMETERNAME;
+                    }
+
+                    $.ajax({
+                        method: "POST",
+                        url: "/FactorySortingParameter/SaveFactorySettings/",
+                        contentType: "application/json; charset=utf-8",
+                        dataType: "json",
+                        data: JSON.stringify({
+                            vstrFactory: _ID,
+                            vstrpostData: postData
+                        })
+                    }).done(function (ReturnMsg) {
+                        Notify(ReturnMsg.retMsg);
+                    });
+                }
+            });
+
+
+    </script>
+
+</body>
+</html>

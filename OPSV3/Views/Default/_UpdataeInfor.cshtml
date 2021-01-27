@@ -1,0 +1,78 @@
+﻿
+<div id="UpdateUserInfor" class="modal fade modal-custom pattern-bom" role="dialog" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-lg" style="max-width:400px;">
+        <!-- Modal content-->
+        <div class="modal-content" >
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="hTitle">Update user information</h4>
+            </div>
+
+            <div class="modal-body" >
+                <div id="validateUpdate" class="alert alert-danger" style="display: none">
+                    <label id="showUpdateInfo"></label>
+                </div>
+                <div class="modal-body-custom" id="divUpdate">
+                    <div class="contain">
+                        <table class="tb-contain">
+                            <tr>
+                                <td>
+                                    <p class="table-title">Avatar</p>
+                                </td>
+                                <td colspan="3">
+                                    <img id="imgAvata" src="~/img/no-image.png" />
+                                    <input id="fUrl"  accept="image/*" type="file" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <p class="table-title">Name</p>
+                                </td>
+                                <td colspan="3">
+                                    <input id="txtName" class="form-control infortop10" type="text" value="" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <p class="table-title">Email</p>
+                                </td>
+                                <td>
+                                    <input id="Email" name="Email" class="form-control infortop10" type="text" value="" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <p class="table-title">Tel</p>
+                                </td>
+                                <td>
+                                    <input id="txtTel" name="Tel" class="form-control infortop10" type="text" value="" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <p class="table-title">Sex</p>
+                                </td>
+                                <td>
+                                    <select id="cbSex" class="form-control infortop10">
+                                        <option value="F">Female</option>
+                                        <option value="M">Male</option>
+                                        <option value="N">Not Sure</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td><input type="button" onclick="SaveInfor();" value="Updatae" class="btn btn btn-primary form-control infortop10" /></td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+               
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="btnCancelAddPattern" class="btn btn-primary btn-modal" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+
+    </div>
+</div>

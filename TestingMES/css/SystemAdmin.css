@@ -1,0 +1,224 @@
+﻿.RstCaption {
+    height: 50px;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.RstBody {
+    margin-top: 15px;
+    min-height: 600px;
+    height: 600px;
+    /*position: relative;*/
+}
+
+    .RstBody label {
+        font-size: 17px;
+        font-weight: bold;
+    }
+
+    .RstBody button.btContinue {
+        border: none;
+        background: #49a0fb;
+        color: white;
+        font-size: 16px;
+        padding: 5px 20px;
+        border-radius: 5px;
+        margin-top: 5px;
+    }
+  
+
+.DHTMLXListMultipleGroup {
+    display: block;
+    height: 100%;
+}
+
+    .DHTMLXListMultipleGroup input {
+        margin: 5px 5px;
+        width: 95%;
+        line-height: 2.25em;
+        border-radius: 5px;
+        font-size: larger;
+        color: red;
+        font-weight: bold;
+    }
+
+.DHTMLXListGroup {
+    display: block;
+    /*overflow: hidden;*/
+    width: 100%;
+}
+
+.DHTMLXListObj {
+    height: 500px;
+    /*height: 100%;*/
+    width: 95%;
+    border-radius: 5px;
+    /*overflow: hidden;*/
+    overflow: auto;
+    border: 1px grey solid;
+}
+
+#SaleTeamGroup, #BuyerGroup, #FactoryGroup {
+    height: 230px;
+    display: inline-block;
+}
+
+    #SaleTeamGroup .DHTMLXListObj,
+    #BuyerGroup .DHTMLXListObj,
+    #FactoryGroup .DHTMLXListObj {
+        height: 100%;
+    }
+
+#UsmtGroup {
+    height: 529px;
+    display: inline-block;
+}
+
+    #UsmtGroup .DHTMLXListObj {
+        height: 235px;
+    }
+
+
+/*Border Setting*/
+#dhtmlListFactory, #dhtmlListCorporation, #dhtmlListKPITeam {
+    border: 1px #962323 solid;
+}
+
+    #dhtmlListFactory .dhx_list_default_item_selected,
+    #dhtmlListCorporation .dhx_list_default_item_selected,
+    #dhtmlListKPITeam .dhx_list_default_item_selected {
+        background-color: #962323;
+        color: white;
+        font-weight: bold;
+    }
+
+#dhtmlListBuyer, #dhtmlListSaleTeam {
+    border: 1px #388e59 solid;
+}
+
+    #dhtmlListBuyer .dhx_list_default_item_selected, #dhtmlListSaleTeam .dhx_list_default_item_selected {
+        background: #388e59;
+        color: white;
+        font-weight: bold;
+    }
+
+#dhtmlListSystem {
+    border: 1px #ced625 solid;
+}
+
+    #dhtmlListSystem .dhx_list_default_item_selected {
+        background: #ced625;
+        color: white;
+        font-weight: bold;
+    }
+
+#dhtmlListModule {
+    border: 1px #255ed6 solid;
+}
+
+    #dhtmlListModule .dhx_list_default_item_selected {
+        background: #255ed6;
+        color: white;
+        font-weight: bold;
+    }
+
+
+#dhtmlListUsmt {
+    border: 1px #3300b4 solid;
+}
+
+    #dhtmlListUsmt .dhx_list_default_item_selected {
+        background: #3300b4;
+        color: white;
+        font-weight: bold;
+    }
+
+#dhtmlListUsmtResp {
+    border: 1px #146f7c solid;
+}
+
+    #dhtmlListUsmtResp .dhx_list_default_item_selected {
+        background: #146f7c;
+        color: white;
+        font-weight: bold;
+    }
+
+
+/*:: Popup Part  */
+.DHTMLXListFilter {
+    width: 180px;
+    margin-bottom: 5px;
+    height: 2.2em;
+}
+
+
+    .DHTMLXListFilter .popUpUserMaster {
+        display: none;
+    }
+
+    .DHTMLXListFilter .DHTMLXListFilterContainer {
+        /*display: none;*/
+        width: 222px;
+        height: 250px;
+        overflow: auto;
+        background-color: rgba(0, 100, 128,1);
+        border: 1px solid rgb(0, 0, 0);
+        border-radius: 5px;
+        position: relative;
+        z-index: 1;
+    }
+
+        .DHTMLXListFilter .DHTMLXListFilterContainer input {
+            margin: 5px 5px;
+            width: 95%;
+            line-height: 2.25em;
+            border-radius: 5px;
+            font-size: larger;
+            color: red;
+            font-weight: bold;
+        }
+
+        .DHTMLXListFilter .DHTMLXListFilterContainer .dhx_list_default_item {
+            color: white;
+            font-size: 13px;
+        }
+
+        .DHTMLXListFilter .DHTMLXListFilterContainer .dhx_list .dhx_list_default_item_selected {
+            color: white;
+            font-size: larger;
+            background: green;
+        }
+
+        .DHTMLXListFilter .DHTMLXListFilterContainer .DHTMLXListFilterResult {
+            width: 95%;
+            overflow: auto;
+            height: 187px;
+            background-color: rgba(0,0,0,1);
+            border: none;
+            border-radius: 5px;
+            position: relative;
+            margin: 5px 5px;
+        }
+
+
+/*Select 2:: Selected Items*/
+.select2-selection__choice {
+    color: red;
+    font-weight: bold;
+}
+
+.select2-container {
+    margin: 2px 0px;
+}
+
+.select2-container--default .select2-selection--multiple .select2-selection__choice__remove {
+    color: black;
+}
+
+.select2-container .select2-choice, .select2-selection {
+    line-height: 15px;
+}
+
+.select2-search {
+    z-index: 0;
+}

@@ -1,0 +1,918 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta charset="utf-8" />
+    <meta name="description" content="Dynamic tables and grids using jqGrid plugin" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+    <title>OpsTest2</title>
+
+
+    <!-- START PLUGINS JQGrid -->
+    <!-- bootstrap & fontawesome -->
+    <link rel="stylesheet" href="~/jqGrid/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/jqGrid/font-awesome/4.2.0/css/font-awesome.min.css" />
+
+    <!-- page specific plugin styles -->
+    <link rel="stylesheet" href="~/jqGrid/css/jquery-ui.min.css" />
+    <link rel="stylesheet" href="~/jqGrid/css/datepicker.min.css" />
+    <link rel="stylesheet" href="~/jqGrid/css/ui.jqgrid.min.css" />
+    
+    <!-- ace styles -->
+    <link rel="stylesheet" href="~/jqGrid/css/ace.min.css" class="ace-main-stylesheet" id="main-ace-style" />
+    
+    <!-- END PLUGINS JQGrid-->
+
+</head>
+<body>
+    <div class="main-container" id="main-container">
+        <div class="main-content">
+            <div class="main-content-inner">
+                <div class="page-content">
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <!-- PAGE CONTENT BEGINS -->
+                            <table id="grid-table"></table>
+
+                            <div id="grid-pager"></div>
+
+                            <!-- PAGE CONTENT ENDS -->
+                        </div><!-- /.col -->
+                    </div><!-- /.row -->
+                    <div class="row">
+                        <table id="tb_Grid" class="scroll" style="width:100%;"></table>
+                        <div id="tb_Nav_JqGrid" style="text-align:center; margin:0; padding:0;"></div>
+                    </div>
+                </div><!-- /.page-content -->
+            </div>
+        </div><!-- /.main-content -->
+    </div><!-- /.main-container -->
+    <!-- basic scripts -->
+    <script src="~/jqGrid/js/jquery.2.1.1.min.js"></script>
+    <script src="~/jqGrid/js/bootstrap.min.js"></script>
+
+    <!-- page specific plugin scripts -->
+    <script src="~/jqGrid/js/bootstrap-datepicker.min.js"></script>
+    <script src="~/jqGrid/js/grid.locale-en.js"></script>
+    <script src="~/jqGrid/js/jquery.jqGrid.min.js"></script>
+    
+
+<!-- inline scripts related to this page -->
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        BindDataToOpsGridview();
+    });
+
+  //START JqGrid
+
+    //======================
+    function BindDataToOpsGridview() {
+
+        var editingRow = null;
+        var CheckchangeData = false;
+        var isScrollDynamic = 0;
+        var scrollPosition = 0;
+        var new_row = '0';
+        var myJqgrid = $('#tb_Grid');
+        var tableName = "tb_Grid";
+        var tableNaveName = "tb_Nav_JqGrid";
+        //Khai bao filter
+        var filterInit = "";
+        var Canrestore = "0";
+        var deleted = "";
+        arrColname = {
+            STYLECODE: 'Style Code',
+            STYLESIZE: 'Style Size',
+            STYLECOLORSERIAL: 'Color',
+            REVNO: 'Revision',
+            OPREVNO: 'OP Revision',
+            OPTIME: 'Max Time',
+            OPPRICE: 'OP Price',
+            MACHINECOUNT: 'Machine count',
+            CONFIRMCHK: 'Status',
+            OPCOUNT: 'OP Count',
+            MANCOUNT: 'Workers',
+            REMARKS: 'Remarks'
+        };
+        arrButtonName = {
+            edittext: 'Edit',
+            addtext: 'Add',
+            deltext: 'Delete',
+            searchtext: 'Search',
+            refreshtext: 'Refresh'
+        }
+        arrPopup = {
+            captionEdit: 'Edit',
+            submitEdit: 'Summit',
+            cancel: 'Cancel'
+        }
+        arrTitle = {
+            textAnd: 'And',
+            textOr: 'Or',
+            coppyRow: 'Coppy'
+        }
+        arrSession = {
+            deleted: 'true',
+            user: 'Admin'
+        }
+        arrButtonAction = {
+            all: 'All',
+            save: 'Save',
+            deleted: 'delete'
+        }
+
+        var rownum = 40;
+        var issCroll = false;
+        var page = 1;
+
+
+
+        myJqgrid.jqGrid({
+            sortname: '',
+            pager: tableNaveName,
+            sortname: 'REGISTRYDATE',
+            sortorder: 'DESC',
+            page: page,
+            rowNum: rownum,
+            rowList: [40, 60, 80, -1],
+            scroll: false,
+            deepempty: true,
+            ignoreCase: true,
+            viewrecords: true,
+            scrollrows: true,
+            //rownumbers: true,
+            shrinkToFit: true,
+            //isScrollDynamic:true,
+            autowidth: true,
+            gridview: true,
+            autoencode: false,
+            height: 300,
+            caption: "List style",
+            //==========================================
+            url: '/OPS/GetOpMaster',
+            //editurl: '/UIControl/UpdateBankBranch',
+            datatype: 'json',
+            //postData: ReadCurrentInforPage(),
+            //mtype: 'POST',
+            colModel: [
+                { name: 'StyleCode', index: 'StyleCode', label: arrColname.STYLECODE, editable: true, search: true, searchoptions: { sopt: ['cn', 'eq', 'ne'] } },
+                { name: 'StyleSize', index: 'StyleSize', label: arrColname.STYLESIZE, search: true, editable: true, searchoptions: { sopt: ['cn', 'eq', 'ne'] } },
+                { name: 'StyleColorSerial', index: 'StyleColorSerial', label: arrColname.STYLECOLORSERIAL, editable: true, search: true, searchoptions: { sopt: ['cn', 'eq', 'ne'] } },
+                { name: 'RevNo', index: 'RevNo', label: arrColname.REVNO, align: 'center', editable: true, search: true, searchoptions: { sopt: ['cn', 'eq', 'ne'] } },
+                { name: 'OpRevNo', index: 'OpRevNo', label: arrColname.OPREVNO, align: 'center', editable: true, search: true, searchoptions: { sopt: ['cn', 'eq', 'ne'] } },
+                { name: 'OpTime', index: 'OpTime', label: arrColname.OPTIME, align: 'center', editable: true, search: true, searchoptions: { sopt: ['cn', 'eq', 'ne'] } },
+                { name: 'OpPrice', index: 'OpPrice', label: arrColname.OPPRICE, align: 'center', editable: true, search: true, searchoptions: { sopt: ['cn', 'eq', 'ne'] } },
+                { name: 'MachineCount', index: 'MachineCount', label: arrColname.MACHINECOUNT, align: 'center', editable: true, search: true, searchoptions: { sopt: ['cn', 'eq', 'ne'] } },
+                { name: 'ConFirmChk', index: 'ConFirmChk', label: arrColname.CONFIRMCHK, align: 'center', editable: true, search: true, searchoptions: { sopt: ['cn', 'eq', 'ne'] } },
+                { name: 'OpCount', index: 'OpCount', label: arrColname.OPCOUNT, align: 'center', editable: true, search: true, searchoptions: { sopt: ['cn', 'eq', 'ne'] } },
+                { name: 'ManCount', index: 'ManCount', label: arrColname.MANCOUNT, align: 'center', editable: true, search: true, searchoptions: { sopt: ['cn', 'eq', 'ne'] } },
+                { name: 'Remarks', index: 'Remarks', label: arrColname.REMARKS, align: 'center', editable: true, search: true, searchoptions: { sopt: ['cn', 'eq', 'ne'] } }
+            ],
+            loadError: function (xhr, status, error) {
+            },
+            onSortCol: function (index, idxcol, sortorder) {
+                if (this.p.lastsort >= 0 && this.p.lastsort !== idxcol
+                    && this.p.colModel[this.p.lastsort].sortable !== false) {
+                    $(this.grid.headers[this.p.lastsort].el).find(">div.ui-jqgrid-sortable>span.s-ico").hide();
+                    $(this.grid.headers[this.p.lastsort].el).removeClass('ui-state-highlight');
+                }
+                $(this.grid.headers[idxcol].el).addClass('ui-state-highlight');
+            },
+            onSelectRow: function (rowid, status, e) {
+
+            },
+            afterInsertRow: function (rowid, rowdata, rowelem) {
+
+            },
+            loadComplete: function (data) {
+                updatePagerIcons();
+            },
+            beforeRequest: function () {
+
+            },
+            beforeProcessing: function (data, status, xhr) {
+
+            },
+            onPaging: function (pgButton) {
+
+            }
+        }).jqGrid('navGrid', '#' + tableNaveName, {
+            cloneToTop: true,
+            edit: true,
+            add: true,
+            del: true,
+            search: true,
+            refresh: true,
+            edittext: arrButtonName.edittext,
+            addtext: arrButtonName.addtext,
+            deltext: arrButtonName.deltext,
+            searchtext: arrButtonName.searchtext,
+            refreshtext: arrButtonName.refreshtext
+        },
+            // Edit
+            {
+                url: '',
+                editCaption: arrPopup.captionEdit, bSubmit: arrPopup.submitEdit, bCancel: arrPopup.cancel,
+                recreateForm: true, closeAfterEdit: true, closeOnEscape: true,
+                beforeInitData: function (formid) {
+                    if (SaveRowData() == false) {
+                        return false;
+                    }
+                    EnableOrDisableForField(true);
+                },
+
+                beforeShowForm: function (form) {
+                    ResetValuesCombobox(editingRow);
+                    SetFieldNoneEdit();
+                    SetFieldNoneUpdate("");
+                },
+                afterShowForm: function (form) {
+                    SetWidthForFormEditing();
+                    SetAlignCenterPopups("editmod");
+                    $('#STYLECODE').focus();
+                },
+
+                afterclickPgButtons: function (whichbutton, formid, rowid) {
+                    var rowdata = myJqgrid.getRowData(rowid);
+                    if (rowdata.STATUS == alive) {
+                        $('#sData').show();
+                        $('#TblGrid_' + tableName + ' tbody tr td input[type="text"]').removeAttr('disabled');
+                        $('#TblGrid_' + tableName + ' tbody tr td select').removeAttr('disabled');
+                    }
+                    else if (rowdata.STATUS == deleted) {
+                        $('#TblGrid_' + tableName + ' tbody tr td input[type="text"]').attr('disabled', 'disabled');
+                        $('#TblGrid_' + tableName + ' tbody tr td select').attr('disabled', 'disabled');
+                        $('#sData').hide();
+                    }
+                    SetFieldNoneEdit();
+                    SetFieldNoneUpdate("");
+                    UnSetStyleControlError();
+                },
+                beforeSubmit: function (postdata, formid) {
+                    var error_Array = ValidateRowData("");
+                    if (error_Array[0] != '') {
+                        AddClassErr(error_Array[0]);
+                        return [false, ""];
+                    }
+                    else {
+                        return [true, ''];
+                    }
+                },
+                afterSubmit: function (response, postdata) {
+                    return [true];
+                },
+                onClose: function () {
+                    EnableOrDisableForField(false);
+                    CheckchangeData = false;
+                    if (isScrollDynamic == 1) {
+                        myJqgrid.jqGrid('setGridParam', { scrollrows: false });
+                    }
+                }
+            },
+            // add
+            {
+                url: '/BankBranch/AddBankBranch',
+                addCaption: arrPopup.captionAdd, bSubmit: arrPopup.submitAdd, bCancel: arrPopup.cancel,
+                recreateForm: true, closeAfterAdd: true, closeOnEscape: true, jqModal: true,
+                beforeInitData: function (formid) {
+                    if (SaveRowData() == false) {
+                        return false;
+                    }
+                },
+                beforeShowForm: function (form) {
+                    SetFieldNoneEdit();
+                    SetFieldNoneUpdate("");
+                },
+                afterShowForm: function (form) {
+                    SetWidthForFormEditing();
+                    SetAlignCenterPopups("editmod");
+                },
+                beforeSubmit: function (postdata, formid) {
+                    //myJqgrid.jqGrid('setGridParam', { page: 1 });
+                    $.ajaxSetup({ async: false });
+                    var error_Array = ValidateRowData("", true);
+                    if (error_Array[0] != '') {
+                        AddClassErr(error_Array[0]);
+                        return [false, error_Array[1]];
+                    }
+                    else {
+                        return [true, ''];
+                    }
+                    $.ajaxSetup({ async: true });
+                },
+                afterSubmit: function (response, postdata) {
+                    AfterComplete(response.responseJSON, true);
+                    editingRow = response.responseJSON.AUTO_ID;
+                    return [true];
+                },
+                afterComplete: function (response, postdata) {
+                    FocusToGrid(editingRow);
+                    return [true];
+                },
+                onClose: function () {
+                    CheckchangeData = false;
+                }
+            },
+            // delete
+            {
+                url: '',
+                caption: arrPopup.captionDel, bSubmit: arrPopup.submitDel, bCancel: arrPopup.cancel, msg: arrPopup.confirmDeleteProject,
+                beforeShowForm: function (form) {
+                    CheckchangeData = false;
+                    RestoreRow(editingRow);
+                },
+                afterShowForm: function (form) {
+                    var dlgDiv = $("#delmod" + tableName);
+                    DragFormCenter(dlgDiv);
+                },
+                beforeSubmit: function (postdata, formid) {
+                    scrollPosition = myJqgrid.closest(".ui-jqgrid-bdiv").scrollTop();
+                    return [true];
+                },
+                afterSubmit: function (response, postdata) {
+                    editingRow = postdata.id;
+                    $(document).one('ajaxStop', function () {
+                        myJqgrid.closest(".ui-jqgrid-bdiv").scrollTop(scrollPosition);
+                    });
+                    return [true];
+                },
+                afterComplete: function (response, postdata) {
+                    AfterComplete(response.responseText, false);
+                    return [true];
+                }
+            },
+            // search
+            {
+                multipleSearch: true, width: 'auto',
+                groupOps: [{ op: "AND", text: arrTitle.textAnd }, { op: "OR", text: arrTitle.textOr }],
+                closeOnEscape: true,
+                closeAfterSearch: true,
+                recreateFilter: true,
+                caption: arrTitle.searchCaption, Find: arrTitle.searchCaption, Reset: arrTitle.textReset,
+                onInitializeSearch: function ($filterInit) {
+                    filterInit = $filterInit;
+                },
+                beforeShowSearch: function () {
+                    CheckchangeData = false;
+                    if (SaveRowData() == false) {
+                        return false;
+                    }
+                    return true;
+                },
+                afterShowSearch: function () {
+                    SetAlignCenterPopups("searchmodfbox_");
+                    return true;
+                },
+                onReset: function () {
+                    filterInit.jqFilter('addFilter', { groupOp: "AND", rules: [] });
+                },
+                onSearch: function () {
+                    return [true];
+                }
+            }
+            ).navButtonAdd("#" + tableNaveName, {
+                caption: "Export", buttonicon: "ui-icon-print", position: "last",
+                onClickButton: function () { ExportToExcel(); }
+            });
+
+        $("option[value=-1]").text(arrButtonAction.all);
+        //merge header 2 column button Save Delete
+        //myJqgrid.jqGrid('setGroupHeaders',
+        //    {
+        //        useColSpanStyle: true, groupHeaders: [
+        //            { startColumnName: 'SaveButton', numberOfColumns: 2, titleText: '<div style = "text-align:center; width:100%;">Update</div>' }]
+        //    });
+        //$(".ui-jqgrid-resize-ltr").removeAttr("style").css("cursor", "col-resize");
+        //$("#gview_" + tableName + " div[class='ui-state-default ui-jqgrid-hdiv'] .ui-jqgrid-hbox table:first .jqg-second-row-header th div").css("top", "0px");
+        //$("#gview_" + tableName + " div[class='ui-state-default ui-jqgrid-hdiv'] .ui-jqgrid-hbox table:first .jqg-second-row-header th").last().attr("rowspan", "2");
+        //$("#gview_" + tableName + " div[class='ui-state-default ui-jqgrid-hdiv'] .ui-jqgrid-hbox table:first .jqg-third-row-header th").last().hide().prev().hide();
+        //  SearchFilter();
+    }
+
+    function SearchFilter() {
+        myJqgrid.jqGrid('filterToolbar', {
+            stringResult: true, searchOnEnter: false,
+            defaultSearch: 'cn', ignoreCase: true, enableCstringResult: true, autoencode: false
+        });
+    }
+    function SaveRowData(func) {
+        if (!IsOpeningRow(editingRow)) {
+            return true;
+        }
+        if (editingRow == new_row) {
+            CheckchangeData = true;
+        }
+        if (CheckchangeData == true) {
+            var error_Array = ValidateRowData(editingRow);
+            if (error_Array[0] != '') {
+                AddClassErr(editingRow + '_' + error_Array[0]);
+                setTimeout(function () { showDialogs('#idmesage', error_Array[1], arrMsgShowDialog.ctrwanning) }, 50);
+                FocusToGrid(editingRow);
+                return false;
+            }
+            else {
+                myJqgrid.jqGrid('saveRow', editingRow, {
+                    aftersavefunc: function (rowid, response) {
+                        if (func != null) {
+                            func();
+                        }
+                        return true;
+                    }
+                })
+            }
+        }
+        else {
+            RestoreRow(editingRow);
+            if (func != null) {
+                func();
+            }
+            return true;
+        }
+    }
+    function IsOpeningRow(row) {
+        // edit later
+        return true;
+    }
+    function RestoreRow(row) {
+        // edit later
+        return true;
+    }
+    function ValidateRowData(row) {
+        // edit later
+        return true;
+    }
+    function FocusToGrid(row) {
+
+    }
+    function EnableOrDisableForField(boolValue) {
+        myJqgrid.jqGrid('setColProp', 'REGISTRYDATE', { editable: boolValue });
+        myJqgrid.jqGrid('setColProp', 'REGISTER_NAME', { editable: boolValue });
+    }
+    function ResetValuesCombobox(rowid) {
+    }
+    function SetFieldNoneEdit() {
+        DisabledButton("REGISTRYDATE");
+        DisabledButton("REGISTER_NAME");
+    }
+    function DisabledButton(id) {
+        $('#' + id).attr('disabled', true);
+    }
+    function SetFieldNoneUpdate(rowid) {
+        if (rowid != "") {
+            $('#' + rowid + '_REGISTRYDATE').attr('disabled', true);
+        }
+        else {
+            $('#REGISTRYDATE').attr('disabled', true);
+        }
+    }
+    function SetWidthForFormEditing() {
+        var curentW = $('#tr_BUYERSTYLECODE').width();
+        $('#editmod' + tableName + '').css('width', curentW + 400);
+    }
+    function SetAlignCenterPopups(strPopupName) {
+        var dlgDiv = $("#" + strPopupName + myJqgrid[0].id);
+        DragFormCenter(dlgDiv);
+    }
+    function DragFormCenter(id) {
+        var winH = $(window).height();
+        var winW = $(window).width();
+        //Set the popup window to center
+        $(id).css('top', winH / 2 - $(id).height() / 2);
+        $(id).css('left', winW / 2 - $(id).width() / 2);
+    }
+    function updatePagerIcons() {
+        var replacement =
+            {
+                'ui-icon-seek-first': 'ace-icon fa fa-angle-double-left bigger-140',
+                'ui-icon-seek-prev': 'ace-icon fa fa-angle-left bigger-140',
+                'ui-icon-seek-next': 'ace-icon fa fa-angle-right bigger-140',
+                'ui-icon-seek-end': 'ace-icon fa fa-angle-double-right bigger-140'
+            };
+        $('.ui-pg-table:not(.navtable) > tbody > tr > .ui-pg-button > .ui-icon').each(function () {
+            var icon = $(this);
+            var $class = $.trim(icon.attr('class').replace('ui-icon', ''));
+
+            if ($class in replacement) icon.attr('class', 'ui-icon ' + replacement[$class]);
+        })
+    }
+
+  //END JqGrid
+
+
+    var grid_data =
+    [
+        { id: "1", name: "Desktop Computer", note: "note", stock: "Yes", ship: "FedEx", sdate: "2007-12-03" },
+        { id: "2", name: "Laptop", note: "Long text ", stock: "Yes", ship: "InTime", sdate: "2007-12-03" },
+        { id: "3", name: "LCD Monitor", note: "note3", stock: "Yes", ship: "TNT", sdate: "2007-12-03" },
+        { id: "4", name: "Speakers", note: "note", stock: "No", ship: "ARAMEX", sdate: "2007-12-03" },
+        { id: "5", name: "Laser Printer", note: "note2", stock: "Yes", ship: "FedEx", sdate: "2007-12-03" },
+        { id: "6", name: "Play Station", note: "note3", stock: "No", ship: "FedEx", sdate: "2007-12-03" },
+        { id: "7", name: "Mobile Telephone", note: "note", stock: "Yes", ship: "ARAMEX", sdate: "2007-12-03" },
+        { id: "8", name: "Server", note: "note2", stock: "Yes", ship: "TNT", sdate: "2007-12-03" },
+        { id: "9", name: "Matrix Printer", note: "note3", stock: "No", ship: "FedEx", sdate: "2007-12-03" },
+        { id: "10", name: "Desktop Computer", note: "note", stock: "Yes", ship: "FedEx", sdate: "2007-12-03" },
+        { id: "11", name: "Laptop", note: "Long text ", stock: "Yes", ship: "InTime", sdate: "2007-12-03" },
+        { id: "12", name: "LCD Monitor", note: "note3", stock: "Yes", ship: "TNT", sdate: "2007-12-03" },
+        { id: "13", name: "Speakers", note: "note", stock: "No", ship: "ARAMEX", sdate: "2007-12-03" },
+        { id: "14", name: "Laser Printer", note: "note2", stock: "Yes", ship: "FedEx", sdate: "2007-12-03" },
+        { id: "15", name: "Play Station", note: "note3", stock: "No", ship: "FedEx", sdate: "2007-12-03" },
+        { id: "16", name: "Mobile Telephone", note: "note", stock: "Yes", ship: "ARAMEX", sdate: "2007-12-03" },
+        { id: "17", name: "Server", note: "note2", stock: "Yes", ship: "TNT", sdate: "2007-12-03" },
+        { id: "18", name: "Matrix Printer", note: "note3", stock: "No", ship: "FedEx", sdate: "2007-12-03" },
+        { id: "19", name: "Matrix Printer", note: "note3", stock: "No", ship: "FedEx", sdate: "2007-12-03" },
+        { id: "20", name: "Desktop Computer", note: "note", stock: "Yes", ship: "FedEx", sdate: "2007-12-03" },
+        { id: "21", name: "Laptop", note: "Long text ", stock: "Yes", ship: "InTime", sdate: "2007-12-03" },
+        { id: "22", name: "LCD Monitor", note: "note3", stock: "Yes", ship: "TNT", sdate: "2007-12-03" },
+        { id: "23", name: "Speakers", note: "note", stock: "No", ship: "ARAMEX", sdate: "2007-12-03" }
+    ];
+
+    var subgrid_data =
+    [
+        { id: "1", name: "sub grid item 1", qty: 11 },
+        { id: "2", name: "sub grid item 2", qty: 3 },
+        { id: "3", name: "sub grid item 3", qty: 12 },
+        { id: "4", name: "sub grid item 4", qty: 5 },
+        { id: "5", name: "sub grid item 5", qty: 2 },
+        { id: "6", name: "sub grid item 6", qty: 9 },
+        { id: "7", name: "sub grid item 7", qty: 3 },
+        { id: "8", name: "sub grid item 8", qty: 8 }
+    ];
+
+    jQuery(function ($) {
+        var grid_selector = "#grid-table";
+        var pager_selector = "#grid-pager";
+
+        //resize to fit page size
+        $(window).on('resize.jqGrid',
+            function() {
+                $(grid_selector).jqGrid('setGridWidth', $(".page-content").width());
+            });
+
+        //resize on sidebar collapse/expand
+        var parent_column = $(grid_selector).closest('[class*="col-"]');
+        $(document).on('settings.ace.jqGrid',
+            function(ev, event_name, collapsed) {
+                if (event_name === 'sidebar_collapsed' || event_name === 'main_container_fixed') {
+                    //setTimeout is for webkit only to give time for DOM changes and then redraw!!!
+                    setTimeout(function() {
+                            $(grid_selector).jqGrid('setGridWidth', parent_column.width());
+                        },
+                        0);
+                }
+            });
+
+        //if your grid is inside another element, for example a tab pane, you should use its parent's width:
+        /**
+        $(window).on('resize.jqGrid', function () {
+            var parent_width = $(grid_selector).closest('.tab-pane').width();
+            $(grid_selector).jqGrid( 'setGridWidth', parent_width );
+        })
+        //and also set width when tab pane becomes visible
+        $('#myTab a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+          if($(e.target).attr('href') == '#mygrid') {
+            var parent_width = $(grid_selector).closest('.tab-pane').width();
+            $(grid_selector).jqGrid( 'setGridWidth', parent_width );
+          }
+        })
+        */
+        jQuery(grid_selector).jqGrid({
+            //direction: "rtl",
+
+            //subgrid options
+            subGrid: true,
+            //subGridModel: [{ name : ['No','Item Name','Qty'], width : [55,200,80] }],
+            //datatype: "xml",
+            subGridOptions: {
+                plusicon: "ace-icon fa fa-plus center bigger-110 blue",
+                minusicon: "ace-icon fa fa-minus center bigger-110 blue",
+                openicon: "ace-icon fa fa-chevron-right center orange"
+            },
+            //for this example we are using local data
+            subGridRowExpanded: function (subgridDivId, rowId) {
+                var subgridTableId = subgridDivId + "_t";
+                $("#" + subgridDivId).html("<table id='" + subgridTableId + "'></table>");
+                $("#" + subgridTableId).jqGrid({
+                    datatype: 'local',
+                    data: subgrid_data,
+                    colNames: ['No', 'Item Name', 'Qty'],
+                    colModel: [
+                        { name: 'id', width: 50 },
+                        { name: 'name', width: 150 },
+                        { name: 'qty', width: 50 }
+                    ]
+                });
+            },
+            
+            data: grid_data,
+            datatype: "local",
+            height: 250,
+            colNames: [' ', 'ID', 'Last Sales', 'Name', 'Stock', 'Ship via', 'Notes'],
+            colModel: [
+                {
+                    name: 'myac', index: '', width: 80, fixed: true, sortable: false, resize: false,
+                    formatter: 'actions',
+                    formatoptions: {
+                        keys: true,
+                        //delbutton: false,//disable delete button
+
+                        delOptions: { recreateForm: true, beforeShowForm: beforeDeleteCallback },
+                        //editformbutton:true, editOptions:{recreateForm: true, beforeShowForm:beforeEditCallback}
+                    }
+                },
+                { name: 'id', index: 'id', width: 60, sorttype: "int", editable: true },
+                { name: 'sdate', index: 'sdate', width: 90, editable: true, sorttype: "date", unformat: pickDate },
+                { name: 'name', index: 'name', width: 150, editable: true, editoptions: { size: "20", maxlength: "30" } },
+                { name: 'stock', index: 'stock', width: 70, editable: true, edittype: "checkbox", editoptions: { value: "Yes:No" }, unformat: aceSwitch },
+                { name: 'ship', index: 'ship', width: 90, editable: true, edittype: "select", editoptions: { value: "FE:FedEx;IN:InTime;TN:TNT;AR:ARAMEX" } },
+                { name: 'note', index: 'note', width: 150, sortable: false, editable: true, edittype: "textarea", editoptions: { rows: "2", cols: "10" } }
+            ],
+
+            viewrecords: true,
+            rowNum: 10,
+            rowList: [10, 20, 30],
+            pager: pager_selector,
+            altRows: true,
+            //toppager: true,
+
+            multiselect: true,
+            //multikey: "ctrlKey",
+            multiboxonly: true,
+
+            loadComplete: function () {
+                var table = this;
+                setTimeout(function () {
+                    styleCheckbox(table);
+
+                    updateActionIcons(table);
+                    updatePagerIcons(table);
+                    enableTooltips(table);
+                }, 0);
+            },
+
+            editurl: "/dummy.html",//nothing is saved
+            caption: "jqGrid with inline editing"
+
+            //,autowidth: true,
+
+
+            /**
+            ,
+            grouping:true,
+            groupingView : {
+                 groupField : ['name'],
+                 groupDataSorted : true,
+                 plusicon : 'fa fa-chevron-down bigger-110',
+                 minusicon : 'fa fa-chevron-up bigger-110'
+            },
+            caption: "Grouping"
+            */
+
+        });
+        $(window).triggerHandler('resize.jqGrid');//trigger window resize to make the grid get the correct size
+        
+        //enable search/filter toolbar
+        //jQuery(grid_selector).jqGrid('filterToolbar',{defaultSearch:true,stringResult:true})
+        //jQuery(grid_selector).filterToolbar({});
+
+
+        //switch element when editing inline
+        function aceSwitch(cellvalue, options, cell) {
+            setTimeout(function () {
+                $(cell).find('input[type=checkbox]')
+                    .addClass('ace ace-switch ace-switch-5')
+                    .after('<span class="lbl"></span>');
+            }, 0);
+        }
+        //enable datepicker
+        function pickDate(cellvalue, options, cell) {
+            setTimeout(function () {
+                $(cell).find('input[type=text]')
+                    .datepicker({ format: 'yyyy-mm-dd', autoclose: true });
+            }, 0);
+        }
+
+
+        //navButtons
+        jQuery(grid_selector).jqGrid('navGrid',
+            pager_selector,
+            { //navbar options
+                edit: true,
+                editicon: 'ace-icon fa fa-pencil blue',
+                add: true,
+                addicon: 'ace-icon fa fa-plus-circle purple',
+                del: true,
+                delicon: 'ace-icon fa fa-trash-o red',
+                search: true,
+                searchicon: 'ace-icon fa fa-search orange',
+                refresh: true,
+                refreshicon: 'ace-icon fa fa-refresh green',
+                view: true,
+                viewicon: 'ace-icon fa fa-search-plus grey',
+            },
+            {
+                //edit record form
+                //closeAfterEdit: true,
+                //width: 700,
+                recreateForm: true,
+                beforeShowForm: function(e) {
+                    var form = $(e[0]);
+                    form.closest('.ui-jqdialog').find('.ui-jqdialog-titlebar')
+                        .wrapInner('<div class="widget-header" />')
+                    style_edit_form(form);
+                }
+            },
+            {
+                //new record form
+                //width: 700,
+                closeAfterAdd: true,
+                recreateForm: true,
+                viewPagerButtons: false,
+                beforeShowForm: function(e) {
+                    var form = $(e[0]);
+                    form.closest('.ui-jqdialog').find('.ui-jqdialog-titlebar')
+                        .wrapInner('<div class="widget-header" />')
+                    style_edit_form(form);
+                }
+            },
+            {
+                //delete record form
+                recreateForm: true,
+                beforeShowForm: function(e) {
+                    var form = $(e[0]);
+                    if (form.data('styled')) return false;
+
+                    form.closest('.ui-jqdialog').find('.ui-jqdialog-titlebar')
+                        .wrapInner('<div class="widget-header" />')
+                    style_delete_form(form);
+
+                    form.data('styled', true);
+                },
+                onClick: function(e) {
+                    //alert(1);
+                }
+            },
+            {
+                //search form
+                recreateForm: true,
+                afterShowSearch: function(e) {
+                    var form = $(e[0]);
+                    form.closest('.ui-jqdialog').find('.ui-jqdialog-title').wrap('<div class="widget-header" />')
+                    style_search_form(form);
+                },
+                afterRedraw: function() {
+                    style_search_filters($(this));
+                },
+                multipleSearch: true,
+                /**
+                multipleGroup:true,
+                showQuery: true
+                */
+            },
+            {
+                //view record form
+                recreateForm: true,
+                beforeShowForm: function(e) {
+                    var form = $(e[0]);
+                    form.closest('.ui-jqdialog').find('.ui-jqdialog-title').wrap('<div class="widget-header" />');
+                }
+            }
+        );
+
+
+
+        function style_edit_form(form) {
+            //enable datepicker on "sdate" field and switches for "stock" field
+            form.find('input[name=sdate]').datepicker({ format: 'yyyy-mm-dd', autoclose: true })
+
+            form.find('input[name=stock]').addClass('ace ace-switch ace-switch-5').after('<span class="lbl"></span>');
+            //don't wrap inside a label element, the checkbox value won't be submitted (POST'ed)
+            //.addClass('ace ace-switch ace-switch-5').wrap('<label class="inline" />').after('<span class="lbl"></span>');
+
+
+            //update buttons classes
+            var buttons = form.next().find('.EditButton .fm-button');
+            buttons.addClass('btn btn-sm').find('[class*="-icon"]').hide();//ui-icon, s-icon
+            buttons.eq(0).addClass('btn-primary').prepend('<i class="ace-icon fa fa-check"></i>');
+            buttons.eq(1).prepend('<i class="ace-icon fa fa-times"></i>');
+
+            buttons = form.next().find('.navButton a');
+            buttons.find('.ui-icon').hide();
+            buttons.eq(0).append('<i class="ace-icon fa fa-chevron-left"></i>');
+            buttons.eq(1).append('<i class="ace-icon fa fa-chevron-right"></i>');
+        }
+
+        function style_delete_form(form) {
+            var buttons = form.next().find('.EditButton .fm-button');
+            buttons.addClass('btn btn-sm btn-white btn-round').find('[class*="-icon"]').hide();//ui-icon, s-icon
+            buttons.eq(0).addClass('btn-danger').prepend('<i class="ace-icon fa fa-trash-o"></i>');
+            buttons.eq(1).addClass('btn-default').prepend('<i class="ace-icon fa fa-times"></i>');
+        }
+
+        function style_search_filters(form) {
+            form.find('.delete-rule').val('X');
+            form.find('.add-rule').addClass('btn btn-xs btn-primary');
+            form.find('.add-group').addClass('btn btn-xs btn-success');
+            form.find('.delete-group').addClass('btn btn-xs btn-danger');
+        }
+        function style_search_form(form) {
+            var dialog = form.closest('.ui-jqdialog');
+            var buttons = dialog.find('.EditTable');
+            buttons.find('.EditButton a[id*="_reset"]').addClass('btn btn-sm btn-info').find('.ui-icon').attr('class', 'ace-icon fa fa-retweet');
+            buttons.find('.EditButton a[id*="_query"]').addClass('btn btn-sm btn-inverse').find('.ui-icon').attr('class', 'ace-icon fa fa-comment-o');
+            buttons.find('.EditButton a[id*="_search"]').addClass('btn btn-sm btn-purple').find('.ui-icon').attr('class', 'ace-icon fa fa-search');
+        }
+
+        function beforeDeleteCallback(e) {
+            var form = $(e[0]);
+            if (form.data('styled')) return false;
+
+            form.closest('.ui-jqdialog').find('.ui-jqdialog-titlebar').wrapInner('<div class="widget-header" />');
+            style_delete_form(form);
+
+            form.data('styled', true);
+        }
+
+        function beforeEditCallback(e) {
+            var form = $(e[0]);
+            form.closest('.ui-jqdialog').find('.ui-jqdialog-titlebar').wrapInner('<div class="widget-header" />');
+            style_edit_form(form);
+        }
+
+
+
+        //it causes some flicker when reloading or navigating grid
+        //it may be possible to have some custom formatter to do this as the grid is being created to prevent this
+        //or go back to default browser checkbox styles for the grid
+        function styleCheckbox(table) {
+            /**
+                $(table).find('input:checkbox').addClass('ace')
+                .wrap('<label />')
+                .after('<span class="lbl align-top" />')
+
+
+                $('.ui-jqgrid-labels th[id*="_cb"]:first-child')
+                .find('input.cbox[type=checkbox]').addClass('ace')
+                .wrap('<label />').after('<span class="lbl align-top" />');
+            */
+        }
+
+
+        //unlike navButtons icons, action icons in rows seem to be hard-coded
+        //you can change them like this in here if you want
+        function updateActionIcons(table) {
+            /**
+            var replacement =
+            {
+                'ui-ace-icon fa fa-pencil' : 'ace-icon fa fa-pencil blue',
+                'ui-ace-icon fa fa-trash-o' : 'ace-icon fa fa-trash-o red',
+                'ui-icon-disk' : 'ace-icon fa fa-check green',
+                'ui-icon-cancel' : 'ace-icon fa fa-times red'
+            };
+            $(table).find('.ui-pg-div span.ui-icon').each(function(){
+                var icon = $(this);
+                var $class = $.trim(icon.attr('class').replace('ui-icon', ''));
+                if($class in replacement) icon.attr('class', 'ui-icon '+replacement[$class]);
+            })
+            */
+        }
+
+        //replace icons with FontAwesome icons like above
+        function updatePagerIcons(table) {
+            var replacement =
+            {
+                'ui-icon-seek-first': 'ace-icon fa fa-angle-double-left bigger-140',
+                'ui-icon-seek-prev': 'ace-icon fa fa-angle-left bigger-140',
+                'ui-icon-seek-next': 'ace-icon fa fa-angle-right bigger-140',
+                'ui-icon-seek-end': 'ace-icon fa fa-angle-double-right bigger-140'
+            };
+            $('.ui-pg-table:not(.navtable) > tbody > tr > .ui-pg-button > .ui-icon').each(function () {
+                var icon = $(this);
+                var $class = $.trim(icon.attr('class').replace('ui-icon', ''));
+
+                if ($class in replacement) icon.attr('class', 'ui-icon ' + replacement[$class]);
+            })
+        }
+
+        function enableTooltips(table) {
+            $('.navtable .ui-pg-button').tooltip({ container: 'body' });
+            $(table).find('.ui-pg-div').tooltip({ container: 'body' });
+        }
+
+        //var selr = jQuery(grid_selector).jqGrid('getGridParam','selrow');
+
+        $(document).one('ajaxloadstart.page', function (e) {
+            $(grid_selector).jqGrid('GridUnload');
+            $('.ui-jqdialog').remove();
+        });
+    });
+</script>
+    
+</body>
+</html>

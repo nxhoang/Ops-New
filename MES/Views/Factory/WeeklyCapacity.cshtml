@@ -1,0 +1,170 @@
+﻿
+@{
+    ViewBag.Title = "Weekly Capacity";
+    Layout = "~/Views/Shared/_MesLayout.cshtml";
+}
+
+<style>
+    body .jqgfirstrow td {
+        padding: 0 0 !important;
+    } 
+</style>
+
+@*<h2>WeeklyCapacity</h2>*@
+
+<div class="row">
+    <form id="SearchFWCP">
+        <div class="col-lg-2">
+            <div class="form-group">
+                <label>Factory</label>
+                <select class="form-control" data-binding="FactoryList" name="_searchFieldFACTORY" required="">
+                    <option></option>
+                </select>
+            </div>
+        </div>
+
+        <div class="col-lg-2">
+            <div class="form-group">
+                <label>Year</label>
+                <input class="form-control" type="number" min="1900" name="_searchFieldYEAR" />
+            </div>
+        </div>
+
+        <div class="col-lg-2">
+            <div class="form-group">
+                <label>From week</label>
+                <input class="form-control" type="number" min="1" max="53" name="_searchFieldNumBeginWEEKNO" />
+            </div>
+        </div>
+
+        <div class="col-lg-2">
+            <div class="form-group">
+                <label>To week</label>
+                <input class="form-control" type="number" min="1" max="53" name="_searchFieldNumEndWEEKNO" />
+            </div>
+        </div>
+
+        <div class="col-lg-2">
+            <div class="form-group">
+                <label></label>
+                <button type="submit" class="btn btn-primary" style="display:block;">Search</button>
+            </div>
+        </div>
+    </form>
+</div>
+<div class="row">
+    <div class="col-lg-11">
+        <table id="FWCPGrid"></table>
+        <div id="FWCPGridPager"></div>
+    </div>
+</div>
+
+@section Scripts{
+    <script src="~/js/plugin/jqgrid/jquery.jqGrid.min.js"></script>
+    <script src="~/js/plugin/jqgrid/grid.locale-en.min.js"></script>
+    <script src="~/js/plugin/jqgrid/Common.js"></script>
+
+    <script>
+        ///Objects
+        var FWCPGrid_colModels = [];
+
+        FWCPGrid_colModels.push({ name: 'FACTORY', index: 'FACTORY', label: 'Factory', align: 'right',  sortable: false, editable: false, classes: 'pointer' });
+        FWCPGrid_colModels.push({ name: 'YEAR', index: 'YEAR', label: 'Year', align: 'right',  sortable: false, editable: false, classes: 'pointer' });
+        FWCPGrid_colModels.push({ name: 'WEEKNO', index: 'WEEKNO', label: 'Week No', align: 'right',  sortable: false, editable: false, classes: 'pointer' });
+        FWCPGrid_colModels.push({ name: 'STARTDATE', index: 'STARTDATE', label: 'Start date', align: 'right',  sortable: false, editable: false, classes: 'pointer' });
+        FWCPGrid_colModels.push({ name: 'ENDDATE', index: 'ENDDATE', label: 'End data', align: 'right',  sortable: false, editable: false, classes: 'pointer' });
+        FWCPGrid_colModels.push({ name: 'CAPACITY', index: 'CAPACITY', label: 'Capacity', align: 'right',  sortable: false, editable: false, classes: 'pointer' });
+         
+        var $FWCPGrid = CreateJqGridObject('FWCPGrid', '../Factory/WeeklyCapacityGrid', 'local', FWCPGrid_colModels, false, '', 100);
+
+        
+        ///Functions
+
+
+        ///Events
+        $(function () {
+            pimpHeader($FWCPGrid);
+            customJqGridCss();
+
+            $.when(
+                $.ajax({
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    url: "../QCO/GetFactoryList",
+                    type: "POST",
+                    async: true,
+                    data: JSON.stringify({ vstrFactory: '' }),
+                    success: function (response, textStatus, xhr) {
+                        if (Array.isArray(response)) {
+                            let data = response;
+                            for (var i = 0; i < data.length; i++) {
+                                $('select[data-binding="FactoryList"]').append($('<option>',
+                                    {
+                                        value: data[i].Factory,
+                                        text: '[' + data[i].Factory + '] ' + data[i].Name
+                                    })
+                                );
+                            }
+                        }
+                    },
+                    error: function (xhr, textStatus, errorThrown) {
+                        Notify('GetFactoryList Failed!!!', 'danger');
+                    },
+                    complete: function () { }
+                })
+            ).done();
+        });
+
+
+        $('form').submit(function () {
+            let $this = $(this);
+
+            switch ($this.attr('id')) {
+                case "SearchFWCP":
+                    {
+                        $FWCPGrid.setGridParam({ 
+                            postData : getFormData($this),
+                            sortname: 'ranking',
+                            datatype: 'json',
+                            loadui: 'block',
+                            loadtext: '',
+                            loadComplete: function (data) { 
+                            }
+                            , loadError: function (xhr, status, error) {
+                                console.log('loadError');
+                                console.log(xhr);
+                                console.log(status);
+                                console.log(error);
+                            }
+                            , onSelectRow: function (id, onselectrow) {}
+                            , ondblClickRow: function (id, iRow, iCol, e) { }
+                            , gridComplete: function () {
+                                var selfgridID = this.id;
+                                var ids = jQuery("#" + selfgridID).jqGrid('getDataIDs');
+                                var modvalue;
+
+                                for (var i = 0; i < ids.length; i++) {
+                                    //var dtRow = jQuery("#" + this.id).jqGrid('getRowData', ids[i]); 
+                                    modvalue = (i + 1) % 2;
+
+                                    /*#Noted: Set row background color for chẵn and lẻ row */
+                                    var backgroundColor;
+                                    if (modvalue === 0) {
+                                        backgroundColor = 'jqgrid-row-even';
+                                    } else {
+                                        backgroundColor = 'jqgrid-row-odd';
+                                    }
+                                     
+                                    jQuery("#" + selfgridID).jqGrid('setRowData', ids[i], {}, backgroundColor);
+                                }
+                            }
+                        }).trigger("reloadGrid");
+            return false;
+
+                    }
+                    break;
+            }
+
+        });
+    </script>
+}

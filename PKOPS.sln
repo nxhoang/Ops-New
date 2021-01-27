@@ -1,0 +1,239 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29230.61
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OPS", "OPS\OPS.csproj", "{5024D15F-8E72-42A5-8E4C-0B7A1E008CD1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OPS_DAL", "OPS_DAL\OPS_DAL.csproj", "{916AA9F1-780A-4796-87A0-7AB12C2C6641}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OPS_Utils", "OPS_Utils\OPS_Utils.csproj", "{81EF1081-7C26-4D2C-A9CE-C3B29D388434}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MES", "MES\MES.csproj", "{BBD933BC-59EA-4162-A7FB-C66C4FEB5F29}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MES.Tests", "MES.Tests\MES.Tests.csproj", "{9C242A56-8763-47AD-B9B5-119E5A314446}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PKERP.MES.Services.Implement", "PKERP.MES.Services.Implement\PKERP.MES.Services.Implement.csproj", "{767850ED-3943-49F1-A051-5E903DB5B4FC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PKERP.MES.Services.Interface", "PKERP.MES.Services.Interface\PKERP.MES.Services.Interface.csproj", "{A9308A38-5F2F-44B0-964F-C7F7C9E1677B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Test", "Test", "{4522C861-A21E-4AA7-A607-3849DA963490}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PKERP.MES.Services.Impltement.Tests", "PKERP.MES.Services.Impltement.Tests\PKERP.MES.Services.Impltement.Tests.csproj", "{1C51AFF9-D9EF-4924-B40E-4B7ABD97431B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "04. Infrastructure", "04. Infrastructure", "{34880550-A257-489A-AFB9-2F4DED699C44}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "05. Service Gateway", "05. Service Gateway", "{0FBDD1D6-50E9-48A1-A42E-6D02F04ECA1C}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "03. Services Implement", "03. Services Implement", "{0A9DB60E-65A9-4917-B9E5-CC14BC0B8EF4}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "02. Service Interface", "02. Service Interface", "{4D521FE3-E6C0-4439-90F9-A01AA7E658F3}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "01. Domain", "01. Domain", "{E510BBB1-AF30-4D8F-9B60-A766764F3E15}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PKERP.Base.Domain.Interface", "PKERP.Base.Domain.Interface\PKERP.Base.Domain.Interface.csproj", "{D68F53A2-A9B2-4E66-96E9-F65A8D9800F5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PKERP.MES.Domain.Interface", "PKERP.MES.Domain.Interface\PKERP.MES.Domain.Interface.csproj", "{F320EAAC-247A-432E-B91B-98B38F0B69F7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PKBugClient", "PKBugClient\PKBugClient.csproj", "{5403B805-C41E-4544-BD27-A692F157438F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PKBugClientTest", "PKBugClientTest\PKBugClientTest.csproj", "{D63477B5-E7FD-42E2-B3AA-E7D15D4A8780}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PKQCO", "PKQCO\PKQCO.csproj", "{524B2370-6A23-4F17-A76F-649B4768F14D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestRun", "TestRun\TestRun.csproj", "{049A5CF7-1B62-4721-A7B4-AC2954F20757}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestingMES", "TestingMES\TestingMES.csproj", "{AD839083-512B-478A-BFFD-1252761FF9E4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PKQRGenerator", "PKQRGenerator\PKQRGenerator.csproj", "{3F1DB2B7-1DD7-4EAB-832A-151F847F2461}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OPSAPI", "OPSAPI\OPSAPI.csproj", "{D6947FA3-C308-4A63-BC9A-9E5E8580F750}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "06.WindowService", "06.WindowService", "{3328A098-8D0A-49E7-9B6B-48EE8F2C13C2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OPSV3", "OPSV3\OPSV3.csproj", "{B32FDED8-80F4-418C-AAD8-A2BF2C57E307}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{5024D15F-8E72-42A5-8E4C-0B7A1E008CD1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5024D15F-8E72-42A5-8E4C-0B7A1E008CD1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5024D15F-8E72-42A5-8E4C-0B7A1E008CD1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5024D15F-8E72-42A5-8E4C-0B7A1E008CD1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{916AA9F1-780A-4796-87A0-7AB12C2C6641}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{916AA9F1-780A-4796-87A0-7AB12C2C6641}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{916AA9F1-780A-4796-87A0-7AB12C2C6641}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{916AA9F1-780A-4796-87A0-7AB12C2C6641}.Release|Any CPU.Build.0 = Release|Any CPU
+		{81EF1081-7C26-4D2C-A9CE-C3B29D388434}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{81EF1081-7C26-4D2C-A9CE-C3B29D388434}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{81EF1081-7C26-4D2C-A9CE-C3B29D388434}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{81EF1081-7C26-4D2C-A9CE-C3B29D388434}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BBD933BC-59EA-4162-A7FB-C66C4FEB5F29}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BBD933BC-59EA-4162-A7FB-C66C4FEB5F29}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BBD933BC-59EA-4162-A7FB-C66C4FEB5F29}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BBD933BC-59EA-4162-A7FB-C66C4FEB5F29}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9C242A56-8763-47AD-B9B5-119E5A314446}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9C242A56-8763-47AD-B9B5-119E5A314446}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9C242A56-8763-47AD-B9B5-119E5A314446}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9C242A56-8763-47AD-B9B5-119E5A314446}.Release|Any CPU.Build.0 = Release|Any CPU
+		{767850ED-3943-49F1-A051-5E903DB5B4FC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{767850ED-3943-49F1-A051-5E903DB5B4FC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{767850ED-3943-49F1-A051-5E903DB5B4FC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{767850ED-3943-49F1-A051-5E903DB5B4FC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A9308A38-5F2F-44B0-964F-C7F7C9E1677B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A9308A38-5F2F-44B0-964F-C7F7C9E1677B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A9308A38-5F2F-44B0-964F-C7F7C9E1677B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A9308A38-5F2F-44B0-964F-C7F7C9E1677B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1C51AFF9-D9EF-4924-B40E-4B7ABD97431B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1C51AFF9-D9EF-4924-B40E-4B7ABD97431B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1C51AFF9-D9EF-4924-B40E-4B7ABD97431B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1C51AFF9-D9EF-4924-B40E-4B7ABD97431B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D68F53A2-A9B2-4E66-96E9-F65A8D9800F5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D68F53A2-A9B2-4E66-96E9-F65A8D9800F5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D68F53A2-A9B2-4E66-96E9-F65A8D9800F5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D68F53A2-A9B2-4E66-96E9-F65A8D9800F5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F320EAAC-247A-432E-B91B-98B38F0B69F7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F320EAAC-247A-432E-B91B-98B38F0B69F7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F320EAAC-247A-432E-B91B-98B38F0B69F7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F320EAAC-247A-432E-B91B-98B38F0B69F7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5403B805-C41E-4544-BD27-A692F157438F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5403B805-C41E-4544-BD27-A692F157438F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5403B805-C41E-4544-BD27-A692F157438F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5403B805-C41E-4544-BD27-A692F157438F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D63477B5-E7FD-42E2-B3AA-E7D15D4A8780}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D63477B5-E7FD-42E2-B3AA-E7D15D4A8780}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D63477B5-E7FD-42E2-B3AA-E7D15D4A8780}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D63477B5-E7FD-42E2-B3AA-E7D15D4A8780}.Release|Any CPU.Build.0 = Release|Any CPU
+		{524B2370-6A23-4F17-A76F-649B4768F14D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{524B2370-6A23-4F17-A76F-649B4768F14D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{524B2370-6A23-4F17-A76F-649B4768F14D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{524B2370-6A23-4F17-A76F-649B4768F14D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{049A5CF7-1B62-4721-A7B4-AC2954F20757}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{049A5CF7-1B62-4721-A7B4-AC2954F20757}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{049A5CF7-1B62-4721-A7B4-AC2954F20757}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{049A5CF7-1B62-4721-A7B4-AC2954F20757}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AD839083-512B-478A-BFFD-1252761FF9E4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AD839083-512B-478A-BFFD-1252761FF9E4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AD839083-512B-478A-BFFD-1252761FF9E4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AD839083-512B-478A-BFFD-1252761FF9E4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3F1DB2B7-1DD7-4EAB-832A-151F847F2461}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3F1DB2B7-1DD7-4EAB-832A-151F847F2461}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3F1DB2B7-1DD7-4EAB-832A-151F847F2461}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3F1DB2B7-1DD7-4EAB-832A-151F847F2461}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D6947FA3-C308-4A63-BC9A-9E5E8580F750}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D6947FA3-C308-4A63-BC9A-9E5E8580F750}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D6947FA3-C308-4A63-BC9A-9E5E8580F750}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D6947FA3-C308-4A63-BC9A-9E5E8580F750}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B32FDED8-80F4-418C-AAD8-A2BF2C57E307}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B32FDED8-80F4-418C-AAD8-A2BF2C57E307}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B32FDED8-80F4-418C-AAD8-A2BF2C57E307}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B32FDED8-80F4-418C-AAD8-A2BF2C57E307}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{5024D15F-8E72-42A5-8E4C-0B7A1E008CD1} = {0FBDD1D6-50E9-48A1-A42E-6D02F04ECA1C}
+		{916AA9F1-780A-4796-87A0-7AB12C2C6641} = {34880550-A257-489A-AFB9-2F4DED699C44}
+		{81EF1081-7C26-4D2C-A9CE-C3B29D388434} = {34880550-A257-489A-AFB9-2F4DED699C44}
+		{BBD933BC-59EA-4162-A7FB-C66C4FEB5F29} = {0FBDD1D6-50E9-48A1-A42E-6D02F04ECA1C}
+		{9C242A56-8763-47AD-B9B5-119E5A314446} = {4522C861-A21E-4AA7-A607-3849DA963490}
+		{767850ED-3943-49F1-A051-5E903DB5B4FC} = {0A9DB60E-65A9-4917-B9E5-CC14BC0B8EF4}
+		{A9308A38-5F2F-44B0-964F-C7F7C9E1677B} = {4D521FE3-E6C0-4439-90F9-A01AA7E658F3}
+		{1C51AFF9-D9EF-4924-B40E-4B7ABD97431B} = {4522C861-A21E-4AA7-A607-3849DA963490}
+		{D68F53A2-A9B2-4E66-96E9-F65A8D9800F5} = {E510BBB1-AF30-4D8F-9B60-A766764F3E15}
+		{F320EAAC-247A-432E-B91B-98B38F0B69F7} = {E510BBB1-AF30-4D8F-9B60-A766764F3E15}
+		{5403B805-C41E-4544-BD27-A692F157438F} = {34880550-A257-489A-AFB9-2F4DED699C44}
+		{D63477B5-E7FD-42E2-B3AA-E7D15D4A8780} = {4522C861-A21E-4AA7-A607-3849DA963490}
+		{524B2370-6A23-4F17-A76F-649B4768F14D} = {34880550-A257-489A-AFB9-2F4DED699C44}
+		{049A5CF7-1B62-4721-A7B4-AC2954F20757} = {4522C861-A21E-4AA7-A607-3849DA963490}
+		{AD839083-512B-478A-BFFD-1252761FF9E4} = {0FBDD1D6-50E9-48A1-A42E-6D02F04ECA1C}
+		{3F1DB2B7-1DD7-4EAB-832A-151F847F2461} = {34880550-A257-489A-AFB9-2F4DED699C44}
+		{D6947FA3-C308-4A63-BC9A-9E5E8580F750} = {0FBDD1D6-50E9-48A1-A42E-6D02F04ECA1C}
+		{B32FDED8-80F4-418C-AAD8-A2BF2C57E307} = {0FBDD1D6-50E9-48A1-A42E-6D02F04ECA1C}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {16C5C11F-FB14-4B6F-AC23-3427CF36592A}
+	EndGlobalSection
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccNumberOfProjects = 19
+		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccTeamFoundationServer = https://dev.azure.com/pkops-new
+		SccLocalPath0 = .
+		SccProjectUniqueName1 = OPS\\OPS.csproj
+		SccProjectTopLevelParentUniqueName1 = PKOPS.sln
+		SccProjectName1 = OPS
+		SccLocalPath1 = OPS
+		SccProjectUniqueName2 = OPS_DAL\\OPS_DAL.csproj
+		SccProjectTopLevelParentUniqueName2 = PKOPS.sln
+		SccProjectName2 = OPS_DAL
+		SccLocalPath2 = OPS_DAL
+		SccProjectUniqueName3 = OPS_Utils\\OPS_Utils.csproj
+		SccProjectTopLevelParentUniqueName3 = PKOPS.sln
+		SccProjectName3 = OPS_Utils
+		SccLocalPath3 = OPS_Utils
+		SccProjectUniqueName4 = MES\\MES.csproj
+		SccProjectTopLevelParentUniqueName4 = PKOPS.sln
+		SccProjectName4 = MES
+		SccLocalPath4 = MES
+		SccProjectUniqueName5 = MES.Tests\\MES.Tests.csproj
+		SccProjectTopLevelParentUniqueName5 = PKOPS.sln
+		SccProjectName5 = MES.Tests
+		SccLocalPath5 = MES.Tests
+		SccProjectUniqueName6 = PKERP.MES.Services.Implement\\PKERP.MES.Services.Implement.csproj
+		SccProjectTopLevelParentUniqueName6 = PKOPS.sln
+		SccProjectName6 = PKERP.MES.Services.Implement
+		SccLocalPath6 = PKERP.MES.Services.Implement
+		SccProjectUniqueName7 = PKERP.MES.Services.Interface\\PKERP.MES.Services.Interface.csproj
+		SccProjectTopLevelParentUniqueName7 = PKOPS.sln
+		SccProjectName7 = PKERP.MES.Services.Interface
+		SccLocalPath7 = PKERP.MES.Services.Interface
+		SccProjectUniqueName8 = PKERP.MES.Services.Impltement.Tests\\PKERP.MES.Services.Impltement.Tests.csproj
+		SccProjectTopLevelParentUniqueName8 = PKOPS.sln
+		SccProjectName8 = PKERP.MES.Services.Impltement.Tests
+		SccLocalPath8 = PKERP.MES.Services.Impltement.Tests
+		SccProjectUniqueName9 = PKERP.Base.Domain.Interface\\PKERP.Base.Domain.Interface.csproj
+		SccProjectTopLevelParentUniqueName9 = PKOPS.sln
+		SccProjectName9 = PKERP.Base.Domain.Interface
+		SccLocalPath9 = PKERP.Base.Domain.Interface
+		SccProjectUniqueName10 = PKERP.MES.Domain.Interface\\PKERP.MES.Domain.Interface.csproj
+		SccProjectTopLevelParentUniqueName10 = PKOPS.sln
+		SccProjectName10 = PKERP.MES.Domain.Interface
+		SccLocalPath10 = PKERP.MES.Domain.Interface
+		SccProjectUniqueName11 = PKBugClient\\PKBugClient.csproj
+		SccProjectTopLevelParentUniqueName11 = PKOPS.sln
+		SccProjectName11 = PKBugClient
+		SccLocalPath11 = PKBugClient
+		SccProjectUniqueName12 = PKBugClientTest\\PKBugClientTest.csproj
+		SccProjectTopLevelParentUniqueName12 = PKOPS.sln
+		SccProjectName12 = PKBugClientTest
+		SccLocalPath12 = PKBugClientTest
+		SccProjectUniqueName13 = PKQCO\\PKQCO.csproj
+		SccProjectTopLevelParentUniqueName13 = PKOPS.sln
+		SccProjectName13 = PKQCO
+		SccLocalPath13 = PKQCO
+		SccProjectUniqueName14 = TestRun\\TestRun.csproj
+		SccProjectTopLevelParentUniqueName14 = PKOPS.sln
+		SccProjectName14 = TestRun
+		SccLocalPath14 = TestRun
+		SccProjectUniqueName15 = TestingMES\\TestingMES.csproj
+		SccProjectTopLevelParentUniqueName15 = PKOPS.sln
+		SccProjectName15 = TestingMES
+		SccLocalPath15 = TestingMES
+		SccProjectUniqueName16 = PKQRGenerator\\PKQRGenerator.csproj
+		SccProjectTopLevelParentUniqueName16 = PKOPS.sln
+		SccProjectName16 = PKQRGenerator
+		SccLocalPath16 = PKQRGenerator
+		SccProjectUniqueName17 = OPSAPI\\OPSAPI.csproj
+		SccProjectTopLevelParentUniqueName17 = PKOPS.sln
+		SccProjectName17 = OPSAPI
+		SccLocalPath17 = OPSAPI
+		SccProjectUniqueName18 = OPSV3\\OPSV3.csproj
+		SccProjectTopLevelParentUniqueName18 = PKOPS.sln
+		SccProjectName18 = OPSV3
+		SccLocalPath18 = OPSV3
+	EndGlobalSection
+EndGlobal

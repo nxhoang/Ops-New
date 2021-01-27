@@ -1,0 +1,61 @@
+﻿<div class="modal fade modal-custom" id="mdlSearchRecentPlan" role="dialog" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Search Operation Plan By History</h4>
+            </div>
+            <div class="modal-body">
+                <div class="modal-body-custom" style="height:550px">
+                    <div class="modal-content-ops">
+                        <div class="row">
+                            <div class="col-md-3 col-sm-3 col-xs-3">
+                                <div class="form-group selec2-custom">
+                                    <select id="drpBuyerRecentPlanMdl" class="form-control" data-placeholder="Select Buyer"></select>
+                                </div>
+                            </div>
+                            <div class="col-md-3 col-sm-3 col-xs-3">
+                                <div class="form-group selec2-custom">
+                                    <select id="drpRecentTimePlanMdl" class="form-control" data-placeholder="Modified during last">
+                                        <option value="0">All</option>
+                                        <option value="0.042">1 hour</option>
+                                        <option value="1">1 day</option>
+                                        <option value="7">1 week</option>
+                                        <option value="31">1 month</option>
+
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-3 col-sm-3 col-xs-3 pull-right top_search">
+                                <div class="input-group">
+                                    <input id="txtStyleInfRecentPlanMdl" type="text" class="form-control" placeholder="Search For..">
+                                    <span class="input-group-btn">
+                                        <input type="button" value="Find" id="btnSearchRecentPlan" class="btn btn-primary btn-modal">
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-content-ops">
+                        <table id="tbRecentPlan" class="scroll" style="width:100%;"></table>
+                        <div id="divRecentPlanPager" style="text-align:center; margin:0; padding:0;"></div>
+                    </div>
+                    <div style="clear:both; padding-right: 5px; height:37px;">
+                        <div class="btn-group dropup" style="float:right; width:160px;">
+                            <button class="btn btn-primary dropdown-toggle" style="width:160px" type="button" data-toggle="dropdown">
+                                Operation Plan
+                                <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li><a href="/Ops/Ops">Plan Management</a></li>
+                                <li><a href="/OpsLayout/OpsLayout">Plan Layout</a></li>
+                                <li><a href="/OpsLink/index">Engineering Data</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>

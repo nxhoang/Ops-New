@@ -1,0 +1,224 @@
+[
+  {
+    "outputFileName": "Assets/jquery.human-task-map/css/op-emp.min.css",
+    "inputFiles": [
+      "Assets/jquery.human-task-map/css/op-emp.css"
+    ]
+  },
+  {
+    "outputFileName": "Assets/factory-visualizer/js/jquery.op-group.min.js",
+    "inputFiles": [
+      "Assets/factory-visualizer/js/jquery.op-group.js"
+    ]
+  },
+  {
+    "outputFileName": "Assets/factory-visualizer/js/op-emp-map.min.js",
+    "inputFiles": [
+      "Assets/factory-visualizer/js/op-emp-map.js"
+    ]
+  },
+  {
+    "outputFileName": "Assets/jquery.human-task-map/js/jquery.human-task-map.min.js",
+    "inputFiles": [
+      "Assets/jquery.human-task-map/js/jquery.human-task-map.js"
+    ]
+  },
+  {
+    "outputFileName": "Assets/jquery.human-task-map/js/jquery.human-task.min.js",
+    "inputFiles": [
+      "Assets/jquery.human-task-map/js/jquery.human-task.js"
+    ]
+  },
+  {
+    "outputFileName": "Assets/jquery.human-task-map/js/jquery.task-worker.min.js",
+    "inputFiles": [
+      "Assets/jquery.human-task-map/js/jquery.task-worker.js"
+    ]
+  },
+  {
+    "outputFileName": "Assets/bootstrap-multiselect/bootstrap-multiselect.min.js",
+    "inputFiles": [
+      "Assets/bootstrap-multiselect/bootstrap-multiselect.js"
+    ]
+  },
+  {
+    "outputFileName": "Assets/bootstrap-multiselect/bootstrap-multiselect.min.css",
+    "inputFiles": [
+      "Assets/bootstrap-multiselect/bootstrap-multiselect.css"
+    ]
+  },
+  {
+    "outputFileName": "Assets/worker/css/worker.min.css",
+    "inputFiles": [
+      "Assets/worker/css/worker.css"
+    ]
+  },
+  {
+    "outputFileName": "Assets/worker/js/worker.min.js",
+    "inputFiles": [
+      "Assets/worker/js/worker.js"
+    ]
+  },
+  {
+    "outputFileName": "Assets/worker/css/worker.search-header.min.css",
+    "inputFiles": [
+      "Assets/worker/css/worker.search-header.css"
+    ]
+  },
+  {
+    "outputFileName": "Assets/worker/js/worker.search-header.min.js",
+    "inputFiles": [
+      "Assets/worker/js/worker.search-header.js"
+    ]
+  },
+  {
+    "outputFileName": "Assets/hrm/worker/css/hrm-worker.search-header.min.css",
+    "inputFiles": [
+      "Assets/hrm/worker/css/hrm-worker.search-header.css"
+    ]
+  },
+  {
+    "outputFileName": "Assets/hrm/worker/js/hrm-worker.search-header.min.js",
+    "inputFiles": [
+      "Assets/hrm/worker/js/hrm-worker.search-header.js"
+    ]
+  },
+  {
+    "outputFileName": "Assets/hrm/worker/js/hrm-common.min.js",
+    "inputFiles": [
+      "Assets/hrm/worker/js/hrm-common.js"
+    ]
+  },
+  {
+    "outputFileName": "Assets/hrm/common/js/hrm-common.min.js",
+    "inputFiles": [
+      "Assets/hrm/common/js/hrm-common.js"
+    ]
+  },
+  {
+    "outputFileName": "Assets/hrm/worker/js/hrm-worker-table.min.js",
+    "inputFiles": [
+      "Assets/hrm/worker/js/hrm-worker-table.js"
+    ]
+  },
+  {
+    "outputFileName": "Assets/hrm/worker/css/hrm-worker-popup.min.css",
+    "inputFiles": [
+      "Assets/hrm/worker/css/hrm-worker-popup.css"
+    ]
+  },
+  {
+    "outputFileName": "Assets/hrm/worker/js/hrm-emp-main.min.js",
+    "inputFiles": [
+      "Assets/hrm/worker/js/hrm-emp-main.js"
+    ]
+  },
+  {
+    "outputFileName": "Assets/hrm/worker/js/hrm-worker-popup.min.js",
+    "inputFiles": [
+      "Assets/hrm/worker/js/hrm-worker-popup.js"
+    ]
+  },
+  {
+    "outputFileName": "Assets/factory-visualizer/css/factory-visualizer.min.css",
+    "inputFiles": [
+      "Assets/factory-visualizer/css/factory-visualizer.css"
+    ]
+  },
+  {
+    "outputFileName": "Assets/factory-visualizer/js/fac.pre-define.min.js",
+    "inputFiles": [
+      "Assets/factory-visualizer/js/fac.pre-define.js"
+    ]
+  },
+  {
+    "outputFileName": "Assets/ops-layout/css/app.min.css",
+    "inputFiles": [
+      "Assets/ops-layout/css/app.css"
+    ]
+  },
+  {
+    "outputFileName": "Assets/ops-layout/js/jsplumbtoolkit.min.js",
+    "inputFiles": [
+      "Assets/ops-layout/js/jsplumbtoolkit.js"
+    ]
+  },
+  {
+    "outputFileName": "Assets/qc-alert-setup/css/qc-alert-setup.min.css",
+    "inputFiles": [
+      "Assets/qc-alert-setup/css/qc-alert-setup.css"
+    ]
+  },
+  {
+    "outputFileName": "Assets/qc-alert-setup/js/qcas.main.min.js",
+    "inputFiles": [
+      "Assets/qc-alert-setup/js/qcas.main.js"
+    ]
+  },
+  {
+    "outputFileName": "Assets/qc-alert-setup/js/qcas.search-header.min.js",
+    "inputFiles": [
+      "Assets/qc-alert-setup/js/qcas.search-header.js"
+    ]
+  },
+  {
+    "outputFileName": "css/mes.common-control.min.css",
+    "inputFiles": [
+      "css/mes.common-control.css"
+    ]
+  },
+  {
+    "outputFileName": "Assets/qc-alert-setup/js/qcas.table.min.js",
+    "inputFiles": [
+      "Assets/qc-alert-setup/js/qcas.table.js"
+    ]
+  },
+  {
+    "outputFileName": "Assets/qc-alert-setup/js/qcas.usmt-table.min.js",
+    "inputFiles": [
+      "Assets/qc-alert-setup/js/qcas.usmt-table.js"
+    ]
+  },
+  {
+    "outputFileName": "Assets/hrm/worker/js/hrm.sync-data.min.js",
+    "inputFiles": [
+      "Assets/hrm/worker/js/hrm.sync-data.js"
+    ]
+  },
+  {
+    "outputFileName": "Assets/ops-layout/css/ops-layout.min.css",
+    "inputFiles": [
+      "Assets/ops-layout/css/ops-layout.css"
+    ]
+  },
+  {
+    "outputFileName": "Assets/ops-layout/css/jsplumbtoolkit.min.css",
+    "inputFiles": [
+      "Assets/ops-layout/css/jsplumbtoolkit.css"
+    ]
+  },
+  {
+    "outputFileName": "Assets/ops-layout/css/jsplumbtoolkit-defaults.min.css",
+    "inputFiles": [
+      "Assets/ops-layout/css/jsplumbtoolkit-defaults.css"
+    ]
+  },
+  {
+    "outputFileName": "Assets/ops-layout/css/main.min.css",
+    "inputFiles": [
+      "Assets/ops-layout/css/main.css"
+    ]
+  },
+  {
+    "outputFileName": "Assets/op-video-processing/js/op_video-process.min.js",
+    "inputFiles": [
+      "Assets/op-video-processing/js/op_video-process.js"
+    ]
+  },
+  {
+    "outputFileName": "Assets/op-video-processing/css/op_video-process.min.css",
+    "inputFiles": [
+      "Assets/op-video-processing/css/op_video-process.css"
+    ]
+  }
+]

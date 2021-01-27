@@ -1,0 +1,89 @@
+﻿
+    <div class="row">
+
+        @*<div class="col-sm-1">
+            <div class="form-group">
+                <label class="control-label">MES package</label>
+                <input type="checkbox" id="chkMESPackage" style="margin:0" class="form-control">
+            </div>
+        </div>*@
+
+        <div class="col-sm-2">
+            <div class="form-group">
+                <label class="control-label"><span style="color: red;">Dates:</span></label>
+                <input type="text" id="txtDateRange" class="form-control">
+            </div>
+        </div>
+
+        <!-- Searching Criteria: Cutting Factory-->
+        <div class="col-sm-2">
+            <div class="form-group">
+                <label class="control-label"><span style="color: red;">Factory:</span></label>
+                <select id="drpFactory" class="form-control" data-placeholder=""></select>
+            </div>
+        </div>
+
+        <div class="col-sm-1">
+            <div class="form-group">
+                <label class="control-label">Filter By</label>
+                <select id="drpFilterBy" class="form-control" data-placeholder="">
+                    <option value=""></option>
+                    <option value="1">Package Group</option>
+                    <option value="2">MES Package</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="col-sm-2">
+            <div class="form-group">
+                <label class="control-label">AO No:</label>
+                <input type="text" id="txtAONo" class="form-control">
+            </div>
+        </div>
+
+        <!-- Searching Criteria: Buyer-->
+        <div class="col-sm-2">
+            <div class="form-group">
+                <label class="control-label">Buyer:</label>
+                <select id="drpBuyer" class="form-control" data-placeholder=""></select>
+            </div>
+        </div>
+
+        <!-- Searching Criteria: Style Info-->
+        <div class="col-sm-2">
+            <div class="form-group">
+                <label class="control-label" for="txtBuyerInfo">Style Info:</label>
+                <input type="text" id="txtBuyerInfo" class="form-control">
+            </div>
+        </div>
+
+        <!--  Searching Criteria: Button -->
+        <div class="col-sm-1">
+            <div class="form-group">
+                <div><label class="control-label">&nbsp;</label></div>
+                <button type="button" id="btnSearchExePackage" class="btn btn-primary">Search</button>
+            </div>
+        </div>
+    </div>
+<div class="top-buffer"></div>
+<div class="row">
+    <!-- NEW WIDGET START -->
+    <div class="col-sm-12 ">
+
+        <table id="tbGroupPackage" class="has-qtip"></table>
+        <div id="divGroupPackagePage"></div>
+
+    </div>
+    <!-- WIDGET END -->
+</div>
+
+<div class="top-buffer"></div>
+
+@section Scripts{
+
+    <script>
+        $(function () {
+
+        });
+    </script>
+}

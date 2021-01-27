@@ -1,0 +1,146 @@
+﻿
+
+@{
+    ViewBag.Title = "Main Group Defect";
+    Layout = "~/Views/Shared/_MesLayout.cshtml";
+}
+<link href="~/assets/DayRangePicker/daterangepicker.min.css" rel="stylesheet" />
+<link href="~/Assets/bootstrap-multiselect/bootstrap-multiselect.min.css" rel="stylesheet" />
+<style>
+    #maingroupdefect {
+        height: 70vh;
+    }
+    .lg-modal {
+        width: 80%;
+    }
+    #modaldefect {
+        height: 50vh !important;
+    }
+</style>
+
+<div class="row">
+    <div class="col-sm-12">
+        <div class="form-horizontal bv-form">
+            <div class="form-group">
+                <label class="col-sm-1 control-label">Dates</label>
+                <div class="col-sm-2">
+                    <input type="text" id="txtDateRange" class="form-control">
+                </div>
+
+                <label class="col-sm-1 control-label">Factory</label>
+                <div class="col-sm-2">
+                    <select id="selFactory" name="factoryId" class="form-control" onchange="handleChangeFactory()">
+                        <option value="">---</option>
+                    </select>
+                </div>
+
+                <label class="col-sm-1 control-label">Line</label>
+                <div class="col-sm-1">
+                    <select id="selLine" name="lineId" class="form-control" onchange="handleChangeLine()">
+                        <option value="1">---</option>
+                    </select>
+                </div>
+
+                <label class="col-sm-1 control-label">MES Package</label>
+                <div class="col-sm-3">
+                    <select id="selPackage" name="packageId" class="form-control" onchange="handleChangePackage()">
+                        <option value="1">---</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg lg-modal" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                @*drawchart*@
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="wrapper-chart-iot" id="modal-chart">
+                        </div>
+                    </div>
+                </div>
+                @*end drawchart*@
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<section id="widget-grid" class="">
+    <!-- row -->
+    <div class="row">
+        <!-- NEW WIDGET START -->
+        <article class="col-sm-12">
+
+            <!-- Widget ID (each widget will need unique ID)-->
+            <div class="jarviswidget jarviswidget-color-green" id="wid-id-0" data-widget-editbutton="false">
+
+                <header>
+                    <div id="title-buyer-style-name" style="margin-left: 10px"><h2><b>Main Group Defect</b></h2></div>
+                </header>
+
+                <!-- widget div-->
+                <div>
+                    <!-- widget content -->
+                    <div class="widget-body">
+
+                        @*drawchart*@
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="wrapper-chart-iot" id="chart-machine-iot">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12" style="overflow-x:auto;">
+                                <div id="info-detail-chart">
+                                </div>
+                            </div>
+                        </div>
+                        @*end drawchart*@
+
+
+                    </div>
+                    <!-- end widget div -->
+
+                </div>
+                <!-- end widget -->
+            </div>
+        </article>
+        <!-- WIDGET END -->
+    </div>
+
+    <!-- end row -->
+</section>
+<!-- end widget grid -->
+
+
+@section Scripts{
+    <script src="~/assets/DayRangePicker/daterangepicker.min.js"></script>
+    <script src="~/Assets/chartjs/Chart.min.js"></script>
+    <script src="~/Assets/chartjs/chartjs-plugin-datalabels.min.js"></script>
+    <script src="~/js/mes/mes-common.js?v=1.0.3"></script>
+    <script src="~/js/mes/main-group-defect/main-group-defect.js"></script>
+    <script src="~/Assets/jquery.blockUI/jquery.blockUI.js"></script>
+    <script src="~/js/plugin/jqgrid/jquery.jqGrid.min.js"></script>
+    <script src="~/js/plugin/jqgrid/grid.locale-en.min.js"></script>
+
+}
+
+

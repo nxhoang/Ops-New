@@ -1,0 +1,378 @@
+﻿
+@{
+	ViewBag.Title = "Factory Sorting Settings";
+	Layout = "~/Views/Shared/_MesLayout.cshtml";
+}
+
+<!--START DHTMLX List-->
+<link href="~/assets/dhtmlxList_v51_std/codebase/dhtmlxlist.css" rel="stylesheet" />
+
+<!--fancy box-->
+<link href="~/Assets/fancybox-master/dist/jquery.fancybox.css" rel="stylesheet" />
+
+<!--Font Icon-->
+<link href="~/Assets/material-design-iconic-font/css/material-design-iconic-font.min.css" rel="stylesheet" />
+
+<style>
+	#MasterSettings, #FactorySettings, #FactoryList {
+		background: white;
+	}
+
+	.dhx_list .dhx_list_default_item_selected {
+		background: green;
+		color: white;
+		font-weight: bold;
+	}
+
+	/*Fancybox Customize */
+	.fancybox-is-open .fancybox-bg {
+		opacity: 0.5 !important;
+	}
+
+	.fancybox-slide {
+		margin-left: auto;
+		margin-right: auto;
+	}
+
+		.fancybox-slide > fancybox-content {
+			margin-left: auto;
+			margin-right: auto;
+		}
+
+	.fancybox-caption-wrap {
+		display: none;
+	}
+
+	.fancybox-title-caption {
+		/*position: absolute;
+		font-size: 20px;
+		color: whitesmoke;
+		margin-top: 7px;
+		text-decoration: none;*/
+		position: absolute;
+		font-size: 20px;
+		color: white;
+		margin-top: 7px;
+		text-decoration: none;
+	}
+
+		.fancybox-title-caption:hover {
+			color: whitesmoke;
+			cursor: default;
+		}
+
+	.fancybox-title-caption-right {
+		/*position: absolute;
+		right: 50px;
+		width: 45px;
+		font-size: 20px;
+		color: white !important;
+		text-decoration: none;
+		opacity: 0.75;*/
+		position: fixed;
+		right: 53px;
+		width: 0px;
+		top: 10px;
+		font-size: 20px;
+		color: white !important;
+		text-decoration: none;
+	}
+
+		.fancybox-title-caption-right:hover {
+			opacity: 1;
+			animation: ease-in;
+			-moz-animation: ease-in;
+		}
+
+	.fancyboxmessage {
+		color: black !important;
+	}
+
+	div#main {
+		min-height: 740px !important;
+	}
+</style>
+
+@*<h2>QCO Ranking package sorting parameter setup</h2>*@
+
+<div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+	<div class="row">
+		<h3>Factory List</h3>
+		<div id="FactoryList" style=" width: 320px; height: 496px;"></div>
+	</div>
+</div>
+
+<div class="col-lg-5 col-md-6 col-sm-12 col-xs-12">
+	<div class="row">
+		<div class="col-lg-6">
+			<h3>Sorting Order</h3>
+			<div id="FactorySettings" style="width: 320px;height: 496px;"></div>
+
+			<div>
+				<button id="btnEditQCOFactorySetting" class="btn btn-success" style="display: none;">Edit Setting</button>
+				<div>
+					<button id="btnRemove" class="btn btn-danger" style="display: none;">Remove</button>
+					<button id="btnSave" class="btn btn-success" style="display: none;">Save</button>
+					<button id="btnCancel" class="btn btn-link" style="display: none;">Cancel</button>
+				</div>
+			</div>
+		</div>
+
+		<div class="col-lg-5">
+			<form id="frmAscDescBinding" class="smart-form">
+				<label class="label" style="font-size:15px; font-weight:bold;"></label>
+				<label class="toggle">
+					<input type="checkbox" name="radio-toggle">
+					<i data-swchon-text="ASC" data-swchoff-text="DESC"></i>Direction
+				</label>
+			</form>
+		</div>
+	</div>
+</div>
+
+<div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+	<div class="row" id="QCOFactorySettingCol" style="display:none;">
+		<h3>Soring Parameters Master</h3>
+		<h4>Double click The Setting Element To Add To Selected Factory</h4>
+		<div id="MasterSettings" style="width: 320px;height: 496px;"></div>
+	</div>
+</div>
+
+@section Scripts{
+	<script src="~/Assets/dhtmlxList_v51_std/codebase/dhtmlxlist.js"></script>
+
+	<script src="~/Assets/remarkable-bootstrap-notify/dist/bootstrap-notify.min.js"></script>
+	<script src="~/Assets/remarkable-bootstrap-notify/dist/Common.js"></script>
+
+	@* Fancy Box *@
+	<script src="~/Assets/fancybox-master/dist/jquery.fancybox.min.js"></script>
+	<script src="~/Assets/fancybox-master/dist/Common.js"></script>
+
+	<script>
+		var SelectedFactory = "";
+		var ParaDirectionEnable = false; //2020-04-01
+
+
+		/*Left List: Master Settings */
+		var DHTMLXList_FactoryList = new dhtmlXList({
+			container: "FactoryList",
+			drag: false,
+			select: true,
+			type: {
+				template: "Factory: #FACTORY#<br/>&nbsp;&nbsp;&nbsp;Name: #NAME#",
+				height: 69
+			}
+		});
+
+		/*Middle List: Factory Settings*/
+		var DHTMLXList_FactorySettings = new dhtmlXList({
+			container: "FactorySettings",
+			drag: true,
+			select: true,
+			type: {
+				template: "Sorting Level #ID#: #PARAMETERNAME#",
+				height: 69
+			}
+		});
+
+		/*Right List: Factory Settings*/
+		var DHTMLXList_MasterSettings = new dhtmlXList({
+			container: "MasterSettings",
+			drag: false,
+			select: true,
+			type: {
+				//template: "Factory: #FACTORY#<br/>Sorting Level: #PARAMETERNAME#",
+				template: "#PARAMETERNAME#",
+				height: 69
+			}
+		});
+
+		/*Load Data to DHTMLX-List*/
+		DHTMLXList_FactoryList.load("/FactorySortingParameter/GetFactoryList",
+			function (data) {
+				var json = JSON.parse(data);
+				DHTMLXList_FactoryList.parse(json, "json");
+			});
+
+		DHTMLXList_MasterSettings.load("/FactorySortingParameter/GetMasterSettings",
+			function (data) {
+				var json = JSON.parse(data);
+				DHTMLXList_MasterSettings.parse(json, "json");
+			});
+
+		/*Attach Events to DHTMLX-List */
+		DHTMLXList_FactoryList.attachEvent("onItemClick", function (id, ev, html) {
+			ParaDirectionEnable = false;
+
+				$('#btnEditQCOFactorySetting').show();
+				$('#btnRemove,#btnSave,#btnCancel,#QCOFactorySettingCol').hide(1000);
+
+				data = DHTMLXList_FactoryList.get(id);
+				SelectedFactory = data.FACTORY;
+
+				//Clear Current Factory Setting Parameters
+				DHTMLXList_FactorySettings.clearAll();
+
+				if (data.FACTORY.length > 0) {
+					DHTMLXList_FactorySettings.load("/FactorySortingParameter/GetFactorySettings/" + data.FACTORY,
+						function (data) {
+							var json = JSON.parse(data);
+							DHTMLXList_FactorySettings.parse(json, "json");
+						});
+				}
+				return true;
+			});
+
+		DHTMLXList_MasterSettings.attachEvent("onItemDblClick",
+			function (id, ev, html) {
+				let self = this;
+
+				// Selected Element of Master Setting
+				let RowData = self.get(id);
+				let count = DHTMLXList_FactorySettings.dataCount();
+
+				// ADD To DHTMLXList_FactorySettings
+				DHTMLXList_FactorySettings.add(
+					{
+						FACTORY: SelectedFactory,
+						ID: count + 1,
+						PARAMETERNAME: RowData.PARAMETERNAME,
+						SORTDIRECTION: 'ASC'
+					},
+					count + 1);
+
+				return true;
+			});
+
+		var ParaDirectionSwitchValue = false;
+		var DHTMLXList_FactorySettingsID;
+
+		DHTMLXList_FactorySettings.attachEvent("onItemClick",
+			function (id, ev, html) {
+				DHTMLXList_FactorySettingsID = id;
+
+				//ParaDirectionEnable = true;
+
+				data = DHTMLXList_FactorySettings.get(DHTMLXList_FactorySettingsID);
+				//console.log(data);
+
+				let $frmAscDescBinding = $('#frmAscDescBinding');
+				$frmAscDescBinding.find('label').first().html(`Sorting Parameter: ${data.PARAMETERNAME}`);
+
+				if (data.SORTDIRECTION === 'ASC') {
+					//ASC
+					ParaDirectionSwitchValue = true;
+				} else {
+					//DESC
+					ParaDirectionSwitchValue = false;
+				}
+				$frmAscDescBinding.find('input').prop('checked', ParaDirectionSwitchValue);
+
+
+				return true;
+			});
+
+		//////////////////////////////////////////////////////////////////////////
+		//Events
+		$('#btnSave').on('click',
+			function (e) {
+				let count = DHTMLXList_FactorySettings.dataCount();
+
+				if (count == 0) {
+					alert('Please at least 1 Setting For Factory.');
+				} else {
+					let DataRows = DHTMLXList_FactorySettings.serialize();
+					let postData = "";
+
+					for (var i = 0; i < DataRows.length; i++) {
+						if (i == 0)
+							postData = `${DataRows[i].PARAMETERNAME};${DataRows[i].SORTDIRECTION}` ;
+						else
+							postData = postData + "_A2LF_" + `${DataRows[i].PARAMETERNAME};${DataRows[i].SORTDIRECTION}` ;
+					}
+
+					$.ajax({
+						method: "POST",
+						url: "/FactorySortingParameter/SaveFactorySettings/",
+						contentType: "application/json; charset=utf-8",
+						dataType: "json",
+						data: JSON.stringify({
+							vstrFactory: SelectedFactory,
+							vstrpostData: postData
+						})
+					}).done(function (ReturnMsg) {
+						Notify(ReturnMsg.retMsg);
+
+						DHTMLXList_FactorySettings.refresh();
+					});
+				}
+			});
+
+		$('#btnRemove').on('click', function () {
+			let Select_id = DHTMLXList_FactorySettings.getSelected();
+			let RowData = DHTMLXList_FactorySettings.get(Select_id);
+			 
+			DHTMLXList_FactorySettings.remove(Select_id);
+			Notify('Setting "' + RowData.PARAMETERNAME + '" Removed. Please "Save Setting" Before Leave The Page.');
+		});
+
+
+		$('#btnCancel').on('click', function () {
+			ParaDirectionEnable = false;
+
+			$('#btnRemove,#btnSave,#btnCancel,#QCOFactorySettingCol').hide(1000);
+			$('#btnEditQCOFactorySetting').show(1500);
+
+			DHTMLXList_FactorySettings.clearAll();
+			DHTMLXList_FactoryList.unselectAll();
+			DHTMLXList_MasterSettings.unselectAll();
+		});
+
+
+		$('#btnEditQCOFactorySetting').on('click', function () {
+			$(this).hide(1000);
+			$('#btnRemove,#btnSave,#btnCancel,#QCOFactorySettingCol').show(1500);
+
+			ParaDirectionEnable = true;
+		});
+
+
+		$('#drpFactory').on('change', function () {
+			//Clear Current Factory Setting Parameters
+			DHTMLXList_FactorySettings.clearAll();
+
+			let selectedValue = $('#drpFactory').val();
+			if (selectedValue.length > 0) {
+				DHTMLXList_FactorySettings.load("/FactorySortingParameter/GetFactorySettings/" + selectedValue,
+					function (data) {
+						var json = JSON.parse(data);
+						DHTMLXList_FactorySettings.parse(json, "json");
+					});
+			}
+		});
+
+
+		$('#frmAscDescBinding').find('input').on('change', function (e) {
+			let $this = $(this);  
+			// Prevent change the state of Check-box
+			if (!ParaDirectionEnable) {
+				$this.prop('checked', ParaDirectionSwitchValue);
+				return;
+			} 
+
+			let newValue;
+			if ($this.prop('checked'))
+				newValue = 'ASC';
+			else
+				newValue = 'DESC';
+
+			DHTMLXList_FactorySettings.update(
+				DHTMLXList_FactorySettingsID,
+				$.extend(DHTMLXList_FactorySettings.get(DHTMLXList_FactorySettingsID), { SORTDIRECTION: newValue })); 
+
+			console.log(DHTMLXList_FactorySettings.get(DHTMLXList_FactorySettingsID));
+			return;
+		});
+
+	</script>
+}

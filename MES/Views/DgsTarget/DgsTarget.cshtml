@@ -1,0 +1,284 @@
+﻿
+@{
+    ViewBag.Title = "DgsTarget";
+    Layout = "~/Views/Shared/_MesLayout.cshtml";
+}
+
+<style>
+    .font-size {
+        font-size: 70px;
+    }
+
+    .target-font-color {
+        color: black;
+    }
+
+    .achieve-color {
+        color: green;
+    }
+
+    .pending-color {
+        color: red;
+    }
+
+    .ui-jqgrid .ui-jqgrid-htable th {
+        text-align: center;
+    }
+
+    .modal-open .modal {
+        z-index: 1051;
+    }
+</style>
+
+<!-- Modal -->
+<div class="modal fade" id="mdlStyleAo" role="dialog" aria-labelledby="mdlStyleAoTitle" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    &times;
+                </button>
+                <h4 class="modal-title" id="mdlStyleAoTitle">Style search</h4>
+            </div>
+            <div id="mdlStyleAoBody" class="modal-body">
+
+                <div class="row">
+                    <!-- Searching Criteria: Cutting Factory-->
+                    <div class="col-sm-2 ">
+                        <div class="form-group">
+                            <label for="Factory">Factory:</label>
+                            <select id="drpFactoryMdl" class="form-control" data-placeholder=""></select>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-2 ">
+                        <div class="form-group">
+                            <label for="">Line:</label>
+                            <select id="drpLineMdl" class="form-control" data-placeholder=""></select>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-2">
+                        <div class="form-group">
+                            <label for=""> Buyer</label>
+                            <select id="drpBuyerMdl" class="form-control" data-placeholder=""></select>
+                        </div>
+                    </div>
+                    <div class="col-sm-2">
+                        <div class="form-group">
+                            <label for="txtBuyerInfoMdl"> Style Info</label>
+                            <input type="text" class="form-control" id="txtBuyerInfoMdl" placeholder="" />
+                        </div>
+                    </div>
+                    <div class="col-sm-2">
+                        <div class="form-group">
+                            <label for="txtAoNumberMdl"> AO Number</label>
+                            <input type="text" class="form-control" id="txtAoNumberMdl" placeholder="" />
+                        </div>
+                    </div>
+                    <div class="col-sm-2">
+                        <div class="form-group">
+                            <label for="tags"> &nbsp;</label>
+                            <button type="button" id="btnSearchStyleMdl" class="btn btn-default btn-sm form-control">
+                                <span class="glyphicon glyphicon-search"></span> Search
+                            </button>
+                        </div>
+                    </div>
+                </div> <!-- /Search conditon-->
+
+                <div class="row">
+                    <div class="col-sm-12 ">
+
+                        <table id="tbStyleAo"></table>
+                        <div id="divStyleAo"></div>
+
+                    </div>
+                </div><!-- /gridview -->
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">
+                    Cancel
+                </button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+<!--Search condition production line dashboard-->
+<div class="row">
+    <!-- Searching Criteria: Cutting Factory-->
+    <div class="col-sm-2 ">
+        <div class="form-group">
+            <label for="">Factory:</label>
+            <select id="drpFactory" class="form-control" data-placeholder=""></select>
+        </div>
+    </div>
+
+    <div class="col-sm-2 ">
+        <div class="form-group">
+            <label for="">Line:</label>
+
+            <select id="drpLine" class="form-control" data-placeholder=""></select>
+        </div>
+    </div>
+
+    <div class="col-sm-2">
+        <div class="form-group">
+            <label for=""> Buyer</label>
+            <select id="drpBuyer" class="form-control" data-placeholder=""></select>
+        </div>
+    </div>
+    <div class="col-sm-2">
+        <div class="form-group">
+            <label for="txtBuyerInfo"> Style Info</label>
+            <input type="text" class="form-control" id="txtBuyerInfo" placeholder="" />
+        </div>
+    </div>
+    <div class="col-sm-2">
+        <div class="form-group">
+            <label for="txtAoNumber"> AO Number</label>
+            <input type="text" class="form-control" id="txtAoNumber" placeholder="" />
+        </div>
+    </div>
+    <div class="col-sm-1">
+        <div class="form-group">
+            <label for="tags"> &nbsp;</label>
+            <button type="button" id="btnSearchStyle" class="btn btn-primary btn-sm form-control">
+                <span class="glyphicon glyphicon-search"></span> Search
+            </button>
+        </div>
+    </div>
+</div>
+<!-- /Search conditon-->
+
+<div class="top-buffer"></div>
+
+<!-- widget grid -->
+<section id="widget-grid" class="">
+
+    <!-- row -->
+    <div class="row">
+        <!-- NEW WIDGET START -->
+        <article class="col-sm-12">
+
+            <!-- Widget ID (each widget will need unique ID)-->
+            <div class="jarviswidget jarviswidget-color-green" id="wid-id-0" data-widget-editbutton="false">
+
+                <header>
+                    <h2><strong></strong></h2>
+
+                </header>
+
+                <!-- widget div-->
+                <div>
+
+                    <!-- widget content -->
+                    <div class="widget-body">
+
+                        <div class="row">
+                            <div class="col-sm-4 " style="text-align:center">
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <label class="font-size">Target</label>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-sm-12"  style="border:1px dotted black">
+                                            <label id="lblTarget" class="font-size">0</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-4" style="text-align:center">
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <label class="font-size achieve-color">Achieved</label>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-sm-12"  style="border:1px dotted green">
+                                            <label id="lblAchieve" class="font-size achieve-color">0</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-4 " style="text-align:center">
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <label class="font-size pending-color">Pending</label>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-sm-12" style="border:1px dotted red">
+                                            <label id="lblPending" class="font-size pending-color">0</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <!-- end widget content -->
+
+                </div>
+                <!-- end widget div -->
+
+            </div>
+            <!-- end widget -->
+
+        </article>
+        <!-- WIDGET END -->
+    </div>
+
+    <!-- end row -->
+
+</section>
+<!-- end widget grid -->
+
+
+@section Scripts{
+
+    <script src="~/js/plugin/jqgrid/jquery.jqGrid.min.js"></script>
+    <script src="~/js/plugin/jqgrid/grid.locale-en.min.js"></script>
+
+    <script src="~/js/mes/mes-common.js?v=1.0.2"></script>
+    <script src="~/js/mes/dgs/dgs-target.js?v=1.0.2"></script>
+    <script src="~/js/mes/dgs/dgs-target-event.js?v=1.0.1"></script>
+
+    <script>
+        $(function () {
+            initPage();
+
+            window.setInterval(function () {
+
+                var curDate = getCurrentDate();
+
+                var factory = $("#drpFactoryMdl").val();
+
+                var lineCd = $("#drpLineMdl").val();
+
+                curDate = "2019-01-30";
+                console.log(curStyleInfo + ' - ' + curDate + ' - ' + factory);
+
+                GetProductionTarget(curDate, factory, lineCd, curStyleInfo, function (schl) {
+
+                    $("#lblTarget").text(schl.TrgtQty);
+                    $("#lblAchieve").text(schl.Data);
+                    $("#lblPending").text(schl.Pending);
+
+                    console.log(schl.TrgtQty + ' - ' + schl.Data + ' - ' + schl.Pending);
+                });
+
+            }, 60000);
+        });
+    </script>
+
+}

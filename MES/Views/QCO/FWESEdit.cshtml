@@ -1,0 +1,162 @@
+﻿@model OPS_DAL.QCOEntities.FWES
+@{
+
+    var ReadOnly = Model.CONFIRMYN == "Y" ? true : false;
+
+}
+<style>
+</style>
+
+<div class="PopupContent">
+    <div class="PopupHeader">
+        <h3 class="pull-left">Factory Weekly Efficiency</h3>
+    </div>
+    <div class="PopupMainContent">
+        <div class="PopupSearching"></div>
+
+        <div class="PopupResult">
+            @using (Html.BeginForm("SaveFWES", "QCO", null, FormMethod.Post, new { role = "form", @class = "form-signin" }))
+            {
+
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div style="text-align:center;">
+                            @{
+                                <button type="button" class="btn btn-primary" onclick="PopTimesheetSave(this);">Save</button>
+                                <button type="button" class="btn btn-danger" onclick="PopTimesheetDel(this);">Delete</button>
+                            }
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row" style="margin-top:10px;">
+                    <div class="col-lg-3">
+                        <div class="form-group">
+                            <label>Factory:</label>
+                            @Html.HiddenFor(model => model.FACTORY)
+                            @Html.TextBoxFor(model => model.FACTORY, new { @class = "form-control", disabled = "" })
+                        </div>
+                    </div>
+
+                    <div class="col-lg-3">
+                        <div class="form-group">
+                            <label>Year:</label>
+                            @Html.HiddenFor(model => model.YEAR)
+                            @Html.TextBoxFor(model => model.YEAR, new { @class = "form-control", disabled = "" })
+                        </div>
+                    </div>
+
+                    <div class="col-lg-3">
+                        <div class="form-group">
+                            <label>Week No:</label>
+                            @Html.HiddenFor(model => model.WEEKNO)
+                            @Html.TextBoxFor(model => model.WEEKNO, new { @class = "form-control", disabled = "" })
+                        </div>
+                    </div>
+
+                    <div class="col-lg-3">
+                        <div class="form-group">
+                            <label>Efficiency ID:</label>
+                            @Html.HiddenFor(model => model.EFFICIENCYPERCEN, new { @class = "form-control" })
+                        </div>
+                    </div>
+                </div>
+
+            }
+        </div>
+    </div>
+    <div class="PopupFooter hide"></div>
+
+    <script>
+        /// Declaration ///
+
+        /// Events ///
+        $(document).ready(function () {
+        });
+
+        /// Function ///
+        function PopTimesheetSave(Ele) {
+            let $this = $(Ele);
+            let $form = $this.closest('form');
+            let objTask = getFormData($form);
+
+            let $modalbody = $this.closest('div.modal-body');
+
+            $.ajax({
+                url: '/Timesheet/SaveTimesheet',
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify({ pkTimesheet: objTask }),
+                success: function (response) {
+                    RebindTimesheetPop(objTask, $modalbody); //refresh the pop layout with latest html
+                },
+                complete: function (jqXHR, textStatus) {
+                }
+            });
+
+            return false;
+        }
+
+        function PopTimesheetDel(Ele) {
+            let $this = $(Ele);
+            let $form = $this.closest('form');
+            let objTask = getFormData($form);
+
+            let $modalbody = $this.closest('div.modal-body');
+            console.log(objTask);
+
+            ShowConfirmMessage("Confirm", "Sure to delete Timesheet [" + objTask.TimesheetID + "] ?", function (data) {
+                if (data) {
+                    $.ajax({
+                        url: '/Timesheet/DelTimesheet',
+                        type: 'POST',
+                        contentType: 'application/json',
+                        data: JSON.stringify({ pkTimesheet: objTask }),
+                        success: function (response) {
+                            if (!response.retResult)
+                                jsPanel.hint.create({
+                                    position: 'center-top 0 15 down',
+                                    contentSize: '330 auto',
+                                    content: '<p class="jsPanelHint">' + response.retMsg + '</p>',
+                                    theme: 'warning filledlight',
+                                    headerTitle: '<i class="fa fa-exclamation-triangle"></i> Error'
+                                });
+                            else {
+                                jsPanel.hint.create({
+                                    position: 'center-top 0 15 down',
+                                    contentSize: '330 auto',
+                                    content: '<p class="jsPanelHint">' + response.retMsg + '</p>',
+                                    theme: 'success filledlight',
+                                    headerTitle: '<i class="fa fa-check"></i>'
+                                });
+                                //Close the Popup
+                                $modalbody.closest('div.modal-content').find('div.modal-footer').find('button[data-dismiss="modal"]').trigger('click');
+                            }
+                        },
+                        complete: function (jqXHR, textStatus) {
+                            console.log(jqXHR, textStatus);
+                        }
+                    });
+                }
+            });
+            return false;
+        }
+
+        function RebindTimesheetPop(objTimesheet, ContainerEle) {
+            /*Re-bind Task pop*/
+            $.ajax({
+                url: '/Timesheet/TimesheetEditPop/' + objTimesheet.TimesheetID,
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify({ pkTimesheet: objTimesheet }),
+                success: function (response) {
+                    ContainerEle.html('');
+                    ContainerEle.html(response);
+                },
+                complete: function (jqXHR, textStatus) {
+                    console.log(jqXHR, textStatus);
+                }
+            });
+        }
+    </script>
+</div>

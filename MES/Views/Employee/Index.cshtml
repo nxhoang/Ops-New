@@ -1,0 +1,119 @@
+﻿@model OPS_DAL.MesEntities.Employee
+
+@{
+    ViewBag.Title = "Worker";
+    Layout = "~/Views/Shared/_MesLayout.cshtml";
+}
+
+@section scripts
+{
+    <script src="~/Scripts/angular.min.js"></script>
+    <script src="~/js/plugin/jqgrid/jquery.jqGrid.min.js"></script>
+    <script src="~/js/plugin/jqgrid/grid.locale-en.min.js"></script>
+    <script src="~/Assets/bootstrap-multiselect/bootstrap-multiselect.min.js"></script>
+    <link href="~/Assets/bootstrap-multiselect/bootstrap-multiselect.min.css" rel="stylesheet" />
+    <script src="~/Assets/jquery.blockUI/jquery.blockUI.js"></script>
+    <script src="~/js/mes/mes-common.js"></script>
+    <link href="~/Assets/hrm/worker/css/hrm-worker.search-header.min.css" rel="stylesheet" />
+    <script src="~/Assets/hrm/common/js/hrm-common.min.js"></script>
+    <script src="~/Assets/hrm/worker/js/hrm-worker-table.min.js?v=1.0"></script>
+    <script src="~/Assets/hrm/worker/js/hrm-worker.search-header.min.js?v=1.0"></script>
+    <link href="~/Assets/hrm/worker/css/hrm-worker-popup.min.css" rel="stylesheet" />
+    <script src="~/Assets/hrm/worker/js/hrm-worker-popup.min.js"></script>
+    <script src="~/Assets/hrm/worker/js/hrm.sync-data.min.js"></script>
+    <script src="~/Assets/hrm/worker/js/hrm-emp-main.min.js"></script>
+}
+
+<div class="row hrm__sync-group-btn">
+    <button id="btnSyncData" class="glyphicon glyphicon-file" title="Synchronize employees from API"></button>
+    <button id="btnSyncUserImg" class="glyphicon glyphicon-picture" title="Synchronize employee images for all teams"></button>
+    <button id="btnSyncUserImgByCondition" title="Synchronize employee images by selected factories, teams and positions" 
+            class="glyphicon glyphicon-refresh"></button>
+    <button id="btnSyncEmpNfcId" class="glyphicon glyphicon-user" title="Synchronize NFC"></button>
+</div>
+
+<div class="row">
+    <form id="searchEmpForm" name="SearchEmpForm">
+        <div class="row" style="margin: 8px 0">
+            <div class="col-sm-2">
+                <div class="form-group op-emp-map__control">
+                    <label class="control-label" for="selFactory">Factory</label>
+                    <select id="selFactory" multiple="multiple"></select>
+                </div>
+            </div>
+            <div class="col-sm-2">
+                <div id="divSelSection" class="form-group op-emp-map__control">
+                    <label class="control-label" for="selSection">Team</label>
+                    <select id="selSection" multiple="multiple"></select>
+                </div>
+            </div>
+            <div class="col-sm-2">
+                <div class="form-group op-emp-map__control">
+                    <label class="control-label" for="selPos">Position</label>
+                    <select id="selPos" multiple="multiple"></select>
+                </div>
+            </div>
+            <div class="col-sm-1" style="padding: 0">
+                <div class="form-group">
+                    <label for="divGender" class="control-label">Gender</label>
+                    <div id="divGender" class="checkbox op-emp-map__div-gender">
+                        <label for="rdMale" class="op-emp-map__lb-gender">Male&nbsp;</label>
+                        <input type="checkbox" class="op-emp-map__rd-cb--size op-emp-map__rd-male" id="rdMale" value="Male">
+                        <label for="rdFemale" style="padding-left: 0; margin-left: 18px;">Female&nbsp;</label>
+                        <input type="checkbox" class="op-emp-map__rd-cb--size op-emp-map__rd" id="rdFemale" value="Female">
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-2">
+                <div class="form-group op-emp-map__control">
+                    <label class="control-label" for="selSkill">Skill - Level</label>
+                    <select id="selSkill"></select>
+                </div>
+            </div>
+            <div class="col-sm-2">
+                <div id="divSelEmp" class="form-group op-emp-map__control">
+                    <label class="control-label" for="selEmp">ID - Name</label>
+                    <select id="selEmp" multiple="multiple"></select>
+                    @*<input id="txtIdEmp" class="op-emp-map__input" type="text" maxlength="200"/>*@
+                </div>
+            </div>
+            <div class="col-sm-1">
+                <div class="form-group">
+                    <div><label class="control-label">&nbsp;</label></div>
+                    <button type="submit" id="btnOkeFilterEmp" class="op-emp-map__btn op-emp-map__input op-emp-map__btn-oke">
+                        <span class="glyphicon glyphicon-ok-sign" aria-hidden="true"></span> OK
+                    </button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<div class="row">
+    <table id="tbEmp"></table>
+    <div id="tbEmpPager"></div>
+</div>
+
+<div id="popupEmp" class="overlay" ng-app="hrm-emp-app" ng-controller="HrmEmpAngCtr">
+    <div class="popup">
+        <a id="aCloseEmpPopup" class="close" href="#">&times;</a>
+        <div class="content">
+            <div class="row">
+                <div class="col-md-5" id="divEmpImg">
+                    <div style="background-image: url('{{Employee.FullImageUrl}}'); background-size: 100% 130%; width: 200px; height: 200px; border-radius: 100px"></div>
+                </div>
+                <div class="col-md-7 emp-popup--content">
+                    <span style="font-size: 22px; color: #000000; font-weight: bold">{{Employee.Name}}</span><br />
+                    <span>ID:&nbsp;</span><span id="spEmpId" class="emp-popup--content-value">{{Employee.EmployeeCode}}</span><br />
+                    <span>Gender:&nbsp;</span><span id="spEmpGender" class="emp-popup--content-value">{{Employee.Gender}}</span><br />
+                    <span>Factory:&nbsp;</span><span id="spEmpFactory" class="emp-popup--content-value">{{Employee.Factory}}</span><br />
+                    <span>Department:&nbsp;</span><span id="spEmpDept" class="emp-popup--content-value">{{Employee.Department}}</span><br />
+                    <span>Position:&nbsp;</span><span id="spEmpPos" class="emp-popup--content-value">{{Employee.Position}}</span><br />
+                    <span>Skill:&nbsp;</span><span id="spEmpSkill" class="emp-popup--content-value">
+                        {{Employee.Skill}}
+                    </span>
+                    <div class="emp-popup--content-rate-star"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

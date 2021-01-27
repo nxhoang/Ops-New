@@ -1,0 +1,51 @@
+﻿.btn-modal {
+    border-radius: 5px;
+    border: 0;
+}
+.modal.modal-custom {
+    text-align: center;
+}
+
+.modal.modal-custom .modal-dialog {
+    display: inline-block;
+    text-align: left;
+    vertical-align: middle;
+}
+
+.modal.modal-custom .modal-content {
+    border-radius: 8px;    
+}
+.modal.modal-custom .modal-body {
+    background-color:#E8F8F5;
+}
+
+.modal.modal-custom .modal-lg {
+    width: 85%; 
+}
+
+.modal.modal-custom .modal-header {
+    padding: 8px;
+    background: #307ecc;
+    color: white;
+}
+.modal.modal-custom .modal-footer {
+    padding: 10px;
+}
+.modal.modal-custom .close {
+    color: white;
+    opacity: .5;
+}
+
+
+
+
+
+
+@media screen and (min-width: 768px) {
+    .modal:before {
+        display: inline-block;
+        vertical-align: middle;
+        content: " ";
+        height: 100%;
+    }
+}

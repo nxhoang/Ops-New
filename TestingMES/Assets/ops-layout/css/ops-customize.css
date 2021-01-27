@@ -1,0 +1,758 @@
+﻿/*#region selectfast*/
+.fstChoiceItem {
+    margin: -0.4em 0.41667em 0.41667em 0 !important;
+    font-size: 0.9em !important;
+}
+
+.fstMultipleMode .fstQueryInput {
+    font-size: 1.2em !important;    
+    padding: 0 !important;
+}
+
+.fstChoiceItem {
+    margin: 0.1em 0.41667em 0.21667em 0 !important;
+}
+
+.fstMultipleMode .fstControls {
+
+    padding: 0.2em 0.5em 0em 0.5em !important;
+    
+}
+.fstResultItem {
+    font-size: 0.9em !important;
+}
+.fstNoResults {
+    font-size: 0.9em !important;
+    padding: 0.51429em 0.51429em !important;
+}
+/*#endregion*/
+
+/*#region Font Myanmar3*/
+@font-face {
+    font-family: 'Zawgyi-One';
+    src: url('../../../fonts/Myanmar3/zawgyi.woff') format('woff'), url('../../../fonts/Myanmar3/zawgyi.ttf') format('ttf');
+}
+
+/*#endregion*/
+
+.vertical-line {
+    height: 100%;
+    width: 1px;
+    border-right: 1px solid red;
+    position: absolute;
+    z-index: 2;
+    margin-left: 1000px;
+}
+
+/*#region logo*/
+
+.x-navigation.x-navigation-horizontal .xn-logo a {
+    width: 110px;
+}
+
+.x-navigation > li.xn-logo > a:first-child {
+    font-size: 20px;
+    height: 50px;
+    background: #1d2127;
+    font-weight: 500;
+}
+
+.x-navigation > li.xn-logo > a:first-child:hover {
+    background-color: #282d36;
+}
+
+/*#endregion*/
+
+/*#region Layout */
+
+body {
+    color: #22262e;
+}
+
+.page-body {
+    padding: 0 !important;
+}
+
+.page-content {
+    height: auto !important;
+}
+
+.panel .panel-body {
+    padding: 0px;
+}
+
+.page-container .page-content {
+    background: #ffffff;
+}
+
+.page-container {
+    background: #ffffff;
+}
+
+/*Vertical navigation*/
+#mCSB_1 {
+    background-color: #1b1e24;
+}
+/*#endregion */
+
+.dropdown-menu > li:hover > a, .dropdown-menu > li > a:focus,
+.dropdown-menu > li > a:active, .dropdown-menu > li.active > a,
+.dropdown-menu > li.active:hover > a {
+    background: #4f99c6;
+    color: #333;
+}
+
+/*#region multi select*/
+
+.multiselect-clear-filter {
+    border: 1px solid #bfbfbf;
+    border-radius: 5px;
+}
+
+.btn-multiple-select, .btn-multiple-select:focus {
+    border: 1px solid #bfbfbf;
+    border-radius: 0px;
+    color: #1b1e24 !important;
+    background-color: transparent !important;
+    border-color: #d9d9d9;
+    height: 32px;
+}
+
+.btn-multiple-select:hover, .btn-multiple-select.dropdown-toggle, .btn-multiple-select:active {
+    background-color: #ffffff !important;
+    border-color: #bfbfbf;
+    border-radius: 0;
+}
+
+.multiselect {
+    text-align: left;
+}
+
+.multiselect b.caret {
+    position: absolute;
+    top: 14px;
+    right: 8px;
+}
+
+.multiselect-container > li > a {
+    white-space: normal;
+}
+
+.multiselect-selected-text{
+    line-height:2;
+}
+
+.multiselect-container.dropdown-menu {
+    min-width: 100%;
+}
+
+/*#endregion*/
+
+/*#region Select2 control*/
+.select2-dropdown {
+    z-index: 9999;
+}
+
+li.select2-selection__choice {
+    max-width: 80%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/*Using for select in gridview*/
+td > span.select2{
+    width: 100% !important;
+}
+
+td .select2-search:after{
+    display: none !important;
+}
+
+.selec2-custom .select2-selection__rendered {
+    line-height: 32px !important;
+}
+
+.selec2-custom
+.select2-selection {
+    height: 32px !important;
+}
+
+.selec2-custom
+.select2-selection__arrow {
+    height: 32px !important;
+}
+
+.select2-search--dropdown .select2-search__field {
+    padding-left: 22px;
+}
+
+.select2-search:after {
+    left: 5px; 
+    top: -25px; 
+}
+
+.select2-search--dropdown {
+    height: 40px;
+}
+
+.select2-container--default .select2-selection--single {
+    border-radius: 0;
+}
+
+/*z-index for sub process detail modal*/
+.select2-third-modal > span.select2-container {
+    z-index: 10050;
+}
+
+.select2-third-modal .select2-container {
+    z-index: 10050;
+}
+
+/*#endregion*/
+/*#region*/
+input[type=text] {
+    border: 1px solid #bfbfbf;
+}
+
+/*#endregion*/
+
+/*#region Jqgrid dialgog*/
+
+.ui-jqdialog {
+    border-radius: 8px;
+    border: 0px solid #DDD; 
+}
+
+.ui-jqdialog-content, .ui-jqdialog .ui-jqdialog-content {
+    padding: 0px 0 0;
+}
+
+.header-dialog-jq, .ui-jqdialog .ui-widget-header {
+    padding: 0px;
+    background: #307ecc;
+    background-image: none;
+    color: white;
+    border-bottom: 1px solid #e5e5e5;
+    min-height: 16.43px;
+    border-color: #d5d5d5;
+}
+
+.ui-jqdialog .ui-jqdialog-titlebar-close {
+    opacity: .5;
+    color: white;
+}
+
+.body-dialog-jq {
+    background: #E8F8F5;
+    padding:10px;
+}
+
+.dialog-content-jq {
+    border: 1px solid #1aa3ff;
+    background: #ffffff;
+}
+
+.ui-jqgrid-btable input {
+    width: 100%;
+}
+/*#endregion*/
+
+/*#region Modal custom*/
+
+.modal.modal-custom {
+    text-align: center;
+}
+
+.modal.modal-custom .modal-dialog {
+    display: inline-block;
+    text-align: left;
+    vertical-align: middle;
+}
+
+.modal.modal-custom .modal-content {
+    border-radius: 8px;    
+}
+
+.modal.modal-custom .modal-body {
+    background-color:#E8F8F5;
+}
+
+.modal.modal-custom .modal-body-custom{
+    border:1px solid #1aa3ff;  
+    padding:10px;
+    background: #ffffff;
+}
+
+.modal.modal-custom .modal-lg {
+    width: 90%; 
+}
+
+.modal.modal-custom.modal-custom-width .modal-lg {
+    width: 65%;
+}
+
+.modal.modal-custom .modal-header {
+    padding: 8px;
+    background: #307ecc;
+    color: white;
+}
+.modal.modal-custom .modal-footer {
+    padding: 10px;
+}
+.modal.modal-custom .close {
+    color: white;
+    opacity: .5;
+}
+
+.modal {
+  overflow-y:auto;
+}
+
+.modal {
+    text-align: center;
+}
+
+@media screen and (min-width: 768px) {
+    .modal:before {
+        display: inline-block;
+        vertical-align: middle;
+        content: " ";
+        height: 100%;
+    }
+}
+
+.modal-dialog {
+    display: inline-block;
+    text-align: left;
+    vertical-align: middle;
+}
+
+#mdlPatternPreview .modal-dialog {
+    text-align: center;
+}
+/*#mdlProcessChart .modal-dialog {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+#mdlProcessChart .modal-content {
+    height: 100%;
+    /*min-height: 100%;
+    border-radius: 0;
+}*/
+/*#endregion*/
+
+/*Row*/
+
+#modalProcess .row {
+    margin-left: 0;
+    margin-right: 0;
+}
+
+/*#region Form group - form control*/
+.form-group {
+    margin-bottom: 5px;
+}
+
+.form-control {
+    height: 32px; /*default: 34px;*/
+}
+
+.form-control[disabled], .form-control[readonly] {
+    color: black;
+}
+
+/*#endregion*/
+
+/*#region Jqgrid*/
+
+.ui-jqgrid .ui-pager-control {
+    height: 35px;
+}
+
+ .ui-jqgrid .ui-jqgrid-pager {
+    height: 40px;
+}
+
+.jqgrid-ops-detail .ui-jqgrid .ui-jqgrid-view button {
+    font-size: 5px;
+}
+
+/*start border jqgrid*/
+.ui-jqgrid-bdiv {
+    border-left: 1px solid #E1E1E1;
+    border-right: 1px solid #E1E1E1;
+}
+
+.ui-jqgrid .ui-jqgrid-hdiv {
+    border-left: 1px solid #E1E1E1 !important;
+    border-right: 1px solid #E1E1E1 !important;
+}
+/*end border jqgrid*/
+
+#tblFilesDownload .btn {
+    padding: 3px 8px;
+}
+
+.jqgrid-ops-detail .btn {
+    padding: 4px 10px;
+}
+
+.ui-jqgrid-htable th div select {
+    margin-top: -6px;
+    cursor: pointer;
+}
+
+.ui-jqgrid-htable th div select option:hover {
+    cursor: pointer;
+}
+
+.ui-jqgrid tr.jqgrow td {
+    height: 20px;
+}
+
+.ui-jqgrid tr.ui-row-ltr td {
+    padding: 3px 4px;
+}
+
+/*.modal.modal-custom .ui-jqgrid .ui-jqgrid-pager {
+    height: 35px;
+}
+.modal.modal-custom .ui-jqgrid .ui-pager-control {
+    height: 40px;
+}*/
+
+/*#endregion*/
+
+/*#region Jqgrid on modal*/
+
+.modal.modal-custom .ui-jqgrid .ui-jqgrid-htable th {
+    height: 28px;
+    padding: 0 2px 0 2px;
+    border-right: 1px solid #E1E1E1;
+}
+
+#gbox_gridOpsTable .ui-jqgrid-htable th {
+    height: 28px;
+    padding: 0 2px 0 2px;
+    border-right: 1px solid #E1E1E1;
+}
+
+.modal.modal-custom .ui-jqgrid .ui-jqgrid-htable th div {
+    overflow: hidden;
+    position: relative;
+    height: 28px;
+} 
+
+.modal.modal-custom .ui-jqgrid .ui-jqgrid-htable th span.ui-jqgrid-resize {
+    height: 28px!important;
+}
+
+.modal.modal-custom .ui-jqgrid .ui-jqgrid-htable th div {
+    padding-top: 7px !important;
+}
+
+.modal.modal-custom .ui-jqgrid .ui-jqgrid-htable .ui-search-toolbar th div {
+    padding-bottom: 2px;
+    padding-top: 2px !important;
+    line-height: 23px;
+    height: 28px !important;
+}
+
+
+.modal.modal-custom .ui-jqgrid .ui-search-table .ui-search-input > input {
+    border-radius: 4px !important;
+}
+
+.ui-jqgrid .ui-search-table .ui-search-input > input, .ui-jqgrid .ui-search-table .ui-search-input > select {
+    border-radius: 4px !important; /*HA ADD*/
+    padding-bottom: 2px !important; /*HA ADD*/
+    padding-top: 2px !important; /*HA ADD*/
+    height: 24px !important;/*HA ADD*/
+}
+
+/*#endregion*/
+/*Custom video control*/
+video::-internal-media-controls-download-button {
+    display: none; /*Hide button download video*/
+}
+
+/*video::-webkit-media-controls-enclosure {
+    overflow:hidden;
+}
+
+video::-webkit-media-controls-panel {
+    width: calc(100% + 30px); 
+}*/
+
+/* Glyphicon*/
+.btn .fa, .btn .glyphicon {
+    font-size: 14px;
+    margin-right: 0;
+}
+
+.ui-dialog, .ui-jqdialog { z-index: 99999 !important; } /*HA ADD*/
+
+/*#region Dropdownlist country*/
+
+/*Country dropdown*/
+#drpLanguages_msdd {
+    width: 125px !important;
+}
+
+#drpLanguages_child {
+    width: 125px;
+}
+
+#drpLanguages_msdd:hover {
+    cursor: pointer;
+}
+
+#drpLanguageOpMaster_msdd {
+    width: 100% !important;
+    /*margin-left: -15px !important;*/
+}
+
+#drpLanguageOpMaster_msdd {
+    cursor: pointer;
+}
+
+/*Flag of language*/
+/*.dd .ddChild li {
+    text-align: center;
+}*/
+
+/*.ddcommon .ddTitle .ddTitleText {
+    text-align: center;
+}*/
+
+.dd .divider {
+     border-left: 0; 
+     border-right: 0; 
+     right: 0; 
+}
+
+.dd .arrow {
+    width: 0;
+    height: 0;
+    margin-top: 0;
+    background: none;
+}
+
+.dd .ddTitle .ddTitleText {
+    padding: 5px 5px 5px 5px;
+}
+
+.dd .ddTitle {
+    height: 32px;
+}
+
+/*#endregion*/
+
+/*#region chart fusion*/
+/*raphael-group-110-line*/
+/*#endregion*/
+
+/*#region Modal*/
+.modal-content-ops {
+    border: 1px solid #A2D9CE;
+    margin: 5px;
+    padding: 10px;
+}
+
+.mes__opmt-modal--row {
+    margin-left: 0;
+    margin-right: 0;
+}
+/*#endregion*/
+
+/*#region Button modal*/
+
+.btn-default-modal {
+    color: #333 !important;
+    background-color: #fff !important;
+    /*border-color: #ccc !important;*/
+    border-radius: 3px;
+    border: 1px solid #ccc;
+}
+
+.btn-default-modal:hover {
+    background-color: #F5F5F5 !important;
+    border-color: #DDD
+}
+
+.btn-default-modal:active {
+    color: #333;
+    background-color: #e6e6e6;
+    border-color: #adadad;
+}
+    
+.btn-modal {
+    border-radius: 3px;
+    border: 0;
+}
+
+.btn-ops {
+    border: 0;
+    border-radius: 5px;
+    padding-right: 10px;
+    padding-left: 10px;
+}
+
+.btn-upload-file {
+    border: 0;
+    border-radius: 5px;
+    background-color: #39842d !important;
+    padding-right: 10px;
+    padding-left: 10px;
+}
+
+.btn-trash {
+    width: 100%;
+}
+
+.btn-width-full {
+    width: 100%;
+}
+
+/*button of multiple select*/
+.multiselect-item.multiselect-filter .btn {
+    padding: 5px 12px;
+}
+
+.div-bnt-upload-video .btn-success:hover, .btn-success:active, .open > .btn-success.dropdown-toggle {
+    background-color: #215a17 !important;
+}
+
+.div-bnt-upload-image .btn-success:hover, .btn-success:active, .open > .btn-success.dropdown-toggle {
+    background-color: #215a17 !important;  /*checking*/
+}
+/*#endregion*/
+
+/*#region Upload video and image on modal*/
+
+.upload-file {
+    padding: 0 10px 10px 0;
+    float: right;
+}
+
+.upload-image {
+    padding-bottom: 10px;
+}
+
+.div-bnt-upload-image {
+    padding: 3px 0 10px 0;
+}
+
+.dvImageDetail {
+    padding: 3px 0 10px 0;
+}
+
+.div-bnt-upload-video {
+    padding: 3px 0 10px 0;
+}
+
+.nopadding {
+    padding: 0 !important;
+    margin-right: 0 !important;
+}
+
+.img-style {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-height:250px;
+}
+
+.img-preview {
+    width: 100%;
+    height: 200px;
+    border: 1px solid #a2d9ce;
+}
+
+.video-preview {
+    width: 100%;
+    height: 100%;
+    min-height: 200px;
+    border: 1px solid #a2d9ce;
+}
+
+.div-img-preview {
+    height: 200px;
+}
+
+.div-video-preview {
+    border: 1px solid #C0C0C0;
+    width: 100%;
+    background: #cccccc;
+    height: 200px;
+}
+
+.fileinput-button {
+    position: relative;
+    overflow: hidden;
+    display: inline-block;
+    width: 100%;
+}
+
+
+#dvUploadImageStyle {
+    margin: 10px 0 10px 0;
+}
+
+/*#endregion*/
+
+/*#region Menu*/
+
+.x-navigation li > .custom-panel {
+    width: 205px;
+}
+
+/*#endregion*/
+
+/*#region highlight boder dropdownlist*/
+.error-border, input.error, select.error {
+    border: 1px solid #f00 !important;
+}
+
+.normal-border {
+    border: 1px solid #bfbfbf !important;
+}
+/*#endregion*/
+
+/*#region star color*/
+
+.star-color{
+    color:red;
+}
+
+/*#endregion star color*/
+
+/*#region play video*/
+#vdoOpsDetail {
+    width: 100%;
+    height: 80%;
+}
+/*#endregion*/
+
+/*#region Customize legend in adding new process*/
+fieldset.iottype {
+    border: 1px solid #bfbfbf !important;
+    padding: 0 1.4em 0 1.4em !important;
+    margin: 0 0 1.5em 0 !important;
+    -webkit-box-shadow: 0 0 0 0 #000;
+    box-shadow: 0 0 0 0 #000;
+}
+
+legend.iottype {
+    font-size: 14px !important;
+    font-weight: bold !important;
+    text-align: left !important;
+    width: auto;
+    padding: 0 10px;
+    border-bottom: none;
+    margin-bottom: 0;
+}
+/*#endregion*/

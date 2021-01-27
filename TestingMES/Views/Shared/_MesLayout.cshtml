@@ -1,0 +1,800 @@
+﻿
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <meta charset="utf-8">
+    <!--<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">-->
+
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <title>@ViewBag.Title</title>
+
+    <!-- Basic Styles -->
+    <link rel="stylesheet" type="text/css" media="screen" href="~/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" media="screen" href="~/css/font-awesome.min.css">
+    <link href="~/Assets/fontawesome-free-5.11.2-web/css/all.css" rel="stylesheet"> <!--v5 -->
+    <!-- SmartAdmin Styles : Caution! DO NOT change the order -->
+    <link rel="stylesheet" type="text/css" media="screen" href="~/css/smartadmin-production-plugins.min.css">
+    <link rel="stylesheet" type="text/css" media="screen" href="~/css/smartadmin-production.min.css">
+    <link rel="stylesheet" type="text/css" media="screen" href="~/css/smartadmin-skins.min.css">
+
+    <!-- SmartAdmin RTL Support  -->
+    <link rel="stylesheet" type="text/css" media="screen" href="~/css/smartadmin-rtl.min.css">
+
+    <!-- We recommend you use "your_style.css" to override SmartAdmin
+         specific styles this will also ensure you retrain your customization with each SmartAdmin update.
+    <link rel="stylesheet" type="text/css" media="screen" href="~/css/your_style.css"> -->
+    <!-- Demo purpose only: goes with demo.js, you can delete this css when designing your own WebApp -->
+    <link rel="stylesheet" type="text/css" media="screen" href="~/css/demo.min.css">
+
+    <!-- FAVICONS -->
+    <link rel="shortcut icon" href="~/img/favicon/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="~/img/favicon/favicon.ico" type="image/x-icon">
+
+    <!-- GOOGLE FONT -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400italic,700italic,300,400,700">
+
+    <!-- Specifying a Webpage Icon for Web Clip
+         Ref: https://developer.apple.com/library/ios/documentation/AppleApplications/Reference/SafariWebContent/ConfiguringWebApplications/ConfiguringWebApplications.html -->
+    <link rel="apple-touch-icon" href="~/img/splash/sptouch-icon-iphone.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="~/img/splash/touch-icon-ipad.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="~/img/splash/touch-icon-iphone-retina.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="~/img/splash/touch-icon-ipad-retina.png">
+
+    <!--SELECT 2 CSS) SON ADD-->
+    <link href="~/assets/select2/css/select2.min.css" rel="stylesheet" />
+
+    <!--MULTIPLE SELECT CSS) SON ADD-->
+    <link href="~/Assets/bootstrap-multiselect/bootstrap-multiselect.css" rel="stylesheet" />
+
+    <!--JQUERY MESSAGE BOX) SON ADD-->
+    <link href="~/assets/jquery-msgbox/styles/msgBoxLight.css" rel="stylesheet" />
+    <link href="~/assets/jquery-msgbox/styles/msgbox-custom.css" rel="stylesheet" />
+
+    <!-- SmartAdmin Css custom) SON ADD-->
+    <link href="~/css/smartadmin-custom.css" rel="stylesheet" />
+
+
+    <!--2019-12-02: jqGrid in SmartAdmin Css) Tai Le (Thomas)-->
+    <link href="~/js/plugin/jqgrid/css/jqGridThemeBySmartAdmin.css" rel="stylesheet" />
+
+
+    <style>
+        body.smart-style-6 #logo img {
+            display: inline;
+        }
+    </style>
+
+</head>
+
+<!--TABLE OF CONTENTS.
+
+Use search to find needed section.
+
+===================================================================
+
+|  01. #CSS Links                |  all CSS links and file paths  |
+|  02. #FAVICONS                 |  Favicon links and file paths  |
+|  03. #GOOGLE FONT              |  Google font link              |
+|  04. #APP SCREEN / ICONS       |  app icons, screen backdrops   |
+|  05. #BODY                     |  body tag                      |
+|  06. #HEADER                   |  header tag                    |
+|  07. #PROJECTS                 |  project lists                 |
+|  08. #TOGGLE LAYOUT BUTTONS    |  layout buttons and actions    |
+|  09. #MOBILE                   |  mobile view dropdown          |
+|  10. #SEARCH                   |  search field                  |
+|  11. #NAVIGATION               |  left panel & navigation       |
+|  12. #RIGHT PANEL              |  right panel userlist          |
+|  13. #MAIN PANEL               |  main panel                    |
+|  14. #MAIN CONTENT             |  content holder                |
+|  15. #PAGE FOOTER              |  page footer                   |
+|  16. #SHORTCUT AREA            |  dropdown shortcuts area       |
+|  17. #PLUGINS                  |  all scripts and plugins       |
+
+===================================================================
+
+-->
+<!-- #BODY -->
+<!-- Possible Classes
+
+    * 'smart-style-{SKIN#}'
+    * 'smart-rtl'         - Switch theme mode to RTL
+    * 'menu-on-top'       - Switch to top navigation (no DOM change required)
+    * 'no-menu'			  - Hides the menu completely
+    * 'hidden-menu'       - Hides the main menu but still accessable by hovering over left edge
+    * 'fixed-header'      - Fixes the header
+    * 'fixed-navigation'  - Fixes the main menu
+    * 'fixed-ribbon'      - Fixes breadcrumb
+    * 'fixed-page-footer' - Fixes footer
+    * 'container'         - boxed layout mode (non-responsive: will not work with fixed-navigation & fixed-ribbon)
+-->
+<body class="">
+    <!--hidden field to keep factory code-->
+    @Html.Hidden("hdFactoryUser")
+    @Html.Hidden("hdUserId")
+
+    <!-- HEADER -->
+    <header id="header">
+        <div id="logo-group">
+
+            <!-- PLACE YOUR LOGO HERE -->
+            <span id="logo" style="font-size:medium; font-weight:700; width:175px; color:white">  <img src="~/img/logo.png" alt="SmartAdmin"> <span id="spaFactory"></span>   </span>
+            <!-- END LOGO PLACEHOLDER -->
+            <!-- Note: The activity badge color changes when clicked and resets the number to 0
+            Suggestion: You may want to set a flag when this happens to tick off all checked messages / notifications -->
+            <span id="activity" class="activity-dropdown"> <i class="fa fa-user"></i> @*<b class="badge"> 21 </b>*@ </span>
+
+        </div>
+
+        <!-- projects dropdown -->
+        <div class="project-context hidden-xs">
+
+            <span class="label"></span>
+            <span class="project-selector dropdown-toggle" data-toggle="dropdown">Styles in production <i class="fa fa-angle-down"></i></span>
+
+            <!-- Suggestion: populate this list with fetch and push technique -->
+            <ul class="dropdown-menu">
+                @*<li>
+                        <a href="javascript:void(0);">Online e-merchant management system - attaching integration with the iOS</a>
+                    </li>
+                    <li>
+                        <a href="javascript:void(0);">Notes on pipeline upgradee</a>
+                    </li>
+                    <li>
+                        <a href="javascript:void(0);">Assesment Report for merchant account</a>
+                    </li>
+                    <li class="divider"></li>
+                    <li>
+                        <a href="javascript:void(0);"><i class="fa fa-power-off"></i> Clear</a>
+                    </li>*@
+            </ul>
+            <!-- end dropdown-menu-->
+
+        </div>
+        <!-- end projects dropdown -->
+        <!-- pulled right: nav area -->
+        <div class="pull-right">
+
+            <!-- collapse menu button -->
+            <div id="hide-menu" class="btn-header pull-right">
+                <span> <a href="javascript:void(0);" data-action="toggleMenu" title="Collapse Menu"><i class="fa fa-reorder"></i></a> </span>
+            </div>
+            <!-- end collapse menu -->
+            <!-- #MOBILE -->
+            <!-- Top menu profile link : this shows only when top menu is active -->
+            <ul id="mobile-profile-img" class="header-dropdown-list hidden-xs padding-5">
+                <li class="">
+                    <a href="#" class="dropdown-toggle no-margin userdropdown" data-toggle="dropdown">
+                        <img src="~/img/avatars/sunny.png" class="online" /> <!--MOD SON) remove alt="Jonh.Doe"-->
+                    </a>
+                    <ul class="dropdown-menu pull-right">
+                        <li>
+                            <a href="javascript:void(0);" class="padding-10 padding-top-0 padding-bottom-0">  Login as role <label id="lblRole"> </label></a>
+                        </li>
+                        <li class="divider"></li>
+                        <li>
+                            <a href="javascript:void(0);" class="padding-10 padding-top-0 padding-bottom-0"><i class="fa fa-cog"></i> Setting</a>
+                        </li>
+                        <li class="divider"></li>
+                        <li>
+                            <a href="#" class="padding-10 padding-top-0 padding-bottom-0"> <i class="fa fa-user"></i> <u>P</u>rofile</a>
+                        </li>
+                        <li class="divider"></li>
+                        <li>
+                            <a href="javascript:void(0);" class="padding-10 padding-top-0 padding-bottom-0" data-action="toggleShortcut"><i class="fa fa-arrow-down"></i> <u>S</u>hortcut</a>
+                        </li>
+                        <li class="divider"></li>
+                        <li>
+                            <a href="javascript:void(0);" class="padding-10 padding-top-0 padding-bottom-0" data-action="launchFullscreen"><i class="fa fa-arrows-alt"></i> Full <u>S</u>creen</a>
+                        </li>
+                        <li class="divider"></li>
+                        <li>
+                            <a href="/Account/Logout" class="padding-10 padding-top-5 padding-bottom-5" data-action="userLogout"><i class="fa fa-sign-out fa-lg"></i> <strong><u>L</u>ogout</strong></a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+
+            <!-- logout button -->
+            <div id="logout" class="btn-header transparent pull-right">
+                <span> <a href="/Account/Logout" title="Sign Out" data-action="userLogout" data-logout-msg="You can improve your security further after logging out by closing this opened browser"><i class="fa fa-sign-out"></i></a> </span>
+            </div>
+            <!-- end logout button -->
+            <!-- search mobile button (this is hidden till mobile view port) -->
+            <div id="search-mobile" class="btn-header transparent pull-right">
+                <span> <a href="javascript:void(0)" title="Search"><i class="fa fa-search"></i></a> </span>
+            </div>
+            <!-- end search mobile button -->
+            <!-- input: search field -->
+            <div class="header-search pull-right">
+                <input id="search-fld" type="text" name="param" placeholder="Find reports and more">
+                <button type="submit">
+                    <i class="fa fa-search"></i>
+                </button>
+                <a href="javascript:void(0);" id="cancel-search-js" title="Cancel Search"><i class="fa fa-times"></i></a>
+            </div>
+            <!-- end input: search field -->
+            <!-- fullscreen button -->
+            <div id="fullscreen" class="btn-header transparent pull-right">
+                <span> <a href="javascript:void(0);" data-action="launchFullscreen" title="Full Screen"><i class="fa fa-arrows-alt"></i></a> </span>
+            </div>
+            <!-- end fullscreen button -->
+            <!-- #Voice Command: Start Speech -->
+            @*<div id="speech-btn" class="btn-header transparent pull-right hidden-sm hidden-xs">
+                    <div>
+                        <a href="javascript:void(0)" title="Voice Command" data-action="voiceCommand"><i class="fa fa-microphone"></i></a>
+                        <div class="popover bottom">
+                            <div class="arrow"></div>
+                            <div class="popover-content">
+                                <h4 class="vc-title">Voice command activated <br><small>Please speak clearly into the mic</small></h4>
+                                <h4 class="vc-title-error text-center">
+                                    <i class="fa fa-microphone-slash"></i> Voice command failed
+                                    <br><small class="txt-color-red">Must <strong>"Allow"</strong> Microphone</small>
+                                    <br><small class="txt-color-red">Must have <strong>Internet Connection</strong></small>
+                                </h4>
+                                <a href="javascript:void(0);" class="btn btn-success" onclick="commands.help()">See Commands</a>
+                                <a href="javascript:void(0);" class="btn bg-color-purple txt-color-white" onclick="$('#speech-btn .popover').fadeOut(50);">Close Popup</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>*@
+            <!-- end voice command -->
+            <!-- multiple lang dropdown : find all flags in the flags page -->
+            <ul class="header-dropdown-list hidden-xs">
+                <li>
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"> <img src="~/img/blank.gif" class="flag flag-us" alt="United States"> <span> English (US) </span> <i class="fa fa-angle-down"></i> </a>
+                    <ul class="dropdown-menu pull-right">
+                        <li class="active">
+                            <a href="javascript:void(0);"><img src="~/img/blank.gif" class="flag flag-us" alt="United States"> English (US)</a>
+                        </li>
+                        <li>
+                            <a href="javascript:void(0);"><img src="~/img/blank.gif" class="flag flag-vn" alt="France"> Việt Nam</a>
+                        </li>
+                        <li>
+                            <a href="javascript:void(0);"><img src="~/img/blank.gif" class="flag flag-et" alt="Spanish"> Ethiopia</a>
+                        </li>
+                        <li>
+                            <a href="javascript:void(0);"><img src="~/img/blank.gif" class="flag flag-mm" alt="German"> Myanmar</a>
+                        </li>
+                        <li>
+                            <a href="javascript:void(0);"><img src="~/img/blank.gif" class="flag flag-id" alt="Japan"> Indonesia</a>
+                        </li>
+                        <li>
+                            <a href="javascript:void(0);"><img src="~/img/blank.gif" class="flag flag-kr" alt="Korea"> 한국어</a>
+                        </li>
+
+                    </ul>
+                </li>
+            </ul>
+            <!-- end multiple lang -->
+
+        </div>
+        <!-- end pulled right: nav area -->
+
+    </header>
+    <!-- END HEADER -->
+    <!-- Left panel : Navigation area -->
+    <!-- Note: This width of the aside area can be adjusted through LESS variables -->
+    <aside id="left-panel">
+
+        <!-- User info -->
+        <div class="login-info">
+            <span>
+                <!-- User image size is adjusted inside CSS, it should stay as it -->
+
+                <a href="javascript:void(0);" id="show-shortcut" data-action="toggleShortcut">
+                    <img src="~/img/avatars/sunny.png" alt="me" class="online" />
+                    @{
+                        var loginName = Session["LoginName"];
+                        if (loginName != null)
+                        {
+                            <span>@Session["LoginName"].ToString()</span>
+                        }
+                    }
+                    <i class="fa fa-angle-down"></i>
+                </a>
+
+            </span>
+        </div>
+        <!-- end user info -->
+        <!-- NAVIGATION : This navigation is also responsive-->
+        <nav>
+            <!--
+            NOTE: Notice the gaps after each icon usage <i></i>..
+            Please note that these links work a bit different than
+            traditional href="" links. See documentation for details.
+            -->
+
+            <ul>
+                @*<li class=""> <a href="/Dashboard/Dashboard" title="Dashboard"><i class="fa fa-lg fa-fw fa-home"></i> <span class="menu-item-parent">Home</span></a> </li>*@
+
+                <li class="">
+                    <a href="/Dashboard/Default" title="Dashboard"><i class="fas fa-lg fa-fw fa-tachometer-alt"></i> <span class="menu-item-parent">Dashboards</span></a>
+                    <ul>
+                        <li>
+                            <a href="/MesManagement/FactorySummary">Corporate Dashboard</a>
+                        </li>
+                        <li>
+                            <a href="/DgsTarget/DgsTarget">Production Line Dashboard</a>
+                        </li>
+                        <li>
+                            <a href="/LineDashboard/Index">Line Dashboard</a>
+                        </li>
+                        <li>
+                            <a href="/AssemblyDashboard/Index">Assembly Dashboard</a>
+                        </li>
+                        <li>
+                            <a href="/Dashboard/Dashboard">Machine Operation</a>
+                        </li>
+                    </ul>
+                </li> 
+            </ul>
+        </nav>
+
+
+        <span class="minifyme" data-action="minifyMenu">
+            <i class="fa fa-arrow-circle-left hit"></i>
+        </span>
+
+    </aside>
+    <!-- END NAVIGATION -->
+    <!-- MAIN PANEL -->
+    <div id="main" role="main">
+
+        <!-- MAIN CONTENT -->
+        <div id="content">
+            <div class="row">
+                <div class="col-xs-12 col-sm-7 col-md-7 col-lg-4">
+                    @*<h1 class="page-title txt-color-blueDark"><i class="fa-fw fa fa-home"></i> @ViewBag.PageTitle  @Html.Raw(ViewBag.SubPageTitle) </h1>*@
+                    <h1 class="page-title txt-color-blueDark"> @Html.Raw(ViewBag.PageTitle)  @Html.Raw(ViewBag.SubPageTitle) </h1>
+                </div>
+            </div>
+
+            @*<div class="row"><div class="col-sm-12"><div class="well">*@
+
+            @RenderBody()
+
+            <div class="modal fade" id="myModal">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        </div>
+
+                        <div class="modal-body">
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        </div>
+                    </div><!-- /.modal-content -->
+                </div><!-- /.modal-dialog -->
+            </div>
+            @*</div></div></div>*@
+
+        </div>
+        <!-- END MAIN CONTENT -->
+
+    </div>
+    <!-- END MAIN PANEL -->
+    <!-- PAGE FOOTER -->
+    <div class="page-footer">
+        <div class="row">
+            <div class="col-xs-12 col-sm-6">
+                <span class="txt-color-white">PKMES © 2019 <span class="hidden-xs"> - Pungkook Corporation</span></span>
+            </div>
+
+            @*<div class="col-xs-6 col-sm-6 text-right hidden-xs">
+                    <div class="txt-color-white inline-block">
+                        <i class="txt-color-blueLight hidden-mobile">Last account activity <i class="fa fa-clock-o"></i> <strong>52 mins ago &nbsp;</strong> </i>
+                        <div class="btn-group dropup">
+                            <button class="btn btn-xs dropdown-toggle bg-color-blue txt-color-white" data-toggle="dropdown">
+                                <i class="fa fa-link"></i> <span class="caret"></span>
+                            </button>
+
+                        </div>
+                    </div>
+                </div>*@
+        </div>
+    </div>
+    <!-- END PAGE FOOTER -->
+    <!-- SHORTCUT AREA : With large tiles (activated via clicking user name tag)
+    Note: These tiles are completely responsive,
+    you can add as many as you like
+    -->
+    <div id="shortcut">
+        <ul>
+            <li>
+                <a href="#" class="jarvismetro-tile big-cubes bg-color-orangeDark"> <span class="iconbox"> <i class="fa fa-calendar fa-4x"></i> <span>Calendar</span> </span> </a>
+            </li>
+            <li>
+                <a href="profile.html" class="jarvismetro-tile big-cubes selected bg-color-pinkDark"> <span class="iconbox"> <i class="fa fa-user fa-4x"></i> <span>My Profile </span> </span> </a>
+            </li>
+        </ul>
+    </div>
+    <!-- END SHORTCUT AREA -->
+    <!--================================================== -->
+    <!-- PACE LOADER - turn this on if you want ajax loading to show (caution: uses lots of memory on iDevices)-->
+    <script data-pace-options='{ "restartOnRequestAfter": true }' src="~/js/plugin/pace/pace.min.js"></script>
+
+    <!-- Link to Google CDN's jQuery + jQueryUI; fall back to local -->
+    @*<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <script> if (!window.jQuery) { document.write('<script src="~/js/libs/jquery-3.2.1.min.js"><\/script>'); } </script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+        <script> if (!window.jQuery.ui) { document.write('<script src="~/js/libs/jquery-ui.min.js"><\/script>'); } </script>
+    *@
+
+    <!--SON ADD-->
+    <script src="~/js/libs/jquery-3.2.1.min.js"></script>
+    <script src="~/js/libs/jquery-migrate-3.0.0.min.js"></script>
+    <script src="~/js/libs/jquery-ui.min.js"></script>
+
+
+    <!--IMPORTANT: APP CONFIG -->
+    <script src="~/js/app.config.js"></script>
+
+    <!-- JS TOUCH : include this plugin for mobile drag / drop touch events-->
+    <script src="~/js/plugin/jquery-touch/jquery.ui.touch-punch.min.js"></script>
+
+    <!-- BOOTSTRAP JS -->
+    <script src="~/js/bootstrap/bootstrap.min.js"></script>
+
+    <!-- CUSTOM NOTIFICATION
+    <script src="~/js/notification/SmartNotification.min.js"></script>-->
+    <!-- JARVIS WIDGETS -->
+    <script src="~/js/smartwidgets/jarvis.widget.min.js"></script>
+
+    <!-- EASY PIE CHARTS
+    <script src="~/js/plugin/easy-pie-chart/jquery.easy-pie-chart.min.js"></script>-->
+    <!-- SPARKLINES
+    <script src="~/js/plugin/sparkline/jquery.sparkline.min.js"></script>-->
+    <!-- JQUERY VALIDATE -->
+    <script src="~/js/plugin/jquery-validate/jquery.validate.min.js"></script>
+
+    <!-- JQUERY MASKED INPUT
+    <script src="~/js/plugin/masked-input/jquery.maskedinput.min.js"></script>-->
+    <!-- JQUERY SELECT2 INPUT -->
+    <script src="~/js/plugin/select2/select2.min.js"></script>
+
+    <!-- JQUERY MULTIPLE SELECT -->
+    <script src="~/Assets/bootstrap-multiselect/bootstrap-multiselect.js"></script>
+
+    <!-- JQUERY UI + Bootstrap Slider
+    <script src="~/js/plugin/bootstrap-slider/bootstrap-slider.min.js"></script>-->
+    <!-- browser msie issue fix -->
+    <script src="~/js/plugin/msie-fix/jquery.mb.browser.min.js"></script>
+
+    <!-- FastClick: For mobile devices -->
+    <script src="~/js/plugin/fastclick/fastclick.min.js"></script>
+
+    <!--[if IE 8]>
+        <h1>Your browser is out of date, please update your browser by going to www.microsoft.com/download</h1>
+     <![endif]-->
+    <!-- Demo purpose only -->
+    <script src="~/js/demo.min.js"></script>
+
+    <!-- MAIN APP JS FILE -->
+    <script src="~/js/app.min.js"></script>
+
+    <!-- ENHANCEMENT PLUGINS : NOT A REQUIREMENT -->
+    <!-- Moment.JS -->
+    <script src="~/js/plugin/moment/moment.min.js"></script>
+
+    <!-- Voice command : plugin
+    <script src="~/js/speech/voicecommand.min.js"></script>-->
+    <!-- SmartChat UI : plugin
+    <script src="~/js/smart-chat-ui/smart.chat.ui.min.js"></script>
+    <script src="~/js/smart-chat-ui/smart.chat.manager.min.js"></script>-->
+    <!-- PAGE RELATED PLUGIN(S) -->
+    <!-- Flot Chart Plugin: Flot Engine, Flot Resizer, Flot Tooltip
+    <script src="~/js/plugin/flot/jquery.flot.cust.min.js"></script>
+    <script src="~/js/plugin/flot/jquery.flot.resize.min.js"></script>
+    <script src="~/js/plugin/flot/jquery.flot.time.min.js"></script>
+    <script src="~/js/plugin/flot/jquery.flot.tooltip.min.js"></script>-->
+    <!-- Vector Maps Plugin: Vectormap engine, Vectormap language
+    <script src="~/js/plugin/vectormap/jquery-jvectormap-1.2.2.min.js"></script>
+    <script src="~/js/plugin/vectormap/jquery-jvectormap-world-mill-en.js"></script>-->
+    <!-- Full Calendar
+    <script src="~/js/plugin/fullcalendar/fullcalendar.min.js"></script>-->
+    <!--Common) SON ADD-->
+    <script src="~/js/common/common.js?v=1.0.1"></script>
+    <script src="~/assets/jquery-msgbox/scripts/jquery.msgBox.js"></script>
+
+
+    <script>
+        $(document).ready(function () {
+            // DO NOT REMOVE : GLOBAL FUNCTIONS!
+            pageSetUp();
+
+            //Get and set current style
+            eventSmartStyle();
+            checkSmartStyle();
+
+            loadActiveMenu();
+
+            //Set user name
+            const loginname = '@Session["LoginName"]';
+
+            if (loginname) {
+                $("#show-shortcut span").html(loginname);
+            }
+
+            //Get user role information
+            getUserRoleInfoById(function (objRole) {
+                $("#hdFactoryUser").val(objRole.FACTORY);
+                $("#hdUserId").val(objRole.USERID);
+                $("#lblRole").text(objRole.ROLEID);
+            });
+
+            getFactoryName(function (objServer) {
+                //console.log(objServer.FactoryName);
+                $("#spaFactory").append("- &nbsp;&nbsp;" + " " + objServer.FactoryName);
+                //&nbsp;&nbsp;
+            });
+
+            //Set min heigh for main div
+            let hScreen = $(window).height() - (120 + 52); //minus header (120) and footer (52)
+            $('#main').css('min-height', hScreen + 'px');
+
+        });
+
+        //START ADD) SON (2019.11.14) - 14 November 2019 - Get factory name
+         function getFactoryName(callBackFunc) {
+            var config = ObjectConfigAjaxPost("../CommonAPI/GetCstpByServerNo", false, null);
+                AjaxPostCommon(config, function (objServer) {
+                    callBackFunc(objServer);
+                });
+         }
+        //END ADD) SON (2019.11.14) - 14 November 2019 - Get factory name
+
+        //START ADD) SON - 25 Jan 2019 - Get user role information.
+        function getUserRoleInfoById(callBackFunc) {
+            var config = ObjectConfigAjaxPost("../Account/GetRoleInfoByUserRoleId", false, null);
+                AjaxPostCommon(config, function (objRole) {
+                    callBackFunc(objRole);
+                });
+        }
+        //END ADD) SON - 25 Jan 2019
+
+        /// Tai Le (Thomas)
+        //2019-07-17 Tai Le (Thomas): Handle Active Menu
+        $('nav a').on('click', function () {
+            let $this = $(this);
+            let href = $this.attr('href');
+            sessionStorage.setItem("activeMenu", href);
+        });
+
+        function loadActiveMenu() {
+            var SelectMenu = sessionStorage.getItem("activeMenu");
+
+            if (SelectMenu) {
+                if (SelectMenu != '#')
+                    $('nav').find('a[href="' + SelectMenu + '"]').closest('li').addClass('active');
+            } else
+                    $('nav').find('a[href="/Dashboard/Dashboard"]').closest('li').addClass('active');
+        }
+        // ::END    2019-07-17 Tai Le (Thomas): Handle Active Menu
+
+        function getFormData($form)
+        {
+            var unindexed_array = $form.serializeArray();
+            var indexed_array = {};
+
+            $.map(unindexed_array, function (n, i)
+            {
+                indexed_array[n['name']] = n['value'];
+            });
+            return indexed_array;
+        }
+        function pimpHeader(gridObj) {
+            var _arrGrid = [];
+            if (!Array.isArray(gridObj)) {
+                _arrGrid.push(gridObj);
+            }
+
+            _arrGrid.forEach(function (element) {
+                if (element) {
+                    var cm = element.jqGrid("getGridParam", "colModel");
+                    for (var i = 0; i < cm.length; i++) {
+                        element.jqGrid('setLabel', cm[i].name, '',
+                            { 'text-align': (cm[i].align || 'left') },
+                            (cm[i].titletext ? { 'title': cm[i].titletext } : {}));
+                    }
+                }
+            });
+        }
+        ///::END    Tai Le (Thomas)
+
+    </script>
+
+    @RenderSection("scripts", required: false)
+
+    <script>
+        //2019-12-04 Tai Le (Thomas): handle chart.js [type="bar"] color
+        var _opacity = 1;
+        var _barColor = "";
+
+        //START ADD) SON - 2018/Nov/06
+        //Event click change smart style
+        function eventSmartStyle() {
+            $("#smart-style-1").click(function () {
+                localStorage.setItem("smartStyle", "smart-style-1");
+
+                //Update Bar-chart background
+                _barColor = "#3A4558";
+                if (window.myBar !== undefined) {
+                    let $chart = window.myBar;
+                    let ChartDataLength = $chart.data.datasets.length;
+                    for (let intI = 0; intI < ChartDataLength; intI++) {
+                        switch (intI) {
+                            case 0:
+                                _opacity = 1;
+                                break;
+                            case 1:
+                                _opacity = 0.67;
+                                break;
+                            case 2:
+                                _opacity = 0.33;
+                                break;
+                        }
+                        $chart.data.datasets[intI].backgroundColor = convertColorHexToRgbOpacity(_barColor, _opacity);
+                    }
+                    $chart.update();
+                }
+
+
+            });
+
+            $("#smart-style-2").click(function () {
+                localStorage.setItem("smartStyle", "smart-style-2");
+            });
+
+            $("#smart-style-3").click(function () {
+                localStorage.setItem("smartStyle", "smart-style-3");
+
+                //Update Bar-chart background
+                _barColor = "#f78c40";
+                if (window.myBar !== undefined) {
+                    let $chart = window.myBar;
+                    let ChartDataLength = $chart.data.datasets.length;
+                    for (let intI = 0; intI < ChartDataLength; intI++) {
+                        switch (intI) {
+                            case 0:
+                                _opacity = 1;
+                                break;
+                            case 1:
+                                _opacity = 0.67;
+                                break;
+                            case 2:
+                                _opacity = 0.33;
+                                break;
+                        }
+                        $chart.data.datasets[intI].backgroundColor = convertColorHexToRgbOpacity(_barColor, _opacity);
+                    }
+                    $chart.update();
+                }
+
+            });
+
+            $("#smart-style-4").click(function () {
+                localStorage.setItem("smartStyle", "smart-style-4");
+
+                //Update Bar-chart background
+                _barColor = "#bbc0cf";
+                if (window.myBar !== undefined) {
+                    let $chart = window.myBar;
+                    let ChartDataLength = $chart.data.datasets.length;
+                    for (let intI = 0; intI < ChartDataLength; intI++) {
+                        switch (intI) {
+                            case 0:
+                                _opacity = 1;
+                                break;
+                            case 1:
+                                _opacity = 0.67;
+                                break;
+                            case 2:
+                                _opacity = 0.33;
+                                break;
+                        }
+                        $chart.data.datasets[intI].backgroundColor = convertColorHexToRgbOpacity(_barColor, _opacity);
+                    }
+                    $chart.update();
+                }
+
+            });
+
+            $("#smart-style-5").click(function () {
+                localStorage.setItem("smartStyle", "smart-style-5");
+
+                //Update Bar-chart background
+                _barColor = "#ffffff";
+                if (window.myBar !== undefined) {
+                    let $chart = window.myBar;
+                    let ChartDataLength = $chart.data.datasets.length;
+                    for (let intI = 0; intI < ChartDataLength; intI++) {
+                        switch (intI) {
+                            case 0:
+                                _opacity = 1;
+                                break;
+                            case 1:
+                                _opacity = 0.67;
+                                break;
+                            case 2:
+                                _opacity = 0.33;
+                                break;
+                        }
+                        $chart.data.datasets[intI].backgroundColor = convertColorHexToRgbOpacity(_barColor, _opacity);
+                    }
+                    $chart.update();
+                }
+
+            });
+
+            $("#smart-style-6").click(function () {
+                localStorage.setItem("smartStyle", "smart-style-6");
+
+                //Update Bar-chart background
+                _barColor = "#2196F3";
+                if (window.myBar !== undefined) {
+                    let $chart = window.myBar;
+                    let ChartDataLength = $chart.data.datasets.length;
+                    for (let intI = 0; intI < ChartDataLength; intI++) {
+                        switch (intI) {
+                            case 0:
+                                _opacity = 1;
+                                break;
+                            case 1:
+                                _opacity = 0.67;
+                                break;
+                            case 2:
+                                _opacity = 0.33;
+                                break;
+                        }
+                        $chart.data.datasets[intI].backgroundColor = convertColorHexToRgbOpacity(_barColor, _opacity);
+                    }
+                    $chart.update();
+                }
+
+
+            });
+
+
+        }
+
+        //Set event click to choose smart style
+        function checkSmartStyle() {
+            var curSmartStyle = localStorage.getItem("smartStyle");
+            switch (curSmartStyle) {
+                case "smart-style-0":
+                    $("#smart-style-0").click();
+                    break;
+                case "smart-style-1":
+                    $("#smart-style-1").click();
+                    break;
+                case "smart-style-2":
+                    $("#smart-style-2").click();
+                    break;
+                case "smart-style-3":
+                    $("#smart-style-3").click();
+                    break;
+                case "smart-style-4":
+                    $("#smart-style-4").click();
+                    break;
+                case "smart-style-5":
+                    $("#smart-style-5").click();
+                    break;
+                default:
+                    $("#smart-style-3").click();
+            }
+        }
+            //END ADD) SON
+    </script>
+
+
+</body>
+
+</html>

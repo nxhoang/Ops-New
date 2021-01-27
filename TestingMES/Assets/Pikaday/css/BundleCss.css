@@ -1,0 +1,6 @@
+﻿.pikaday-left {
+    margin-right:8px;
+}
+.pikaday-right, div[data-role="DateSingleOpener"] .pika-single {
+    margin-right: 5px;
+} 

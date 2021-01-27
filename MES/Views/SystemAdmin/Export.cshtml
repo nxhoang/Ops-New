@@ -1,0 +1,106 @@
+﻿
+@{
+    ViewBag.Title = "Export";
+    Layout = "~/Views/Shared/_MesLayout.cshtml";
+}
+
+<!--JQGrid CSS-->
+@*<link href="~/js/plugin/jqgrid/css/ui.jqgrid.min.css" type="stylesheet" />
+    <link href="~/js/plugin/jqgrid/css/jquery-ui.min.css" type="stylesheet" />*@
+<link href="~/js/plugin/jqgrid/css/jquery-ui-custom.min.css" type="stylesheet" />
+@* Material Font *@
+<link href="~/Assets/material-design-iconic-font/css/material-design-iconic-font.min.css" rel="stylesheet" />
+
+<style>
+</style>
+
+<h2>Export</h2>
+<table id="KPIGrid"></table>
+<div id="KPIGridPager"></div>
+
+@section Scripts{
+    <!--JQGrid JS-->
+    <script src="~/js/plugin/jqgrid/jquery.jqGrid.min.js"></script>
+    <script src="~/js/plugin/jqgrid/grid.locale-en.min.js"></script>
+    <script src="~/js/plugin/jqgrid/Common.js"></script>
+
+
+    <script>
+        $(function () {
+        });
+
+        var jqGridElem = 'KPIGrid';
+        var jqGridURL = ''
+        var jqGridDataType = 'json';
+
+        var jqGridcolModels = [];
+        jqGridcolModels.push({ name: 'MASTERID', index: 'MASTERID', label: 'ID', align: 'left', width: 120, sortable: true, editable: false, hidden: true, key: true });
+        jqGridcolModels.push({ name: 'SYSTEM_ID', index: 'SYSTEM_ID', label: 'System', align: 'center', width: 200, sortable: true, editable: false, hidden: true });
+        jqGridcolModels.push({ name: 'SYSTEMNAME', index: 'SYSTEMNAME', label: 'System', align: 'right', width: 132, sortable: false, editable: false });
+
+        jqGridcolModels.push({ name: 'TEAM', index: 'TEAM', label: 'Team', align: 'left', width: 200, sortable: true, editable: false });
+        jqGridcolModels.push({ name: 'CORPORATION', index: 'CORPORATION', label: 'Corporation', align: 'left', width: 200, sortable: true, editable: false });
+
+        jqGridcolModels.push({ name: 'DIRECTOR', index: 'DIRECTOR', label: 'Director', align: 'left', width: 200, sortable: true, editable: false, hidden: true });
+        jqGridcolModels.push({ name: 'DIRECTORNAME', index: 'DIRECTORNAME', label: 'Director Name', align: 'left', width: 200, sortable: true, editable: false });
+
+        jqGridcolModels.push({ name: 'SEQNO', index: 'SEQNO', label: 'Seq No', align: 'right', width: 220, sortable: true, editable: false });
+
+        jqGridcolModels.push({ name: 'BUYER', index: 'BUYER', label: 'Buyer', align: 'left', width: 100, sortable: true, editable: false });
+        jqGridcolModels.push({ name: 'FACTORY', index: 'FACTORY', label: 'Factory', align: 'left', width: 110, sortable: true, editable: false });
+
+        jqGridcolModels.push({ name: 'MENU', index: 'MENU', label: 'Menu', align: 'left', width: 110, sortable: true, editable: false, hidden: true });
+        jqGridcolModels.push({ name: 'MENUNAME', index: 'MENUNAME', label: 'Menu', align: 'left', width: 132, sortable: false, editable: false });
+
+        /**Subgrid Parameters  */
+        var jqSubgridURL = '';
+        var jqSubgridcolModels = [];
+        jqSubgridcolModels.push({ name: 'SEQNO', index: 'SEQNO', label: 'SEQNO', align: 'right', width: 120, resizable: false, sortable: false, editable: false, hidden: true });
+
+        jqSubgridcolModels.push({ name: 'USERID', index: 'USERID', label: 'User ID', align: 'left', width: 120, resizable: false, sortable: false, editable: false });
+        jqSubgridcolModels.push({ name: 'USERNAME', index: 'USERNAME', label: 'User Name', align: 'left', width: 120, resizable: false, sortable: false, editable: false });
+        jqSubgridcolModels.push({ name: 'USE_YN', index: 'USE_YN', label: 'Use (Y/N)', align: 'left', width: 200, resizable: false, sortable: false, editable: false });
+        jqSubgridcolModels.push({ name: 'START_DATE', index: 'START_DATE', label: 'Start Date', align: 'right', width: 100, resizable: false, sortable: false, editable: false });
+        jqSubgridcolModels.push({ name: 'EXPIRY_DATE', index: 'EXPIRY_DATE', label: 'Expire Date', align: 'right', width: 150, resizable: false, sortable: false, editable: false });
+        jqSubgridcolModels.push({ name: 'POSITION', index: 'POSITION', label: 'POSITION', align: 'left', width: 100, resizable: false, sortable: false, editable: false, hidden: true });
+
+        var $KPIGrid = CreateJqGridObjectWithComplexSubgrid(jqGridElem, jqGridURL, jqGridDataType, jqGridcolModels, false, jqSubgridURL, jqSubgridcolModels);
+        //pimpHeader(Grid);
+
+        Grid.setGridParam({
+            gridComplete: function () {
+                var selfgridID = this.id;
+                $('#cb_' + selfgridID).attr('disabled', 'disabled'); /*Hide the All-Pick checkbox on Header */
+                $('#cb_' + selfgridID).hide(); /*Hide the All-Pick checkbox on Header */
+
+                var ids = jQuery("#" + selfgridID).jqGrid('getDataIDs');
+                var modvalue;
+
+                for (var i = 0; i < ids.length; i++) {
+                    //var rowData = jQuery("#" + selfgridID).jqGrid('getRowData', ids[i]);
+                    modvalue = (i + 1) % 2;
+
+                    /*#Noted: Set row background color for chẵn and lẻ row */
+                    var backgroundColor;
+                    if (modvalue === 0) {
+                        backgroundColor = 'jqgrid-row-even';
+                    } else {
+                        backgroundColor = 'jqgrid-row-odd';
+                    }
+
+                    jQuery("#" + selfgridID).jqGrid('setRowData', ids[i], {}, backgroundColor);
+                }
+            }
+            , loadError: function (xhr) {
+                if (xhr.responseText.length > 0)
+                    alert(xhr.responseText);
+            }
+        }).trigger("reloadGrid");
+
+        /*Set jqGrid Height*/
+            //Grid.jqGrid('setGridHeight', 'auto');
+
+
+    </script>
+}
+

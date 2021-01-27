@@ -1,0 +1,26 @@
+﻿
+div.msgBoxContent {
+    height: 90px !important;
+    overflow-y: auto;
+}
+
+div.msgBox {
+    z-index: 9999;
+}
+
+/*
+div.msgBoxContent {
+    font-size: 11pt !important;
+    margin: 0 3px 6px 3px;
+    display: inline-block;
+    float: left;
+    height: 90px !important;
+    width: 319px;
+    overflow-y: auto;
+}
+
+div.msgBoxBackGround {
+    z-index: 9999;
+    background-color: transparent;
+}
+*/

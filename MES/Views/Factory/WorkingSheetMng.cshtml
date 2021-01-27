@@ -1,0 +1,596 @@
+﻿
+@{
+    ViewBag.Title = "Working Sheet Management";
+    Layout = "~/Views/Shared/_MesLayout.cshtml";
+}
+
+<link href="~/Assets/DatePickerX-master/dist/css/DatePickerX.min.css" rel="stylesheet" />
+
+<style>
+    form {
+        margin-top: 5px;
+    }
+
+
+    body .jqgfirstrow td {
+        padding: 0 0 !important;
+    }
+</style>
+
+
+
+<!-- Modal synchronize working sheet -->
+<div class="modal fade" id="mdlSyncWorkSheet" role="dialog" aria-labelledby="mdlSyncWorkSheet" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    &times;
+                </button>
+                <h4 class="modal-title" id="mdlPpDivideTitle">Synchronize working sheet</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-sm-2">
+                        <div class="form-group">
+                            <label for="txtFactorySync"> Factory</label>
+                            <select type="text" class="form-control" id="txtFactorySync" multiple="multiple">
+                                <option></option>
+                            </select>
+                            @*<select type="text" class="form-control" id="txtFactorySync" data-binding="FactoryList" multiple="multiple">
+                                    <option></option>
+                                </select>*@
+                        </div>
+                    </div>
+
+                    <div class="col-sm-2">
+                        <div class="form-group">
+                            <label for="txtYearMonthSync"> Month</label>
+                            <input type="text" class="form-control" id="txtYearMonthSync" />
+                        </div>
+                    </div>
+
+                    <div class="col-sm-2">
+                        <div class="form-group">
+                            <label for="category"> Source</label>
+                            <select id="drpSourceSync" class="form-control">
+                                <option value="AOMTOPS">AO-MTOPS</option>
+                                <option value="HRM">HRM</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    @*<div class="col-sm-2">
+                            <div class="form-group">
+                                <label for="category"> Week</label>
+                                <select id="drpWeekNoSync" class="form-control" data-placeholder=""></select>
+                            </div>
+                        </div>*@
+
+                    <div class="col-sm-2">
+                        <div class="form-group">
+                            <label> &nbsp;</label>
+                            <button type="button" id="btnSyncFacWrkSheet" class="btn btn-primary" style="display:block">
+                                <span class="glyphicon glyphicon-cog"></span> Sync
+                            </button>
+                        </div>
+                    </div>
+                </div> <!-- /Search conditon-->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">
+                    Cancel
+                </button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+<!-- Modal create weekly capa.-->
+<div class="modal fade" id="modalWeekCapa" role="dialog" aria-labelledby="modalWeekCapa" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form id="modalWeekCapaForm">
+                <div class="modal-header">
+                    @*<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>*@
+                    <h4 class="modal-title" id="mdlPpDivideTitle">Update Weekly Capacity</h4>
+                </div>
+                <div class="modal-body">
+
+                    <div class="row">
+                        <div class="col-lg-10">
+                            <div class="form-group">
+                                <label for=""> Factory</label>
+                                <select type="text" class="form-control" id="modalWeekCapaFactory" name="modalWeekCapaFactory" required="" data-binding="FactoryList" multiple="" style="width:100%;">
+                                    <option value="%">All</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm-2">
+                            <div class="form-group">
+                                <label for=""> Year</label>
+                                <select type="text" class="form-control" id="modalWeekCapaYear" name="modalWeekCapaYear" required="">
+                                    <option></option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-2">
+                            <div class="form-group">
+                                <label for=""> From</label>
+                                <input type="number" class="form-control" id="modalWeekCapaFromWeek" name="modalWeekCapaFromWeek" required="" min="1" />
+                            </div>
+                        </div>
+
+                        <div class="col-sm-2">
+                            <div class="form-group">
+                                <label for=""> To</label>
+                                <input type="number" class="form-control" id="modalWeekCapaToWeek" name="modalWeekCapaToWeek" required="" max="53" />
+                            </div>
+                        </div>
+                        <div class="col-sm-2">
+                            <div class="form-group">
+                                <label> &nbsp;</label>
+                                <button type="submit" class="btn btn-success" style="display:block">
+                                    <span class="glyphicon glyphicon-ok"></span> Update
+                                </button>
+                            </div>
+                        </div>
+                    </div> <!-- /Search conditon-->
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-dark" data-dismiss="modal">
+                        Close
+                    </button>
+                </div>
+            </form>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+@*<div class="row top-buffer"></div>*@
+
+<!-- widget grid -->
+<section id="widget-grid">
+    <!-- row -->
+    <div class="row">
+        @*NEW WIDGET START <article class="col-sm-12"> Widget ID (each widget will need unique ID) <div class="jarviswidget jarviswidget-color-green" id="wid-id-fwts" data-widget-editbutton="false" data-widget-togglebutton="false" data-widget-deletebutton="false" data-widget-sortable="false"> <header> <h2><strong>Factory Working Time Sheet</strong></h2> </header> widget div <div> widget content <div class="widget-body"> </div> end widget content </div> end widget div </div> end widget </article> WIDGET END*@
+
+        <article class="col-sm-12 col-md-12 col-lg-12 sortable-grid ui-sortable">
+            <!-- Widget ID (each widget will need unique ID)-->
+            <div class="jarviswidget well" id="wid-id-fwts" data-widget-colorbutton="false" data-widget-editbutton="false" data-widget-togglebutton="false" data-widget-deletebutton="false" data-widget-fullscreenbutton="false" data-widget-custombutton="false" data-widget-sortable="false" role="widget">
+
+                <header role="heading">
+                    @*<span class="widget-icon"> <i class="fa fa-comments"></i> </span>
+                        <h2>Default Tabs with border </h2>*@
+                    <span class="jarviswidget-loader"><i class="fa fa-refresh fa-spin"></i></span>
+                </header>
+
+                <!-- widget div-->
+                <div role="content">
+                    <!-- widget edit box -->
+                    <div class="jarviswidget-editbox">
+                        <!-- This area used as dropdown edit box -->
+
+                    </div>
+                    <!-- end widget edit box -->
+                    <!-- widget content -->
+                    <div class="widget-body">
+                        @*<hr class="simple">*@
+                        <ul id="myTab1" class="nav nav-tabs bordered">
+                            <li class="active">
+                                <a href="#s1" data-toggle="tab" aria-expanded="true">Working Sheet</a>
+                            </li>
+                            <li class="">
+                                <a href="#s2" data-toggle="tab" aria-expanded="false">Weekly Capacity</a>
+                            </li>
+                        </ul>
+
+                        <div id="myTabContent1" class="tab-content padding-10">
+                            <div class="tab-pane fade active in" id="s1">
+                                <form role="form" class="form-inline" id="frmSearchWorkingSheet">
+                                    <div class="row">
+                                        <div class="col-sm-3">
+                                            <div class="form-horizontal form-group ">
+                                                <label class="control-label col-sm-4">Factory</label>
+                                                <div class="col-sm-8">
+                                                    @*<select name="Factory" id="Factory" class="form-control" required="" style="width:100%" placeholder="Select factory" data-binding="FactoryList">*@
+                                                    <select name="Factory" id="Factory" class="form-control" placeholder="Select factory">
+                                                        <option></option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-2">
+                                            <div class="form-horizontal form-group ">
+                                                <label class="control-label col-sm-6">Start Date</label>
+                                                <div class="col-sm-5">
+                                                    <input type="text" name="StartDate" id="StartDate" class="form-control" style="width:150%;" required="" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-1">
+                                            <div style="margin-left:20px">
+                                                <button type="submit" class="btn btn-default">Search</button>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="pull-right">
+                                                <button type="button" class="btn btn-primary" onclick="">New MES Working Sheet</button>
+                                                <button type="button" class="btn btn-primary" onclick="ShowModalSyncWeeklyWorkingSheet();">Sync. Working Sheet</button>
+                                                <button type="button" class="btn btn-primary" onclick="UpdateWeeklyCapacity();">Update Weekly Capacity</button>
+
+                                            </div>
+                                        </div>
+
+                                        @*<div class="col-lg-2"> <label>Factory</label> <select name="Factory" id="Factory" class="form-control" required=""> <option></option> </select> </div> <div class="col-sm-2"> <label>Start Date</label> <input name="StartDate" id="StartDate" class="form-control" style="width:50%;" required="" /> </div> <div class="col-sm-2"> <button type="submit" class="btn btn-default">Search</button> </div>*@
+                                    </div>
+                                </form>
+
+                                <div class="margin-top-10"></div>
+
+                                <div class="row" style="margin-top:5px; display:none">
+                                    <div class="form-horizontal">
+                                        <div class="col-sm-2">
+                                            <div class="form-group">
+                                                <label class="control-label col-sm-7">TOTAL WORKER</label>
+                                                <div class="col-sm-5">
+                                                    <input type="text" name="TotalWorker" id="txtTotalWorker" class="form-control" disabled="disabled" />
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-2">
+                                            <div class="form-group">
+                                                <label class="control-label col-sm-7">TOTAL SEWER</label>
+                                                <div class="col-sm-5">
+                                                    <input type="text" name="TotalSewer" id="txtTotalSewer" class="form-control" disabled="disabled" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <table id="tbWorkingSheet"></table>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <div class="tab-pane fade" id="s2">
+
+                                <div class="row">
+                                    <form id="SearchFWCP">
+                                        <div class="col-lg-2">
+                                            <div class="form-group">
+                                                <label>Factory</label>
+                                                <select class="form-control" data-binding="FactoryList" name="_searchFieldFACTORY">
+                                                    <option></option>
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-lg-2">
+                                            <div class="form-group">
+                                                <label>Year</label>
+                                                <input class="form-control" type="number" min="1900" name="_searchFieldYEAR" data-binding="AssignCurrentYear" />
+                                            </div>
+                                        </div>
+
+                                        <div class="col-lg-2">
+                                            <div class="form-group">
+                                                <label>From week</label>
+                                                <input class="form-control" type="number" min="1" max="53" name="_searchFieldNumBeginWEEKNO" />
+                                            </div>
+                                        </div>
+
+                                        <div class="col-lg-2">
+                                            <div class="form-group">
+                                                <label>To week</label>
+                                                <input class="form-control" type="number" min="1" max="53" name="_searchFieldNumEndWEEKNO" />
+                                            </div>
+                                        </div>
+
+                                        <div class="col-lg-2">
+                                            <div class="form-group">
+                                                <label></label>
+                                                <button type="submit" class="btn btn-primary" style="display:block;">Search</button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-11">
+                                        <table id="tbWeeklyCapa"></table>
+                                        <div id="tbWeeklyCapaPager"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- end tab-content-->
+
+                    </div>
+                    <!-- end widget div body -->
+
+                </div>
+                <!-- end widget div content -->
+
+            </div>
+            <!-- end widget -->
+
+        </article>
+    </div>
+    <!-- end row -->
+
+</section>
+<!-- end widget grid -->
+
+@section Scripts{
+    @*Bootstrap Notify *@
+    <script src="~/Assets/remarkable-bootstrap-notify/dist/bootstrap-notify.min.js"></script>
+    <script src="~/Assets/remarkable-bootstrap-notify/dist/Common.js"></script>
+
+    <script src="~/Assets/DatePickerX-master/dist/js/DatePickerX.min.js"></script>
+
+    <!--jqgrid libary-->
+    <script src="~/js/plugin/jqgrid/jquery.jqGrid.min.js"></script>
+    <script src="~/js/plugin/jqgrid/grid.locale-en.min.js"></script>
+    <script src="~/js/plugin/jqgrid/Common.js"></script>
+
+    <script src="~/js/mes/mes-common.js?v=1.0.3"></script>
+    <script src="~/js/mes/working-sheet/working-sheet.js?v=1.0.1"></script>
+    <script src="~/js/mes/working-sheet/working-sheet-event.js?v=1.0.0"></script>
+
+    <script>
+        ////////////
+        //Declare objects
+        document.getElementById('StartDate').DatePickerX.init({
+            format: 'yyyy/mm/dd'
+        });
+
+        var $tbWeeklyCapa;
+        var $tbWeeklyCapa_col = [];
+
+        $tbWeeklyCapa_col.push({ name: 'FACTORY', index: 'FACTORY', label: "Factory", classes: 'pointer', align: 'left' });
+        $tbWeeklyCapa_col.push({ name: 'YEAR', index: 'YEAR', label: "Year", classes: 'pointer', align: 'right' });
+        $tbWeeklyCapa_col.push({ name: 'WEEKNO', index: 'WEEKNO', label: "Week No.", classes: 'pointer', align: 'right' });
+        $tbWeeklyCapa_col.push({ name: 'STARTDATE', index: 'STARTDATE', label: "Week<br/>Start date", classes: 'pointer', align: 'right' });
+        $tbWeeklyCapa_col.push({ name: 'ENDDATE', index: 'ENDDATE', label: "Week<br/>End date", classes: 'pointer', align: 'right' });
+        $tbWeeklyCapa_col.push({ name: 'TOTALWORKERS', index: 'TOTALWORKERS', label: "Total workers", classes: 'pointer', align: 'right' });
+        $tbWeeklyCapa_col.push({ name: 'TOTALWORKHOUR', index: 'TOTALWORKHOUR', label: "Total working hours", classes: 'pointer', align: 'right' });
+        $tbWeeklyCapa_col.push({ name: 'CAPACITY', index: 'CAPACITY', label: "Capcacity", classes: 'pointer', align: 'right' });
+
+        $tbWeeklyCapa_col.push({ name: 'CREATETIME', index: 'CREATETIME', label: "Create Date", classes: 'pointer', align: 'right' });
+
+        //$tbWeeklyCapa_col.push({ name: 'TOTALMACHINES', index: 'TOTALMACHINES', label: "Factory", classes: 'pointer' });
+        //$tbWeeklyCapa_col.push({ name: 'TOTALSEWER', index: 'TOTALSEWER', label: "Factory", classes: 'pointer' });
+        //$tbWeeklyCapa_col.push({ name: 'SEWERCAPA', index: 'SEWERCAPA', label: "Factory", classes: 'pointer' });
+
+        $tbWeeklyCapa = CreateJqGridObject('tbWeeklyCapa', '../Factory/WeeklyCapacityGrid', 'local', $tbWeeklyCapa_col, false);
+
+        ////////////
+        //Functions
+        function UpdateWeeklyCapacityTest() {
+            $('#modalWeekCapa').modal('show');
+        }
+
+        function UpdateWeeklyCapacity() {
+            $('#modalWeekCapa').modal('toggle');
+        }
+
+        function SyncWorkSheetFromMTOPS() {
+            ShowConfirmYesNo(
+                "Update Weekly Capacity"
+                , "This process take a while to complete. Are you sure to Update Weekly Capacity?"
+                , function () {
+                    //hit "OK"
+                    $.ajax({
+                        contentType: "application/json; charset=utf-8",
+                        dataType: "json",
+                        url: "/Factory/ImportWorkingSheetFromMTOPS",
+                        type: "POST",
+                        async: true,
+                        success: function (response, textStatus, xhr) {
+                            console.log(response, textStatus, xhr);
+                        },
+                        error: function (xhr, textStatus, errorThrown) { },
+                        complete: function () { }
+                    });
+                }
+                , function () { }
+            );
+            return false;
+        }
+
+        function GenerateWorkingSheet(data) {
+            if (!typeof data == "object") {
+                Notify('Wrong input data', 'danger');
+                return;
+            }
+            /* Generate the HTML Table
+             * COLUMNS Definition: 1 Main Left   &&   30-Day columns
+             *      1 Main Left Column Caption is  LINE\DAY
+             *      30-Day columns based on the [$('#StartDate').val()]
+             *      Day 0: = $('#StartDate').val()
+             *      Day 1: = $('#StartDate').val() + 1 ;
+             *      ....
+             *      Day 29: = $('#StartDate').val() + 29;
+             *
+             * ROWS Definition:
+             */
+
+        }
+
+        ////////////
+        //Events
+        //2020-02-04 Tai Le(Thomas)
+        $('#Factory').on('change', function () {
+            let _value = $(this).val();
+            $(document).find('select[data-binding="FactoryList"]').val(_value);
+        });
+
+        $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+            //console.log(e.target); // newly activated tab
+            //console.log(e.relatedTarget); // previous active tab
+            $("#tbWorkingSheet").jqGrid('setGridWidth', $($(e.target).attr('href')).width() * 0.99);
+        });
+
+        $('#modalWeekCapa').on('hidden.bs.modal', function (e) {
+            // do something...
+            $('#modalWeekCapaForm').trigger('reset');
+        });
+
+        $('#modalWeekCapaForm').submit(function () {
+            let $this = $(this);
+            let formData = getFormData($this);
+
+            let modalWeekCapaFactory = '', modalWeekCapaYear = '', modalWeekCapaFromWeek = '', modalWeekCapaToWeek = '';
+            modalWeekCapaFactory = $('#modalWeekCapaFactory').val().join(';');
+            modalWeekCapaYear = $('#modalWeekCapaYear').val();
+            modalWeekCapaFromWeek = $('#modalWeekCapaFromWeek').val();
+            modalWeekCapaToWeek = $('#modalWeekCapaToWeek').val();
+
+            formData = {
+                modalWeekCapaFactory: modalWeekCapaFactory,
+                modalWeekCapaYear: modalWeekCapaYear,
+                modalWeekCapaFromWeek: modalWeekCapaFromWeek,
+                modalWeekCapaToWeek, modalWeekCapaToWeek
+            };
+
+            ShowConfirmYesNo(
+                "Update Weekly Capacity"
+                , "This process take a while to complete. Are you sure to Update Weekly Capacity?"
+                , function () {
+                    //hit "OK"
+                    $.ajax({
+                        contentType: "application/json; charset=utf-8",
+                        dataType: "json",
+                        url: "/Factory/UpdateWeeklyCapacity",
+                        data: JSON.stringify(formData),
+                        type: "POST",
+                        async: true,
+                        success: function (response, textStatus, xhr) {
+                            //console.log(response, textStatus, xhr);
+                            Notify(response.retMsg, 'info');
+                        },
+                        error: function (xhr, textStatus, errorThrown) { },
+                        complete: function () { }
+                    });
+                }
+                , function () { }
+            );
+
+            return false;
+        });
+
+        $('#SearchFWCP').submit(function () {
+            let $this = $(this);
+            let formData = getFormData($this);
+
+            $tbWeeklyCapa.setGridParam({
+                postData: formData,
+                sortname: 'ranking',
+                datatype: 'json',
+                loadui: 'block',
+                loadtext: '',
+                loadComplete: function (data) {
+                }
+                , loadError: function (xhr, status, error) {
+                    console.log('loadError');
+                    console.log(xhr);
+                    console.log(status);
+                    console.log(error);
+                }
+                , onSelectRow: function (id, onselectrow) { }
+                , ondblClickRow: function (id, iRow, iCol, e) { }
+                , gridComplete: function () {
+                    var selfgridID = this.id;
+                    var ids = jQuery("#" + selfgridID).jqGrid('getDataIDs');
+                    var modvalue;
+
+                    for (var i = 0; i < ids.length; i++) {
+                        //var dtRow = jQuery("#" + this.id).jqGrid('getRowData', ids[i]);
+                        modvalue = (i + 1) % 2;
+
+                        /*#Noted: Set row background color for chẵn and lẻ row */
+                        var backgroundColor;
+                        if (modvalue === 0) {
+                            backgroundColor = 'jqgrid-row-even';
+                        } else {
+                            backgroundColor = 'jqgrid-row-odd';
+                        }
+
+                        jQuery("#" + selfgridID).jqGrid('setRowData', ids[i], {}, backgroundColor);
+                    }
+                }
+            }).trigger("reloadGrid");
+
+            return false;
+        });
+
+        $('#frmSearchWorkingSheet').submit(function () {
+            let $this = $(this);
+            let formData = getFormData($this);
+
+            //Get year month
+            let startDate = formData.StartDate.substr(0, 4) + formData.StartDate.substr(5, 2);
+            let factory = formData.Factory;
+
+            //Get factory workers and sewers
+            //getFactoryWorkersNumber(factory, startDate);
+
+            //Reload working grid
+            var params = { factory: factory, startDate: startDate };
+            ReloadJqGrid2LoCal(tbWorkingSheetId, params);
+
+            return false;
+        });
+
+        $(document).ready(function () {
+            //Init page
+            initWorkingSheetPage();
+            pimpHeader([$tbWeeklyCapa, jQuery("#" + tbWorkingSheetId)]);
+
+            $.when(
+                $.ajax({
+                    contentType: 'application/json'
+                    , dataType: 'json' /*The type of data that you're expecting back from the server*/
+                    , url: '/FactorySortingParameter/GetFactoryList'
+                    , success: function (data, textStatus, jqXHR) {
+                        //console.info(data, textStatus, jqXHR);
+                        if (Array.isArray(data))
+                            for (let intI = 0; intI < data.length; intI++) {
+                                $('select[data-binding="FactoryList"]').append(new Option(`[${data[intI].FACTORY}] - ${data[intI].NAME}`, data[intI].FACTORY));
+                            }
+                    }
+                })
+            ).done(function () { });
+
+
+            //Bind the Year list
+            var CurDate = new Date();
+            var CurYear = CurDate.getFullYear();
+
+            $('input[data-binding="AssignCurrentYear"]').val(CurYear);
+
+            for (let i = CurYear; i < CurYear + 6; i++) {
+                if (i == CurDate.getFullYear()) {
+                    $('#modalWeekCapaYear').append($('<option>', { value: i, text: i, selected: true }));
+                    $('#modalWeekCapaYear option[value="' + i + '"]').text(i);
+                } else {
+                    $('#modalWeekCapaYear').append($('<option>', { value: i, text: i }));
+                }
+            }
+
+            //Set selection 2 for factory dropdownlist
+            $("#modalWeekCapaFactory").select2({
+                allowClear: true,
+                placeholder: 'Select factory..'
+            });
+
+        });
+    </script>
+}

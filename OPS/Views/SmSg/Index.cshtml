@@ -1,0 +1,180 @@
+﻿@{
+    ViewBag.Title = "Message Management";
+    ViewBag.PageTitle = "Message Management";
+}
+<style>
+    .ui-jqgrid-labels spand.requered {
+        display: none;
+    }
+    .requered {
+        color: #FF8000;
+    }
+</style>
+<link href="~/css/ops/pages/Linking.css" rel="stylesheet" />
+<link href="~/css/ops/pages/gridCommon.css" rel="stylesheet" />
+<div class="row">
+    <div class="col-sm-12">
+        <table id='SmSgGrid'></table>
+        <div id='SmSgGrid_Nav' style='text-align:center;'></div>
+    </div>
+</div>
+<div style="display:none">
+    <select id='cbSystemId' name="cbSystemId"></select>
+</div>
+<div style="display:none">
+    <select id='cbMenuId' name="cbMenuId"></select>
+</div>
+<div style="display:none">
+    <datalist id="cbFunctionId"></datalist>
+</div>
+<div style="display:none">
+    <select id='cbTypeId' name="cbTypeId"></select>
+</div>
+<div style="display:none">
+    <select id='cbContextId' name="cbContextId"></select>
+</div>
+@*<input type="button" value="test" onclick="test();"/>*@
+@Html.Partial("~/Views/UIControl/_SearchStyle.cshtml")
+@section Scripts
+{
+    <script src="~/js/ops/uicontrol/SearchStyle.js?v=1.0.5"></script>
+    <script src="~/js/ops/generic/SmSgManager.js"></script>
+    <script src="~/js/ops/Pages/SmSg.js"></script>
+    <script>
+        $(document).ready(function () {
+            CreateSmSgGrid();
+            AppendSystem();
+            AppendMenu();
+            AppendFunction();
+            AppendType();
+            AppendContext();
+            OpenReadySearch();
+        });
+        var arrSmSg = {
+            SystemId: "System",
+            MenuId: "MenuId",
+            Function: "Function",
+            Type: "Type",
+            Title: "Title",
+            English: "English",
+            Vietnamese: "Vietnamese",
+            Korean: "Korean",
+            Indonesian: "Indonesian",
+            Myanmar: "Burmese",
+            Amharic: "Amharic",
+            MessageContext: "Context"
+        };
+
+        function AppendSystem() {
+            var opToolConfig = {
+                url: "/SmSg/GetSystem",
+            }
+            AjaxPostCommon(opToolConfig, function (response) {
+                FillDataToDropDownlist2("cbSystemId", response, "SystemId", "SystemId");
+            });
+        }
+
+        function AppendMenu() {
+            var opToolConfig = {
+                url: "/SmSg/GetMenu",
+            }
+            AjaxPostCommon(opToolConfig, function (response) {
+                //FillDataToDropDownlist2("cbMenuId", response, "MenuId", "MenuId");
+                var option = '';
+                for (var i = 0; i < response.length; i++) {
+                    option += '<option filter ="' + response[i]["SystemId"] + '" value="' + response[i]["MenuId"] + '">' + response[i]["MenuId"] + '</option>';
+                }
+                $('#cbMenuId').append(option);
+            });
+        }
+
+        function AppendFunction() {
+            var opToolConfig = {
+                url: "/SmSg/GetFunction",
+            }
+            AjaxPostCommon(opToolConfig, function (response) {
+                var rs = "";
+                response.forEach(function (c) {
+                    rs = rs.concat('<option value="' + c.Function + '">' + c.Function + '</option>');
+                });
+                $("#cbFunctionId").html(rs);
+            });
+        }
+
+        function AppendType() {
+            var opToolConfig = {
+                url: "/SmSg/GetSmSgType",
+            }
+            AjaxPostCommon(opToolConfig, function (response) {
+                FillDataToDropDownlist2("cbTypeId", response, "SubCode", "SubCode");
+            });
+        }
+
+        function AppendContext() {
+            var opToolConfig = {
+                url: "/SmSg/GetContext",
+            }
+            AjaxPostCommon(opToolConfig, function (response) {
+                var rs = "";
+                response.forEach(function (c) {
+                    rs = rs.concat('<option strfilter="' + c.CodeDesc + '" value="' + c.SubCode + '">' + c.CodeName + '</option>');
+                });
+                $("#cbContextId").html(rs);
+            });
+        }
+
+        function ChangeSystem() {
+            $("#SystemId").change(function () {
+                var systemId = $(this).val();
+                //var selected = $("#MenuId").val();
+                $("#MenuId").empty();
+                var myOpts = document.getElementById('cbMenuId').options;
+                var len = myOpts.length;
+                var option = '';
+                for (var i = 0; i < len; i++) {
+                    if (myOpts[i].attributes[0].value === systemId) {
+                        option += '<option value="' + myOpts[i].value + '">' + myOpts[i].text + '</option>';
+                    }
+                }
+                $("#MenuId").append(option);
+                // $("#MenuId").val(selected);
+            });
+            $("#SystemId").trigger("change");
+        }
+
+        function ChangeType(messageType) {
+            $("#MessageType").change(function () {
+                var evetId = $(this).val();
+                //console.log(evetId);
+                //var selected = $("#MenuId").val();
+                $("#MessageContext").empty();
+                var cl = $('#cbContextId').clone();
+                var option = '';
+                cl.find("option[strfilter='" + evetId + "']").each(function (e) {
+                    var value = $(this)[0].value;
+                    var text = $(this)[0].text;
+                    option += '<option value="' + value + '">' + text + '</option>';
+                });
+                $("#MessageContext").append(option);
+            });
+            if (messageType) {
+                $("#MessageType").val(messageType).trigger("change");
+            } else {
+                $("#MessageType").trigger("change");
+            }
+        }
+
+
+        function GetKeyCodeStyle(styleCode, styleSize, styleColorSerial, revNo) {
+
+        }
+
+        function GetStyleMaster() {
+
+        }
+
+        function test() {
+            ShowAlertByTime("test", "test", ObjMessageType.Info, 3000)
+        }
+    </script>
+}

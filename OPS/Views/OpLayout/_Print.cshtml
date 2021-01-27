@@ -1,0 +1,52 @@
+﻿<style>
+    #previewImage{
+        margin:0;
+        padding:0;
+    }
+    #jsPlumb_2_1 {
+        background-color: white !important;
+        width: 100% !important;
+        height: 100% !important;
+    }
+    .modal-lg-p {
+        width: 99% !important;
+        height: 100% !important;
+        margin: 0;
+        padding: 0;
+    }
+
+    .modal-content-p {
+        height: auto;
+        min-height: 98%;
+        width: 100% !important;
+        border-radius: 0;
+    }
+    #previewImage{
+        max-height:100%;
+    }
+</style>
+<div class="modal fade modal-custom" id="printView" role="dialog" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-lg modal-lg-p">
+        <div class="modal-content modal-content-p">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <a href="#" id="btnDownload" class="btn btn-primary btn-modal">Download</a>
+            </div>
+            <div id="previewImage" class="modal-body" style="overflow:scroll;">
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="imgPreviewDt" role="dialog">
+    <div class="modal-dialog  modal-lg" style="width:auto">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <img style="max-height:400px; max-width:400px" id="imgDetailDt" src="~/img/no-image.png" />
+            </div>
+        </div>
+    </div>
+</div>
+

@@ -1,0 +1,24 @@
+/* 
+	File	: Layout page CSS
+	author	: IT team (Oanh 4 Jan 2021)
+
+*/
+.card {
+	margin: 0px 0px !important;
+}
+.ng-scope .card {
+	font-size: 12px !important;
+}
+.card .card-header {
+	padding: 0px !important;
+}
+.circle {
+	top: -78px !important;
+}
+.op__op-name h5 {
+	font-size: 15px !important;
+}
+.card-header:first-child {
+	border-radius: 0px !important;
+	padding-bottom: 30px;
+}

@@ -1,0 +1,654 @@
+﻿
+@{
+    ViewBag.Title = "Planning";
+    Layout = "~/Views/Shared/_MesLayout.cshtml";
+}
+
+<!--START date range picker-->
+<link href="~/assets/DayRangePicker/daterangepicker.min.css" rel="stylesheet" />
+
+<!--noUiSlider-14.0.2-->
+<link href="~/Assets/noUiSlider-14.0.2/nouislider.min.css" rel="stylesheet" />
+
+<!--start daypilot css-->
+<link href="~/Assets/DayPilotProJavaScriptTrial-8.4.3033/css/bubble_default.css" rel="stylesheet" />
+<link href="~/Assets/DayPilotProJavaScriptTrial-8.4.3033/css/Custom.css" rel="stylesheet" />
+<link href="~/Assets/DayPilotProJavaScriptTrial-8.4.3033/css/th_schdgreen.css" rel="stylesheet" />
+<!--end daypilot css-->
+
+<style>
+    /*Set color for tab*/
+    .jarviswidget header:first-child .nav-tabs li a {
+        color: #333 !important;
+    }
+</style>
+
+<style>
+    #mdlProSchedule {
+        padding-left: 0px !important;
+        overflow-y: auto;
+    }
+
+    .bubble_default_main_inner {
+        z-index: 1051;
+    }
+
+    .bubble_default_main {
+        z-index: 1051 !important;
+    }
+
+    /*menu right click on event*/
+    .menu_default_main {
+        z-index: 1051 !important;
+    }
+
+    #mdlPpDivide {
+        z-index: 1051;
+    }
+
+        #mdlPpDivide .modal-lg {
+            min-width: 1000px;
+        }
+
+    /*Style of event*/
+    .event-style {
+        color: #ffffff;
+        font-size: 11px;
+        border-radius: 3px;
+        border: 1px solid #7cb316;
+        box-shadow: 0px 2px 3px rgba(000,000,000,0.3), inset 0px 0px 2px rgba(255,255,255,0.8);
+        /*text-shadow: 0px -1px 0px rgba(000,000,000,0.2), 0px 1px 0px rgba(255,255,255,1);*/
+    }
+
+    .event-bg {
+        background: #bfe600;
+        background: -moz-linear-gradient( top, #a2c200 0%, #8aaa00);
+        background: -webkit-gradient( linear, left top, left bottom, from(#a2c200), to(#8aaa00));
+    }
+
+    /*Set css for selected event*/
+    .scheduler_default_selected .scheduler_default_event_inner {
+        opacity: 0.5;
+        border: 2px solid yellow;
+        border-radius: 3px;
+    }
+
+    .distributed .scheduler_default_event_inner {
+        /*background-color: #aaa !important;*/
+        background-image: -webkit-gradient(linear, 0 100%, 100% 0,color-stop(.25, rgba(255, 255, 255, .5)), color-stop(.25, transparent), color-stop(.5, transparent), color-stop(.5, rgba(255, 255, 255, .5)), color-stop(.75, rgba(255, 255, 255, .5)), color-stop(.75, transparent), to(transparent)) !important;
+        background-image: -webkit-linear-gradient(45deg, rgba(255, 255, 255, .5) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .5) 50%, rgba(255, 255, 255, .5) 75%, transparent 75%, transparent) !important;
+        background-image: -moz-linear-gradient(45deg, rgba(255, 255, 255, .2) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .2) 50%, rgba(255, 255, 255, .2) 75%, transparent 75%, transparent) !important;
+        background-image: -ms-linear-gradient(45deg, rgba(255, 255, 255, .2) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .2) 50%, rgba(255, 255, 255, .2) 75%, transparent 75%, transparent) !important;
+        background-image: -o-linear-gradient(45deg, rgba(255, 255, 255, .2) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .2) 50%, rgba(255, 255, 255, .2) 75%, transparent 75%, transparent) !important;
+        /*background-image: linear-gradient(45deg, rgba(255, 165, 0, .7) 25%, transparent 25%, transparent 50%, rgba(255, 165, 0, .7) 50%, rgba(255, 165, 0, .7) 75%, transparent 75%, transparent) !important;*/
+        background-image: linear-gradient(45deg, rgba(255, 165, 0, .7) 25%, transparent 25%, transparent 50%, rgba(255, 165, 0, .7) 50%, rgba(255, 165, 0, .7) 75%, transparent 75%, transparent) !important;
+        -webkit-background-size: 20px 20px !important;
+        -moz-background-size: 20px 20px !important;
+        background-size: 20px 20px !important;
+        color: #ffffff;
+        font-size: 11px;
+        border-radius: 3px;
+        border: 1px solid #7cb316;
+        box-shadow: 0px 2px 3px rgba(000,000,000,0.3), inset 0px 0px 2px rgba(255,255,255,0.8);
+    }
+
+    /*QCO slider*/
+    .noUi-horizontal .noUi-handle {
+        top: 0px !important;
+    }
+
+    .noUi-tooltip {
+        display: none;
+    }
+
+    .noUi-active .noUi-tooltip {
+        display: block;
+    }
+
+    /****/
+    .bubble_default_main {
+        background-color: burlywood;
+    }
+
+    /*START) SON - Adjust height of gridview*/
+    tr.ui-row-ltr td button {
+        padding: 2px 5px !important;
+    }
+
+    /* .ui-jqgrid tr.ui-row-ltr td {
+        padding: 3px 2px;
+    }*/
+    /*END) SON - Adjust height of gridview*/
+</style>
+
+<!-- Modal Production package divide -->
+<div class="modal fade" id="mdlPpDivide" role="dialog" aria-labelledby="mdlPpDivideTitle" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" id="btnCloseModalDistributionMes" class="close" data-dismiss="modal" aria-hidden="true">
+                    &times;
+                </button>
+                <h4 class="modal-title" id="mdlPpDivideTitle">Divide production package</h4>
+            </div>
+            <div class="modal-body">
+
+                <div class="row">
+                    <div class="col-sm-2">
+                        <div class="form-group">
+                            <label for="category"> Line No</label>
+                            <select id="drpLineNo" class="form-control" data-placeholder="" multiple="multiple"></select>
+                        </div>
+                    </div>
+                    @*<div class="col-sm-2">
+                            <div class="form-group">
+                                <label for="txtLineDisRate"> Line Distribute Rate</label>
+                                <input type="text" class="form-control" id="txtLineDisRate" readonly />
+                            </div>
+                        </div>*@
+                    <div class="col-sm-2">
+                        <div class="form-group">
+                            <label for="txtDailyTarQty"> Per Package Qty</label>
+                            <input type="text" class="form-control" id="txtDailyTarQty" />
+                        </div>
+                    </div>
+                    <div class="col-sm-2">
+                        <div class="form-group">
+                            <label for="txtOPSDailyTarQty"> OPS Target Qty</label>
+                            <input type="text" class="form-control" id="txtDailyTarQty" readonly/>
+                        </div>
+                    </div>
+                    <div class="col-sm-2">
+                        <div class="form-group">
+                            <label for="txtTotalQty"> Total Qty</label>
+                            <input type="text" class="form-control" id="txtTotalQty" readonly />
+                        </div>
+                    </div>
+                    <div class="col-sm-2">
+                        <div class="form-group">
+                            <label for="txtTotalQty"> Start Date</label>
+                            <input type="text" class="form-control" id="txtStartDate" />
+                        </div>
+                    </div>
+                    <div class="col-sm-2">
+                        <div class="form-group">
+                            <label> &nbsp;</label>
+                            <button type="button" id="btnCreateMesPkg" class="btn btn-primary btn-sm form-control">
+                                <span class="glyphicon glyphicon-plus"></span> Create
+                            </button>
+                        </div>
+                    </div>
+                </div> <!-- /Search conditon-->
+
+                <div class="row">
+                    <div class="form-group">
+                        <div class="col-md-2">
+                            <label class="checkbox-inline">
+                                <input type="checkbox" class="checkbox style-0" id="chkCreateAll" checked>
+                                <span>Create all</span>
+                            </label>
+                        </div>
+                        <!--START ADD - SON) 27/Nov/2020 - add module dropdownlist-->
+                        <div id="divModule" class="col-sm-2" style="display:none">
+                            <div class="form-group">
+                                <label for="category"> Module</label>
+                                <select id="drpModule" class="form-control" data-placeholder=""></select>
+                            </div>
+                        </div>
+                        <!--END ADD - SON) 27/Nov/2020-->
+                    </div>
+
+                </div>
+
+                <input type="hidden" id="hdSelectedPrdPkg" />
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="btnCanelMdlDistributeMes" class="btn btn-default" data-dismiss="modal">
+                    Cancel
+                </button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+<!-- Modal Production schedule-->
+<div class="modal fade " id="mdlProSchedule" role="dialog" aria-labelledby="mdlProSchedule" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-dialog-fullscreen">
+        <div class="modal-content modal-content-fullscreen">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    &times;
+                </button>
+                <h4 class="modal-title" id="mdlProSchedule">Production Schedule</h4>
+            </div>
+            <div class="modal-body">
+
+                <!-- widget grid -->
+                <section id="widget-grid" class="">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <!-- row -->
+                            <div class="row">
+                                <!-- NEW WIDGET START -->
+                                <article class="col-sm-12">
+
+                                    <!-- Widget ID (each widget will need unique ID)-->
+                                    <div class="jarviswidget jarviswidget-color-green" id="wid-id-mtop" data-widget-editbutton="false" data-widget-togglebutton="false" data-widget-deletebutton="false" data-widget-sortable="false">
+
+                                        <header>
+                                            <h2><strong>AOMTOPS Schedules</strong></h2>
+                                        </header>
+
+                                        <!-- widget div-->
+                                        <div>
+
+                                            <!-- widget content -->
+                                            <div class="widget-body">
+                                                <div id="divAomtop">
+                                                    <div class="row">
+                                                        <div class="col-sm-12">
+                                                            <div class="row">
+                                                                <div class="col-sm-3">
+                                                                    <div class="form-group">
+                                                                        <input type="text" id="txtDateRangePp" class="form-control" placeholder="Date range">
+                                                                    </div>
+                                                                </div>
+
+                                                                <!-- AOMTOP Factory-->
+                                                                <div class="col-sm-3">
+                                                                    <div class="form-group">
+                                                                        <select id="drpFactoryMtop" class="form-control" data-placeholder="Factory" disabled></select>
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="col-sm-3">
+                                                                    <div class="form-group">
+                                                                        <select id="drpBuyerMtop" class="form-control" data-placeholder="Buyer"></select>
+                                                                    </div>
+                                                                </div>
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-sm-3">
+                                                            <div class="form-group">
+                                                                <input type="text" id="txtAoNumber" class="form-control" placeholder="AO Number" />
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="col-sm-3">
+                                                            <div class="form-group">
+                                                                <input type="text" id="txtStyleInfo" class="form-control" placeholder="Style Info" />
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="col-sm-3">
+                                                            <div class="form-group">
+                                                                <button id="btnSearchMtopPkg" class="form-control btn btn-primary">
+                                                                    <span class="glyphicon glyphicon-search"></span> Search
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div id="divQcoRanking" style="display:none">
+                                                    <div class="row">
+                                                        <div class="col-sm-12">
+                                                            <div class="row">
+
+
+                                                                <!-- Qco Factory-->
+                                                                <div class="col-sm-3">
+                                                                    <div class="form-group">
+                                                                        <select id="drpFactoryQco" class="form-control" data-placeholder="Factory" disabled></select>
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="col-sm-3">
+                                                                    <div class="form-group">
+                                                                        <input type="text" id="txtYearQco" class="form-control" value="" placeholder="Year">
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="col-sm-3">
+                                                                    <div class="form-group">
+                                                                        <input type="text" id="txtWeekQco" class="form-control" onkeypress="return isNumber(event)" maxlength="2" placeholder="Week No" value="" />
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="col-sm-3">
+                                                                    <div style="padding-top:8px">
+                                                                        <div class="form-group">
+                                                                            <div id="sliderQCO"></div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="row">
+                                                        <div class="col-sm-3">
+                                                            <div class="form-group">
+                                                                <select id="drpBuyerQco" class="form-control" data-placeholder="Buyer"></select>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="col-sm-3">
+                                                            <div class="form-group">
+                                                                <input type="text" id="txtAoNumberQco" class="form-control" placeholder="AO Number" />
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="col-sm-3">
+                                                            <div class="form-group">
+                                                                <input type="text" id="txtStyleInfQCO" class="form-control" placeholder="Style Information" />
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="col-sm-3">
+                                                            <div class="form-group">
+                                                                <button id="btnSearchQcoPkg" class="form-control btn btn-primary">
+                                                                    <span class="glyphicon glyphicon-search"></span> Search
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+
+                                                <!--AOMTOP Schedule-->
+                                                <div class="row">
+
+                                                    <article class="col-sm-12">
+                                                        <!-- new widget -->
+                                                        <div class="jarviswidget" id="wid-id-mtop-tap" data-widget-togglebutton="false" data-widget-editbutton="false" data-widget-fullscreenbutton="false" data-widget-colorbutton="false" data-widget-deletebutton="false" data-widget-sortable="false">
+
+                                                            <header>
+                                                                <span class="widget-icon"> <i class="fa fa-cubes txt-color-darken"></i> </span>
+                                                                <h2>Production Packages </h2>
+
+                                                                <ul class="nav nav-tabs pull-right in" id="myTab">
+                                                                    <li class="active">
+                                                                        <a id="achAomtop" data-toggle="tab" href="#s1"><i class="fa fa-clock-o"></i> <span class="hidden-mobile hidden-tablet">AOMTOP</span></a>
+                                                                    </li>
+
+                                                                    <li>
+                                                                        <a id="achQcoRanking" data-toggle="tab" href="#s2"><i class="fa fa-list-ol"></i> <span class="hidden-mobile hidden-tablet">QCO Ranking</span></a>
+                                                                    </li>
+
+                                                                    <li style="display:none">
+                                                                        <a id="achAomtopModule" data-toggle="tab" href="#s3"><i class="fa fa-th-large"></i> <span class="hidden-mobile hidden-tablet">Module</span></a>
+                                                                    </li>
+                                                                </ul>
+
+                                                            </header>
+
+                                                            <!-- widget div-->
+                                                            <div class="no-padding">
+
+                                                                <div class="widget-body">
+                                                                    <!-- content -->
+                                                                    <div id="myTabContent" class="tab-content">
+                                                                        <div class="tab-pane fade active in padding-10 no-padding-bottom" id="s1">
+                                                                            <div class="row no-space">
+                                                                                <div class="col-sm-12">
+                                                                                    <div id="dpMtop"></div>
+                                                                                </div>
+
+                                                                            </div>
+                                                                        </div>
+                                                                        <!-- end s1 tab pane -->
+
+                                                                        <div class="tab-pane fade" id="s2">
+                                                                            <div class="row no-space">
+                                                                                <div class="col-sm-12">
+                                                                                    <table id="tbQCOPPKG"></table>
+                                                                                    <div id="divQCOPPKGPage"></div>
+
+                                                                                </div>
+
+                                                                            </div>
+
+                                                                        </div>
+                                                                        <!-- end s2 tab pane -->
+
+                                                                        <div style="display:none" class="tab-pane fade padding-10 no-padding-bottom" id="s3">
+                                                                            <div class="row no-space">
+                                                                                <div class="col-sm-12">
+                                                                                    <div id="dpMtopModule"></div>
+                                                                                </div>
+
+                                                                            </div>
+
+                                                                        </div>
+                                                                        <!-- end s3 tab pane -->
+                                                                    </div>
+
+                                                                    <!-- end content -->
+                                                                </div>
+
+                                                            </div>
+                                                            <!-- end widget div -->
+                                                        </div>
+                                                        <!-- end widget -->
+
+                                                    </article>
+
+                                                </div>
+                                                <!--end AOMTOP Schedule-->
+                                            </div>
+                                            <!-- end widget content -->
+
+                                        </div>
+                                        <!-- end widget div -->
+
+                                    </div>
+                                    <!-- end widget -->
+
+                                </article>
+                                <!-- WIDGET END -->
+
+                            </div>
+                            <!-- end row -->
+                        </div>
+
+                        <div class="col-sm-6">
+                            <!-- row -->
+                            <div class="row">
+                                <!-- NEW WIDGET START -->
+                                <article class="col-sm-12">
+
+                                    <!-- Widget ID (each widget will need unique ID)-->
+                                    <div class="jarviswidget jarviswidget-color-green" id="wid-id-mes" data-widget-editbutton="false" data-widget-togglebutton="false" data-widget-deletebutton="false" data-widget-sortable="false">
+
+                                        <header>
+                                            <h2><strong>MES Schedules</strong></h2>
+                                        </header>
+
+                                        <!-- widget div-->
+                                        <div>
+
+                                            <!-- widget content -->
+                                            <div class="widget-body">
+                                                <div class="row">
+
+                                                    <!-- MES Factory-->
+                                                    <div class="col-sm-3">
+                                                        <div class="form-group">
+                                                            @*<label class="control-label" for="Factory">Factory:<span style="color: red;">*</span></label>*@
+                                                            <select id="drpFactoryMes" class="form-control" data-placeholder="Factory" disabled></select>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+
+                                                <div class="row">
+                                                    <div class="col-sm-3">
+                                                        <div class="form-group">
+                                                            <input type="text" id="txtDateRangeMes" class="form-control" placeholder="Date range">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-3">
+                                                        <button id="btnSearchMes" class="form-control btn btn-primary">
+                                                            <span class="glyphicon glyphicon-search"></span> Search MES
+                                                        </button>
+                                                    </div>
+                                                    <div class="col-sm-4"></div>
+                                                    <div class="col-sm-2">
+                                                        <button id="btnSaveMesPkg" class="form-control btn btn-primary">
+                                                            <span class="glyphicon glyphicon-save"></span> Save
+                                                        </button>
+                                                    </div>
+
+                                                </div>
+                                                <div class="row">
+                                                    @*<div class="col-sm-12">*@
+                                                    <article class="col-sm-12">
+                                                        <!-- new widget -->
+                                                        <div class="jarviswidget" id="wid-id-mtop-tap" data-widget-togglebutton="false" data-widget-editbutton="false" data-widget-fullscreenbutton="false" data-widget-colorbutton="false" data-widget-deletebutton="false" data-widget-sortable="false">
+
+                                                            <header>
+                                                                <span class="widget-icon"> <i class="fa fa-cubes txt-color-darken"></i> </span>
+                                                                <h2>Mes Packages </h2>
+
+                                                                <ul class="nav nav-tabs pull-right in" id="mesTab">
+                                                                    <li class="active">
+                                                                        <a data-toggle="tab" href="#MesS1"><i class="fa fa-clock-o"></i> <span class="hidden-mobile hidden-tablet">MES</span></a>
+                                                                    </li>
+
+                                                                </ul>
+
+                                                            </header>
+
+                                                            <!-- widget div-->
+                                                            <div class="no-padding">
+
+                                                                <div class="widget-body">
+                                                                    <!-- content -->
+                                                                    <div id="mesTabContent" class="tab-content">
+                                                                        <div class="tab-pane fade active in padding-10 no-padding-bottom" id="MesS1">
+                                                                            <div class="row no-space">
+                                                                                <div id="divMesScheduler" class="col-sm-12">
+                                                                                    <div id="dpMes"></div>
+                                                                                </div>
+                                                                                <div id="divMesModuleScheduler" class="col-sm-12" style="display:none">
+                                                                                    <div id="dpMesModule"></div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <!-- end s1 tab pane -->
+
+                                                                    </div>
+
+                                                                    <!-- end content -->
+                                                                </div>
+
+                                                            </div>
+                                                            <!-- end widget div -->
+                                                        </div>
+                                                        <!-- end widget -->
+
+                                                    </article>
+
+
+                                                    @*</div>*@
+                                                </div>
+
+                                            </div>
+                                            <!-- end widget content -->
+
+                                        </div>
+                                        <!-- end widget div -->
+
+                                    </div>
+                                    <!-- end widget -->
+
+                                </article>
+                                <!-- WIDGET END -->
+                            </div>
+                            <!-- end row -->
+                        </div>
+                    </div>
+                </section>
+                <!-- end widget grid -->
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">
+                    Cancel
+                </button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+<!--Add Package Group partial view-->
+@Html.Partial("~/Views/PartialView/PackageGroup.cshtml", null)
+
+<div class="top-buffer"></div>
+
+<div class="row">
+    <div class="col-sm-12" id="divMesPackage">
+        <table id="tbMesPackage"></table>
+        <div id="divMesPackagePage"></div>
+    </div>
+</div>
+<div class="row" style="margin-top:5px">
+    <div class="col-sm-10"></div>
+    <div class="col-sm-1">
+        <button type="button" id="btnEditMesPkg" class="btn btn-primary form-control">
+            Edit
+        </button>
+    </div>
+    <div class="col-sm-1">
+        <button type="button" id="btnAddMesPkg" class="btn btn-primary form-control">
+            Add
+        </button>
+    </div>
+</div>
+
+<div class="top-buffer"></div>
+
+@section Scripts{
+
+    <!--DayPilot js-->
+    <script src="~/Assets/DayPilotProJavaScriptTrial-8.4.3033/daypilot-all-pro.min.js"></script>
+
+    <!--Date range picker-->
+    <script src="~/assets/DayRangePicker/daterangepicker.min.js"></script>
+
+    <!--noUiSlider-14.0.2-->
+    <script src="~/Assets/noUiSlider-14.0.2/nouislider.min.js"></script>
+
+    <!--jqgrid libary-->
+    <script src="~/js/plugin/jqgrid/jquery.jqGrid.min.js"></script>
+    <script src="~/js/plugin/jqgrid/grid.locale-en.min.js"></script>
+
+    <script src="~/js/mes/mes-common.js?v=1.0.2"></script>
+    <script src="~/js/mes/planning/planning.js?v=1.2.5"></script>
+    <script src="~/js/mes/planning/planning-event.js?v=1.1.6"></script>
+
+    <!--START ADD - SON) 24/Nov/2020-->
+    <script src="~/js/mes/planning/module-planning.js"></script>
+    <script src="~/js/mes/planning/module-planning-event.js"></script>
+    <!--END ADD - SON) 24/Nov/2020-->
+
+    <!--package group partial view-->
+    <script src="~/js/mes/partial-view/package-group.js?v=1.0.4"></script>
+    <script src="~/js/mes/partial-view/package-group-event.js?v=1.0.2"></script>
+
+    <!--block UI-->
+    <script src="~/Assets/jquery.blockUI/jquery.blockUI.js"></script>
+
+    <script>
+        // unblock when ajax activity stops
+        $(document).ajaxStop($.unblockUI);
+
+        $(function () {
+            initPage();
+        });
+
+    </script>
+
+}

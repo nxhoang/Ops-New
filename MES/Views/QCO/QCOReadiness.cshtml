@@ -1,0 +1,344 @@
+﻿
+@{
+	ViewBag.Title = "MES - QCO Readiness";
+	Layout = "~/Views/Shared/_MesLayout.cshtml";
+}
+
+<link href="~/css/MES/QCO/QCOController.css" rel="stylesheet" />
+
+<link href="~/Assets/Pikaday/css/pikaday.css" rel="stylesheet" />
+<link href="~/Assets/Pikaday/css/BundleCss.css" rel="stylesheet" />
+
+<style>
+</style>
+
+<h2>QCO Readiness</h2>
+
+
+<div class="searchingBoxToggleIcon">
+	<i class="fa fa-search fa-2x" onclick="ToggleSearchBox(this,'.searchingBoxToggle');"></i>
+</div>
+
+<div class="searchingBoxToggleBackground" data-targetDomClass=""></div>
+<div class="searchingBoxToggle" data-targetDomClass="searchingBoxToggleIcon">
+	<div class="searchingBoxToggleHeader">
+		<i class="fa fa-times fa-2x pull-right"></i>
+	</div>
+
+	<div class="searchingBoxToggleBody">
+		<div class="row">
+			<div class="col-lg-2 col-md-3 col-sm-3 col-xs-6">
+				<div class="">
+					<label for="charlie_drpFactory" class="label-control">
+						Factory
+						@*<i class="fa fa-info-circle txt-color-blueDark" data-toggle="modal" data-target="#modal-FactorySortingSettings" style="font-size: 17px;"></i>*@
+					</label>
+					<select id="charlie_drpFactory" class="form-control form-inline" style="background: white; width:100%;">
+						<option></option>
+					</select>
+				</div>
+			</div>
+			<div class="col-lg-1 col-md-3 col-sm-3 col-xs-6">
+				<div class="form-group">
+					<label for="charlie_Year" class="">Year</label>
+					<select id="charlie_Year" class="form-control form-inline" style="background: white; width:100%;">
+						<option></option>
+					</select>
+				</div>
+			</div>
+			<div class="col-lg-1 col-md-3 col-sm-3 col-xs-6">
+				<div class="form-group">
+					<label for="charlie_WeekNo" class="">Week No</label>
+					<select id="charlie_WeekNo" class="form-control form-inline" style="background: white; width:100%;">
+						<option></option>
+					</select>
+				</div>
+			</div>
+			<div class="col-lg-2 col-md-3 col-sm-3 col-xs-6">
+				<div class="form-group">
+					<label for="QCORankingFilter" class="label-control">QCO Display</label>
+					<select id="QCORankingFilter" name="QCORankingFilter" class="form-control form-inline" style="width:100%;">
+						<option value="All" selected="selected">All</option>
+						<option value="Neg">Negative Ranking</option>
+						<option value="Pos" selected="selected">Positive Ranking</option>
+					</select>
+				</div>
+			</div>
+			<div class="col-lg-2 col-md-3 col-sm-3 col-xs-6">
+				<div class="form-group">
+					<label for="charlie_cbQCOSource" class="label-control">QCO Source</label>
+					<select id="charlie_cbQCOSource" name="charlie_cbQCOSource" class="form-control form-inline" style="width:100%;">
+						<option value="QCO" selected="selected">Published QCO</option>
+						<option value="QCOSim">Live QCO</option>
+					</select>
+				</div>
+			</div>
+
+			<div class="col-lg-2 col-md-3 col-sm-3 col-xs-6">
+				<div class="form-group">
+					<label for="charlie_DeliveryDate" class="label-control">Delivery Date</label>
+					<input type="text" id="charlie_DeliveryDate" name="charlie_DeliveryDate" class="form-control" data-format="DateRangeOpener" />
+				</div>
+			</div>
+
+			<div class="col-lg-2 col-md-3 col-sm-3 col-xs-6">
+				<div class="form-group">
+					<label class=""></label>
+					<button class="btn btn-primary btn-block" type="button" onclick="ShowQCOReadiness(); return false;">Display QCO</button>
+				</div>
+			</div>
+
+		</div>
+
+	</div>
+
+	<div class="searchingBoxToggleFooter"></div>
+</div>
+
+
+<div class="" style="width:99%;">
+	<div class="">
+		<table id="QCOReadiness" class="table table-fixed table-striped table-hover">
+			<thead>
+				<tr>
+					<th class="">System Ranking</th>
+					<th class="">Custom Ranking</th>
+					<th class="">Production Package</th>
+					<th class="">Due Date</th>
+					<th class="">Start Plan</th>
+					<th class="">Finish Plan</th>
+					<th class="">Package Qty</th>
+					<th class="">AO No</th>
+					<th class="">Buyer Style Code</th>
+					<th class="">Buyer Style Name</th>
+					<th class="">Style Size</th>
+					<th class="">Style Color</th>
+					<th class="">Rev No</th>
+					<th class="">Final Sample Order Readiness</th>
+					<th class="">JIG Readiness</th>
+					<th class="">SOP Readiness</th>
+				</tr>
+			</thead>
+			<tbody>
+			</tbody>
+		</table>
+	</div>
+	<div id="QCOReadinessPager"></div>
+</div>
+
+
+@section Scripts{
+	<script src="~/Assets/jquery.blockUI/jquery.blockUI.js"></script>
+
+	@*Bootstrap Notify *@
+	<script src="~/Assets/remarkable-bootstrap-notify/dist/bootstrap-notify.min.js"></script>
+	<script src="~/Assets/remarkable-bootstrap-notify/dist/Common.js"></script>
+
+
+	@*Pikaday*@
+	<script src="~/Assets/Pikaday/pikaday.js"></script>
+	<script src="~/Assets/Pikaday/plugins/pikaday.jquery.js"></script>
+	<script src="~/Assets/Pikaday/common.js"></script>
+
+	 
+	@* Page JS *@
+	<script src="~/js/mes/QCO/QCOController.js"></script>
+
+	<script>
+		//2020-04-11 Tai Le(Thomas)
+		var mUrl, charlie_drpFactory, charlie_Year, charlie_WeekNo;
+
+		////Events
+		$(document).ready(function () {
+			$('#charlie_drpFactory,#charlie_Year,#charlie_WeekNo,#QCORankingFilter,#QCOFactory,#charlie_cbQCOSource').select2({
+				placeholder: "-Choose One-",
+				allowClear: true,
+				dropdownAutoWidth: true
+			});
+
+			var CurDate = new Date();
+			var CurYear = CurDate.getFullYear();
+			var i = CurYear - 5;
+
+			for (i = CurYear; i < CurYear + 6; i++) {
+				if (i == CurDate.getFullYear()) {
+					$('#charlie_Year').append($('<option>',
+						{
+							value: i,
+							text: i,
+							selected: true
+						})
+					);
+					$('#charlie_Year option[value="' + i + '"]').text(i);
+				} else {
+					$('#charlie_Year').append($('<option>',
+						{
+							value: i,
+							text: i
+						})
+					);
+				}
+			}
+
+			let config = ObjectConfigAjaxPost("../QCO/GetYearWeeks", false, JSON.stringify({ vstrYear: $('#charlie_Year').val() }));
+			AjaxPostCommon(config, function (data) {
+				$('#charlie_WeekNo').append($('<option>',
+					{
+						value: '',
+						text: '----'
+					})
+				);
+				for (var i = 1; i <= data.NumberOfWeeks; i++) {
+					if (i < 10)
+						i = '0' + i;
+					$('#charlie_WeekNo').append($('<option>',
+						{
+							value: 'W' + i,
+							text: 'W' + i
+						})
+					);
+				}
+
+				//2019-11-29 Tai Le(Thomas): Assign Current Week
+				$('#charlie_WeekNo').val("W" + data.CurrentWeek).change();
+
+			}).done(function () {
+				config = ObjectConfigAjaxPost("../QCO/GetFactoryList", false, JSON.stringify({ vstrFactory: '' }));
+				AjaxPostCommon(config,
+					function (data) {
+						for (var i = 0; i < data.length; i++) {
+							$('#charlie_drpFactory,#QCOFactory').append($('<option>',
+								{
+									value: data[i].Factory,
+									text: '[' + data[i].Factory + '] ' + data[i].Name
+									, selected: $("#hdFactoryUser").val() == data[i].Factory
+								})
+							);
+						}
+					});
+			});
+
+
+			//Bind the ADType
+			//$.ajax({
+			//	url: '/QCO/GetAOTypeList',
+			//	type: 'POST',
+			//	contentType: 'application/json',
+			//	success: function (response) {
+			//		if (Array.isArray(response)) {
+			//			$.each(response, function (i, item) {
+			//				$('#charlie_AOType').append(
+			//					$('<option>', {
+			//						value: item.S_Code
+			//						, text: item.Code_Name
+			//					})
+			//				);
+			//			});
+			//		}
+			//		$('#charlie_AOType').multiselect({
+			//			includeSelectAllOption: true,
+			//			enableFiltering: true,
+			//			maxHeight: 500,
+			//			buttonWidth: '100%'
+			//		});
+			//	},
+			//	complete: function (jqXHR, textStatus) {
+			//	}
+			//});
+
+		});
+
+		//Custom before any AJAX request start
+		$(document).ajaxStart($.blockUI).ajaxStop($.unblockUI);
+
+
+		////Functions
+		async function ShowQCOReadiness() {
+			charlie_drpFactory = $('#charlie_drpFactory').val();
+			charlie_Year = $('#charlie_Year').val();
+			charlie_WeekNo = $('#charlie_WeekNo').val();
+			var charlie_DeliveryDate = $('#charlie_DeliveryDate').val();
+
+			var QCORankingFilter = $('#QCORankingFilter').val();
+
+			var charlie_cbDeliveryDate = $('#charlie_cbDeliveryDate').prop('checked');
+
+			let charlie_cbQCOSource = $('#charlie_cbQCOSource').val();
+
+			mUrl = '../QCO/ShowQCOReadiness' + "/" + charlie_drpFactory + '?_searchFieldQCOYEAR=' + charlie_Year + '&_searchFieldQCOWEEKNO=' + charlie_WeekNo + '&QCORankingFilter=' + QCORankingFilter + '&QCOSource=' + charlie_cbQCOSource;
+
+			if (charlie_cbDeliveryDate)
+				mUrl = mUrl + '&_searchFieldDateRangeDELIVERYDATE=' + charlie_DeliveryDate;
+
+			//let charlie_AOType = $('#charlie_AOType').val();
+			//if (Array.isArray(charlie_AOType)) {
+			//	if (charlie_AOType.length > 0)
+			//		mUrl = mUrl + '&_searchFieldStrIncADType=' + charlie_AOType.join(";");
+			//}
+
+			if (charlie_drpFactory.length <= 0 || charlie_Year.length <= 0 || charlie_WeekNo.length <= 0) {
+				Notify('[Factory], [Year] and [Week No] are required. Please check and try again.', 'warning');
+			} else {
+				$.post(mUrl)
+					.done(function (res) {
+						//Remove existing Tbody
+						$('#QCOReadiness').find('tbody').find('tr').remove();
+
+						//Append Tbody
+						if (Array.isArray(JSON.parse(res).rows)) {
+							let rowData = JSON.parse(res).rows;
+
+							let FINSOREADINESS_input = '', JIGREADINESS_input = '', SOPREADINESS_input = '';
+
+							rowData.forEach(function (ele, index) {
+								console.log(ele);
+								FINSOREADINESS_input = '';
+								JIGREADINESS_input = '';
+								SOPREADINESS_input = '';
+
+								FINSOREADINESS_input =
+									`<input type="checkbox"  ${ele.FINSOREADINESS == '1' ? 'checked="checked"' : ''} />`;
+
+								JIGREADINESS_input =
+									`<input type="checkbox" ${ele.JIGREADINESS == '1' ? 'checked="checked"' : ''} />`;
+
+								SOPREADINESS_input =
+									`<input type="checkbox" ${ele.SOPREADINESS == '1' ? 'checked="checked"' : ''} />`;
+
+
+								$('#QCOReadiness').find('tbody').append(
+									`<tr id="${ele.QCORANK}">
+												<td class="">
+													<input type="hidden" name="QCOFACTORY" value="${ele.QCOFACTORY}"/>
+													<input type="hidden" name="QCOYEAR" value="${ele.QCOYEAR}"/>
+													<input type="hidden" name="QCOWEEKNO" value="${ele.QCOWEEKNO}"/>
+													${ele.QCORANK}
+												</td>
+												<td class="">${ele.CHANGEQCORANK}</td>
+												<td class="">${ele.PRDPKG}</td>
+												<td class="">${ele.DELIVERYDATE}</td>
+												<td class="">${ele.AOPRDSDAT}</td>
+												<td class="">${ele.AOPRDEDAT}</td>
+												<td class="">${ele.PLANQTY}</td>
+												<td class="">${ele.AONO}</td>
+												<td class="">${ele.BUYERSTYLECODE}</td>
+												<td class="">${ele.BUYERSTYLENAME}</td>
+												<td class="">${ele.STYLESIZE}</td>
+												<td class="">${ele.STYLECOLORSERIAL} - ${ele.STYLECOLORWAYS}</td>
+												<td class="">${ele.REVNO}</td>
+												<td class="">${FINSOREADINESS_input}</td>
+												<td class="">${JIGREADINESS_input}</td>
+												<td class="">${SOPREADINESS_input}</td>
+											</tr>
+											`
+								);
+							});
+						}
+
+					});
+			}
+		}
+
+
+	</script>
+}

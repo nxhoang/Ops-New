@@ -1,0 +1,223 @@
+﻿select#timelineViewer {
+    border-radius: 4px !important;
+    color: black !important;
+}
+
+    select#timelineViewer option {
+        color: black !important;
+    }
+
+.th_schdgreen_matrix .Sunday {
+    background: darkgray !important;
+    background: -moz-linear-gradient(top, darkgray 100%, darkgray);
+    background-color: darkgray !important;
+    /*z-index: 1;*/
+}
+
+.PackageStartDate {
+    background-color: red !important;
+}
+
+
+.purple .th_schdgreen_event_inner, .purple .th_mgreen_event_inner {
+    position: absolute;
+    margin: 0px;
+    overflow: hidden;
+    background-color: purple !important;
+    background: -webkit-linear-gradient(top, purple 0%, purple) !important;
+    background: -moz-linear-gradient(top, purple 0%, purple) !important;
+    background: -ms-linear-gradient(top, purple 0%, purple) !important;
+    background: -o-linear-gradient(top, purple 0%, purple) !important;
+    background: linear-gradient(top, purple 0%, purple) !important;
+    filter: progid:DXImageTransform.Microsoft.Gradient(startColorStr="purple", endColorStr="purple") !important;
+    -moz-border-radius: 4px;
+    -webkit-border-radius: 4px;
+    border-radius: 4px;
+    padding: 2px;
+    left: 0px;
+    right: 2px;
+    top: 0px;
+    bottom: 3px;
+    -moz-box-shadow: 1px 2px 3px rgba(000,000,000,0.3);
+    -webkit-box-shadow: 1px 2px 3px rgba(000,000,000,0.3);
+    box-shadow: 1px 2px 3px rgba(000,000,000,0.3);
+}
+
+
+.yellow .th_schdgreen_event_inner, .yellow .th_mgreen_event_inner {
+    position: absolute;
+    margin: 0px;
+    overflow: hidden;
+    background-color: yellow !important;
+    background: -webkit-linear-gradient(top, yellow 0%, yellow) !important;
+    background: -moz-linear-gradient(top, yellow 0%, yellow) !important;
+    background: -ms-linear-gradient(top, yellow 0%, yellow) !important;
+    background: -o-linear-gradient(top, yellow 0%, yellow) !important;
+    background: linear-gradient(top, yellow 0%, yellow) !important;
+    filter: progid:DXImageTransform.Microsoft.Gradient(startColorStr="yellow", endColorStr="yellow") !important;
+    -moz-border-radius: 4px;
+    -webkit-border-radius: 4px;
+    border-radius: 4px;
+    padding: 2px;
+    left: 0px;
+    right: 2px;
+    top: 0px;
+    bottom: 3px;
+    -moz-box-shadow: 1px 2px 3px rgba(000,000,000,0.3);
+    -webkit-box-shadow: 1px 2px 3px rgba(000,000,000,0.3);
+    box-shadow: 1px 2px 3px rgba(000,000,000,0.3);
+}
+
+
+.lightseagreen .th_schdgreen_event_inner, .lightseagreen .th_mgreen_event_inner {
+    position: absolute;
+    margin: 0px;
+    overflow: hidden;
+    background-color: lightseagreen !important;
+    background: -webkit-linear-gradient(top, lightseagreen 0%, lightseagreen) !important;
+    background: -moz-linear-gradient(top, lightseagreen 0%, lightseagreen) !important;
+    background: -ms-linear-gradient(top, lightseagreen 0%, lightseagreen) !important;
+    background: -o-linear-gradient(top, lightseagreen 0%, lightseagreen) !important;
+    background: linear-gradient(top, lightseagreen 0%, lightseagreen) !important;
+    filter: progid:DXImageTransform.Microsoft.Gradient(startColorStr="lightseagreen", endColorStr="lightseagreen") !important;
+    -moz-border-radius: 4px;
+    -webkit-border-radius: 4px;
+    border-radius: 4px;
+    padding: 2px;
+    left: 0px;
+    right: 2px;
+    top: 0px;
+    bottom: 3px;
+    -moz-box-shadow: 1px 2px 3px rgba(000,000,000,0.3);
+    -webkit-box-shadow: 1px 2px 3px rgba(000,000,000,0.3);
+    box-shadow: 1px 2px 3px rgba(000,000,000,0.3);
+}
+
+
+.black .th_schdgreen_event_inner, .black .th_mgreen_event_inner {
+    position: absolute;
+    margin: 0px;
+    overflow: hidden;
+    background-color: black !important;
+    background: -webkit-linear-gradient(top, black 0%, black) !important;
+    background: -moz-linear-gradient(top, black 0%, black) !important;
+    background: -ms-linear-gradient(top, black 0%, black) !important;
+    background: -o-linear-gradient(top, black 0%, black) !important;
+    background: linear-gradient(top, black 0%, black) !important;
+    filter: progid:DXImageTransform.Microsoft.Gradient(startColorStr="black", endColorStr="black") !important;
+    -moz-border-radius: 4px;
+    -webkit-border-radius: 4px;
+    border-radius: 4px;
+    padding: 2px;
+    left: 0px;
+    right: 2px;
+    top: 0px;
+    bottom: 3px;
+    -moz-box-shadow: 1px 2px 3px rgba(000,000,000,0.3);
+    -webkit-box-shadow: 1px 2px 3px rgba(000,000,000,0.3);
+    box-shadow: 1px 2px 3px rgba(000,000,000,0.3);
+}
+
+
+.darkblue .th_schdgreen_event_inner, .black .th_mgreen_event_inner {
+    position: absolute;
+    margin: 0px;
+    overflow: hidden;
+    background-color: darkblue !important;
+    background: -webkit-linear-gradient(top, darkblue 0%, darkblue) !important;
+    background: -moz-linear-gradient(top, darkblue 0%, darkblue) !important;
+    background: -ms-linear-gradient(top, darkblue 0%, darkblue) !important;
+    background: -o-linear-gradient(top, darkblue 0%, darkblue) !important;
+    background: linear-gradient(top, darkblue 0%, darkblue) !important;
+    filter: progid:DXImageTransform.Microsoft.Gradient(startColorStr="black", endColorStr="black") !important;
+    -moz-border-radius: 4px;
+    -webkit-border-radius: 4px;
+    border-radius: 4px;
+    padding: 2px;
+    left: 0px;
+    right: 2px;
+    top: 0px;
+    bottom: 3px;
+    -moz-box-shadow: 1px 2px 3px rgba(000,000,000,0.3);
+    -webkit-box-shadow: 1px 2px 3px rgba(000,000,000,0.3);
+    box-shadow: 1px 2px 3px rgba(000,000,000,0.3);
+}
+
+
+
+.red .th_schdgreen_event_inner, .red .th_mgreen_event_inner {
+    position: absolute;
+    margin: 0px;
+    overflow: hidden;
+    background-color: red !important;
+    background: -webkit-linear-gradient(top, red 0%, red) !important;
+    background: -moz-linear-gradient(top, red 0%, red) !important;
+    background: -ms-linear-gradient(top, orange 0%, red) !important;
+    background: -o-linear-gradient(top, red 0%, red) !important;
+    background: linear-gradient(top, red 0%, red) !important;
+    filter: progid:DXImageTransform.Microsoft.Gradient(startColorStr="red", endColorStr="red") !important;
+    -moz-border-radius: 4px;
+    -webkit-border-radius: 4px;
+    border-radius: 4px;
+    padding: 2px;
+    left: 0px;
+    right: 2px;
+    top: 0px;
+    bottom: 3px;
+    -moz-box-shadow: 1px 2px 3px rgba(000,000,000,0.3);
+    -webkit-box-shadow: 1px 2px 3px rgba(000,000,000,0.3);
+    box-shadow: 1px 2px 3px rgba(000,000,000,0.3);
+}
+
+.orange .th_schdgreen_event_inner, .orange .th_mgreen_event_inner {
+    position: absolute;
+    margin: 0px;
+    overflow: hidden;
+    background-color: orange !important;
+    background: -webkit-linear-gradient(top, orange 0%, orange) !important;
+    background: -moz-linear-gradient(top, orange 0%, orange) !important;
+    background: -ms-linear-gradient(top, orange 0%, orange) !important;
+    background: -o-linear-gradient(top, orange 0%, orange) !important;
+    background: linear-gradient(top, orange 0%, orange) !important;
+    filter: progid:DXImageTransform.Microsoft.Gradient(startColorStr="orange", endColorStr="orange") !important;
+    -moz-border-radius: 4px;
+    -webkit-border-radius: 4px;
+    border-radius: 4px;
+    padding: 2px;
+    left: 0px;
+    right: 2px;
+    top: 0px;
+    bottom: 3px;
+    -moz-box-shadow: 1px 2px 3px rgba(000,000,000,0.3);
+    -webkit-box-shadow: 1px 2px 3px rgba(000,000,000,0.3);
+    box-shadow: 1px 2px 3px rgba(000,000,000,0.3);
+}
+
+
+
+.SimulationEvent .th_schdgreen_event_inner, .SimulationEvent .th_mgreen_event_inner {
+    background-color: darkcyan !important;
+    background: -webkit-gradient(linear, left top, left bottom, from(darkcyan), to(darkcyan)) !important;
+    background: -webkit-linear-gradient(top, darkcyan 0%, darkcyan) !important;
+    background: -moz-linear-gradient(top, darkcyan 0%, darkcyan) !important;
+    background: -ms-linear-gradient(top, darkcyan 0%, darkcyan) !important;
+    background: -o-linear-gradient(top, darkcyan 0%, darkcyan) !important;
+    background: linear-gradient(top, darkcyan 0%, darkcyan) !important;
+    filter: progid:DXImageTransform.Microsoft.Gradient(startColorStr="darkcyan", endColorStr="darkcyan") !important;
+}
+
+.SimulationEventAlert .th_schdgreen_event_inner {
+    background-color: darkred !important;
+    background: -moz-linear-gradient(top, darkred 100%, darkred);
+    background: -webkit-linear-gradient(top, darkred 0%, darkred);
+}
+
+.SimulationEventWarning .th_schdgreen_event_inner {
+    background-color: darkorange !important;
+    background: -moz-linear-gradient(top, darkorange 100%, darkorange);
+    background: -webkit-linear-gradient(top, darkorange 0%, darkorange);
+}
+
+.DayPilotMessageBar {
+    z-index: 3 !important;
+}

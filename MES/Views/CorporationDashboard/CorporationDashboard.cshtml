@@ -1,0 +1,143 @@
+﻿@{
+    ViewBag.Title = "Corporation Dashboard";
+    Layout = "~/Views/Shared/_MesLayout.cshtml";
+}
+
+<link href="~/assets/DayRangePicker/daterangepicker.min.css" rel="stylesheet" />
+
+<link href="~/Assets/bootstrap-multiselect/bootstrap-multiselect.min.css" rel="stylesheet" />
+
+<style>
+    #chartjs-tooltip {
+        opacity: 1;
+        position: absolute;
+        background: rgba(0, 0, 0, .7);
+        color: white;
+        border-radius: 3px;
+        -webkit-transition: all .1s ease;
+        transition: all .1s ease;
+        pointer-events: none;
+        -webkit-transform: translate(-50%, 0);
+        transform: translate(-50%, 0);
+        z-index: 9999;
+    }
+
+    .chartjs-tooltip-key {
+        display: inline-block;
+        width: 10px;
+        height: 10px;
+        margin-right: 10px;
+    }
+
+    .tooltip-pad-left {
+        padding-left: 5px;
+    }
+
+    .divLineChart {
+        padding-bottom: 50px;
+    }
+
+    #btnDisplayCD {
+        width: auto;
+    }
+</style>
+
+<section id="widget-grid" class="">
+    <!-- row -->
+    <div class="row">
+        <!-- NEW WIDGET START -->
+        <article class="col-sm-12">
+
+            <!-- Widget ID (each widget will need unique ID)-->
+            <div class="jarviswidget jarviswidget-color-green" id="wid-id-0" data-widget-editbutton="false">
+
+                <header>
+                    <div></div>
+                </header>
+
+                <!-- widget div-->
+                <div>
+                    <!-- widget content -->
+                    <div class="widget-body">
+
+                        @*drawchart*@
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="form-horizontal bv-form">
+                                    <div class="form-group">
+                                        <label class="col-sm-1 control-label" for="selFactory">Factory</label>
+                                        <div class="col-sm-2">
+                                            <select id="selFactory" class="multiselect" name="options[]" multiple="multiple">
+                                            </select>
+                                        </div>
+
+                                        <label class="col-sm-1 control-label">Date</label>
+                                        <div class="col-sm-1">
+                                            <input type="text" id="txtDate" class="form-control" placeholder="Date" style="padding-right:0;">
+                                        </div>
+
+                                        <div class="col-sm-1"></div>
+
+                                        <div class="col-sm-1">
+                                            <button id="btnDisplayCD" class="form-control btn btn-primary">Display</button>
+                                        </div>
+
+                                        <div class="col-sm-4">
+                                        </div>
+
+                                        <div class="col-sm-2">
+                                            @*<label class="checkbox-inline"><input type="checkbox" id="chkDisplayDetail" value="">Display detail</label>*@
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row" id="chartCorporation">
+
+                        </div>
+                        @*end drawchart*@
+
+
+                    </div>
+                    <!-- end widget div -->
+
+                </div>
+                <!-- end widget -->
+            </div>
+        </article>
+        <!-- WIDGET END -->
+    </div>
+
+    <!-- end row -->
+</section>
+<!-- end widget grid -->
+
+
+
+
+
+@section Scripts{
+    <script src="~/assets/DayRangePicker/daterangepicker.min.js"></script>
+    <script src="~/Assets/chartjs/Chart.min.js"></script>
+    <script src="~/Assets/chartjs/chartjs-plugin-datalabels.min.js"></script>
+
+    <script src="~/js/mes/mes-common.js?v=1.0.3"></script>
+
+    <script src="~/js/mes/corporationdashboard/corporation-dashboard.js"></script>
+    <script src="~/js/mes/corporationdashboard/corporation-dashboard-event.js"></script>
+
+    <script src="~/Assets/jquery.blockUI/jquery.blockUI.js"></script>
+
+    <script src="~/Assets/bootstrap-multiselect/bootstrap-multiselect.min.js"></script>
+
+    <script>
+
+
+        $(function () {
+            drawChartLineCorporationDashboard();
+        });
+
+    </script>
+
+}

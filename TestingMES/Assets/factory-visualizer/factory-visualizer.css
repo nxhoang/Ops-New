@@ -1,0 +1,183 @@
+﻿/*#region Common*/
+.btn-toggle-table {
+    position: relative;
+    top: 0;
+    right: 0;
+}
+
+.multiselect-search {
+    border-top-width: 1px !important;
+    height: 32.4px;
+}
+
+.fac-vs__btn-add-line {
+    float: right;
+    margin-right: 13px;
+}
+
+.fac-vs__row-btn--padding {
+    padding: 0;
+}
+
+/*BlockUI*/
+.blockUI.blockOverlay {
+    z-index: 9998 !important;
+}
+
+.blockUI.blockMsg.blockPage {
+    z-index: 9999 !important;
+}
+
+.blockUI.blockMsg.blockElement {
+    z-index: 9999 !important;
+}
+
+#gbox_tbAmtopLine .blockUI.blockMsg.blockElement {
+    top: 40% !important;
+    left: 35% !important
+}
+/*#endregion*/
+/*#region Line form*/
+.fac-vs__line-form--input {
+    width: 250px;
+}
+
+.fac-vs__row--padding {
+    padding: 5px 0 5px 0;
+}
+/*#endregion Line form*/
+
+/*#region Bootstrap collapse*/
+.collapse {
+    display: none;
+    visibility: hidden;
+}
+
+    .collapse.in {
+        display: block;
+        visibility: visible;
+    }
+
+tr.collapse.in {
+    display: table-row;
+}
+
+tbody.collapse.in {
+    display: table-row-group;
+}
+
+.collapsing {
+    position: relative;
+    height: 0;
+    overflow: hidden;
+    -webkit-transition-property: height, visibility;
+    transition-property: height, visibility;
+    -webkit-transition-duration: 0.35s;
+    transition-duration: 0.35s;
+    -webkit-transition-timing-function: ease;
+    transition-timing-function: ease;
+}
+
+    .collapsing.width {
+        -webkit-transition-property: width, visibility;
+        transition-property: width, visibility;
+        width: 0;
+        height: auto;
+    }
+/*#endregion*/
+
+/*#region Seating Chart*/
+/*@media (min-width: 768px) {
+    .fac-vs__worker {
+        height: 600px;
+    }
+
+    .fac-vs__diagram {
+        height: 600px;
+    }
+}
+
+@media (max-width: 767px) {
+    .fac-vs__worker {
+        height: 100px;
+    }
+
+    .fac-vs__diagram {
+        height: 500px;
+    }
+}*/
+
+.fac-vs__border-color {
+    border: solid #ccc;
+}
+
+.fac-line-setup, .fac-vs__diagram {
+    overflow: hidden;
+}
+
+.fac-vs__btn--togle-process {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 999
+}
+
+.fac-vs__select--op-view {
+    position: absolute;
+    top: 0;
+    left: 50px;
+    z-index: 999;
+    height: 24.4px;
+}
+
+.fac-vs__diagram {
+    height: 900px;
+    border-width: 1px;
+    width: auto;
+}
+
+.fac-vs__diagram canvas {
+    height: 100% !important;
+}
+
+canvas {
+    max-width: 100%;
+}
+
+.fac-vs__worker {
+    height: 900px;
+    float: left;
+    width: 35%;
+    border-width: 1px 0 1px 1px;
+}
+
+.fac-vs__modal--header {
+    padding: 5px 7px 0 5px;
+}
+
+.fac-vs__required-label {
+    color: red;
+}
+
+.fac-vs__required-border {
+    border-color: red;
+}
+
+.fac-vs__row--padding-left {
+    padding-left: 13px;
+}
+
+.fac-vs__div--radio--inline {
+    display: inline-block;
+}
+
+.fac-vs__btn--cal-width {
+    margin-left: 0;
+    margin-top: 0
+}
+
+.fac-vs__group-addon {
+    background-color: white;
+    border-width: 0;
+}
+/*#endregion*/

@@ -1,0 +1,29 @@
+﻿
+@{
+    ViewBag.Title = "Play";
+}
+@Html.Partial("_Play")
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $('#btnPlay').click(function () {
+                PlayVideo();
+            });
+        });
+        function PlayVideo() {
+            //fol = 'COMPADEPART';
+            //file = 'xT5gLsavC2mhNWK.mp4';
+            fol = "";
+            file = "UNI0037LRG001001003004.mp4";
+            var player = document.getElementById('videoPlayer');
+            var mp4Vid = document.getElementById('mp4Source');
+            var oggVid = document.getElementById('oggSource');
+            player.pause();
+            var pathFile = document.location.origin + "/api/MediaPlay/Play?fol=" + fol + "" + "&f=" + file;
+            mp4Vid.src = pathFile
+            oggVid.src = pathFile
+            player.load();
+            player.play();
+        }
+    </script>
+}

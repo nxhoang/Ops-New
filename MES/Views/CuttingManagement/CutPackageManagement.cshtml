@@ -1,0 +1,327 @@
+﻿@{
+    ViewBag.Title = "CutPackageManagement";
+    Layout = "~/Views/Shared/_MesLayout.cshtml";
+}
+
+<link href="~/Assets/Pikaday/css/pikaday.css" rel="stylesheet" />
+<link href="~/Assets/Pikaday/css/BundleCss.css" rel="stylesheet" />
+
+
+
+<h2>Cut Package Management</h2>
+
+<div class="row">
+    <form id="frmSearchdpMES" onsubmit="return formSearchdpMESCheck();">
+        <div class="col-lg-1">
+            <div class="inline-group">
+                <label>Factory: </label>
+                <select class="form-control" data-binding="FactoryList" name="Factory" id="Factory" required="">
+                    <option value=""></option>
+                </select>
+            </div>
+        </div>
+
+        <div class="col-lg-1">
+            <div class="inline-group">
+                <label class="">AO No: </label>
+                <input class="form-control" name="AONo" id="AONo" style="text-transform: uppercase" type="text" />
+            </div>
+        </div>
+
+        <div class="col-lg-1">
+            <div class="inline-group">
+                <label class="">Buyer: </label>
+                <select class="form-control" data-binding="BuyerList" name="Buyer">
+                    <option value=""></option>
+                </select>
+            </div>
+        </div>
+
+        <div class="col-lg-2">
+            <div class="inline-group">
+                <label class="">MES Start Date: </label>
+                <input class="form-control" data-format="DateRangeOpener" name="MESStartDate" id="MESStartDate" placeholder="YYYY/MM/DD - YYYY/MM/DD"  required=""/>
+            </div>
+        </div>
+
+        @*<div class="col-lg-2"> <div class="inline-group"> <label class="">MES End Date: </label> <input class="form-control" data-format="DateSingleOpener" name="MESEndDate" id="MESEndDate" placeholder="YYYY/MM/DD" /> </div> </div>*@
+
+        <div class="col-lg-1">
+            <div class="inline-group">
+                <label class=""></label>
+                <button type="button" class="btn btn-primary btn-block" onclick="return DisplayMESScheduler();">Display</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<div id="dpMES"></div>
+
+
+@section Scripts{
+
+    <script src="~/Assets/Pikaday/pikaday.js"></script>
+    <script src="~/Assets/Pikaday/plugins/pikaday.jquery.js"></script>
+    <script src="~/Assets/Pikaday/common.js"></script>
+
+    <script src="~/js/plugin/masked-input/jquery.maskedinput.min.js"></script>
+
+    <script src="~/Assets/DayPilotProJavaScriptTrial-8.4.3033/daypilot-all-pro.min.js"></script>
+    <script>
+          function getFormData($form)
+        {
+            var unindexed_array = $form.serializeArray();
+            var indexed_array = {};
+
+            $.map(unindexed_array, function (n, i)
+            {
+                indexed_array[n['name']] = n['value'];
+            });
+            return indexed_array;
+        }
+
+        ///FUNCTIONS
+        function DisplayMESScheduler() {
+            let $form = $('form#frmSearchdpMES');
+            let formData = getFormData($form);
+
+            $.ajax({
+                type: "POST",
+                async: true,
+                url: '/CuttingManagement/BindMESScheduler',
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                data: JSON.stringify({ formData }),
+                success: function (response) {
+                    console.log(response);
+                    //if (response.d.length > 0) {
+                    //    var json = JSON.parse(response.d); 
+                    //    if (json.Result == true && json.retMessage.length == 0) {
+                    //        dp.startDate = new Date(json.StartTime);
+                    //        dp.days = json.Days;
+                    //        dp.update(); 
+                    //        var Res = json.Events; 
+                    //        for (var i = 0; i < Res.length; i++) {
+                    //            var e = {
+                    //                start: new DayPilot.Date(Res[i].start)
+                    //                , end: new DayPilot.Date(Res[i].end)
+                    //                , id: Res[i].id
+                    //                , resource: Res[i].resource
+                    //                , text: Res[i].text
+                    //                , html: Res[i].bubbleHtml
+                    //                , toolTip: Res[i].toolTip
+                    //                , cssClass: Res[i].cssClass
+                    //                , barHidden: true
+                    //                , tag: Res[i].tags
+                    //                /*, complete: 100*/
+                    //            }; 
+                    //            dp.events.list.push(e); /* Push Data in Day Cells */
+                    //        } 
+                    //        dp.update(); 
+                    //    } else if (json.Result == true && json.retMessage.length != 0) {
+                    //        Notify('warning', json.retMessage);
+                    //    } else if (json.Result == false) {
+                    //        Notify('danger', json.retMessage);
+                    //    }
+                    //}  
+
+                },
+                error: function (response) { 
+                    console.log(response);
+                }
+            }); 
+        }
+
+
+        ///EVENTS
+        function formSearchdpMESCheck() {
+            event.stopPropagation();
+
+            return DisplayMESScheduler();
+        }
+
+        //document.ready
+        $(function () {
+            $("#AONo").mask("aa-aaa-9999");
+            $.when(
+                //Bind the Factory
+                $.ajax({
+                    url: '/QCO/GetFactoryList',
+                    type: 'POST',
+                    contentType: 'application/json',
+                    success: function (response) {
+                        if (Array.isArray(response)) {
+                            $.each(response, function (i, item) {
+                                $('select[data-binding="FactoryList" ]').append(
+                                    $('<option>', {
+                                        value: item.Factory
+                                        , text: '[' + item.Factory + '] ' + item.Name
+                                    })
+                                );
+                            });
+                        }
+
+                        $('select[data-binding="FactoryList"]').select2({
+                            placeholder: "-Factory-",
+                            allowClear: true,
+                            dropdownAutoWidth: true
+                        });
+                    },
+                    complete: function (jqXHR, textStatus) {
+                        console.log(jqXHR, textStatus);
+                    }
+                })
+
+                //Bind the ADType
+                , $.ajax({
+                    url: '/SystemAdmin/GetBuyerList',
+                    type: 'POST',
+                    contentType: 'application/json',
+                    success: function (response) {
+                        if (Array.isArray(response)) {
+                            $.each(response, function (i, item) {
+                                if (item.BuyerCode !== "Any")
+                                    $('select[data-binding="BuyerList"]').append(
+                                        $('<option>', {
+                                            value: item.BuyerCode
+                                            , text: '[' + item.BuyerCode + '] ' + item.BuyerName
+                                        })
+                                    );
+                            });
+                        }
+
+                        $('select[data-binding="BuyerList"]').select2({
+                            placeholder: "-Buyer-",
+                            allowClear: true,
+                            dropdownAutoWidth: true
+                        });
+                    },
+                    complete: function (jqXHR, textStatus) {
+                        console.log(jqXHR, textStatus);
+                    }
+                })
+            ).done();
+        });
+
+
+        var dp = new DayPilot.Scheduler("dpMES");
+        // behavior and appearance
+        dp.theme = "th_schdgreen";
+
+        dp.dynamicEventRendering = "Disabled";
+
+        dp.cellWidth = 40;
+        //dp.eventHeight = 30;
+
+        dp.durationBarHeight = 15;
+        dp.durationBarColor = "red";
+
+        dp.heightSpec = "Fixed";
+        dp.height = window.innerHeight * 0.475;
+        //SetSchedulerHeight(false);
+
+        /*
+        Scheduler Auto Refresh
+        dp.autoRefreshEnabled = false;
+        var intMinInternal = 10; if (intMinInternal < 10) intMinInternal = 10;
+        dp.autoRefreshInterval = intMinInternal; /*Min Interval = 10 seconds* /
+        dp.autoRefreshMaxCount = 86400;
+        dp.onAutoRefresh = function (vargs) { };
+        */
+
+        //#Noted: DayPilot Pro
+        dp.cornerHtml = "FACTORY<br/>LINE";
+
+        /* Time Header Handling */
+        dp.headerHeight = 25;
+        dp.onBeforeTimeHeaderRender = function (args) {
+            if (args.header.level === 1) {
+                args.header.html = "Week " + args.header.html;
+            } else if (args.header.level === 2) {
+                if (args.header.start.getDayOfWeek() === 0) {
+                    args.header.html = '<span style="color:yellow; font-weight:bold">' + args.header.html + '</span>';
+                }
+            }
+        };
+
+        /* Cell Background For Sunday */
+        dp.onBeforeCellRender = function (args) {
+            if (args.cell.start.getDayOfWeek() === 0) {
+                args.cell.backColor = "darkgray";
+            }
+        };
+
+        dp.onBeforeEventRender = function (args) {
+            args.e.html = args.e.text;
+        };
+
+        /* Filter */
+        dp.onEventFilter = function (args) {
+            var textFound = args.e.text().toUpperCase().indexOf(args.filter.toUpperCase()) > -1;
+
+            if (!textFound) {
+                args.visible = false;
+            }
+        };
+
+        // Event Handling
+        // Disallow Move /Adjust /Create any Package Event
+        dp.eventMoveHandling = 'Disabled';
+        dp.eventResizeHandling = 'Disabled';
+        dp.timeRangeSelectedHandling = 'Disabled';
+
+        dp.bubble = new DayPilot.Bubble({
+            onLoad: function (args) {
+                //console.log(args);
+                args.async = true;
+
+                var htmlContent = "";
+
+                setTimeout(function () {
+                    $.ajax({
+                        url: '/QCO/POPStyleSummaryMESPackage/?StyleCode=' + args.source.data.StyleCode
+                            + '&StyleSize=' + args.source.data.StyleSize
+                            + '&StyleColorSerial=' + args.source.data.StyleColorSerial
+                            + '&RevNo=' + args.source.data.RevNo
+                            + '&MxPackage=' + args.source.data.MxPackage
+                            + '&MxTarget=' + args.source.data.MxTarget
+                    })
+                        .then(function (content) {
+                            // Set the tooltip content upon successful retrieval
+                            htmlContent = content;
+                        }, function (xhr, status, error) {
+                            console.log(xhr, status, error);
+                            htmlContent = status + ': ' + error;
+                        });
+
+                    args.html = htmlContent;
+                    args.loaded();
+                }, 1000);
+            }
+        });
+
+        dp.onEventClick = function (args) {
+        };
+
+        dp.contextMenu = new DayPilot.Menu({
+            items: [
+                {
+                    text: "Function Name", onclick: function (args) { }
+                }
+            ],
+            hideOnMouseOut: true
+        });
+
+        dp.separators = [{
+            color: "Darkred",
+            location: getCurrentDate(),
+            layer: "AboveEvents",
+            opacity: 100,
+            width: 5
+        }];
+
+        dp.init();
+        dp.hide();
+
+    </script>
+}

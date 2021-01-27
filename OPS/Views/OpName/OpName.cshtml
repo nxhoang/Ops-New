@@ -1,0 +1,215 @@
+﻿
+@{
+    ViewBag.Title = "OpName";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style type="text/css">
+    /*Show plus icon*/
+    .ui-widget-content .ui-icon {
+        background-image: url('../../js/jqGrid/css/images/ui-icons_2e83ff_256x240.png');
+    }
+
+    .ui-icon-plus {
+        background-position: -16px -128px;
+    }
+
+    .ui-icon {
+        width: 16px;
+        height: 16px;
+    }
+    /*/Show plus icon*/
+
+    /*Adjust cell of grid*/
+    .ui-jqgrid .ui-jqgrid-bdiv tr.ui-row-ltr > td {
+        border: 1px solid #DFDFDF;
+        height: 35px;
+        font-size: 13px;
+        padding: 5px;
+    }
+
+    table.td-opname td {
+        border: 1px solid #DFDFDF;
+        height: 50px !important;
+        font-size: 22px !important;
+        padding: 5px;
+    }
+
+    table.td-opsub td {
+        height: 30px !important;
+        font-size: 16px !important;
+        padding: 5px;
+    }
+
+    table.td-opsubsub td {
+        height: 20px !important;
+        font-size: 13px !important;
+        padding: 5px;
+    }
+
+    /*set height of the first row of jqgrid*/
+    .ui-jqgrid tr.jqgfirstrow td {
+        height: 0px !important;
+    }
+    /*/set height of the first row of jqgrid*/
+
+    /*/Adjust cell of grid*/
+    /*Disable horizontal bar*/
+    /*.ui-jqgrid .ui-jqgrid-bdiv {
+        position: relative;
+        margin: 0em;
+        padding: 0;*/
+    /*        overflow: auto;*/
+    /*overflow-x: hidden;
+        overflow-y: auto;
+        text-align: left;
+    }*/
+    /*/Disable horizontal bar*/
+
+    /*change header subgrid style*/
+    .ui-jqgrid .ui-subgrid .ui-jqgrid .ui-jqgrid-hdiv .ui-jqgrid-htable .ui-jqgrid-labels {
+        border-bottom: 1px solid #E1E1E1;
+        background: #F1F1F1;
+    }
+
+    .ui-jqgrid .ui-subgrid .ui-jqgrid .ui-jqgrid-hdiv .ui-jqgrid-htable th[aria-selected=true] {
+        background: #ebebeb;
+    }
+    /*/change header subgrid style*/
+
+    /*change height of subgrid*/
+    .ui-jqgrid .ui-subgrid .ui-jqgrid .ui-jqgrid-bdiv {
+        max-height: 300px;
+    }
+    /*/change height of subgrid*/
+
+    /*border bottom color*/
+    #gbox_tbOpName, gbox_tbMachineCat {
+        border-bottom: 1px solid #E1E1E1;
+    }
+</style>
+
+<!-- Modal select machine -->
+<div class="modal fade modal-custom modal-custom-width" id="mdlUploadIcon" role="dialog" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-lg">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Upload Icon</h4>
+            </div>
+            <div class="modal-body">
+                <div class="modal-body-custom">
+                    <div class="row">
+                        <input type="hidden" id="hdOpNameIdUploadIcon" />
+                    </div>
+                    <div class="row">
+                        <form>
+                            <div class="form-group row">
+
+                                <label class="col-sm-1 col-form-label"></label>
+                                <label class="col-sm-2 col-form-label">Select Icon</label>
+                                <div class="col-sm-5">
+                                    <input type="file" id="filOpIcon" class="form-control" accept=".svg" />
+                                </div>
+
+                                <div class="col-sm-1">
+                                    <button type="button" id="btnUploadIcon" class="btn btn btn-primary btn-modal">Upload</button>
+                                </div>
+
+                            </div>
+
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn btn-primary btn-modal" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /Modal select machine -->
+<!-- Modal select machine -->
+<div class="modal fade modal-custom modal-custom-width" id="mdlSelectMachine" role="dialog" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-lg">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Machine</h4>
+            </div>
+            <div class="modal-body">
+                <div class="modal-body-custom">
+                    <div class="row">
+                        <input type="hidden" id="hdOpNameId" />
+                        <input type="hidden" id="hdSubGridId" />
+                        <input type="hidden" id="hdGridRowId" />
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12 col-xs-12">
+                            <div class="col-xs-12">
+                                <table id="tbMachine"></table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="btnSelectMachine" class="btn btn btn-primary btn-modal">Select</button>
+                <button type="button" class="btn btn btn-primary btn-modal" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /Modal select machine -->
+<!-- Modal select machine group -->
+<div class="modal fade modal-custom modal-custom-width" id="mdlSelectMachineGroup" role="dialog" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-lg">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Machine Group</h4>
+            </div>
+            <div class="modal-body">
+                <div class="modal-body-custom">
+                    <div class="row">
+                        <div class="col-sm-12 col-xs-12">
+                            <div class="col-xs-12">
+                                <table id="tbMachineGroup"></table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="btnSelectMchGroup" class="btn btn btn-primary btn-modal">Select</button>
+                <button type="button" class="btn btn btn-primary btn-modal" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /Modal select machine -->
+
+<div class="row">
+    <div class="col-xs-12">
+        <table id="tbOpName" class="td-opname"></table>
+    </div>
+</div>
+
+<div id="divMachineCate" class="row" style="margin-top: 20px">
+    <div class="col-xs-12">
+        <table id="tbMachineCat"></table>
+    </div>
+</div>
+
+@section Scripts{
+
+    <script src="~/js/ops/opname/opname.js?v=1.0.3"></script>
+    <script src="~/js/ops/opname/opname_event.js?v=1.0.1"></script>
+
+    <script type="text/javascript">
+
+    </script>
+}

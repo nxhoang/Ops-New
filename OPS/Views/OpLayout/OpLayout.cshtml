@@ -1,0 +1,1430 @@
+﻿@section scripts {
+    <!-- Common files -->
+    <link href="~/Content/font-awesome.min.css" rel="stylesheet">
+    <link href="~/Content/ui-bootstrap-csp.css" rel="stylesheet" />
+    <link href="~/css/glyphicons/glyphicons.css" rel="stylesheet" />
+    <script src="~/Scripts/angular.js"></script>
+    <script src="~/Scripts/angular-animate.js"></script>
+    <script src="~/Scripts/angular-sanitize.js"></script>
+    <script src="~/Scripts/angular-resource.min.js"></script>
+    <script src="~/Scripts/angular-ui/ui-bootstrap-tpls.min.js"></script>
+    <script src="~/Scripts/angular-ui-router.min.js"></script>
+    <script src="~/Scripts/angular-ui/angular-ui.min.js"></script>
+    <link href="~/Content/Ops-Layout/custom-colorpicker.css" rel="stylesheet" />
+
+    <link href="~/assets/multiple-select/css/bootstrap-multiselect.css" rel="stylesheet" />
+    <script src="~/assets/multiple-select/js/bootstrap-multiselect.js"></script>
+
+    <!-- Angular Multiselect-Dropdown list files -->
+    <script src="~/Scripts/multiselect.js"></script>
+
+    <!-- Angular Bootstrap Colorpicker files -->
+    <link href="~/assets/angular-bootstrap-colorpicker/css/colorpicker.min.css" rel="stylesheet" />
+    <script src="~/assets/angular-bootstrap-colorpicker/js/bootstrap-colorpicker-module.min.js"></script>
+
+    <!-- JsPanel files -->
+    <link href="~/js/jsPanel/jquery.jspanel.min.css" rel="stylesheet" />
+    <script src="~/js/jsPanel/jquery.jspanel.min.js"></script>
+
+    <!-- JsPlumb files -->
+    <link rel="stylesheet" href="../../assets/ops-layout/css/jsplumbtoolkit-defaults.min.css">
+    <link rel="stylesheet" href="../../assets/ops-layout/css/jsplumbtoolkit.min.css">
+    <script src="../../assets/ops-layout/js/braintree.js"></script>
+    <script src="../../assets/ops-layout/js/ops-layout-angular.js"></script>
+    <script src="../../assets/ops-layout/js/jsplumbtoolkit.min.js"></script>
+    <script src="../../assets/ops-layout/js/syntax-highlighter.js"></script>
+
+    <!-- Ops Layout page files -->
+    <link href="../../assets/ops-layout/css/main.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../../assets/ops-layout/css/app.min.css">
+    <link href="~/assets/ops-layout/css/ops-layout.min.css?v=2.7.9" rel="stylesheet" />
+    <link href="~/assets/ops-layout/css/demo-op-layout.min.css" rel="stylesheet" />
+    <script src="~/js/ops/uicontrol/SearchStyle.js?v=1.0.6"></script>
+    <script src="~/js/ops/Pages/ops-video.js?v=1.4"></script>
+
+    <script src="~/js/Entities/StyleMaster.js"></script>
+    <script src="~/js/Entities/Opmt.js?v=1.0"></script>
+    <script src="~/js/Entities/Opdt.js?v=1.0"></script>
+
+    <script src="~/Scripts/jquery.signalR-2.2.2.min.js"></script>
+    <script src="~/signalr/hubs/"></script>
+
+    <!-- Video processing-->
+    @*<link href="~/assets/op-management/css/op_video-process.min.css?v=1.7" rel="stylesheet" />
+        <script src="~/assets/op-management/js/op_video-process.min.js?v=1.6"></script>*@
+
+    <link href="~/assets/ops-layout/css/op.video-processing.min.css" rel="stylesheet" />
+    <script src="~/assets/ops-layout/js/op.video-processing.min.js"></script>
+
+    <!--START ADD - SON NGUYEN CAO-->
+    <script src="~/assets/ops-layout/js/ops-layout-process.js?v=1.1"></script>
+    <!--START END - SON NGUYEN CAO-->
+    <!--Previous version-->
+    @*<script src="~/js/ops/Pages/process-partial-view.js?v=2.8"></script>*@
+
+    <!--For demo-->
+    <link href="~/assets/ops-layout/css/process_detail.min.css" rel="stylesheet" />
+    <script src="~/assets/ops-layout/js/process_detail.js"></script>
+    <script src="~/assets/ops-layout/js/process_detail_event.js"></script>
+
+    <script src="../../assets/ops-layout/js/demo-op-layout.js?v=1.1"></script>
+
+    <!--Print PNG-->
+    <script src="~/js/plugins/html2canvas.js"></script>
+    <script src="../../assets/ops-layout/js/printer-layout.js?v=1.1"></script>
+    <script src="~/js/plugins/dom-to-image.js"></script>
+
+    <!--START ADD) SON - 07/Mar/2019 - 2019.03.1.0-->
+    <script>
+        $(function () {
+
+            initMasterDataProcessModal();
+
+            //FillDataToDropDownlistJobType(OpType);
+            //FillDataToDropDownlistActionCode("ActionCode");
+
+            //Functions for adding or update new process
+            //ButtonClickEnterProcess();
+            //ClickButtonOkInputOpTime();
+            //CloseOpTime();
+        });
+    </script>
+
+    <!--END ADD) SON - 07/Mar/2019 - 2019.03.1.0-->
+
+    <script src="~/assets/ops-layout/js/left-popup.min.js"></script>
+}
+
+@Html.Partial("~/Views/UIControl/_SearchStyle.cshtml")
+@Html.Partial("~/Views/UiControl/_ProcessDetailPartial.cshtml")
+@Html.Partial("~/Views/UiControl/OpLayoutVideo.cshtml")
+
+<div class="row opmt-table"><table id="gridOpsTable"></table><div id="gridOpsPaper"></div></div>
+
+<div style="display: none" class="jtk-page-container" ng-app="opsApp" ng-controller="OpsLayoutController as OpsLayoutController" id="opsDiv">
+    <div floating-panel title="Grouping" parent-tag="loadLayoutDiv" html-tag="lcontent" panel-id="panel-load-layout" remove-content="true">
+        <div class="modal-groupmode border hide" id="loadLayoutDiv">
+            <div id="lcontent">
+                <label ng-repeat="mode in opMode" class="radio-inline" title="{{mode.title}}">
+                    <input type="radio" class="panel-load-radio" ng-value="mode.id"
+                           ng-model="$parent.opdtMode" ng-change="changeOpdtMode(mode.id, '{{opdtMode}}')">
+                    {{mode.name}}
+                </label>
+            </div>
+        </div>
+    </div>
+
+    <div floating-panel title="Font and color" parent-tag="leftDiv" html-tag="hcontent" panel-id="panel-colorpicker">
+        <div class="modal-layout border hide" id="leftDiv">
+            <div id="hcontent" style="margin: 5px;">
+                <table>
+                    <tr>
+                        <td class="font-layout-col">
+                            <table>
+                                <tr>
+                                    <td>Show/Hide flows</td>
+                                    <td>
+                                        <input type="checkbox" class="modal-layout-checkbox" ng-checked="isShowFlow" ng-model="isShowFlow" ng-change="showHideConnection(isShowFlow)" title="Show/Hide flows" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Flow Line Color</td>
+                                    <td>
+                                        <div class="minicolors minicolors-theme-bootstrap minicolors-position-bottom minicolors-position-left">
+                                            <input class="form-control minicolors-input" colorpicker ng-model="opsColor.flow" type="text" ng-change="changeColorFlow(opsColor.flow)">
+                                            <span class="minicolors-swatch" ng-click="showFlowCp = !showFlowCp">
+                                                <span class="minicolors-swatch-color" style="opacity: 1; background-color: {{opsColor.flow}};"></span>
+                                            </span>
+                                        </div>
+                                        <div class="div-color">
+                                            <ul class="language-ul">
+                                                <li>
+                                                    <div class="div-color-list" ng-show="showFlowCp">
+                                                        <div class="color-body">
+                                                            <a class="list-group-item" ng-repeat="opColor in opsColors" ng-click="colorFlowChanged(opColor.value)">
+                                                                <span class="items-color" style="background-color: {{opColor.value}};"></span>
+                                                                <span class="panel-color">{{opColor.name}}</span>
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Height of canvas</td>
+                                    <td>
+                                        <input type="number" min="1" max="7456123" ng-model="canvasStyle.height" ng-pattern="/^-?[0-9][^\.]*$/" value="1" class="number-input" ng-change="changeCanvasHeight(canvasStyle.height)">
+                                        <span id="basic-addon1">px</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Process font size</td>
+                                    <td>
+                                        <input type="number" min="1" max="2147483647" ng-model="opsFont.fontSize" ng-pattern="/^-?[0-9][^\.]*$/" value="1" class="number-input" ng-change="changeFontSize(opsFont.fontSize)">
+                                        <span id="basic-addon2">px</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Show/Hide groups</td>
+                                    <td>
+                                        <input type="checkbox" class="modal-layout-checkbox" ng-checked="isShowGroups" ng-model="isShowGroups" ng-change="showHideGroups(isShowGroups)" title="Show/Hide groups" />
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                        <td class="font-layout-col">
+                            <table>
+                                <tr>
+                                    <td>Color by brush</td>
+                                    <td>
+                                        <div class="minicolors minicolors-theme-bootstrap minicolors-position-bottom minicolors-position-left">
+                                            <input class="form-control minicolors-input" colorpicker ng-model="opsColor.hexPicker" type="text">
+                                            <span class="minicolors-swatch" ng-click="showColorList = !showColorList">
+                                                <span class="minicolors-swatch-color" style="opacity: 1; background-color: {{opsColor.hexPicker}};"></span>
+                                            </span>
+                                        </div>
+                                        <div class="div-color">
+                                            <ul class="language-ul">
+                                                <li>
+                                                    <div class="div-color-list" ng-show="showColorList">
+                                                        <div class="color-body">
+                                                            <a class="list-group-item" ng-repeat="opColor in opsColors" ng-click="selectColor(opColor.value)">
+                                                                <span class="items-color" style="background-color: {{opColor.value}};"></span>
+                                                                <span class="panel-color">{{opColor.name}}</span>
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Apply standard color</td>
+                                    <td>
+                                        <button type="button" ng-model="isApplyStandardColor" ng-click="applyStandardColor()"
+                                                title="Apply standard color" style="width: 50px; height: 30px; color: black">
+                                            Apply
+                                        </button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Process text color</td>
+                                    <td>
+                                        <div class="minicolors minicolors-theme-bootstrap minicolors-position-bottom minicolors-position-left">
+                                            <input class="form-control minicolors-input" colorpicker ng-model="opsColor.processText" type="text" ng-change="changeColorNodeText(opsColor.processText)">
+                                            <span class="minicolors-swatch" ng-click="showNodeTextCp = !showNodeTextCp">
+                                                <span class="minicolors-swatch-color" style="opacity: 1; background-color: {{opsColor.processText}};"></span>
+                                            </span>
+                                        </div>
+                                        <div class="div-color">
+                                            <ul class="language-ul">
+                                                <li>
+                                                    <div class="div-color-list" ng-show="showNodeTextCp">
+                                                        <div class="color-body">
+                                                            <a class="list-group-item" ng-repeat="opColor in opsColors" ng-click="colorNodeTextChanged(opColor.value)">
+                                                                <span class="items-color" style="background-color: {{opColor.value}};"></span>
+                                                                <span class="panel-color">{{opColor.name}}</span>
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Group text color</td>
+                                    <td>
+                                        <div class="minicolors minicolors-theme-bootstrap minicolors-position-bottom minicolors-position-left">
+                                            <input class="form-control minicolors-input" colorpicker ng-model="opsColor.groupText" type="text" ng-change="changeColorGroupText(opsColor.groupText)">
+                                            <span class="minicolors-swatch" ng-click="showGroupTextCp = !showGroupTextCp">
+                                                <span class="minicolors-swatch-color" style="opacity: 1; background-color: {{opsColor.groupText}};"></span>
+                                            </span>
+                                        </div>
+                                        <div class="div-color">
+                                            <ul class="language-ul">
+                                                <li>
+                                                    <div class="div-color-list" ng-show="showGroupTextCp">
+                                                        <div class="color-body">
+                                                            <a class="list-group-item" ng-repeat="opColor in opsColors" ng-click="colorGroupTextChanged(opColor.value)">
+                                                                <span class="items-color" style="background-color: {{opColor.value}};"></span>
+                                                                <span class="panel-color">{{opColor.name}}</span>
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div floating-panel title="Process" parent-tag="panelProcess" html-tag="ppContent" panel-id="panel-process">
+        <div class="modal-process border hide" id="panelProcess">
+            <div id="ppContent">
+                <div class="row">
+                    <div class="col-lg-4 modal-process-col">
+                        <fieldset class="modal-fieldset">
+                            <legend class="scheduler-border">Dimension</legend>
+                            <table>
+                                <tr>
+                                    <td><span>Height&nbsp;</span></td>
+                                    <td>
+                                        <span>
+                                            <input type="number" min="1" ng-model="pLayoutModifier.pHeight" ng-pattern="/^-?[0-9][^\.]*$/"
+                                                   value="1" class="number-input" ng-change="changeProcessHeight(pLayoutModifier.pHeight)">&nbsp;px
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><span>Width&nbsp;</span></td>
+                                    <td>
+                                        <span>
+                                            <input type="number" min="1" ng-model="pLayoutModifier.pWidth" ng-pattern="/^-?[0-9][^\.]*$/"
+                                                   value="1" class="number-input" ng-change="changeProcessWidth(pLayoutModifier.pWidth)">&nbsp;px
+                                        </span>
+                                    </td>
+                                </tr>
+                            </table>
+                        </fieldset>
+                    </div>
+                    <div class="col-lg-4 modal-process-col">
+                        <fieldset class="modal-fieldset">
+                            <legend class="scheduler-border">Distance</legend>
+                            <table>
+                                <tr>
+                                    <td><span>Horizontal&nbsp;</span></td>
+                                    <td>
+                                        <span>
+                                            <input type="number" min="1" ng-model="pLayoutModifier.pVerticalDistance"
+                                                   ng-pattern="/^-?[0-9][^\.]*$/" value="1" class="number-input">
+                                            px
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><span>Vertical&nbsp;</span></td>
+                                    <td>
+                                        <span>
+                                            <input type="number" min="1" ng-model="pLayoutModifier.pHorizontalDistance"
+                                                   ng-pattern="/^-?[0-9][^\.]*$/" value="1" class="number-input">
+                                            px
+                                        </span>
+                                    </td>
+                                </tr>
+                            </table>
+                        </fieldset>
+                    </div>
+                    <div class="col-lg-4 modal-process-col">
+                        <fieldset class="modal-fieldset">
+                            <legend class="scheduler-border">Orientation</legend>
+                            <table>
+                                <tr>
+                                    <td><span>Direction&nbsp;</span></td>
+                                    <td>
+                                        <button ng-click="isVertical=!isVertical" class="modal-process-btn-toggle">
+                                            <i ng-class="{'fa fa-caret-down': isVertical, 'fa fa-caret-right': !isVertical}" aria-hidden="true"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><span>No of lines&nbsp;</span></td>
+                                    <td>
+                                        <input type="number" min="1" maxlength="2" ng-model="pLayoutModifier.noProcessInRow"
+                                               ng-pattern="/^-?[0-9][^\.]*$/" class="number-input">
+                                    </td>
+                                </tr>
+                            </table>
+                        </fieldset>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/ng-template" id="grModalContent.html">
+        <div class="modal-header">
+            <h3 class="modal-title" id="modal-title">Select a group</h3>
+        </div>
+        <div class="modal-body" id="modal-body">
+            <label>
+                Group:<multiselect style="display:inherit" class="input-xlarge multiselect" ng-model="$ctrl.selectedGroup" header="Select Group"
+                                   options="p.SubCode as p.CodeName for p in $ctrl.items" selected-header="options selected"
+                                   multiple="false" complex-models="true" enable-filter="true" filter-placeholder="Search Group">
+                </multiselect>
+            </label>
+            <br />
+            <label>Selected group: {{$ctrl.selectedGroup.CodeName}}</label>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-primary" type="button" ng-click="$ctrl.ok()">OK</button>
+            <button class="btn btn-warning" type="button" ng-click="$ctrl.cancel()">Cancel</button>
+        </div>
+    </script>
+
+    <script type="text/ng-template" id="changePageNoModalContent.html">
+        <div class="modal-header">
+            <button type="button" ng-click="$ctrl.cancel()" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            <h3 class="modal-title" id="modal-title">Move process to other page</h3>
+        </div>
+        <div class="modal-body" id="modal-body">
+            <div class="row" style="padding: 5px 0">
+                <div class="col-lg-3">
+                    <label for="txtPageNo">Page Number: </label>
+                </div>
+                <div class="col-lg-9">
+                    <input id="txtPageNo" type="number" value="$ctrl.processPage.pageNo" ng-model="$ctrl.processPage.pageNo" title="Page of process" />
+                </div>
+            </div>
+            <div class="row" style="padding: 5px 0" ng-show="$ctrl.isShowBtnUpdateModule">
+                <div class="col-lg-3">
+                    <label for="ddlModule">Modules: </label>
+                </div>
+                <div class="col-lg-9">
+                    <multiselect id="ddlModule" style="display:inherit" class="input-xlarge multiselect" ng-model="$ctrl.selectedModule" header="Select Module"
+                                 options="p.ModuleId as p.ModuleName for p in $ctrl.modules" selected-header="options selected"
+                                 multiple="false" complex-models="true" enable-filter="true" filter-placeholder="Search Module">
+                    </multiselect>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-primary" type="button" ng-click="$ctrl.updatePage()">Update Page</button>
+            <button class="btn btn-primary" type="button" ng-click="$ctrl.updateModule()" ng-show="$ctrl.isShowBtnUpdateModule">Update Module</button>
+            <button class="btn btn-warning" type="button" ng-click="$ctrl.cancel()">Close</button>
+        </div>
+    </script>
+
+    <script type="text/ng-template" id="editNodeModal.html">
+        <form class="form-horizontal" role="form" ng-submit="$ctrlNode.submitProcess()" name="frmProcess">
+            <div class="modal-header">
+                <button type="button" class="close" ng-click="$ctrlNode.cancel()">&times;</button>
+                <h4 class="modal-title" id="modal-title">Add New Process</h4>
+            </div>
+            <div class="modal-body" id="modal-body">
+                <div class="modal-body-custom">
+                    <div class="row">
+                        <div class="col-sm-6 col-xs-12">
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label no-padding-right" for="txtProcessNo"> Process No </label>
+                                <div class="col-sm-9">
+                                    <input type="text" id="txtProcessNo" value="{{$ctrlNode.opsProcess.OpSerial}}" readonly="readonly"
+                                           placeholder="" class="form-control">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label no-padding-right" for="txtProcessName"> Process Name </label>
+                                <div class="col-sm-9" title="{{$ctrlNode.opsProcess.OpName}}">
+                                    <multiselect id="drOpName" class="input-xlarge multiselect" ng-model="$ctrlNode.selectedOpName"
+                                                 header="Select Process Name" options="p.OpNameId as p.OpName for p in $ctrlNode.opNameArr"
+                                                 selected-header="options selected" multiple="true" complex-models="true"
+                                                 required enable-filter="true" filter-placeholder="Search Process Name">
+                                    </multiselect>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label no-padding-right"> Action Process </label>
+                                <div class="col-sm-9 selec2-custom">
+                                    <multiselect class="input-xlarge multiselect" ng-model="$ctrlNode.opsProcess.JobType" header="Select Action Process"
+                                                 options="p.SubCode as p.CodeName for p in $ctrlNode.opTypeArr" selected-header="options selected"
+                                                 required enable-filter="true" filter-placeholder="Search Action Process">
+                                    </multiselect>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label no-padding-right"> Machine </label>
+                                <div class="col-sm-3">
+                                    <multiselect class="input-xlarge multiselect" ng-model="$ctrlNode.selectedOpMachineCat" header="Select Category"
+                                                 options="p.SubCode as p.CodeName for p in $ctrlNode.opMachineCat" selected-header="Items Selected"
+                                                 multiple="true" select-limit="5" id="drOpMachineCat" enable-filter="true" filter-placeholder="Search Category">
+                                    </multiselect>
+                                </div>
+                                <div class="col-sm-3">
+                                    <multiselect class="optool-multiselect input-xlarge multiselect" ng-model="$ctrlNode.machines"
+                                                 options="p.ItemCode as p.ItemName for p in $ctrlNode.opMachineArr" enable-filter="true" filter-placeholder="Search Machine"
+                                                 header="Select Machine" selected-header="Items Selected" multiple="true" complex-models="true">
+                                    </multiselect>
+                                </div>
+                                <div class="col-sm-3 selec2-custom">
+                                    <multiselect class="optool-multiselect input-xlarge multiselect" ng-model="$ctrlNode.opsProcess.MachineType"
+                                                 options="p.ItemCode as p.ItemName for p in $ctrlNode.machines" enable-filter="true"
+                                                 header="Items Selected" selected-header="Options Selected" required filter-placeholder="Search Machine">
+                                    </multiselect>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label no-padding-right"> Tool </label>
+                                <div class="col-sm-3">
+                                    <multiselect class="input-xlarge multiselect" ng-model="$ctrlNode.selectedOpToolCat" header="Select Category"
+                                                 options="p.SubCode as p.CodeName for p in $ctrlNode.opToolCat" selected-header="Items Selected"
+                                                 multiple="true" select-limit="5" id="drOpToolCat" enable-filter="true" filter-placeholder="Search Category">
+                                    </multiselect>
+                                </div>
+                                <div class="col-sm-3">
+                                    <multiselect class="optool-multiselect input-xlarge multiselect" ng-model="$ctrlNode.tools"
+                                                 options="p.ItemCode as p.ItemName for p in $ctrlNode.opToolArr" enable-filter="true" filter-placeholder="Search Tool"
+                                                 header="Select Tool" selected-header="Items Selected" multiple="true" complex-models="true">
+                                    </multiselect>
+                                </div>
+                                <div class="col-sm-3 selec2-custom">
+                                    <multiselect class="optool-multiselect input-xlarge multiselect" ng-model="$ctrlNode.opsProcess.ToolId"
+                                                 options="p.ItemCode as p.ItemName for p in $ctrlNode.tools" enable-filter="true"
+                                                 header="Items Selected" selected-header="Options Selected" required filter-placeholder="Search Tool">
+                                    </multiselect>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label no-padding-right" for="txtMachineCount"> Machine (Nos) </label>
+                                <div class="col-sm-9">
+                                    <input type="text" id="txtMachineCount" ng-model="$ctrlNode.opsProcess.MachineCount" placeholder="" maxlength="2" onkeypress="return isNumber(event)" class="form-control">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label no-padding-right" for="txtManCount"> Worker (Nos) </label>
+                                <div class="col-sm-9">
+                                    <input type="text" id="txtManCount" ng-model="$ctrlNode.opsProcess.ManCount" placeholder="" maxlength="2" onkeypress="return isNumber(event)" class="form-control">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label no-padding-right" for="txtMaxTime"> Max Time </label>
+                                <div class="col-sm-9">
+                                    <input type="text" id="txtMaxTime" data-ng-model="$ctrlNode.opsProcess.MaxTime" maxlength="3" onkeypress="return isNumber(event)" class="form-control" required>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label no-padding-right" for="txtProcessTime"> Process Time </label>
+                                <div class="col-sm-9">
+                                    <input type="text" id="txtProcessTime" ng-model="$ctrlNode.opsProcess.OpTime" onkeypress="return isNumber(event)" maxlength="3" class="form-control" required>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label no-padding-right" for="txtBenchmarkTime"> Benchmark Time </label>
+                                <div class="col-sm-9">
+                                    <input type="text" id="txtBenchmarkTime" ng-model="$ctrlNode.opsProcess.BenchmarkTime" onkeypress="return isNumber(event)" maxlength="3" placeholder="" class="form-control">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label no-padding-right" for="txtProcessCost"> Process Cost </label>
+                                <div class="col-sm-9">
+                                    <input type="text" id="txtProcessCost" ng-model="$ctrlNode.opsProcess.OpPrice" onkeypress="return isDecimalNumber(event)" placeholder="" class="form-control">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label no-padding-right" for="txtOfferPrice"> Offer Price </label>
+                                <div class="col-sm-9">
+                                    <input type="text" id="txtOfferPrice" ng-model="$ctrlNode.opsProcess.OfferOpPrice" onkeypress="return isDecimalNumber(event)" placeholder="" class="form-control">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label no-padding-right" for="txtCostingGroup"> Costing Group </label>
+                                <div class="col-sm-9">
+                                    <input type="text" id="txtCostingGroup" ng-model="$ctrlNode.opsProcess.costingGroup" placeholder="" class="form-control">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6 col-xs-12">
+                            <div class="row">
+                                <div class="col-sm-12 col-xs-12">
+                                    <div class="form-group">
+                                        <label class="col-sm-3 control-label no-padding-right"> Process Group </label>
+                                        <div class="col-sm-9 selec2-custom">
+                                            <multiselect class="input-xlarge multiselect" ng-model="$ctrlNode.opsProcess.OpGroup" enable-filter="true"
+                                                         options="p.SubCode as p.CodeName for p in $ctrlNode.processGroupArr" header="Select Process Group"
+                                                         selected-header="options selected" filter-placeholder="Search Process Group">
+                                            </multiselect>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-sm-3 control-label no-padding-right"> Outsource Group </label>
+                                        <div class="col-sm-9 selec2-custom">
+                                            <multiselect class="input-xlarge multiselect" ng-model="$ctrlNode.opsProcess.OpsState" enable-filter="true"
+                                                         options="p.SubCode as p.CodeName for p in $ctrlNode.outsourceGroupArr"
+                                                         header="Select Outsource group" selected-header="options selected" filter-placeholder="Search Outsource Group">
+                                            </multiselect>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-sm-3 control-label no-padding-right"> Module </label>
+                                        <div class="col-sm-9 selec2-custom">
+                                            <multiselect class="input-xlarge multiselect" ng-model="$ctrlNode.opsProcess.MdCode" header="Select Module"
+                                                         options="p.SubCode as p.CodeName for p in $ctrlNode.opTypeArr"
+                                                         enable-filter="true" filter-placeholder="Search Module" selected-header="options selected">
+                                            </multiselect>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12 col-xs-12">
+                                    <div class="form-group">
+                                        <label class="col-sm-3 control-label no-padding-right"></label>
+                                        <div class="col-sm-9">
+                                            <label class="checkbox-inline">
+                                                <input type="checkbox" id="chkHostPot" ng-model="$ctrlNode.hotSpot" ng-change="$ctrlNode.changeHotSpot()">Hotspot
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="space-10"></div>
+                            <div class="row">
+                                <div class="col-sm-6 col-xs-12">
+                                    <div class="upload-image">
+                                        <div class="row">
+                                            <div class="div-img-preview" title="Name: {{$ctrlNode.processImage.file.name}}&#013;Size: {{$ctrlNode.processImage.file.size}}KB&#013;Type: {{$ctrlNode.processImage.file.type}}">
+                                                <img id="imgPreview" ng-src="{{$ctrlNode.processImage.src}}" alt="Image upload" class="img-preview" />
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="div-bnt-upload-image">
+                                                <div class="col-sm-9 nopadding">
+                                                    <label class="btn btn-success fileinput-button btn-upload-file">
+                                                        <i class="glyphicon glyphicon-plus"></i>
+                                                        <span>Upload Image...</span>
+                                                        <input type="file" id="inputImage" ng-click="$ctrlNode.processImage = null" accept="image/*"
+                                                               ng-model="$ctrlNode.processImage" app-filereader style="display: none;">
+                                                    </label>
+                                                </div>
+                                                <div class="col-sm-3 nopadding">
+                                                    <button id="btnRemoveImg" class="btn btn-danger btn-modal btn-trash" data-toggle="tooltip" title="Remove image"
+                                                            ng-click="$ctrlNode.removeFile('image')">
+                                                        <i class="glyphicon glyphicon-trash"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-6 col-xs-12">
+                                    <div class="upload-video">
+                                        <div class="row">
+                                            <div class="div-video-preview" title="name: {{$ctrlNode.processVideo.file.name}}&#013;size: {{$ctrlNode.processVideo.file.size}}KB&#013;type: {{$ctrlNode.processVideo.file.type}}">
+                                                <video ng-attr-poster="{{$ctrlNode.processVideo.poster}}" class="video-preview" ng-src="{{$ctrlNode.processVideo.src}}" controls>
+                                                    Your browser does not support HTML5 video.
+                                                </video>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="div-bnt-upload-video">
+                                                <div class="col-sm-9 nopadding">
+                                                    <label class="btn btn-success fileinput-button btn-upload-file">
+                                                        <i class="glyphicon glyphicon-plus"></i>
+                                                        <span>Upload Video...</span>
+                                                        <input type="file" id="inputVideo" ng-click="$ctrlNode.processVideo = null" accept="video/*"
+                                                               ng-model="$ctrlNode.processVideo" app-filereader style="display: none;">
+                                                    </label>
+                                                </div>
+                                                <div class="col-sm-3 nopadding">
+                                                    <button id="btnRemoveVideo" class="btn btn-danger btn-modal btn-trash" data-toggle="tooltip" title="Remove video"
+                                                            ng-click="$ctrlNode.removeFile('video')">
+                                                        <i class="glyphicon glyphicon-trash"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="row">
+                                        <div class="modal-process-remarks">
+                                            <textarea class="form-control" id="txtRemarks" ng-model="$ctrlNode.opsProcess.Remarks" placeholder="Remarks"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary btn-modal" type="submit" ng-disabled="frmProcess.$invalid || frmProcess.$pristine">Save</button>
+                <button class="btn btn-warning btn-modal" type="button" ng-click="$ctrlNode.cancel()">Cancel</button>
+            </div>
+        </form>
+    </script>
+
+    <div class="jtk-container">
+        <!-- content -->
+        <div class="jtk-ops-main" id="jtk-ops-groups">
+            <div ng-style="canvasStyle" class="jtk-ops-canvas" style="font-size: 17px">
+                <div id="divVerticalLine" class="vertical-line" ng-show="showPrintingLine"></div>
+                <jsplumb-toolkit class="opslayout-surface" init="OpsLayoutController.init" jtk-id="opsToolkit"
+                                 params="OpsLayoutController.toolkitParams" surface-id="opsLayOutSurface"
+                                 render-params="OpsLayoutController.renderParams">
+                    <div class="op__control-div">
+                        <div class="op__slide-down-menu--divider" style="left: 180px"></div>
+                        <div class="op__slide-down-menu--divider" style="left: 350px"></div>
+                        <div class="op__slide-down-menu--divider" style="left: 520px"></div>
+                        <div class="op__slide-down-menu--divider" style="left: 685px"></div>
+
+                        <div class="op__control-child" id="controls-mode">
+                            <span class="glyphicons glyphicons-fit-image-to-frame" reset title="Zoom To Fit"></span>
+                        </div>
+                        <div style="left: 60px" class="op__control-child node-palette" jsplumb-palette selector="li"
+                             surface-id="opsLayOutSurface" type-extractor="OpsLayoutController.typeExtractor">
+                            <ul>
+                                <li ng-repeat="obj in draggableTypes" jtk-node-type="{{ obj.type }}" jtk-group="{{ obj.group }}">
+                                    <div ng-if="obj.type == 'group'">
+                                        <span class="glyphicons glyphicons-folder-new" title="New Group"></span>
+                                    </div>
+                                    <div ng-if="obj.type == 'node'">
+                                        <span class="glyphicons glyphicons-server-new" title="New Process"></span>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                        <div style="left: 130px" class="op__control-child">
+                            <span id="cloneProcess" class="fa fa-clone span-fa" title="Clone Process" ng-click="changeToCloneMode()"></span>
+                            <span style="margin-left: 40px" class="glyphicons glyphicons-package" aria-hidden="true"
+                                  ng-click="showLoadLayoutPanel()" title="Grouping"></span>
+                            <span class="fa fa-paint-brush span-fa" aria-hidden="true" ng-click="showColorPicker()" title="Font and layout"></span>
+                            <span class="fa fa-linode span-fa" aria-hidden="true" ng-click="showProcessModal()" title="Process"></span>
+                            <span class="fa fa-bars span-fa" aria-hidden="true" title="Show Remarks" ng-click="showOptionModal(showOptions.isShowOpt)"></span>
+                        </div>
+                        <div style="left: 370px" class="op__control-child">
+                            <span class="glyphicons glyphicons-notes-2" title="Show Summaries" ng-click="showSummaryModal(showOpsModal.isShowSummaries)"></span>
+                            <span class="fa fa-floppy-o span-fa" aria-hidden="true" title="Save data" ng-click="showSaveModal(false)" ng-show="showSaveData.isShowSaveData"></span>
+                            <span class="fa fa-file-pdf-o span-fa" aria-hidden="true" title="Export PDF" ng-click="exportPdf()"></span>
+                            <span class="fa fa-image span-fa" aria-hidden="true" title="Export PNG" onclick="exportPng()"></span>
+                        </div>
+                        <div style="left: 540px" class="op__control-child">
+                            <span class="fa fa-pencil span-fa" aria-hidden="true" title="Show Printing Line" ng-click="showVerticalLine()"></span>
+                            <span class="fa fa-window-close span-fa" aria-hidden="true" title="Show Delete Flow" ng-click="showDeleteFlow(isShowDeleteFlow)"></span>
+                            <span class="fa fa-arrow-right span-fa" aria-hidden="true" title="Show/Hide Flow" ng-click="showHideConnection(isShowFlow, true)"></span>
+                            <span class="fa fa-header span-fa" aria-hidden="true" title="Show/Hide Groups" ng-click="showHideGroups(isShowGroups, true)"></span>
+                        </div>
+                        <div style="left: 710px" class="op__control-child">
+                            <span style="line-height: 24px" class="glyphicon glyphicon-film" title="Splitting video" ng-click="showProcessVideoModal()"></span>
+                        </div>
+                        <div class="controls-language">
+                            <div class="div-lang" title="Click to select view type" ng-click="layoutViewType.showLayoutViewCb =! layoutViewType.showLayoutViewCb">
+                                <div class="op__selected-view-type">
+                                    <span id="spSelectedViewType" value="{{layoutViewType.selectedViewType.value}}"></span>
+                                    <img ng-src="~/assets/ops-layout/img/{{layoutViewType.selectedViewType.imgSrc}}" alt="{{vt.value}}" style="vertical-align: top" />
+                                </div>
+                                <ul class="op__view-type-ul">
+                                    <li>
+                                        <div id="divViewTypes" class="div-lang-list" ng-show="layoutViewType.showLayoutViewCb">
+                                            <div class="lang-body">
+                                                <a ng-repeat="vt in layoutViewType.layoutViewTypes" class="list-group-item" ng-click="selectViewType(vt)">
+                                                    <img ng-src="~/assets/ops-layout/img/{{vt.imgSrc}}" alt="{{vt.value}}" />
+                                                    <span class="contacts-title">{{vt.name}}</span>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+
+                            <div id="div-lang" class="div-lang" title="Click to select language" ng-click="layoutLang.showLangCb =! layoutLang.showLangCb">
+                                <div class="selected-lang"><span id="selected-flag" value="{{layoutLang.selectedLang}}" class="flag selected-flag flag-{{layoutLang.selectedLang}}"></span></div>
+                                <ul class="language-ul">
+                                    <li>
+                                        <div id="div-lang-list" class="div-lang-list" ng-show="layoutLang.showLangCb">
+                                            <div class="lang-body">
+                                                <a ng-repeat="lang in layoutLang.opsLanguages" class="list-group-item" ng-click="selectLang(lang.value)">
+                                                    <img ng-if="$index == 0" ng-src="~/assets/country-dropdown/images/msdropdown/icons/{{lang.imgSrc}}" alt="{{lang.value}}" />
+                                                    <img ng-if="$index > 0" ng-src="~/assets/country-dropdown/images/msdropdown/icons/{{lang.imgSrc}}" class="flag flag-{{lang.value}}" alt="{{lang.value}}" />
+                                                    <span class="contacts-title">{{lang.name}}</span>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+
+                            <!-- miniview -->
+                            <jsplumb-miniview id="miniview" surface-id="opsLayOutSurface" class="miniview"></jsplumb-miniview>
+                        </div>
+                    </div>
+
+                    <div id="opsmodal" class="ops-modal ops-modal--summaries" ng-show="showOpsModal.isShowSummaries"
+                         style="font-size: 13px">
+                        <div class="save-modal-tittle">
+                            <span class="save-modal-tittle-content">Summaries</span>
+                            <button class="ops-modal-btn-close" ng-click="showOpsModal.isShowSummaries=!
+                                showOpsModal.isShowSummaries">
+                                ✖
+                            </button>
+                        </div>
+                        <div class="save-modal-row" style="padding: 0 5px">
+                            <div class="ops-modal-palette node-palette ops-modal-controls" jsplumb-palette selector="li"
+                                 surface-id="opsLayOutSurface" type-extractor="OpsLayoutController.typeExtractor"
+                                 style="margin-top: 4px">
+                                <ul>
+                                    <li ng-repeat="obj in draggableTypes"
+                                        jtk-node-type="{{ obj.type }}" jtk-group="{{ obj.group }}">
+                                        <div ng-if="obj.type == 'sumTitle'">
+                                            <label>
+                                                <i class="fa fa-file-text-o" title="Drag and drop to generate summary"></i>
+                                                Main summary
+                                            </label>
+                                        </div>
+                                        <div ng-if="obj.type == 'sumEditable'">
+                                            <label>
+                                                <i class="fa fa-file-text-o" title="Drag and drop to generate summary"></i>
+                                                Editable summary
+                                            </label>
+                                        </div>
+                                        <div ng-if="obj.type == 'sumWorker'">
+                                            <label title="Drag and drop to generate summary">
+                                                <i class="fa fa-file-text-o"></i> Action process summary
+                                            </label>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="ops-modal-controls" style="margin-left: 4px; color: white">
+                                <label title="Click to show the summary" ng-click="summarizeByGroup()"
+                                       style="cursor: pointer">
+                                    <i class="fa fa-file-text-o"></i>
+                                    Group summary
+                                </label>
+                            </div>
+                            <div class="ops-modal-palette node-palette ops-modal-controls" jsplumb-palette selector="li"
+                                 surface-id="opsLayOutSurface" type-extractor="OpsLayoutController.typeExtractor">
+                                <ul>
+                                    <li ng-repeat="obj in draggableTypes"
+                                        jtk-node-type="{{ obj.type }}" jtk-group="{{ obj.group }}">
+                                        <div ng-if="obj.type == 'sumMainMachines'">
+                                            <i class="fa fa-file-text-o" title="Drag and drop to generate summary"></i>
+                                            <label>Main machine summary</label>
+                                        </div>
+                                        <div ng-if="obj.type == 'sumAllMachines'">
+                                            <i class="fa fa-file-text-o" title="Drag and drop to generate summary"></i>
+                                            <label>All machine summary</label>
+                                        </div>
+                                        <div ng-if="obj.type == 'sumTool'">
+                                            <i class="fa fa-file-text-o" title="Drag and drop to generate summary"></i>
+                                            <label>Tool summary</label>
+                                        </div>
+                                        <div ng-if="obj.type == 'showPattern'">
+                                            <i class="fa fa-file-text-o"></i>
+                                            <label title="Drag and drop to generate summary">Pattern Summary</label>
+                                        </div>
+                                        <div ng-if="obj.type == 'sumBom'">
+                                            <i class="fa fa-file-text-o"></i>
+                                            <label title="Drag and drop to generate summary">Material Summary</label>
+                                        </div>
+                                        <div ng-if="obj.type == 'jigSum'">
+                                            <i class="fa fa-file-text-o"></i>
+                                            <label title="Drag and drop to generate summary">Jig Summary</label>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="optionModal" class="ops-modal ops-modal--opt" ng-show="showOptions.isShowOpt" style="font-size: 13px">
+                        <div class="save-modal-tittle">
+                            <span class="save-modal-tittle-content" style="font-size: 14px">PROCESS NAME DISPLAY OPTIONS</span>
+                            <button class="ops-modal-btn-close" ng-click="showOptions.isShowOpt=!showOptions.isShowOpt">✖</button>
+                        </div>
+                        <div class="save-modal-row" style="padding: 0 5px">
+                            <div class="ops-modal-palette node-palette ops-modal-controls" jsplumb-palette selector="li"
+                                 surface-id="opsLayOutSurface" type-extractor="OpsLayoutController.typeExtractor"
+                                 style="margin-top: 4px">
+                            </div>
+                            <div class="ops-modal-palette node-palette ops-modal-controls" jsplumb-palette selector="li"
+                                 surface-id="opsLayOutSurface" type-extractor="OpsLayoutController.typeExtractor">
+                                <div class="radio">
+                                    <label>
+                                        <input type="radio" name="opNameRadios" id="rdOpNameRemarks" value="1"
+                                               ng-model="rdOpName" ng-change='selectOpNameRadio(rdOpName)'>
+                                        Operation Name and Remarks
+                                    </label>
+                                </div>
+                                <div class="radio">
+                                    <label>
+                                        <input type="radio" name="opNameRadios" id="rdOpName" value="2" ng-model="rdOpName"
+                                               ng-change='selectOpNameRadio(rdOpName)'>
+                                        Only Operation Name
+                                    </label>
+                                </div>
+                                <div class="radio">
+                                    <label>
+                                        <input type="radio" name="opNameRadios" id="rdRemarks" value="3" ng-model="rdOpName"
+                                               ng-change='selectOpNameRadio(rdOpName)'>
+                                        Only Remarks
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="op__paging">
+                        <div class="fifth-controls">
+                            <i class="fa fa-file-o" title="Create new page" ng-click="newPage()"></i>
+                            <i class="fa fa-caret-left" aria-hidden="true" title="Previous page" ng-click="previousPage(layoutPage.pageNo)"></i>
+                            <span>Page</span>
+                            <input type="number" class="fifth-controls-input-page" ng-model="layoutPage.pageNo" title="Page of Layout" />
+                            <span>of {{layoutPage.maxPage}}</span>
+                            <i class="fa fa-caret-right" aria-hidden="true" title="Next page" ng-click="nextPage(layoutPage.pageNo)"></i>
+                        </div>
+                    </div>
+
+                    <!-- Right menu-->
+                    @*<div class="ops-layout__right-menu" jsplumb-palette selector="li" surface-id="opsLayOutSurface"
+                             type-extractor="OpsLayoutController.typeExtractor">
+                            <ul class="mes--op__rm--ul">
+                                <li>
+                                    <button title="Splitting video" id="btnShowProcessVideoModal" class="mes__op--right-menu--btn" data-toggle="modal" ng-click="showProcessVideoModal()">
+                                        <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                                             width="30px" height="30px" viewBox="0 0 55.125 55.125" style="enable-background: new 0 0 55.125 55.125;"
+                                             xml:space="preserve">
+                                        <g>
+                                        <g>
+                                        <path d="M4.167,47.007h46.792c2.302,0,4.167-1.866,4.167-4.167V12.285c0-2.301-1.865-4.167-4.167-4.167H4.167 C1.866,8.118,0,9.984,0,12.285V42.84C0,45.141,1.866,47.007,4.167,47.007z M30.771,44.082h-6.418v-3.965h6.418V44.082z M46.065,11.138h6.418v3.965h-6.418V11.138z M45.875,40.117h6.419v3.965h-6.419V40.117z M35.303,11.138h6.419v3.965h-6.419V11.138 z M35.114,40.117h6.419v3.965h-6.419V40.117z M24.543,11.138h6.418v3.965h-6.418V11.138z M22.743,20.717l9.639,4.82 c2.237,1.119,2.237,2.933,0,4.051l-9.639,4.821c-2.237,1.118-4.052-0.003-4.052-2.506v-8.681 C18.69,20.72,20.505,19.599,22.743,20.717z M13.782,11.138h6.419v3.965h-6.419V11.138z M13.593,40.117h6.418v3.965h-6.418V40.117z M3.021,11.138h6.419v3.965H3.021V11.138z M2.832,40.117h6.419v3.965H2.832V40.117z" /></g></g>
+                                </svg>
+                                    </button>
+                                </li>
+                            </ul>
+                        </div>*@
+
+                    <!-- Right short list video-->
+                    @*<div id="divRightVideoList" class="vdp__right-vd-list" jsplumb-palette selector="li" surface-id="opsLayOutSurface"
+                             type-extractor="OpsLayoutController.typeExtractor">
+                            <div class="row vdp__right-vd-header">
+                                <button id="btnCloseRightVdList" type="button" class="vdp__btn-right-vd" ng-click="closeRightShortListVideo()"><span>×</span></button>
+                            </div>
+                            <div class="row vdp__video-list">
+                                <ul>
+                                    <li ng-repeat="v in OpVideo">
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="vdp__number" draggable="true" ondragstart="dragStartVideo(event)">{{v.PartNo}}</div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <span class="glyphicon glyphicon-film"></span>
+                                            </div>
+                                        </div>
+                                        <div class="row vdp__range-time">
+                                            {{v.StartTime}} - {{v.EndTime}}
+                                        </div>
+                                        <div class="row vdp__total-time">
+                                            <svg width="26" height="22" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 1000 800" enable-background="new 0 0 1000 1000" xml:space="preserve">
+                                            <g><path d="M499.9,159.8C229.3,159.8,10,374.5,10,639.4c0,100.4,32.4,200.8,32.4,200.8h890.8v-0.5h15C977,778.5,990,711.1,990,639.4C989.9,374.5,770.6,159.8,499.9,159.8z M112.2,764.5c-8-24.1-11.5-54.9-13.1-84.9h104.3V631H98.1c1-90.3,35.4-175.2,91.3-242.8l77.2,70.3l35.4-36.7l-77.9-70.9c65.2-61.8,150.5-103.3,243.2-111.7v102.4h53.4V238c61.3,2.9,119.9,20.4,172.2,48.9L449.2,655.3l80.2,39.8l164.2-408c35.5,19.4,68.2,43.9,96.7,72.3l-76.6,68.5l32.9,39l77.7-69.4c51.8,65.7,83.7,146.6,85.1,232.2H804.1v49.6h102c-3.9,29.9-11.2,60.8-19.2,85.3H112.2z" /><path d="M584.2,593.3L538,712L432,657.6l65-104.4c-7,0.7-19.5,2.1-26.5,4.2c-54.5,16.9-85.4,73.8-68.8,127.2c16.5,53.4,74.2,83,128.8,66.1c54.5-16.9,85.4-73.8,68.8-127.2C596.3,613.9,589.4,601.1,584.2,593.3z" /></g>
+                                        </svg>
+                                            {{v.TotalTimeStr}}
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="row vdp_div-save">
+                                <button id="btnSaveVideo" type="button" class="btn--save-video" ng-click="saveProcessVideo()">💾 Save</button>
+                            </div>
+                        </div>*@
+
+                    <!--New video processing modal, this modal for dragging and dropping-->
+                    <div id="modalFixedVp2" class="op__n-vp-modal op__n-vp-modal2" jsplumb-palette selector="li" surface-id="opsLayOutSurface" type-extractor="OpsLayoutController.typeExtractor">
+                        <button id="btnCloseNvpModal2" type="button" class="op__n-vp-btn-close" ng-click="CloseFixedVpModal1()"><span>×</span></button>
+                        <button id="btnMinimizeNvpModal2" type="button" class="op__n-vp-btn-minimize" ng-click="MinimizeVideomodal()">
+                            <span>⇲</span>
+                        </button>
+                        <div class="row op__height-100p" style="overflow: auto">
+                            <div class="col-md-8 op__height-100p op__video-side" id="divVideoSide2">
+                                <div class="op__controls-video2" id="divVideoTag2">
+                                    <div class="n-filter-item">
+                                        <div class="n-video-Time2">
+                                            <span id="spCurentTime2">00:00:00</span> / <span id="spTotalTime2">00:00:00</span>
+                                        </div>
+                                        <div class="n-vdp__bar-part" id="divBarPart2">
+                                            <ul>
+                                                <li ng-repeat="v in OpVideo1">
+                                                    <div style="background-color: {{v.BarBgColor}}; left: {{v.StartedSplittingLeft}}; width: {{v.SplittingBarWidth}}">{{v.PartNo}}</div>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                        <div class="vdp__vd-thumbnail" id="divVideoThumbnail2">
+                                            <ul>
+                                                <li ng-repeat="v in OpVideo1">
+                                                    <img alt="{{v.PartNo}}" draggable="true" ondragstart="dragStartVideo1(event)" ng-click="clickThumbnailVideo(v)" ng-src="{{v.ThumbnailImage}}" style="border: 3px solid {{v.BarBgColor}}; left: {{v.StartedSplittingLeft}};">
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4 op__height-100p" id="divPartVideoSide2">
+                                <div id="divVideoRightList2" class="row n-vdp-modal--part-col2">
+                                    <div ng-if="SplitVideoUrl !== ''" class="row n-vdp-modal--each-vd">
+                                        <div>
+                                            <div class="col-md-9">
+                                                <video some-video id="vdpPreview" class="n-op-vdp__video" src="{{SplitVideoUrl}}" controls="controls"></video>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="row">
+                                                    <div class="n-op__part-no">{{selectedVideo.PartNo}}</div>
+                                                </div>
+                                                <div class="row">{{selectedVideo.StartTime}} - {{selectedVideo.EndTime}}</div>
+                                                <div class="row">Total time: <span class="n-op__total-time">{{selectedVideo.TotalTimeStr}}</span></div>
+                                            </div>
+                                        </div>
+                                        @*<div class="row">
+                                            <multiselect style="display:inherit" class="input-xlarge multiselect" ng-model="selectedProcessVideo" header="Select Process"
+                                                         options="p.id as p.name for p in Opdts" selected-header="options selected"
+                                                         multiple="false" complex-models="true" enable-filter="true" filter-placeholder="Search Group">
+                                            </multiselect>
+                                        </div>*@
+                                    </div>
+                                </div>
+                                @*<div class="n-vdp__div-process-vd2" id="divProcessVideo2">
+                                        <button id="btnUploadVideo2" type="button" class="n-btn--process-video" ng-click="saveProcessVideo()">💾 Save</button>
+                                    </div>*@
+                            </div>
+                            <button id="btnUploadVideo2" type="button" class="n-btn--process-video n-btn--save" ng-click="saveProcessVideo()">💾 Save</button>
+                        </div>
+                    </div>
+                </jsplumb-toolkit>
+            </div>
+
+            <script type="text/ng-template" id="node_template.tpl">
+                <div class="card card2" id="divP{{node.id}}" ondrop="dropVideo1(event)" ondragover="allowDropVideo1(event)" style="height:{{node.ProcessHeight}}px; width: {{node.ProcessWidth}}px;">
+                    <div class="card-header" @*style="background: {{node.DisplayColor}}"*@>
+                        <div class="grey-circle">
+                            <div class="rounded-circle"></div>
+                        </div>
+                        <div ng-repeat="iimg in node.IconNameArr">
+                            <div ng-if="$index == 0" class="circle" style="background: {{node.DisplayColor}}; cursor: pointer" ng-click="changeNodePage($event,node)">
+                                @*<span class="glyphicon glyphicon-cog op__header-cog"></span>*@
+                                <img ng-src="{{node.IconUrl}}/{{iimg.trim()}}" alt="{{iimg}}" class="rounded-0">
+                            </div>
+                        </div>
+                        <div class="op__node--flag">
+                            <img ng-if="node.OpsState == true" src="../assets/ops-layout/img/flag1.svg" class="op__control-icon-flag1" alt="...">
+                            <img ng-if="node.HotSpot == true" src="../assets/ops-layout/img/flag2.svg" class="op__control-icon-flag2" alt="...">
+                        </div>
+                    </div>
+                    @*<div ng-if="node.HotSpot == true || node.OpsState == true" class="op__process-rect--flag">
+                            <svg ng-if="node.HotSpot == true" width="22px" height="22px" viewBox="0 0 16 16" class="bi bi-flag-fill" fill="#d00000" xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd" d="M14.778.085A.5.5 0 0 1 15 .5V8a.5.5 0 0 1-.314.464L14.5 8l.186.464-.003.001-.006.003-.023.009a12.435 12.435 0 0 1-.397.15c-.264.095-.631.223-1.047.35-.816.252-1.879.523-2.71.523-.847 0-1.548-.28-2.158-.525l-.028-.01C7.68 8.71 7.14 8.5 6.5 8.5c-.7 0-1.638.23-2.437.477A19.626 19.626 0 0 0 3 9.342V15.5a.5.5 0 0 1-1 0V.5a.5.5 0 0 1 1 0v.282c.226-.079.496-.17.79-.26C4.606.272 5.67 0 6.5 0c.84 0 1.524.277 2.121.519l.043.018C9.286.788 9.828 1 10.5 1c.7 0 1.638-.23 2.437-.477a19.587 19.587 0 0 0 1.349-.476l.019-.007.004-.002h.001" />
+                            </svg>
+                            <svg ng-if="node.OpsState == true" width="22px" height="22px" viewBox="0 0 16 16" class="bi bi-flag-fill" fill="#27a300" xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd" d="M14.778.085A.5.5 0 0 1 15 .5V8a.5.5 0 0 1-.314.464L14.5 8l.186.464-.003.001-.006.003-.023.009a12.435 12.435 0 0 1-.397.15c-.264.095-.631.223-1.047.35-.816.252-1.879.523-2.71.523-.847 0-1.548-.28-2.158-.525l-.028-.01C7.68 8.71 7.14 8.5 6.5 8.5c-.7 0-1.638.23-2.437.477A19.626 19.626 0 0 0 3 9.342V15.5a.5.5 0 0 1-1 0V.5a.5.5 0 0 1 1 0v.282c.226-.079.496-.17.79-.26C4.606.272 5.67 0 6.5 0c.84 0 1.524.277 2.121.519l.043.018C9.286.788 9.828 1 10.5 1c.7 0 1.638-.23 2.437-.477a19.587 19.587 0 0 0 1.349-.476l.019-.007.004-.002h.001" />
+                            </svg>
+                        </div>*@
+                    <div class="card-body">
+                        <div class="op__op-name">
+                            <h5 class="card-title">{{node.Title}}</h5>
+                            <p id="pOpName{{node.id}}" style="font-size: {{node.LayoutFontSize}}px" title="{{node.name}}">{{node.name}}</p>
+                            @*<div style="display: block; margin: 0 auto; width: 43%; height: 43%" ng-repeat="iimg in node.IconNameArr">
+                                    <img style="width: 100%; height: 100%" ng-src="{{node.IconUrl}}/{{iimg.trim()}}" alt="{{iimg}}" />
+                                </div>*@
+                        </div>
+                        <div class="op__process-mc-info" title="[{{node.OpTime}}] [{{node.ManCount}}][{{node.MachineName}}]">
+                            <span>[{{node.OpTime}}] [{{node.ManCount}}][{{node.MachineName}}]</span>
+                        </div>
+                        <div class="op__controls">
+                            @*<span class="glyphicon glyphicon-film op_process-video" aria-hidden="true" ng-click="playVideoProcess(node)" ng-show="node.ShowButtonPlayVideo" title="Click to play video"></span>
+                                <div class="connect op__process-connect hidden-print"></div>
+                                <span class="glyphicon glyphicon-trash op__delete-process" aria-hidden="true" title="Click to delete" ng-click="removeProcess(node)"
+                                      ng-show="node.CanDelete"></span>
+                                <span class="ops-node-tool" ng-repeat="tool in node.Tools" style="left: {{tool.left}}px">
+                                    [{{tool.Ordinal}}]
+                                </span>*@
+                            <div class="op__control-icon">
+                                @*<svg width="0.8em" height="0.8em" viewBox="0 0 16 16" class="bi bi-arrows-move" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                        <path fill-rule="evenodd" d="M7.646.146a.5.5 0 0 1 .708 0l2 2a.5.5 0 0 1-.708.708L8.5 1.707V5.5a.5.5 0 0 1-1 0V1.707L6.354 2.854a.5.5 0 1 1-.708-.708l2-2zM8 10a.5.5 0 0 1 .5.5v3.793l1.146-1.147a.5.5 0 0 1 .708.708l-2 2a.5.5 0 0 1-.708 0l-2-2a.5.5 0 0 1 .708-.708L7.5 14.293V10.5A.5.5 0 0 1 8 10zM.146 8.354a.5.5 0 0 1 0-.708l2-2a.5.5 0 1 1 .708.708L1.707 7.5H5.5a.5.5 0 0 1 0 1H1.707l1.147 1.146a.5.5 0 0 1-.708.708l-2-2zM10 8a.5.5 0 0 1 .5-.5h3.793l-1.147-1.146a.5.5 0 0 1 .708-.708l2 2a.5.5 0 0 1 0 .708l-2 2a.5.5 0 0 1-.708-.708L14.293 8.5H10.5A.5.5 0 0 1 10 8z" />
+                                    </svg>*@
+                                <svg ng-click="playVideoProcess(node)" @*ng-show="node.ShowButtonPlayVideo"*@ title="Click to play video"
+                                     width="0.8em" height="0.8em" viewBox="0 0 16 16" class="bi bi-film" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                    <path fill-rule="evenodd" d="M0 1a1 1 0 0 1 1-1h14a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1H1a1 1 0 0 1-1-1V1zm4 0h8v6H4V1zm8 8H4v6h8V9zM1 1h2v2H1V1zm2 3H1v2h2V4zM1 7h2v2H1V7zm2 3H1v2h2v-2zm-2 3h2v2H1v-2zM15 1h-2v2h2V1zm-2 3h2v2h-2V4zm2 3h-2v2h2V7zm-2 3h2v2h-2v-2zm2 3h-2v2h2v-2z" />
+                                </svg>
+                                <svg title="Click to delete" ng-click="removeProcess(node)" ng-show="node.CanDelete"
+                                     width="0.8em" height="0.8em" viewBox="0 0 16 16" class="bi bi-trash-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                    <path fill-rule="evenodd" d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5a.5.5 0 0 0-1 0v7a.5.5 0 0 0 1 0v-7z" />
+                                </svg>
+                                <div class="connect op__process-connect hidden-print"></div>
+
+                                @*<img ng-if="node.OpsState == true" src="../assets/ops-layout/img/flag1.svg" class="op__control-icon-flag1" alt="...">
+                                    <img ng-if="node.HotSpot == true" src="../assets/ops-layout/img/flag2.svg" alt="...">*@
+                            </div>
+                        </div>
+                    </div>
+                    <jtk-source filter=".connect"></jtk-source>
+                    <jtk-target></jtk-target>
+                </div>
+            </script>
+
+            <script type="text/ng-template" id="group_template.tpl">
+                <div class="group-title" title="{{group.title}}">
+                    {{group.title}}
+                    <button class="expand" ng-click="toggleGroup($event, group); $event.stopPropagation();"
+                            data-text-swap="+" data-text-original="-">
+                        -
+                    </button>
+                </div>
+                <div jtk-group-content="true">
+                    <div class="op__hide grp-sum">
+                        Processes: {{group.Processes}}<br />Machines: {{group.Machines}}<br />
+                        Workers: {{group.Workers}}<br />Total time: {{group.TotalOpTime}}(s)
+                    </div>
+                </div>
+            </script>
+        </div>
+    </div>
+
+    <div id="opslayoutModal" style="display:none" class="opslayout-modal">
+        <div id="saveModal" class="save-modal">
+            <div class="save-modal-tittle">
+                <span class="save-modal-tittle-content">Saving Options</span>
+                <button class="ops-modal-btn-close" ng-click="showSaveModal(true)">✖</button>
+            </div>
+            <div class="save-modal-row" ng-show="isShowFacCb">
+                <multiselect class="input-xlarge multiselect" ng-model="factory" header="Select Factory"
+                             options="p.FactoryId as p.FactoryName for p in factoryArr" selected-header="options selected"
+                             multiple="false" complex-models="false" enable-filter="true" filter-placeholder="Search Factory">
+                </multiselect>
+            </div>
+            <div class="save-modal-row" ng-show="isShowGetMxPk">
+                <button type="button" style="width: 100%">Select MES Package</button>
+            </div>
+            <div class="save-modal-row">
+                <textarea ng-model="opmt.remarks" ng-maxlength="200" ng-trim="true" class="save-modal-remarks"
+                          placeholder="Please enter comments / summary here."></textarea>
+            </div>
+            <div class="save-modal-row">
+                <div class="save-modal-col">
+                    <button class="save-modal-btn" ng-disabled="disableButtons.btnSave" ng-click="saveOp('/OpsLayout/SaveData')">Save</button>
+                </div>
+                <div class="save-modal-col">
+                    <button class="save-modal-btn" ng-disabled="disableButtons.btnSaveAsNewOpRev" ng-click="saveOp('/OpsLayout/CopyToNewOps', false, true)">Save as new OpRev</button>
+                </div>
+            </div>
+            <div class="save-modal-row">
+                <div class="save-modal-col">
+                    <button class="save-modal-btn" ng-disabled="disableButtons.btnSaveAsFacEdition"
+                            ng-click="saveOp('/OpsLayout/CopyToNewOps', true, false)">
+                        Save as Factory Edition
+                    </button>
+                </div>
+                <div class="save-modal-col">
+                    <button class="save-modal-btn" ng-disabled="disableButtons.btnSaveAndConfirm" ng-click="confirmOpmt()">Confirm</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Video processing -->
+<div id="vdpModal" class="modal fade vdp-modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button id="btnCloseVdpModal" type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                <button id="btnHideOpVideoModal" type="button" class="vdp__btn-hide"><span class="glyphicon glyphicon-new-window"></span></button>
+                <h4 class="modal-title" id="myLargeModalLabel">&nbsp;🎦 Operation Video</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-8" id="divVideoSide">
+                        <div class="hide" id="divVideoTag">
+                            <button id="btnCloseVdPreview" type="button" class="vdp__btn-close-pv">
+                                @*❌*@@*<span aria-hidden="true">❎</span>*@
+                                <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                            </button>
+                            <video id="vdProcess" src="" class="op-vdp__video">
+                                Your browser doesn't support the video tag.
+                            </video>
+                            @*<div class="progress" style="margin-top: 20px">
+                                    <div class="progress-bar progress-bar-success" style="width: 35%">
+                                        <span class="sr-only">35% Complete (success)</span>
+                                    </div>
+                                    <div class="progress-bar progress-bar-warning progress-bar-striped" style="width: 20%">
+                                        <span class="sr-only">20% Complete (warning)</span>
+                                    </div>
+                                    <div class="progress-bar progress-bar-danger" style="width: 10%">
+                                        <span class="sr-only">10% Complete (danger)</span>
+                                    </div>
+                                </div>*@
+                            <div class="filter-item">
+                                <div class="vdp__bar-part" id="divBarPart">
+                                    @*<div style="background-color: bisque; left: 24.21%; width: 20%">Part 1</div>
+                                        <div style="background-color: #3fd100; left: 0; width: 20%">Part 2</div>
+                                        <div style="background-color: #ffd33f; left: 50%; width: 30%">Part 3</div>*@
+                                </div>
+                                <div id="divSliderWrap" class="slider-wrap">
+                                    <a id="aVdPlay" class="video-preview"></a>
+                                    <input type="hidden" value="0">
+                                    <input type="hidden" value="100">
+                                    @*<div class="slider-bar" style="left: 24.21%; width: 20%;"></div>*@
+                                    @*<span class="slider-split" style="left: 4.21%; width: 20%;"></span>*@
+                                    <span id="spSplitBar" class="slider-split slider-bar" style="left: 0%; width: 20%;"></span>
+                                    <div id="sliderLeft" class="slider-button-wrap-left" style="left: 0%;">
+                                        <div class="tooltip">
+                                            <div class="tooltip-rel">
+                                                <div tabindex="0" class="slider-button"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div id="sliderRight" class="slider-button-wrap-right" style="left: 44.21%;">
+                                        <div class="tooltip">
+                                            <div class="tooltip-rel">
+                                                <div tabindex="0" class="slider-button"></div>
+                                                @*<div class="slider-start-wrap triangle-start"></div>
+                                                    <div class="slider-start-wrap rect-start"></div>*@
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div id="divCurrentSlider" class="slider-button-wrap-current " style="left: 0;">
+                                        <div class="tooltip">
+                                            <div class="tooltip-rel">
+                                                <div tabindex="0" class="slider-button"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    @*<div><span tabindex="-1" data="about:blank" type="text/html" class="slider-line"></span></div>*@
+                                    <div class="video-Time">
+                                        <span id="spCurentTime">00:00:00</span> / <span id="spTotalTime">00:00:00</span>
+                                    </div>
+                                </div>
+                                <div class="crop-range">
+                                    <div class="start-splitting-controls">
+                                        <button id="btnSplit" type="button" class="start-splitting">✂️ Crop</button>
+                                    </div>
+                                    <div class="vdp__total-second">
+                                        <input type="number" id="txtCropSecond" min="1" value="60" placeholder="Second"
+                                               style="width: 60px; border-width: 0 0 1px 0; text-align: center" />
+                                    </div>
+                                    <div class="crop-input">
+                                        <input id="startH" type="text" placeholder="00" maxlength="2" value="00"> <span>：</span>
+                                        <input id="startM" type="text" placeholder="00" maxlength="2" value="00"> <span>：</span>
+                                        <input id="startS" type="text" placeholder="00" maxlength="2" value="00">
+                                    </div> <span>一</span>
+                                    <div class="crop-input">
+                                        <input id="endH" type="text" placeholder="00" maxlength="2" value="00"> <span>：</span>
+                                        <input id="endM" type="text" placeholder="00" maxlength="2" value="00"> <span>：</span>
+                                        <input id="endS" type="text" placeholder="00" maxlength="2" value="00">
+                                    </div>
+                                    <div id="msgBox" class="row" style="display: none; color: red">Minimum length is 1 second!</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="divLoadVideo">
+                            <div id="divDropVideo" class="vdp__div-input-file">
+                                <input class="vdp-input--upload" id="inputUploadVideo" accept="video/mp4,video/webm,video/*,video/3gpp,video/avi,video/x-flv,.mkv,video/x-ms-wmv" type="file">
+                                <label id="lbUploadVideo" for="inputUploadVideo" class="vdp-input--label">
+                                    Click to upload
+                                    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1em" width="1em" style="display: inline-block">
+                                        <path d="M9 16h6v-6h4l-7-7-7 7h4zm-4 2h14v2H5z"></path>
+                                    </svg>
+                                    @*<br />or, drag and drop*@ a video file @*here*@
+                                </label>
+                            </div>
+                            <div class="vdp_div--input-url">
+                                <div class="form-group has-success has-feedback">
+                                    <label class="control-label sr-only" for="txtInputUrl">Video URL</label>
+                                    <div class="input-group">
+                                        <span class="input-group-addon">🔗</span>
+                                        <input type="text" class="form-control vdp__input-url" id="txtInputUrl" aria-describedby="inputUrlStatus"
+                                               placeholder="Paste an image or video URL (e.g. http://video.pungkookvn.com:8888/api/Media/Play?fol=UNI0037LRG001001&f=58X3YVwxgBqqvgU.mp4)">
+                                    </div>
+                                    <span class="glyphicon glyphicon-ok form-control-feedback hide" aria-hidden="true"></span>
+                                    <span id="inputUrlStatus" class="sr-only">(success)</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4" id="divPartVideoSide">
+                        <div id="divVideoRightList" class="row vdp-modal--part-col">
+                            @*<div class="row vdp-modal--each-vd">
+                                    <div class="row">
+                                        <button class="vdp__btn-close-part-video"><span>✖</span></button>
+                                        <div class="col-md-9">
+                                            <video src="http://video.pungkookvn.com:8888/api/Media/Play?fol=10102001&f=7c76afbd-a971-4a5c-9027-b6c2ada299a4.mp4" class="op-vdp__video" controls></video>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="row">Part 2</div>
+                                            <div class="row">Duration: 5:15 - 7:30</div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+
+                                    </div>
+                                </div>
+                                <div class="row vdp-modal--each-vd">
+                                    <button class="vdp__btn-close-part-video"><span>✖</span></button>
+                                    <div class="col-md-9">
+                                        <video src="http://video.pungkookvn.com:8888/api/Media/Play?fol=10102001&f=7c76afbd-a971-4a5c-9027-b6c2ada299a4.mp4" class="op-vdp__video" controls></video>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="row">Part 2</div>
+                                        <div class="row">Duration: 5:15 - 7:30</div>
+                                    </div>
+                                </div>*@
+                        </div>
+                        <div class="vdp__div-process-vd hide" id="divProcessVideo">
+                            <button id="btnUploadVideo" type="button" class="btn--process-video">💾 Save</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div>
+
+<!--New video processing modal-->
+<div id="modalFixedVp" class="op__n-vp-modal" @*ng-show="FixedModal.IsShow"*@ @*jsplumb-palette selector="li" surface-id="opsLayOutSurface"
+                         type-extractor="OpsLayoutController.typeExtractor"*@>
+    <button id="btnCloseNvpModal" type="button" class="op__n-vp-btn-close" @*ng-click="CloseFixedVpModal()"*@><span>×</span></button>
+    <button id="btnMinimizeNvpModal" type="button" class="op__n-vp-btn-minimize">
+        <span>⇱</span>
+    </button>
+    <div class="row op__height-100p">
+        <div class="col-md-8 op__height-100p op__video-side" id="divVideoSide1">
+            <div class="hide op__controls-video" id="divVideoTag1">
+                <button id="btnCloseVdPreview1" type="button" class="n-vdp__btn-close-pv">
+                    <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                </button>
+                <video id="vdProcess1" src="" class="n-op-vdp__video">
+                    Your browser doesn't support the video tag.
+                </video>
+                <div class="n-filter-item">
+                    <div class="n-vdp__bar-part" id="divBarPart1"></div>
+                    <div class="vdp__vd-thumbnail" id="divVideoThumbnail"></div>
+
+                    <div id="divSliderWrap1" class="n-slider-wrap">
+                        <a id="aVdPlay1" class="n-video-preview"></a>
+                        <input type="hidden" value="0">
+                        <input type="hidden" value="100">
+                        <span id="spSplitBar1" class="n-slider-split n-slider-bar" style="left: 0%; width: 20%;"></span>
+                        <div id="sliderLeft1" class="n-slider-button-wrap-left" style="left: 0%;">
+                            <div class="tooltip">
+                                <div class="tooltip-rel">
+                                    <div tabindex="0" class="n-slider-button"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="sliderRight1" class="n-slider-button-wrap-right" style="left: 44.21%;">
+                            <div class="tooltip">
+                                <div class="tooltip-rel">
+                                    <div tabindex="0" class="n-slider-button"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="divCurrentSlider1" class="n-slider-button-wrap-current " style="left: 0;">
+                            <div class="tooltip">
+                                <div class="tooltip-rel">
+                                    <div tabindex="0" class="n-slider-button"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="n-video-Time">
+                            <span id="spCurentTime1">00:00:00</span> / <span id="spTotalTime1">00:00:00</span>
+                        </div>
+                    </div>
+                    <div class="n-crop-range">
+                        <div class="n-start-splitting-controls">
+                            <button id="btnSplit1" type="button" class="n-start-splitting">✂️ Crop</button>
+                        </div>
+                        <div class="n-vdp__total-second">
+                            <input type="number" id="txtCropSecond1" min="1" value="60" placeholder="Second"
+                                   style="width: 60px; border-width: 0 0 1px 0; text-align: center" />
+                        </div>
+                        <div class="n-crop-input">
+                            <input id="startH1" type="text" placeholder="00" maxlength="2" value="00"> <span>：</span>
+                            <input id="startM1" type="text" placeholder="00" maxlength="2" value="00"> <span>：</span>
+                            <input id="startS1" type="text" placeholder="00" maxlength="2" value="00">
+                        </div> <span>一</span>
+                        <div class="n-crop-input">
+                            <input id="endH1" type="text" placeholder="00" maxlength="2" value="00"> <span>：</span>
+                            <input id="endM1" type="text" placeholder="00" maxlength="2" value="00"> <span>：</span>
+                            <input id="endS1" type="text" placeholder="00" maxlength="2" value="00">
+                        </div>
+                        <div id="msgBox1" class="row" style="display: none; color: red">Minimum length is 1 second!</div>
+                    </div>
+                </div>
+            </div>
+            <div id="divLoadVideo1" class="op__height-100p op__width-100p op__video-input">
+                <div id="divDropVideo1" class="n-vdp__div-input-file">
+                    <input class="n-vdp-input--upload" id="inputUploadVideo1" accept="video/mp4,video/webm,video/*,video/3gpp,video/avi,video/x-flv,.mkv,video/x-ms-wmv" type="file">
+                    <label id="lbUploadVideo1" for="inputUploadVideo1" class="n-vdp-input--label">
+                        <span class="n-vdp-input--span">
+                            Click to upload
+                            <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1em" width="1em" style="display: inline-block">
+                                <path d="M9 16h6v-6h4l-7-7-7 7h4zm-4 2h14v2H5z"></path>
+                            </svg>
+                            @*<br />or, drag and drop*@ a video file @*here*@
+                        </span>
+                    </label>
+                </div>
+                <div class="n-vdp_div--input-url">
+                    <div class="form-group has-success has-feedback">
+                        <label class="control-label sr-only" for="txtInputUrl">Video URL</label>
+                        <div class="input-group">
+                            <span class="input-group-addon">🔗</span>
+                            <input type="text" class="form-control n-vdp__input-url" id="txtInputUrl1" aria-describedby="inputUrlStatus"
+                                   placeholder="Paste an image or video URL (e.g. http://video.pungkookvn.com:8888/api/Media/Play?fol=UNI0037LRG001001&f=58X3YVwxgBqqvgU.mp4)">
+                        </div>
+                        <span class="glyphicon glyphicon-ok form-control-feedback hide" aria-hidden="true"></span>
+                        <span id="inputUrlStatus1" class="sr-only">(success)</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4" id="divPartVideoSide1">
+            <div id="divVideoRightList1" class="row n-vdp-modal--part-col">
+            </div>
+            <div class="n-vdp__div-process-vd hide" id="divProcessVideo1">
+                <button id="btnUploadVideo1" type="button" class="n-btn--process-video">💾 Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@Html.Partial("_Print")
+
+<!-- Modal -->
+<div class="modal fade" id="mdlPatternPreview" role="dialog">
+    <div class="modal-dialog  modal-lg">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <img width="350" height="400" id="imgPattern" src="~/img/no-image.png" />
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="loading-container" id="div-loading">
+    <i class="fa fa-spinner fa-spin"></i>
+</div>
+
+<div id="modalMessage" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="gridSystemModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="gridSystemModalLabel">Information</h4>
+            </div>
+            <div class="modal-body">
+                <span id="spMsgContent"></span>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<div style="display: none" id="divGlobe" class="op__processing-video">
+    <img style="width: 70px; height: 35px" src="~/img/globe.gif" />
+</div>
+
+<div id="vdpAlerts" class="vdp__alerts"></div>

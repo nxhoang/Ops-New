@@ -1,0 +1,84 @@
+﻿.DateRangeOpener,
+.DateSingleOpener {
+    background-color: black;
+}
+
+.smart-style-1 .DateRangeOpener {
+    background-color: #3A4558
+}
+
+.smart-style-2 .DateRangeOpener {
+    background-color: black;
+}
+
+.smart-style-3 .DateRangeOpener {
+    background-color: #f78c40
+}
+
+.smart-style-4 .DateRangeOpener {
+    background-color: #3a3f51
+}
+
+.smart-style-5 .DateRangeOpener {
+    background-color: #1e3658
+}
+
+.smart-style-6 .DateRangeOpener {
+    background-color: #2196F3
+}
+  
+
+.pikaday-left {
+    margin-right:8px;
+}
+.pikaday-right, div[data-role="DateSingleOpener"] .pika-single {
+    margin-right: 5px;
+}
+ 
+/*Font based on selected Theme*/
+.smart-style-1 .pika-table{
+    font-family: "Open Sans",Arial,Helvetica,Sans-Serif;
+}
+ 
+    .smart-style-1 .pika-table tbody td button:hover {
+        background-color: #3A4558
+    } 
+
+    .smart-style-2 .pika-table {
+        font-family: "Open Sans",Arial,Helvetica,Sans-Serif;
+    }
+
+.smart-style-3 .pika-table {
+    font-family: Arial,sans-serif;
+}
+ 
+.smart-style-3 .pika-table tbody td button:hover {
+    background-color: #f78c40
+}
+ 
+.smart-style-3 .pika-table tbody td button:hover { 
+} 
+ 
+
+.smart-style-4 .pika-table {
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important
+}
+ 
+    .smart-style-4 .pika-table tbody td button:hover {
+        background-color: #3a3f51
+    } 
+ 
+.smart-style-5 .pika-table {
+    font-family: "Open Sans",Arial,Helvetica,Sans-Serif;
+}
+ 
+.smart-style-5 .pika-table tbody td button:hover { 
+}
+
+.smart-style-6 .pika-table {
+    font-family: RobotoDraft,Roboto,sans-serif;
+}
+ 
+    .smart-style-6 .pika-table tbody td button:hover {
+        background-color: #2196F3
+    }

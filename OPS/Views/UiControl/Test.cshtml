@@ -1,0 +1,1679 @@
+﻿//==================var
+<script>
+    var editingRow = null;
+    var CheckchangeData = false;
+    var isScrollDynamic = 0;
+    var scrollPosition = 0;
+    var new_row = '0';
+    var myJqgrid = $('#Table_BankBranch');
+    var tableName = "Table_BankBranch";
+    var tableNaveName = "BankBranch_Nav_JqGrid";
+    var require = '<span style="color: Red;"> (*)</span>';
+    //Khai bao filter
+    var filterInit = "";
+    var Canrestore = "0";
+    //======================
+    function CreateGrid() {
+        var rownum = parseInt((PFN_readCookie('BANK_BR_ROWNUM') == null ? 40 : PFN_readCookie('BANK_BR_ROWNUM') == '-1' ? 20 : PFN_readCookie('BANK_BR_ROWNUM')));
+        var issCroll = (PFN_readCookie('BANK_SCROLL') == null ? false : Boolean(PFN_readCookie('RP_BANK_SCROLL')));
+        var page = PFN_readCookie('BANK_BR_PAGE') == null ? 1 : PFN_readCookie('BANK_BR_PAGE');
+        if (PFN_readCookie('BANK_BR_ROWNUM') == '-1') {
+            page = 1;
+        }
+        myJqgrid.jqGrid({
+            sortname: '',
+            pager: tableNaveName,
+            sortname: (PFN_readCookie('BANK_BR_SORTCOLUMN') == null) ? '' : PFN_readCookie('BANK_BR_SORTCOLUMN'),
+            sortorder: (PFN_readCookie('BANK_BR_SORTORDER') == null) ? '' : PFN_readCookie('BANK_BR_SORTORDER'),
+            page: page,
+            scroll: false,
+            rowNum: rownum,
+            rowList: [40, 60, 80, -1],
+            scroll: false,
+            deepempty: true,
+            ignoreCase: true,
+            viewrecords: true,
+            scrollrows: true,
+            rownumbers: true,
+            shrinkToFit: false,
+            //==========================================
+            url: '/BankBranch/GetListBankBranch?isScrollDynamic=' + issCroll,
+            editurl: '/BankBranch/UpdateBankBranch',
+            datatype: 'json',
+            postData: ReadCurrentInforPage(),
+            mtype: 'POST',
+            colModel: [
+                { name: 'AUTO_ID', index: 'AUTO_ID', hidden: true, editable: false },
+                { name: 'BANK_BRANCH_ID', index: 'BANK_BRANCH_ID', label: arrColname.BANK_BRANCH_ID, align: 'left', width: 100, formoptions: { label: arrColname.BANK_BRANCH_ID + require }, editable: true, search: true, searchoptions: { sopt: ['cn', 'eq', 'ne'] }, editoptions: { dataEvents: [{ type: 'keydown', fn: submitRowData }, { type: "change", fn: fnCheckDataChange }] } },
+                { name: 'BANK_ID_HIDEN', index: 'BANK_ID_HIDEN', hidden: true, editable: false },
+                {
+                    name: 'BANK_ID', index: 'BANK_ID', label: arrColname.BANK_ID, align: 'left', width: 180, formoptions: { label: arrColname.BANK_ID + require }, classes: "cl-combo", editable: true, search: true,
+                    stype: 'select',
+                    searchoptions: {
+                        sopt: ['eq', 'ne'],
+                        dataUrl: '/BankBranch/GeListBank?strSelect=' + (PFN_readCookie('gs_BANK_BR_ID') == null ? "0" : PFN_readCookie('gs_BANK_BR_ID')),
+                    },
+                    edittype: 'select',
+                    editoptions: {
+                        value: '0:Please select',
+                        dataInit: function (elem) {
+                            var bank = setInterval(function () {
+                                if ($("#gs_BANK_ID").html() != null) {
+                                    var bankID = $(elem).parent().parent().find('td[aria-describedby="' + tableName + '_BANK_ID_HIDEN"]').html();
+                                    $(elem).html($("#gs_BANK_ID").html()).find('option[value="' + bankID + '"]').attr('selected', 'selected');
+                                    clearInterval(bank);
+                                }
+                            }, 50);
+                        },
+                        dataEvents: [
+                            { type: 'keydown', fn: submitRowData },
+                            { type: "change", fn: fnCheckDataChange }
+                        ]
+                    }
+                },
+                { name: 'BANK_BRANCH_NAME', index: 'BANK_BRANCH_NAME', label: arrColname.BANK_BRANCH_NAME, align: 'left', width: 180, formoptions: { label: arrColname.BANK_BRANCH_NAME + require }, editable: true, search: true, searchoptions: { sopt: ['cn', 'eq', 'ne'] }, editoptions: { maxlength: 200, dataEvents: [{ type: 'keydown', fn: submitRowData }, { type: "change", fn: fnCheckDataChange }] } },
+                { name: 'BANK_BRANCH_CODE', index: 'BANK_BRANCH_CODE', label: arrColname.BANK_BRANCH_CODE, align: 'left', width: 200, formoptions: { label: arrColname.BANK_BRANCH_CODE }, editable: true, search: true, searchoptions: { sopt: ['cn', 'eq', 'ne'] }, editoptions: { maxlength: 60, dataEvents: [{ type: 'keydown', fn: submitRowData }, { type: "change", fn: fnCheckDataChange }] } },
+                { name: 'BANK_BRANCH_ADDRESS', index: 'BANK_BRANCH_ADDRESS', label: arrColname.BANK_BRANCH_ADDRESS, align: 'left', width: (($('.container').width() - 1230) < 220 ? 220 : ($('.container').width() - 1230)), formoptions: { label: arrColname.BANK_BRANCH_ADDRESS }, editable: true, search: true, searchoptions: { sopt: ['cn', 'eq', 'ne'] }, editoptions: { maxlength: 200, dataEvents: [{ type: 'keydown', fn: submitRowData }, { type: "change", fn: fnCheckDataChange }] } },
+                { name: 'SaveButton', label: ' ', hidden: (!arrSession.writte), align: 'center', editable: false, search: false, width: 100, fixed: true },
+                { name: 'DeleteButton', label: ' ', hidden: false, align: 'center', editable: false, search: false, width: 100, fixed: true },
+                { name: 'UPDATE_ID', index: 'UPDATE_ID', label: arrColname.UPDATE_ID, align: 'left', width: 100, formoptions: { label: arrColname.UPDATE_ID }, editable: false, search: true, searchoptions: { sopt: ['cn', 'eq', 'ne'] } },
+                { name: 'UPDATE_DATE', index: 'UPDATE_DATE', label: arrColname.UPDATE_DATE, align: 'center', width: 150, formoptions: { label: arrColname.UPDATE_DATE }, editable: false, search: true, searchoptions: { sopt: ['cn', 'eq', 'ne'] } },
+                { name: 'STATUS', index: 'STATUS', hidden: true, editable: false }
+            ],
+            loadError: function (xhr, status, error) {
+                // LogOff();
+            },
+            onSortCol: function (index, idxcol, sortorder) {
+                // Set class hight cho column duoc Sort
+                if (this.p.lastsort >= 0 && this.p.lastsort !== idxcol
+                    && this.p.colModel[this.p.lastsort].sortable !== false) {
+                    $(this.grid.headers[this.p.lastsort].el).find(">div.ui-jqgrid-sortable>span.s-ico").hide();
+                    $(this.grid.headers[this.p.lastsort].el).removeClass('ui-state-highlight');
+                }
+                $(this.grid.headers[idxcol].el).addClass('ui-state-highlight');
+                // End Set class hight cho column duoc Sort
+            },
+            onSelectRow: function (rowid, status, e) {
+                if (e != null) {
+                    $.elementMouseIsOver = document.elementFromPoint(e.clientX, e.clientY);
+                }
+                if (editingRow != undefined && editingRow != rowid && $('#' + editingRow).attr('editable') == '1') {
+                    SaveRowData(function () { OpenRowEdit(rowid) });
+                }
+                else {
+                    OpenRowEdit(rowid)
+                }
+            },
+            afterInsertRow: function (rowid, rowdata, rowelem) {
+                if (rowdata.STATUS == deleted) {
+                    jQuery("#" + rowid, jQuery('#' + tableName)).addClass('rowIsDeleted');
+                }
+                if (!arrSession.deleted) {
+                    DisabledButton(rowid + '_DeleteButton');
+                }
+            },
+            loadComplete: function (data) {
+                myJqgrid.setGridParam({ autoencode: true });
+                ClearCookies();
+                if (arrSession.writte) {
+                    BindContextMenu();
+                }
+                FocusToGrid(editingRow);
+                // load full page 1
+                if (isScrollDynamic == 1 && data.total > 1 && data.page == 1) {
+                    setTimeout(function () {
+                        resizeGrid();
+                    }, 200);
+                }
+                 CheckchangeData = false;
+
+        },
+
+        beforeRequest: function () {
+
+            myJqgrid.setGridParam({ autoencode: false });
+
+            if (!arrSession.writte) {
+
+                myJqgrid.setGridParam({ onSelectRow: '' });
+
+            }
+
+        },
+
+        beforeProcessing: function (data, status, xhr) {
+
+            if (data.total == -1) {
+
+                LogOff();
+
+            }
+
+            myJqgrid.setGridParam({ autoencode: false });
+
+            if (PFN_readCookie('BANK_BR_ROWNUM') != null &&
+
+                PFN_readCookie('BANK_BR_ROWNUM') == '-1' &&
+
+                $('.ui-pg-selbox').val() != '-1') {
+
+                $(".ui-pg-selbox").val(-1);
+
+                $(".ui-pg-selbox").trigger('change');
+
+                ClearCookies();
+
+            }
+
+            if (1 == isScrollDynamic) {
+
+                if (data.rows[0] == null) {
+
+                    UpdateViewRecord(tableName);
+
+                    ClearCookies();
+
+                    return false;
+
+                }
+
+                var firstId = data.rows[0].id;
+
+                if (-1 != $("#" + firstId).index()) {
+
+                    myJqgrid.setGridParam({ autoencode: true });
+
+                    return false;
+
+                }
+
+                var ids = $(this).jqGrid('getDataIDs');
+
+                if (ids.length >= 100) {
+
+                    scrollPosition = $(this).closest(".ui-jqgrid-bdiv").scrollTop();
+
+                    $(this).jqGrid("clearGridData");
+
+                    setTimeout(function () { myJqgrid.closest(".ui-jqgrid-bdiv").scrollTop(scrollPosition); }, 200);
+
+                }
+
+            }
+
+            else {
+
+                $(this).parent().children('div').eq(0).height(0);
+
+                $(this).closest(".ui-jqgrid-bdiv").scrollTop(0);
+
+            }
+
+        },
+
+        onPaging: function (pgButton) {
+
+            //editingRow = null;
+
+            var rowNumOld = rowNumCurrent;
+
+            var rowNumCurrent = myJqgrid.getGridParam("rowNum");
+
+            if (rowNumCurrent == -1) {
+
+                isScrollDynamic = 1;
+
+                SetPaging(rowNumCurrent);
+
+            }
+
+            else {
+
+                if (isScrollDynamic == 1 || rowNumOld != rowNumCurrent) {
+
+                    isScrollDynamic = 0;
+
+                    SetPaging(rowNumCurrent);
+
+                }
+
+                else {
+
+                    isScrollDynamic = 0;
+
+                    SetPaging(myJqgrid.getGridParam("page"));
+
+                }
+
+            }
+
+        }
+
+    }).jqGrid('navGrid', '#' + tableNaveName, {
+
+        cloneToTop: true,
+
+        edit: (arrSession.writte),
+
+        add: (arrSession.writte),
+
+        del: (arrSession.deleted),
+
+        search: true,
+
+        refresh: true,
+
+        edittext: arrButtonName.edittext,
+
+        addtext: arrButtonName.addtext,
+
+        deltext: arrButtonName.deltext,
+
+        searchtext: arrButtonName.searchtext,
+
+        refreshtext: arrButtonName.refreshtext
+
+    },
+
+        // Edit
+
+        {
+
+            url: '/BankBranch/UpdateBankBranch',
+
+            editCaption: arrPopup.captionEdit, bSubmit: arrPopup.submitEdit, bCancel: arrPopup.cancel,
+
+            recreateForm: true, closeAfterEdit: true, closeOnEscape: true,
+
+            beforeInitData: function (formid) {
+
+                if (SaveRowData() == false) {
+
+                    return false;
+
+                }
+
+                EnableOrDisableForField(true);
+
+            },
+
+            beforeShowForm: function (form) {
+
+                ResetValuesCombobox(editingRow);
+
+                SetFieldNoneEdit();
+
+                SetFieldNoneUpdate("");
+
+            },
+
+            afterShowForm: function (form) {
+
+                SetWidthForFormEditing();
+
+                SetAlignCenterPopups("editmod");
+
+                $('#BANK_NAME').focus();
+
+            },
+
+            afterclickPgButtons: function (whichbutton, formid, rowid) {
+
+                ResetValuesCombobox(rowid);
+
+                var rowdata = myJqgrid.getRowData(rowid);
+
+                if (rowdata.STATUS == alive) {
+
+                    $('#sData').show();
+
+                    $('#TblGrid_' + tableName + ' tbody tr td input[type="text"]').removeAttr('disabled');
+
+                    $('#TblGrid_' + tableName + ' tbody tr td select').removeAttr('disabled');
+
+                }
+
+                else if (rowdata.STATUS == deleted) {
+
+                    $('#TblGrid_' + tableName + ' tbody tr td input[type="text"]').attr('disabled', 'disabled');
+
+                    $('#TblGrid_' + tableName + ' tbody tr td select').attr('disabled', 'disabled');
+
+                    $('#sData').hide();
+
+                }
+
+                SetFieldNoneEdit();
+
+                SetFieldNoneUpdate("");
+
+                UnSetStyleControlError();
+
+            },
+
+            beforeSubmit: function (postdata, formid) {
+
+                scrollPosition = myJqgrid.closest(".ui-jqgrid-bdiv").scrollTop();
+
+                var error_Array = ValidateRowData("");
+
+                if (error_Array[0] != '') {
+
+                    AddClassErr(error_Array[0]);
+
+                    return [false, error_Array[1]];
+
+                }
+
+                else {
+
+                    return [true, ''];
+
+                }
+
+            },
+
+            afterSubmit: function (response, postdata) {
+
+                AfterComplete(response.responseJSON, true);
+
+                $(document).one('ajaxStop', function () {
+
+                    myJqgrid.closest(".ui-jqgrid-bdiv").scrollTop(scrollPosition);
+
+                });
+
+                return [true];
+
+            },
+
+            onClose: function () {
+
+                EnableOrDisableForField(false);
+
+                CheckchangeData = false;
+
+                if (isScrollDynamic == 1) {
+
+                    myJqgrid.jqGrid('setGridParam', { scrollrows: false });
+
+                }
+
+            }
+
+        },
+
+        // add
+
+        {
+
+            url: '/BankBranch/AddBankBranch',
+
+            addCaption: arrPopup.captionAdd, bSubmit: arrPopup.submitAdd, bCancel: arrPopup.cancel,
+
+            recreateForm: true, closeAfterAdd: true, closeOnEscape: true, jqModal: true,
+
+            beforeInitData: function (formid) {
+
+                if (SaveRowData() == false) {
+
+                    return false;
+
+                }
+
+            },
+
+            beforeShowForm: function (form) {
+
+                SetFieldNoneEdit();
+
+                $('#BANK_BRANCH_ID').val(GetAutoID());
+
+                SetFieldNoneUpdate("");
+
+            },
+
+            afterShowForm: function (form) {
+
+                SetWidthForFormEditing();
+
+                SetAlignCenterPopups("editmod");
+
+            },
+
+            beforeSubmit: function (postdata, formid) {
+
+                myJqgrid.jqGrid('setGridParam', { page: 1 });
+
+                $.ajaxSetup({ async: false });
+
+                var error_Array = ValidateRowData("",true);
+
+                if (error_Array[0] != '') {
+
+                    AddClassErr(error_Array[0]);
+
+                    return [false, error_Array[1]];
+
+                }
+
+                else {
+
+                    return [true, ''];
+
+                }
+
+                $.ajaxSetup({ async: true });
+
+            },
+
+            afterSubmit: function (response, postdata) {
+
+                AfterComplete(response.responseJSON, true);
+
+                editingRow = response.responseJSON.AUTO_ID;
+
+                return [true];
+
+            },
+
+            afterComplete: function (response, postdata) {
+
+                FocusToGrid(editingRow);
+
+                return [true];
+
+            },
+
+            onClose: function () {
+
+                CheckchangeData = false;
+
+            }
+
+        },
+
+        // delete
+
+        {
+
+            url: '/BankBranch/DeleteBankBranch',
+
+            caption: arrPopup.captionDel, bSubmit: arrPopup.submitDel, bCancel: arrPopup.cancel, msg: arrPopup.confirmDeleteProject,
+
+            beforeShowForm: function (form) {
+
+                CheckchangeData = false;
+
+                RestoreRow(editingRow);
+
+            },
+
+            afterShowForm: function (form) {
+
+                var dlgDiv = $("#delmod" + tableName);
+
+                DragFormCenter(dlgDiv);
+
+            },
+
+            beforeSubmit: function (postdata, formid) {
+
+                scrollPosition = myJqgrid.closest(".ui-jqgrid-bdiv").scrollTop();
+
+                return [true];
+
+            },
+
+            afterSubmit: function (response, postdata) {
+
+                editingRow = postdata.id;
+
+                $(document).one('ajaxStop', function () {
+
+                    myJqgrid.closest(".ui-jqgrid-bdiv").scrollTop(scrollPosition);
+
+                });
+
+                return [true];
+
+            },
+
+            afterComplete: function (response, postdata) {
+
+                AfterComplete(response.responseText, false);
+
+                return [true];
+
+            }
+
+        },
+
+        // search
+
+        {
+
+            multipleSearch: true, width: 'auto',
+
+            groupOps: [{ op: "AND", text: arrTitle.textAnd }, { op: "OR", text: arrTitle.textOr }],
+
+            closeOnEscape: true,
+
+            closeAfterSearch: true,
+
+            recreateFilter: true,
+
+            caption: arrTitle.searchCaption, Find: arrTitle.searchCaption, Reset: arrTitle.textReset,
+
+            onInitializeSearch: function ($filterInit) {
+
+                filterInit = $filterInit;
+
+            },
+
+            beforeShowSearch: function () {
+
+                CheckchangeData = false;
+
+                if (SaveRowData() == false) {
+
+                    return false;
+
+                }
+
+                return true;
+
+            },
+
+            afterShowSearch: function () {
+
+                SetAlignCenterPopups("searchmodfbox_");
+
+                return true;
+
+            },
+
+            onReset: function () {
+
+                filterInit.jqFilter('addFilter', { groupOp: "AND", rules: [] });
+
+                ClearSearch(tableName);
+
+            },
+
+            onSearch: function () {
+
+                ClearSearch(tableName);
+
+                return [true];
+
+            }
+
+        }
+
+    ).navButtonAdd((arrSession.exportExcel == false ? "" : "#" + tableNaveName), {
+
+        caption: arrPopup.captionExportExcel, buttonicon: "ui-icon-print", position: "last",
+
+        onClickButton: function () { ExportToExcel(); }
+
+    });
+
+ 
+
+    //merge header 2 column button Save Delete
+
+    myJqgrid.jqGrid('setGroupHeaders',
+
+    {
+
+        useColSpanStyle: true, groupHeaders: [
+
+            { startColumnName: 'SaveButton', numberOfColumns: 2, titleText: '<div style = "text-align:center; width:100%;">' + arrColname.UPDATE + '</div>' }]
+
+    });
+
+    $(".ui-jqgrid-resize-ltr").removeAttr("style").css("cursor", "col-resize");
+
+    $("#gview_" + tableName + " div[class='ui-state-default ui-jqgrid-hdiv'] .ui-jqgrid-hbox table:first .jqg-second-row-header th div").css("top", "0px");
+
+    $("#gview_" + tableName + " div[class='ui-state-default ui-jqgrid-hdiv'] .ui-jqgrid-hbox table:first .jqg-second-row-header th").last().attr("rowspan", "2");
+
+    $("#gview_" + tableName + " div[class='ui-state-default ui-jqgrid-hdiv'] .ui-jqgrid-hbox table:first .jqg-third-row-header th").last().hide().prev().hide();
+
+    //end merge header 2 column button Save Delete
+
+ 
+
+    $("option[value=-1]").text(arrButtonAction.all);
+
+    $(window).bind('resize', function () {
+
+        resizeGrid();
+
+    }).trigger('resize');
+
+}
+
+ 
+
+function ExportToExcel() {
+
+    var record = myJqgrid.getGridParam("records");
+
+    if (record <= 0) {
+
+        record = 1;
+
+    }
+
+    location.href = '/BankBranch/ExportToExcel?filters=' + $("#" + tableName).jqGrid('getGridParam', 'postData').filters + '&record=' + record;
+
+}
+
+function EnableOrDisableForField(boolValue) {
+
+    myJqgrid.jqGrid('setColProp', 'UPDATE_ID', { editable: boolValue });
+
+    myJqgrid.jqGrid('setColProp', 'UPDATE_DATE', { editable: boolValue });
+
+}
+
+function SetFieldNoneEdit() {
+
+    DisabledButton("UPDATE_ID");
+
+    DisabledButton("UPDATE_DATE");
+
+}
+
+function SetAlignCenterPopups(strPopupName) {
+
+    var dlgDiv = $("#" + strPopupName + myJqgrid[0].id);
+
+    DragFormCenter(dlgDiv);
+
+}
+
+function SetWidthForFormEditing() {
+
+    $('#editmod' + tableName + '').css('width', $('#tr_BANK_BRANCH_NAME').width() + 40);
+
+}
+
+function SetPaging(rowNumCurrent) {
+
+    myJqgrid.parent().children('div').eq(0).height(0);
+
+    myJqgrid.closest(".ui-jqgrid-bdiv").scrollTop(0);
+
+    if (isScrollDynamic == 1) {
+
+        myJqgrid.jqGrid('setGridParam', { scroll: 1, page: 1, rowNum: 20, scrollrows: false, postData: { isScrollDynamic: true } });
+
+        $("#" + tableNaveName + "_center table tbody tr td").css('display', 'none');
+
+        $("#" + tableNaveName + "_center table tbody tr td").last().show();
+
+    }
+
+    else if (isScrollDynamic == 0) {
+
+        var pagenumber = myJqgrid.getGridParam("page");
+
+        myJqgrid.jqGrid('setGridParam', { scroll: false, page: pagenumber, rowNum: rowNumCurrent, scrollrows: true, postData: { isScrollDynamic: false } });
+
+        $(".ui-jqgrid-bdiv").children().css('height', 'auto');
+
+        $("#" + tableNaveName + "_center table tbody tr td").show();
+
+    }
+
+    myJqgrid.trigger('reloadGrid');
+
+}
+
+function CopyRowData() {
+
+    rowid = editingRow;
+
+    var rowData = myJqgrid.jqGrid('getRowData', editingRow);
+
+    // Set trang thai ko phan trag truoc khi Copy.
+
+    if (isScrollDynamic == 1) {
+
+        myJqgrid.setGridParam({ scroll: false });
+
+    }
+
+    rowData.ID = new_row;
+
+    rowData.BANK_BRANCH_ID = GetAutoID();
+
+    rowData.SaveButton = "";
+
+    rowData.DeleteButton = "";
+
+    rowData.UPDATE_ID = arrSession.user;
+
+    rowData.UPDATE_DATE = GetCurrentDate(true);
+
+    myJqgrid.jqGrid('addRowData', rowData.ID, rowData, 'after', rowid);
+
+    myJqgrid.setGridParam({ autoencode: false });
+
+    myJqgrid.jqGrid("setCell", rowData.ID, 'SaveButton', "<input type='button' class='" + arrButtonName.saveClass + "' value='" + arrButtonAction.save + "' onclick='SaveRowData();' id='" + rowData.ID + "_SaveButton' />");
+
+    myJqgrid.jqGrid("setCell", rowData.ID, 'DeleteButton', "<input type='button'class='" + arrButtonName.delClass + "' value='" + arrButtonAction.deleted + "' id='" + rowData.ID + "_DeleteButton' onclick = 'DeleteRecord(this);'/>");
+
+    //Set ContextMenu cho row moi duoc copy.
+
+    BindContextMenu(rowData.ID);
+
+    myJqgrid.setGridParam({ autoencode: true });
+
+    OpenRowEdit(rowData.ID);
+
+    editingRow = rowData.ID;
+
+    DisableDelEdit();
+
+    // Set lai trag thai: ScrollDynamic.
+
+    if (isScrollDynamic == 1) {
+
+        myJqgrid.setGridParam({ scroll: 1 });
+
+    }
+
+}
+
+function OpenRowEdit(rowid) {
+
+    editingRow = rowid;
+
+    if (IsOpeningRow(rowid)) {
+
+        return true;
+
+    }
+
+    FocusToGrid(rowid);
+
+    var status = $("#" + rowid + "").find('td[aria-describedby="' + tableName + '_STATUS"]').attr('title');
+
+    if (status == alive && $("#edithd" + tableName + "").css("display") != "block") {
+
+        EnableButton(rowid + '_SaveButton');
+
+        //var scrollPosition = myJqgrid.closest(".ui-jqgrid-bdiv").scrollLeft();
+
+        $.ajaxSetup({ async: false });
+
+        myJqgrid.jqGrid('editRow', rowid, false);
+
+        $.ajaxSetup({ async: true });
+
+        SetFieldNoneUpdate(rowid);
+
+        if ($($.elementMouseIsOver).children().length == 0) {
+
+            $('#' + rowid + '_BANK_BRANCH_NAME').focus();
+
+        } else {
+
+            $($.elementMouseIsOver).children().focus();
+
+        }
+
+    }
+
+}
+
+function SaveRowData(func) {
+
+    if (!IsOpeningRow(editingRow)) {
+
+        return true;
+
+    }
+
+    if (editingRow == new_row) {
+
+        CheckchangeData = true;
+
+    }
+
+    if (CheckchangeData == true) {
+
+        var error_Array = ValidateRowData(editingRow);
+
+        if (error_Array[0] != '') {
+
+            AddClassErr(editingRow + '_' + error_Array[0]);
+
+            setTimeout(function () { showDialogs('#idmesage', error_Array[1], arrMsgShowDialog.ctrwanning) }, 50);
+
+            FocusToGrid(editingRow);
+
+            return false;
+
+        }
+
+        else {
+
+            myJqgrid.jqGrid('saveRow', editingRow, {
+
+                aftersavefunc: function (rowid, response) {
+
+                    CheckchangeData = false;
+
+                    AfterComplete(response.responseJSON, true);
+
+                    var BANK_ID_HIDEN = response.responseJSON.BANK_ID;
+
+                    if (rowid == new_row) {
+
+                        editingRow = response.responseJSON.AUTO_ID;
+
+                       $('#' + rowid).attr("id", editingRow);
+
+                        $('#' + rowid + '_SaveButton').attr("id", editingRow + '_SaveButton');
+
+                        $('#' + rowid + '_DeleteButton').attr("id", editingRow + '_DeleteButton');
+
+                        if (!arrSession.deleted) {
+
+                            DisabledButton(editingRow + '_DeleteButton');
+
+                        }
+
+                        BindContextMenu(editingRow);
+
+                        FocusToGrid(editingRow);
+
+                    }
+
+                    myJqgrid.jqGrid("setCell", editingRow, 'BANK_ID_HIDEN', BANK_ID_HIDEN);
+
+                    myJqgrid.jqGrid("setCell", editingRow, 'UPDATE_ID', arrSession.user);
+
+                    myJqgrid.jqGrid("setCell", editingRow, 'UPDATE_DATE', GetCurrentDate(true));
+
+                    DisabledButton(editingRow + '_SaveButton');
+
+                    if (func != null) {
+
+                        func();
+
+                    }
+
+                    return true;
+
+                }
+
+            })
+
+        }
+
+    }
+
+    else {
+
+        RestoreRow(editingRow);
+
+        if (func != null) {
+
+            func();
+
+        }
+
+        return true;
+
+    }
+
+}
+
+function RestoreRecord(obj) {
+
+    if (SaveRowData() == false) {
+
+        return false;
+
+    }
+
+    scrollPosition = myJqgrid.closest(".ui-jqgrid-bdiv").scrollTop();
+
+    var rowid = $(obj).attr('id').split('_DeleteButton')[0];
+
+    editingRow = rowid;
+
+    FocusToGrid(rowid);
+
+    var checkrestore = ChekRestore(rowid);
+
+    if (checkrestore != Canrestore) {
+
+        showDialogs('#idmesage', arrMsgShowDialog.ctrCantRestore, arrMsgShowDialog.ctrwanning);
+
+        return false;
+
+    }
+
+    showConfirmDialog(arrMsgShowDialog.confirmRestore, arrMsgShowDialog.ctrwanning, function () {
+
+        $.ajax({
+
+            async: false,
+
+            mtype: 'POST',
+
+            url: '/BankBranch/RestoreBankBranch?id=' + rowid,
+
+            contentType: 'application/json; charset=utf-8',
+
+            dataType: "html",
+
+            success: function (data) {
+
+                if (AfterComplete(data, false)) {
+
+                    //
+
+                }
+
+                else {
+
+                    myJqgrid.trigger('reloadGrid');
+
+                }
+
+            }
+
+        });
+
+    });
+
+    $(document).one('ajaxStop', function () {
+
+        myJqgrid.closest(".ui-jqgrid-bdiv").scrollTop(scrollPosition);
+
+    });
+
+}
+
+function ChekRestore(id) {
+
+    $.ajaxSetup({ async: false });
+
+    var xhr = $.post('/BankBranch/ChekResTore', { id: id })
+
+            .success(function (data) {
+
+                return data;
+
+            })
+
+            .error(function () {
+
+            })
+
+            .complete(function () {
+
+            });
+
+    return xhr.responseText;
+
+    $.ajaxSetup({ async: true });
+
+}
+
+function DeleteRecord(obj) {
+
+    var rowid = $(obj).attr('id').split('_DeleteButton')[0];
+
+    if (rowid == editingRow && rowid == new_row) {
+
+        if (isScrollDynamic == 1) {
+
+            myJqgrid.setGridParam({ scroll: false });
+
+        }
+
+        $.ajaxSetup({ async: false });
+
+        myJqgrid.jqGrid('delRowData', rowid);
+
+        CheckchangeData = false;
+
+        editingRow = null;
+
+        if (isScrollDynamic == 1) {
+
+            myJqgrid.setGridParam({ scroll: 1 });
+
+        }
+
+        $.ajaxSetup({ async: true });
+
+        return false;
+
+    }
+
+    if (rowid != editingRow) {
+
+        if (SaveRowData() == false) {
+
+            return false;
+
+        }
+
+    }
+
+    editingRow = rowid;
+
+    FocusToGrid(rowid);
+
+    $('#del_' + tableName).trigger('click');
+
+}
+
+function BindContextMenu(rowid) {
+
+    var menu = [
+
+            {
+
+                'Menu':
+
+                    {
+
+                        onclick: function (menuItem, menu) {
+
+                            // Chi cho Copy 1 Row, neu row hien tai chua Save thi thuc hien Save truoc khi Copy.
+
+                            SaveRowData(function () { CopyRowData() });
+
+                        },
+
+                        icon: '../../Content/images/copy.png',
+
+                        title: arrTitle.coppyRow
+
+                    }
+
+            }];
+
+    if (undefined == rowid) {
+
+        $('#' + tableName + ' tr').contextMenu(menu, {
+
+            beforeShow: function () {
+
+                return CheckShowContextMenu(this.target);
+
+            }
+
+        });
+
+    }
+
+    else {
+
+        $('#' + rowid).children('td').contextMenu(menu, {
+
+            beforeShow: function () {
+
+                return CheckShowContextMenu($('#' + rowid));
+
+            }
+
+        });
+
+    }
+
+}
+
+function CheckShowContextMenu(id) {
+
+    // Kiem tra truog hop show context Menu: Neu chua chon row thi ko hien thi ContextMenu
+
+    if (myJqgrid.jqGrid('getGridParam', 'selrow') == null || $(id).attr("editable") != "1") {
+
+        return false;
+
+    }
+
+    return true;
+
+}
+
+function fnCheckDataChange(e) {
+
+    if ($(e.target).val() != $(e.target).parent().attr('title')) {
+
+        CheckchangeData = true;
+
+    }
+
+}
+
+function RestoreRow(rowid) {
+
+    CheckchangeData = false;
+
+    if (rowid != null && rowid == new_row) {
+
+        $.ajaxSetup({ async: false });
+
+        if (isScrollDynamic == 1) {
+
+            myJqgrid.setGridParam({ scroll: false, postData: { isScrollDynamic: true } });
+
+        }
+
+        myJqgrid.jqGrid('delRowData', rowid);
+
+        editingRow = null;
+
+        if (isScrollDynamic == 1) {
+
+            myJqgrid.setGridParam({ scroll: 1, postData: { isScrollDynamic: false } });
+
+        }
+
+        $.ajaxSetup({ async: true });
+
+    }
+
+    myJqgrid.jqGrid('restoreRow', rowid);
+
+    DisabledButton(rowid + '_SaveButton');
+
+}
+
+function FocusToGrid(rowid) {
+
+    myJqgrid.jqGrid('setSelection', rowid, false);
+
+    var status = $("#" + rowid + "").find('td[aria-describedby="' + tableName + '_STATUS"]').attr('title');
+
+    if (rowid == null || status != alive || rowid.trim() == "") {
+
+        DisableDelEdit();
+
+    }
+
+    else {
+
+        EnableDelEdit();
+
+    }
+
+}
+
+function AfterComplete(data, isJson) {
+
+    if (isJson) {
+
+        if (data.AUTO_ID == iError) {
+
+            LogOff();
+
+        }
+
+        else if (data.AUTO_ID == iSession_TimeOut) {
+
+            LogOff();
+
+        }
+
+        else if (data.AUTO_ID == iAccessDenied) {
+
+            setTimeout(function () {
+
+                showDialogs('#idmesage', arrMsgShowDialog.ctrAccesdenied, arrMsgShowDialog.ctrwanning);
+
+            }, 100);
+
+        }
+
+        else if (data.AUTO_ID == iDuplicateId) {
+
+            setTimeout(function () {
+
+                showDialogs('#idmesage', arrValidate.DATADuplicate, arrMsgShowDialog.ctrwanning);
+
+            }, 100);
+
+            return false;
+
+        }
+
+    }
+
+    else {
+
+        if (data == iError) {
+
+            LogOff();
+
+        }
+
+        else if (data == iSession_TimeOut) {
+
+            LogOff();
+
+        }
+
+        else if (data == iAccessDenied) {
+
+            setTimeout(function () {
+
+                showDialogs('#idmesage', arrMsgShowDialog.ctrAccesdenied, arrMsgShowDialog.ctrwanning);
+
+            }, 100);
+
+            return true;
+
+        }
+
+    }
+
+}
+
+function EnableDelEdit() {
+
+    $("#edit_" + tableName).removeClass('ui-state-disabled');
+
+    $("#del_" + tableName).removeClass('ui-state-disabled');
+
+}
+
+ 
+
+function DisableDelEdit() {
+
+    $("#edit_" + tableName).addClass('ui-state-disabled');
+
+    $("#del_" + tableName).addClass('ui-state-disabled');
+
+}
+
+function CheckDuplicateID(bankID, strid, rowID, isAddForm) {
+
+    if (isAddForm) {
+
+        rowID = new_row;
+
+    }
+
+    else {
+
+        rowID = editingRow;
+
+    }
+
+    $.ajaxSetup({ async: false });
+
+    var xhr = $.post('/BankBranch/CheckDuplicateID', { bankID: bankID, strid: strid, rowID: rowID })
+
+            .success(function (data) {
+
+                return data;
+
+            })
+
+            .error(function () {
+
+            })
+
+            .complete(function () {
+
+            });
+
+    return xhr.responseText;
+
+}
+
+function GetAutoID() {
+
+    $.ajaxSetup({ async: false });
+
+    var xhr = $.post('/BankBranch/GetAutoID')
+
+            .success(function (data) {
+
+                return data;
+
+            })
+
+            .error(function () {
+
+            })
+
+            .complete(function () {
+
+            });
+
+    return xhr.responseText;
+
+}
+
+function ValidateRowData(rowid, isAddForm) {
+
+    var str_root = "";
+
+    if (rowid != "") {
+
+        str_root = rowid + '_';
+
+        RemoveClassErrByObject($('#' + rowid + '').find('input'));
+
+        RemoveClassErrByObject($('#' + rowid + '').find('select'));
+
+    }
+
+    else {
+
+        UnSetStyleControlError();
+
+    }
+
+    var error_Array = new Array();
+
+    var column_error = '';
+
+    var message_error = '';
+
+    var BANK_BRANCH_ID = $('#' + str_root + 'BANK_BRANCH_ID').val();
+
+    var bankCode = $('#' + str_root + 'BANK_BRANCH_CODE').val();
+
+    var bankName = $('#' + str_root + 'BANK_ID').val();
+
+    if (IsNullOrEmpty(bankName)) {
+
+        column_error = 'BANK_ID';
+
+        message_error = arrValidate.DATANull;
+
+    }
+
+    else if (IsNullOrEmpty($('#' + str_root + 'BANK_BRANCH_NAME').val())) {
+
+        column_error = 'BANK_BRANCH_NAME';
+
+        message_error = arrValidate.DATANull;
+
+    }
+
+    else if (CheckDuplicateID(bankName, bankCode, rowid, isAddForm) != "0") {
+
+        column_error = 'BANK_BRANCH_CODE';
+
+        message_error = arrValidate.BANCODETRUNG;
+
+    }
+
+    error_Array.push(column_error);
+
+    error_Array.push(message_error);
+
+    return error_Array;
+
+}
+
+function SetFieldNoneUpdate(rowid) {
+
+    if (rowid != "") {
+
+        $('#' + rowid + '_BANK_BRANCH_ID').attr('disabled', true);
+
+    }
+
+    else {
+
+        $('#BANK_BRANCH_ID').attr('disabled', true);
+
+    }
+
+}
+
+function UnSetStyleControlError() {
+
+    RemoveClassErrByObject($('#TblGrid_' + tableName).children().find('select'));
+
+    RemoveClassErrByObject($('#TblGrid_' + tableName).find('input[type = "text"]'));
+
+}
+
+var submitRowData = function submitRowData(e) {
+
+    // Neu dag o trang thai InlineEditing thi moi xu ly                               
+
+    if ($(e.target).is('.FormElement') == false) {
+
+        var key = e.charCode || e.keyCode;
+
+        if (key == 13) // ENTER
+
+        {
+
+            if ($(this).val() != $(this).parent().attr("title")) {
+
+                CheckchangeData = true;
+
+            }
+
+             SaveRowData();
+
+        }
+
+        else if (key == 27) // ESC
+
+        {
+
+            RestoreRow(editingRow);
+
+        }
+
+    }
+
+}
+
+function ResetValuesCombobox(rowid) {
+
+    var bankID = $('#' + rowid).find('td[aria-describedby="' + tableName + '_BANK_ID_HIDEN"]').attr('title');
+
+    setTimeout(function () {
+
+        $("#BANK_ID").val(bankID);
+
+    }, 200);
+
+}
+
+function SearchFilter() {
+
+    myJqgrid.jqGrid('filterToolbar', {
+
+        stringResult: true, searchOnEnter: false,
+
+        defaultSearch: 'cn', ignoreCase: true, enableCstringResult: true, autoencode: false
+
+    });
+
+    resizeGrid();
+
+}
+
+function SetPercentWidthGrid(percent) {
+
+    var width_main = $('#main').width();
+
+    if (width_main < 1200) {
+
+        width_main = 1200;
+
+    }
+
+    return width_main * percent / 100;
+
+}
+
+// resize grid
+
+function resizeGrid() {
+
+    ResizeContainer(tableName, tableNaveName, 0);
+
+}
+
+// end resizegrid
+
+function SaveCurrentInfoPage() {
+
+    PFN_createCookie('boolChangeLanguage', 'true', 1);
+
+    PFN_createCookie('BANK_BR_PAGE', $('.ui-pg-input').val(), 1);
+
+    PFN_createCookie('BANK_BR_ROWNUM', $('.ui-pg-selbox').val(), 1);
+
+    PFN_createCookie('BANK_BR_SCROLLTOP', $(".ui-jqgrid-bdiv").scrollTop(), 1);
+
+    PFN_createCookie('BANK_BR_SCROLLEFT', $(".ui-jqgrid-bdiv").scrollLeft(), 1);
+
+    PFN_createCookie('BANK_SCROLL', isScrollDynamic, 1);
+
+    var sorColumn = myJqgrid.getGridParam("postData").sidx;
+
+    var sortOrder = myJqgrid.getGridParam("postData").sord;
+
+    if (sorColumn != null) {
+
+        PFN_createCookie('BANK_BR_SORTCOLUMN', sorColumn, 1);
+
+        PFN_createCookie('BANK_BR_SORTORDER', sortOrder, 1);
+
+    }
+
+    if ($('#gs_BANK_BRANCH_ID').val() != '') { PFN_createCookie('gs_BANK_BRANCH_ID', $('#gs_BANK_BRANCH_ID').val(), 1); }
+
+    if (ParseString($('#gs_BANK_ID').val()) != '') { PFN_createCookie('gs_BANK_BR_ID', $('#gs_BANK_ID').val(), 1); }
+
+    if ($('#gs_BANK_BRANCH_NAME').val() != '') { PFN_createCookie('gs_BANK_BRANCH_NAME', $('#gs_BANK_BRANCH_NAME').val(), 1); }
+
+    if ($('#gs_BANK_BRANCH_ADDRESS').val() != '') { PFN_createCookie('gs_BANK_BRANCH_ADDRESS', $('#gs_BANK_BRANCH_ADDRESS').val(), 1); }
+
+    if ($('#gs_BANK_BRANCH_CODE').val() != '') { PFN_createCookie('gs_BANK_BRANCH_CODE', $('#gs_BANK_BRANCH_CODE').val(), 1); }
+
+    if ($('#gs_UPDATE_ID').val() != '') { PFN_createCookie('gs_BRANCH_UPDATE_ID', $('#gs_UPDATE_ID').val(), 1); }
+
+    if ($('#gs_UPDATE_DATE').val() != '') { PFN_createCookie('gs_BRAN_BR_UPDATE_DATE', $('#gs_UPDATE_DATE').val(), 1); }
+
+}
+
+ 
+
+function ReadCurrentInforPage() {
+
+    var searchresult = {
+
+        filters: '{"groupOp":"AND","rules":[' +
+
+                (PFN_readCookie('gs_BANK_BRANCH_ID') == null ? "" : '{"field":"BANK_BRANCH_ID","op":"cn","data":"' + PFN_readCookie('gs_BANK_BRANCH_ID') + '"},') +
+
+                (PFN_readCookie('gs_BANK_BR_ID') == null ? "" : '{"field":"BANK_ID","op":"eq","data":"' + PFN_readCookie('gs_BANK_BR_ID') + '"},') +
+
+                (PFN_readCookie('gs_BANK_BRANCH_NAME') == null ? "" : '{"field":"BANK_BRANCH_NAME","op":"cn","data":"' + PFN_readCookie('gs_BANK_BRANCH_NAME') + '"},') +
+
+                (PFN_readCookie('gs_BANK_BRANCH_ADDRESS') == null ? "" :'{"field":"BANK_BRANCH_ADDRESS","op":"cn","data":"' + PFN_readCookie('gs_BANK_BRANCH_ADDRESS') + '"},') +
+
+                (PFN_readCookie('gs_BANK_BRANCH_CODE') == null ? "" : '{"field":"BANK_BRANCH_CODE","op":"cn","data":"' + PFN_readCookie('gs_BANK_BRANCH_CODE') + '"},') +
+
+                (PFN_readCookie('gs_BRANCH_UPDATE_ID') == null ? "" : '{"field":"BRANCH_UPDATE_ID","op":"cn","data":"' + PFN_readCookie('gs_BRANCH_UPDATE_ID') + '"},') +
+
+                (PFN_readCookie('gs_BANK_UPDATE_DATE') == null ? "" : '{"field":"UPDATE_DATE","op":"cn","data":"' + PFN_readCookie('gs_BRAN_BR_UPDATE_DATE') + '"},') +
+
+                ']}'
+
+    };
+
+    return searchresult;
+
+}
+
+function ClearCookies() {
+
+    if ($.timeOutCookies != null) {
+
+        clearInterval($.timeOutCookies);
+
+    }
+
+    $.timeOutCookies = setInterval(function () {
+
+        if (PFN_readCookie('boolChangeLanguage') != null) {
+
+            PFN_createCookie('boolChangeLanguage', '', -1);
+
+            PFN_createCookie('BANK_BR_PAGE', '', -1);
+
+            PFN_createCookie('BANK_BR_ROWNUM', '', -1);
+
+            myJqgrid.closest(".ui-jqgrid-bdiv").scrollTop(parseInt(PFN_readCookie('BANK_BR_SCROLLTOP')));
+
+            myJqgrid.closest(".ui-jqgrid-bdiv").scrollLeft(parseInt(PFN_readCookie('BANK_BR_SCROLLEFT')));
+
+            PFN_createCookie('BANK_BR_SCROLLTOP', '', -1);
+
+            PFN_createCookie('BANK_BR_SCROLLEFT', '', -1);
+
+            PFN_createCookie('BANK_SCROLL', '', -1);
+
+            PFN_createCookie('BANK_BR_SORTCOLUMN', '', -1);
+
+            PFN_createCookie('BANK_BR_SORTORDER', '', -1);
+
+            //==============================
+
+            $('#gs_BANK_BRANCH_ID').attr('value', PFN_readCookie('gs_BANK_BRANCH_ID'));
+
+            $('#gs_BANK_ID').attr('value', PFN_readCookie('gs_BANK_BR_ID'));
+
+            $('#gs_BANK_BRANCH_NAME').attr('value', PFN_readCookie('gs_BANK_BRANCH_NAME'));
+
+            $('#gs_BANK_BRANCH_ADDRESS').attr('value', PFN_readCookie('gs_BANK_BRANCH_ADDRESS'));
+
+            $('#gs_BANK_BRANCH_CODE').attr('value', PFN_readCookie('gs_BANK_BRANCH_CODE'));
+
+            $('#gs_UPDATE_ID').attr('value', PFN_readCookie('gs_BRANCH_UPDATE_ID'));
+
+            $('#gs_UPDATE_DATE').attr('value', PFN_readCookie('gs_BRAN_BR_UPDATE_DATE'));
+
+            PFN_createCookie('gs_BANK_BRANCH_ID', '', -1);
+
+            PFN_createCookie('gs_BANK_BR_ID', '', -1);
+
+            PFN_createCookie('gs_BANK_BRANCH_NAME', '', -1);
+
+            PFN_createCookie('gs_BANK_BRANCH_ADDRESS', '', -1);
+
+            PFN_createCookie('gs_BANK_BRANCH_CODE', '', -1);
+
+            PFN_createCookie('gs_BANK_UPDATE_ID', '', -1);
+
+            PFN_createCookie('gs_BRAN_BR_UPDATE_DATE', '', -1);
+
+        }
+
+        clearInterval($.timeOutCookies);
+
+    }
+
+      , 80);
+
+}
+</script>

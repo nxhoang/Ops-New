@@ -1,0 +1,227 @@
+﻿
+@{
+    ViewBag.Title = "PackageReadiness";
+    Layout = "~/Views/Shared/_MesLayout.cshtml";
+}
+
+<style>
+    .lbl-readiness {
+        color: darkgreen;
+        font-weight: bold;
+    }
+</style>
+
+<link href="~/assets/DayRangePicker/daterangepicker.min.css" rel="stylesheet" />
+
+<!-- START modal request JIG -->
+<div class="modal fade" id="mdlRequestJig" role="dialog" aria-labelledby="mdlRequestJig" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    &times;
+                </button>
+                <h4 class="modal-title" id="mdlRequestJigTitle">Request Jig (<label id="lblMtopPkgMdl"></label>)</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-sm-3">
+                        <div class="form-group">
+                            <label> Request Jig Id: </label>
+                            <label id="lblRequestJigId" style="font-weight: bold" class="control-label">JRP2A1200415001</label>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-3">
+                        <div class="form-group">
+                            <label> Jig Code: </label>
+                            <input type="text" id="txtJigCode" class="form-control" value="JIGUNI0000001" />
+                        </div>
+                    </div>
+
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label> Jig Name: </label>
+                            <input type="text" id="txtJigName" class="form-control" value="Jig name 1" readonly />
+                        </div>
+                    </div>
+
+                </div>
+                <div class="row">
+                    <div class="col-sm-3">
+                        <div class="form-group">
+                            <label> AO: </label>
+                            <input type="text" id="txtAO" class="form-control" readonly/>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-3">
+                        <div class="form-group">
+                            <label> AO Qty: </label>
+                            <input type="text" id="txtAOQty" onkeypress="return isNumber(event)" maxlength="4" class="form-control" readonly/>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-3">
+                        <div class="form-group">
+                            <label> Style Code: </label>
+                            <input type="text" id="txtStyleCode" class="form-control" maxlength="7" readonly />
+                        </div>
+                    </div>
+
+                    <div class="col-sm-3">
+                        <div class="form-group">
+                            <label> Jig Qty: </label>
+                            <input type="text" id="txtJigQty" onkeypress="return isNumber(event)" maxlength="4" class="form-control" />
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="btnSendRequestJig" class="btn btn-primary">
+                    <span class="glyphicon glyphicon-send"></span> Send Request
+                </button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">
+                    Cancel
+                </button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.end modal -->
+<!-- END modal request JIG -->
+<!--START Search style-->
+<div class="row">
+    <div class="col-sm-2">
+        <div class="form-group">
+            <label class="control-label"><span style="color: red;">Factory:</span></label>
+            <select id="drpFactory" class="form-control" data-placeholder=""></select>
+        </div>
+    </div>
+
+    <div class="col-sm-2">
+        <div class="form-group">
+            <label class="control-label"><span style="color: red;">Dates:</span></label>
+            <input type="text" id="txtDateRange" class="form-control" style="background-color: white" readonly>
+        </div>
+    </div>
+
+    <div class="col-sm-2">
+        <div class="form-group">
+            <label class="control-label"><span style="color: red;">Buyer:</span></label>
+            <select id="drpBuyer" class="form-control" data-placeholder=""></select>
+        </div>
+    </div>
+
+    <div class="col-sm-2">
+        <div class="form-group">
+            <label class="control-label">AO No:</label>
+            <input type="text" id="txtAONo" class="form-control">
+        </div>
+    </div>
+
+    <div class="col-sm-2">
+        <div class="form-group">
+            <label class="control-label" for="txtBuyerInfo">Style Info:</label>
+            <input type="text" id="txtBuyerInfo" class="form-control">
+        </div>
+    </div>
+
+    <div class="col-sm-1">
+        <div class="form-group">
+            <div><label class="control-label">&nbsp;</label></div>
+            <button type="button" id="btnSearchMtopPkg" class="btn btn-primary">Search</button>
+        </div>
+    </div>
+</div>
+<!--END Search style-->
+<!--START grid Mtop packages-->
+<div class="row">
+    <div class="col-sm-12">
+        <table id="tbMtopPackage"></table>
+        <div id="pgMtopPackage"></div>
+    </div>
+</div>
+<!--END grid Mtop packages-->
+<!-- widget grid -->
+<section id="widget-grid" class="">
+    <!-- row -->
+    <div class="row">
+        <!-- NEW WIDGET START -->
+        <article class="col-sm-12">
+
+            <!-- Widget ID (each widget will need unique ID)-->
+            <div class="jarviswidget jarviswidget-color-green" id="wid-id-0" data-widget-editbutton="false" data-widget-sortable="false">
+
+                <header>
+                    <h2><strong>Production Readiness</strong></h2>
+
+                </header>
+
+                <!-- widget div-->
+                <div>
+
+                    <!-- widget content -->
+                    <div class="widget-body">
+                        <div class="row">
+                            <div class="form-horizontal">
+                                <div class="form-group">
+                                    <label class="control-label col-sm-1">Mould:</label>
+                                    <div class="col-sm-1">
+                                        <label id="lblMould" class="control-label lbl-readiness"></label>
+                                    </div>
+
+                                    <label class="control-label col-sm-1">SOP:</label>
+                                    <div class="col-sm-1">
+                                        <label class="control-label"><span id="lblSop" class="lbl-readiness"></span></label>
+                                    </div>
+
+                                    <label class="control-label col-sm-1">JIG:</label>
+                                    <div class="col-sm-1">
+                                        <label class="control-label"><span id="lblJig" class="lbl-readiness"></span></label>
+                                    </div>
+
+                                    <div class="col-sm-1">
+                                        <button type="button" id="btnRequestJig" class="btn btn-default">Request Jig</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- end widget content -->
+
+                </div>
+                <!-- end widget div -->
+
+            </div>
+            <!-- end widget -->
+
+        </article>
+        <!-- WIDGET END -->
+    </div>
+
+    <!-- end row -->
+
+</section>
+<!-- end widget grid -->
+
+@section Scripts{
+    <script src="~/assets/DayRangePicker/daterangepicker.min.js"></script>
+
+    <script src="~/js/plugin/jqgrid/jquery.jqGrid.min.js"></script>
+    <script src="~/js/plugin/jqgrid/grid.locale-en.min.js"></script>
+
+    <script src="~/js/mes/mes-common.js?v=1.0.2"></script>
+
+    <script src="~/js/mes/package-readiness/package-readiness.js"></script>
+    <script src="~/js/mes/package-readiness/package-readiness-event.js"></script>
+
+
+    <script>
+        $(function () {
+            initPackageReadinessPage();
+        });
+    </script>
+
+}

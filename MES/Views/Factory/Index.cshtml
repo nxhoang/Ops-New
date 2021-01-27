@@ -1,0 +1,358 @@
+﻿@{
+    ViewBag.Title = "Factory Line Setup";
+    Layout = "~/Views/Shared/_MesLayout.cshtml";
+}
+<script src="~/js/common/SmSgManager.js"></script>
+<script src="~/Assets/ops-layout/js/mes.common.js"></script>
+<script src="~/js/Entities/JsEntity.js"></script>
+<script src="~/Assets/factory-visualizer/js/fac.pre-define.min.js?v=1.4"></script>
+
+<section id="widget-grid">
+    <article class="row">
+        <div class="jarviswidget jarviswidget-color-blueLight" id="wid-grids" data-widget-editbutton="false">
+            <header>
+                <h2><strong></strong></h2>
+            </header>
+            <!-- widget div-->
+            <div>
+                <!-- widget content -->
+                <div class="widget-body">
+                    <div class="row">
+                        <div class="col-lg-7"></div>
+                        <div class="col-lg-3">
+                            <label class="control-label" style="float: right" for="selCorporation">Corporation </label>
+                        </div>
+                        <div class="col-lg-2">
+                            <select id="selCorporation"></select>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-lg-7">
+                            <table id="tbFactory"></table>
+                            <div id="tbFactoryPager"></div>
+                        </div>
+                        <div class="col-lg-5">
+                            <table id="tbMesLine"></table>
+                            <div id="tbMesLinePager"></div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-lg-7 fac-vs__row-btn--padding"></div>
+                        <div class="col-lg-5 fac-vs__row-btn--padding" id="divLineAction">
+                            <button class="btn btn-primary fac-vs__btn-add-line" title="Add Line" onclick="openCreatureLineModal()">
+                                <i class="glyphicon glyphicon-plus"></i> Add Line
+                            </button>
+                            <button class="btn btn-info fac-vs__btn-add-line" title="Update Line" onclick="updateLineModal()">
+                                <i class="glyphicon glyphicon-pencil"></i> Update Line
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <!-- end widget content -->
+            </div>
+            <!-- end widget div -->
+        </div>
+        <!-- end widget -->
+    </article>
+    <article class="row">
+        <div class="jarviswidget jarviswidget-color-blueLight" id="wid-fac-visualizer" data-widget-editbutton="false">
+            <header>
+                <h2><strong></strong></h2>
+            </header>
+            <!-- widget div-->
+            <div>
+                <!-- widget content -->
+                <div class="widget-body" style="height: 100%">
+                    <div class="fac-line-setup" style="height: 100%">
+                        <div style="display: none" class="fac-vs__border-color fac-vs__worker" id="facWorkerDiv"></div>
+                        <div class="fac-vs__border-color fac-vs__diagram" style="height: 100%; min-height: 900px" id="facDiagramDiv"></div>
+                    </div>
+                    <div class="row" id="divNav">
+                        <button type="button" id="btnShowCrTableModal" class="btn btn-primary" data-toggle="modal"
+                                onclick="showTableFormModal()">
+                            Create Table
+                        </button>
+                        <button type="button" class="btn btn-warning" data-toggle="modal" id="btnDelTable">
+                            Delete Table
+                        </button>
+                        <button type="button" class="btn btn-success" id="btnAddSeat">
+                            Add Seat
+                        </button>
+                        <button type="button" class="btn btn-danger" id="btnRemoveSeat">
+                            Remove Seat
+                        </button>
+                        <button type="button" id="btnSaveChanges" style="float: right" class="btn btn-primary"
+                                disabled="disabled" data-toggle="modal">
+                            Save Changes
+                        </button>
+                    </div>
+                </div>
+                <!-- end widget content -->
+            </div>
+            <!-- end widget div -->
+        </div>
+        <!-- end widget -->
+    </article>
+</section>
+
+<div class="modal fade" tabindex="-1" role="dialog" id="modalTable">
+    <div class="modal-dialog modal-lg" role="document">
+        <form id="tableForm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title" id="titleTableModal"></h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group row fac-vs__row--padding-left">
+                        <div class="col-lg-2">
+                            <label class="control-label" for="txtSeletedLine">
+                                Line<span class="fac-vs__required-label">*</span>
+                            </label>
+                        </div>
+                        <div class="col-lg-3">
+                            <input class="form-control" id="txtSeletedLine" readonly="readonly" />
+                            <div id="divSelectedLine">
+                                <select id="selLine"></select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row fac-vs__row--padding-left">
+                        <label for="seatType">Seat Type<span class="fac-vs__required-label">*</span></label>
+                        <div id="seatType">
+                            <div class="fac-vs__div--radio--inline">
+                                <input type="radio" id="rdTwoSidesTop" name="seatType" class="custom-control-input" value="1">
+                                <label class="custom-control-label" for="rdTwoSidesTop">
+                                    <img src="/Assets/factory-visualizer/images/seat-direction-top.PNG" alt="seating direction top">
+                                </label>
+                            </div>
+                            <div class="fac-vs__div--radio--inline">
+                                <input type="radio" id="rdTwoSidesBottom" name="seatType" class="custom-control-input" value="2">
+                                <label class="custom-control-label" for="rdTwoSidesBottom">
+                                    <img src="/Assets/factory-visualizer/images/seat-direction-bottom.PNG" alt="seating direction bottom">
+                                </label>
+                            </div>
+                            <div class="fac-vs__div--radio--inline">
+                                <input type="radio" id="rdOneSideTop" name="seatType" class="custom-control-input" value="3">
+                                <label class="custom-control-label" for="rdOneSideTop">
+                                    <img src="/Assets/factory-visualizer/images/seat-one-side-bottom.PNG" alt="seating one side top">
+                                </label>
+                            </div>
+                            <div class="fac-vs__div--radio--inline">
+                                <input type="radio" id="rdOneSideBottom" name="seatType" class="custom-control-input" value="4">
+                                <label class="custom-control-label" for="rdOneSideBottom">
+                                    <img src="/Assets/factory-visualizer/images/seat-one-side-top.PNG" alt="seating one side bottom">
+                                </label>
+                            </div>
+                            <div class="fac-vs__div--radio--inline">
+                                <input type="radio" id="rdOneSideTopOdd" name="seatType" class="custom-control-input" value="5">
+                                <label class="custom-control-label" for="rdOneSideTopOdd">
+                                    <img src="/Assets/factory-visualizer/images/seat-one-side-bottom-odd.PNG" alt="seating one side even top">
+                                </label>
+                            </div>
+                            <div class="fac-vs__div--radio--inline">
+                                <input type="radio" id="rdOneSideBottomOdd" name="seatType" class="custom-control-input" value="6">
+                                <label class="custom-control-label" for="rdOneSideBottomOdd">
+                                    <img src="/Assets/factory-visualizer/images/seat-one-side-top-odd.PNG" alt="seating one side odd bottom">
+                                </label>
+                            </div>
+                            <div class="fac-vs__div--radio--inline">
+                                <input type="radio" id="rdOneSideTopEven" name="seatType" class="custom-control-input" value="7">
+                                <label class="custom-control-label" for="rdOneSideTopEven">
+                                    <img src="/Assets/factory-visualizer/images/seat-one-side-bottom-even.PNG" alt="seating one side even top">
+                                </label>
+                            </div>
+                            <div class="fac-vs__div--radio--inline">
+                                <input type="radio" id="rdOneSideBottomEven" name="seatType" class="custom-control-input" value="8">
+                                <label class="custom-control-label" for="rdOneSideBottomEven">
+                                    <img src="/Assets/factory-visualizer/images/seat-one-side-top-even.PNG" alt="seating one side even bottom">
+                                </label>
+                            </div>
+                            <div class="fac-vs__div--radio--inline">
+                                <input type="radio" id="rdNinethSeatType" name="seatType" class="custom-control-input" value="9">
+                                <label class="custom-control-label" for="rdNinethSeatType">
+                                    <img src="/Assets/factory-visualizer/images/nineth.PNG" alt="Nineth seat type">
+                                </label>
+                            </div>
+                            <div class="fac-vs__div--radio--inline">
+                                <input type="radio" id="rdTenthSeatType" name="seatType" class="custom-control-input" value="10">
+                                <label class="custom-control-label" for="rdTenthSeatType">
+                                    <img src="/Assets/factory-visualizer/images/tenth.PNG" alt="Tenth seat type">
+                                </label>
+                            </div>
+                            <div class="fac-vs__div--radio--inline">
+                                <input type="radio" id="rdEleventhSeatType" name="seatType" class="custom-control-input" value="11">
+                                <label class="custom-control-label" for="rdEleventhSeatType">
+                                    <img src="/Assets/factory-visualizer/images/eleventh.PNG" alt="Eleventh seat type">
+                                </label>
+                            </div>
+                            <div class="fac-vs__div--radio--inline">
+                                <input type="radio" id="rdTwelvethSeatType" name="seatType" class="custom-control-input" value="12">
+                                <label class="custom-control-label" for="rdTwelvethSeatType">
+                                    <img src="/Assets/factory-visualizer/images/twelveth.PNG" alt="Twelveth seat type">
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col-lg-4">
+                            <label class="control-label" for="seatTotal">Seat Total</label>
+                            <input type="number" min="1" class="form-control fac-vs__required-border" id="seatTotal"
+                                   placeholder="Seat Total" onchange="validateNumber(this);" onkeyup="this.onchange();"
+                                   onpaste="this.onchange();" oninput="this.onchange()">
+                        </div>
+                        <div class="col-lg-4">
+                            <label for="divWidth">Width<span class="fac-vs__required-label">*</span></label>
+                            <div class="input-group" id="divWidth">
+                                <input type="number" min="1" class="form-control fac-vs__required-border" id="tableWidth"
+                                       placeholder="Width" aria-label="Width" onchange="validateNumber(this);"
+                                       onkeyup="this.onchange();" onpaste="this.onchange();" oninput="this.onchange()">
+                                <div class="input-group-addon">cm</div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <label for="divTableLength">Length<span class="fac-vs__required-label">*</span></label>
+                            <div class="input-group" id="divTableLength">
+                                <input type="number" min="1" class="form-control fac-vs__required-border" id="tableLength"
+                                       placeholder="Length" aria-label="Length" onchange="validateNumber(this);"
+                                       onkeyup="this.onchange();" onpaste="this.onchange();" oninput="this.onchange()">
+                                <div class="input-group-addon">cm</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row form-group" style="margin-bottom: 0">
+                        <div class="panel-group" id="accordionDisplay" role="tablist" aria-multiselectable="true">
+                            <div class="panel panel-default">
+                                <div class="panel-heading" role="tab" id="headingOne" style="padding: 5px 5px;">
+                                    <h4 class="panel-title">
+                                        <a id="aExpandField" role="button" data-toggle="collapse" data-parent="#accordionDisplay" href="#displayWidthLength"
+                                           aria-expanded="false" aria-controls="displayWidthLength" style="width: 100%" class="collapsed">
+                                            <span id="spExpandField" class="glyphicon glyphicon-chevron-right"></span>
+                                        </a>
+                                    </h4>
+                                </div>
+                                <div id="displayWidthLength" class="panel-collapse collapse" aria-expanded="false" role="tabpanel" aria-labelledby="headingOne">
+                                    <div class="panel-body">
+                                        <div class="col-lg-4">
+                                            <label for="divSeatDis">Seat Distance</label>
+                                            <div class="input-group" id="divSeatDis">
+                                                <input type="number" min="1" class="form-control fac-vs__required-border" id="seatDis"
+                                                       placeholder="Seat Distance" aria-label="Seat Distance" onchange="validateNumber(this);"
+                                                       onkeyup="this.onchange();" onpaste="this.onchange();" oninput="this.onchange()">
+                                                <div class="input-group-addon">pixel</div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-3">
+                                            <label for="divDisplayWidth">Display Width<span class="fac-vs__required-label">*</span></label>
+                                            <div class="input-group" id="divDisplayWidth">
+                                                <input type="number" min="1" class="form-control fac-vs__required-border" id="txtDisplayWidth"
+                                                       placeholder="Display Width" aria-label="Width" onchange="validateNumber(this);"
+                                                       onkeyup="this.onchange();" onpaste="this.onchange();" oninput="this.onchange()">
+                                                <div class="input-group-addon">pixel</div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-1">
+                                            <label for="btnCalTbWidth">&ensp;</label>
+                                            <div class="input-group">
+                                                <button type="button" id="btnCalTbWidth" class="fac-vs__btn--cal-width" onclick="calculateTableWidth()"
+                                                        title="Calculate width based on total seat, seat type and seat distance">
+                                                    <i class="glyphicon glyphicon-edit"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-4">
+                                            <label for="divDisplayLength">Display Length<span class="fac-vs__required-label">*</span></label>
+                                            <div class="input-group" id="divDisplayLength">
+                                                <input type="number" min="1" class="form-control fac-vs__required-border" id="txtDisplayLength"
+                                                       placeholder="Display Length" aria-label="Length" onchange="validateNumber(this);"
+                                                       onkeyup="this.onchange();" onpaste="this.onchange();" oninput="this.onchange()">
+                                                <div class="input-group-addon">pixel</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary" id="btnSubmitFormTable">Create</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </form>
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<div class="modal fade" tabindex="-1" role="dialog" id="createLineModal">
+    <div class="modal-dialog modal-lg" role="document">
+        <form id="lineCreatureForm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title" id="titleModalLine"></h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <table id="tbAmtopLine"></table>
+                            <div id="tbAmtopLinePager"></div>
+                        </div>
+                        <div class="col-lg-6 form-group">
+                            <div class="row fac-vs__row--padding">
+                                <label for="txtLineName" class="col-sm-3">Amtop Line</label>
+                                <div class="col-sm-9">
+                                    <input type="text" id="txtAmtopLine" name="AmtopLine" readonly="readonly" maxlength="255"
+                                           class="fac-vs__line-form--input">
+                                </div>
+                            </div>
+                            <div class="row fac-vs__row--padding">
+                                <label for="txtLineName" class="col-sm-3">Actual Line</label>
+                                <div class="col-sm-9">
+                                    <input type="text" id="txtLineName" name="LineName" maxlength="255" required="required"
+                                           class="fac-vs__line-form--input">
+                                </div>
+                            </div>
+                            <div class="row fac-vs__row--padding">
+                                <label for="txtLineName" class="col-sm-3">Workers</label>
+                                <div class="col-sm-9">
+                                    <input type="number" id="txtWorkerNo" name="Number Workers" min="0" max="9999999999" required="required"
+                                           class="fac-vs__line-form--input">
+                                </div>
+                            </div>
+                            <div class="row fac-vs__row--padding">
+                                <label for="bgLineColor" class="col-sm-3">Background Color</label>
+                                <div class="col-sm-9">
+                                    <input type="color" id="bgLineColor" name="BackgroundColor" required="required"
+                                           style="height: 35px; width: 55px;" value="#deb887">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary" id="btnSubmitLine">Save</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </form>
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+@section scripts{
+    <script src="~/Assets/factory-visualizer/js/fac-vs-go.js"></script>
+    <script src="~/js/plugin/jqgrid/jquery.jqGrid.min.js"></script>
+    <script src="~/js/plugin/jqgrid/grid.locale-en.min.js"></script>
+    <script src="~/Assets/bootstrap-multiselect/bootstrap-multiselect.js"></script>
+    <link href="~/Assets/bootstrap-multiselect/bootstrap-multiselect.css" rel="stylesheet" />
+    <script src="~/Assets/jquery.blockUI/jquery.blockUI.js"></script>
+    <link href="~/Assets/factory-visualizer/css/factory-visualizer.min.css" rel="stylesheet" />
+    <script src="~/Assets/factory-visualizer/js/seating-chart.min.js?v=1.4"></script>
+    <script src="~/Assets/factory-visualizer/js/factory-visualizer.js?v=1.4"></script>
+}

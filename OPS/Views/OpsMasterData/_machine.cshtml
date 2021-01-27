@@ -1,0 +1,135 @@
+﻿<link href="~/css/ops/pages/Linking.css" rel="stylesheet" />
+<link href="~/css/ops/pages/gridCommon.css" rel="stylesheet" />
+<style>
+    .DataTD input.FormElement, .DataTD select.FormElement {
+        height: 29px;
+    }
+
+    .select2-dropdown {
+        z-index: 100000;
+    }
+
+    /*START ADD: HA*/
+    div.msgBox {
+        z-index: 100001 !important;
+    }
+    /*END ADD: HA*/
+
+    #Cost, #Unit {
+        width: 119px !important;
+    }
+
+    td > span.select2 {
+        width: 300px !important;
+    }
+
+    /*group level 0 and machine group*/
+    #GroupLevel_0, #MachineGroup {
+        width: 145px !important;
+    }
+
+    #MachineGroup {
+        margin-left: 10px;
+    }
+    /*/group level 0 and machine group*/
+
+    .error {
+        border: 1px solid red !important;
+    }
+
+    @@media screen and (max-width: 1100px) {
+        #Cost, #Unit {
+            width: 45px !important;
+        }
+
+        td > span.select2 {
+            width: 150px !important;
+        }
+
+        .DataTD input.FormElement, .DataTD select.FormElement {
+            width: 150px !important;
+        }
+
+        textarea.FormElement {
+            width: 387px !important;
+        }
+
+        .imgMachine {
+            width: 150px;
+        }
+    }
+
+    @@media screen and (max-width: 700px) {
+        #editmodMachineGrid {
+            width: 470px !important;
+        }
+
+        .body-dialog-jq {
+            width: 768px !important;
+        }
+    }
+
+    @@media screen and (max-width: 600px) {
+        #editmodMachineGrid {
+            width: 370px !important;
+        }
+
+        .body-dialog-jq {
+            width: 768px !important;
+        }
+    }
+</style>
+<div class="space-2" style="clear:both"></div>
+<div class="row">
+    <div class="col-lg-1">
+        <h4 class="category">Category</h4>
+    </div>
+    <div class="col-lg-4">
+        <div id="cbCategory" style="width:300px">
+            <select id='cbCategId' name="cbCategId" data-placeholder="Select category"></select>
+        </div>
+    </div>
+</div>
+<div class="space-2" style="clear:both"></div>
+
+<div class="row">
+    <div class="col-sm-12">
+        <table id='MachineGrid'></table>
+        <div id='MachineGrid_Nav' style='text-align:center; margin:0; padding:0;'></div>
+    </div>
+</div>
+
+<div style="display:none" id="cbBuyer">
+    <select id='cbBuyerId' name="cbBuyerId"></select>
+</div>
+<div style="display:none" id="cbSuppliers">
+    <select id='cbSosId' name="cbSosId"></select>
+</div>
+<div style="display:none" id="cbUnit">
+    <select id='cbUnitId' name="cbUnitId"></select>
+</div>
+<div style="display:none" id="cbBrand">
+    <select id='cbBrandId' name="cbBrandId"></select>
+</div>
+<!--START ADD - SON) 28/Feb/2020-->
+<div style="display:none" id="drpProcess">
+    <select id='drpProcessCode' name="drpProcessCode"></select>
+</div>
+<!--END ADD - SON) 28/Feb/2020-->
+<!--START ADD - SON) 8/Oct/2020-->
+<div style="display:none" id="divOpGroup">
+    <select id='drpOpGroup' name="drpOpGroup"></select>
+</div>
+
+<div style="display:none" id="divMachineGroup">
+    <select id='drpMachineGroup' name="drpMachineGroup"></select>
+</div>
+
+<div style="display:none" id="drpOpDetail">
+    <select id='drpOpDetail' name="drpOpDetail"></select>
+</div>
+
+<div style="display:none" id="drpOpSubGroup">
+    <select id='drpOpSubGroup' name="drpOpSubGroup"></select>
+</div>
+<!--END ADD - SON) 8/Oct/2020-->

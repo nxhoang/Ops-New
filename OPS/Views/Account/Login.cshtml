@@ -1,0 +1,142 @@
+﻿@model OPS_DAL.Entities.Usmt
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <title>OPS Login</title>
+    <link href="~/css/bootstrap/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/css/ops/pages/login.css" rel="stylesheet" />
+
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            min-height: 100%;
+        }
+
+        .gradient {
+            background: rgb(201,222,150); /* Old browsers */
+            background: -moz-linear-gradient(top, rgba(201,222,150,1) 0%, rgba(138,182,107,1) 44%, rgba(57,130,53,1) 100%); /* FF3.6-15 */
+            background: -webkit-linear-gradient(top, rgba(201,222,150,1) 0%,rgba(138,182,107,1) 44%,rgba(57,130,53,1) 100%); /* Chrome10-25,Safari5.1-6 */
+            background: linear-gradient(to bottom, rgba(201,222,150,1) 0%,rgba(138,182,107,1) 44%,rgba(57,130,53,1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+            filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#c9de96', endColorstr='#398235',GradientType=0 ); /* IE6-9 */
+        }
+        .login-background {
+            /* background-image: linear-gradient(60deg, #3d3393 0%, #2b76b9 37%, #2cacd1 65%, #35eb93 100%);*/
+            /*            background-image: linear-gradient(60deg, #83c2ca 0%, #4f9c9c 37%, #83b3c1 65%, #39af99 100%);*/
+            background-image: linear-gradient(60deg, #0c828a94 0%, #6cc7ef 37%, #3ba2d6 65%, #93daff 100%);
+        }
+
+        .login-title {
+            color: white;
+            font-weight: bold;
+        }
+
+        .btn-sign-in{
+            color: #fff;
+            background-color:#24a9bb;
+            border-color:#357ebd;
+        }
+    </style>
+</head>
+
+<body class="login-background">
+
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-6 col-md-4 col-md-offset-4">
+                <!--
+                <h1 class="text-center login-title login-title">OPS LOGIN</h1> -->
+                <div style="height:100px;">
+                </div>
+                <div class="account-wall">
+                    <img class="profile-img" src="~/img/loginUser.png" alt="">
+                    @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { role = "form", @class = "form-signin" }))
+                    {
+                        @Html.AntiForgeryToken()
+
+                        if (@ViewBag.Message != null)
+                        {
+                            <div id="popupdiv" style="border: 1px solid red;color:red; display: none;">
+                                @ViewBag.Message
+                            </div>
+                        }
+
+                        @Html.TextBoxFor(m => m.UserName, new { @class = "form-control", placeholder = "User name", onkeydown = " if (event.keyCode == 13){ LoadRoleList();}" })
+                        @Html.ValidationMessageFor(m => m.UserName, "", new { @class = "text-danger" })
+                        <div style="height:5px;"></div>
+                        <select id="RoleID" name="RoleID" class="form-control">
+                            <option></option>
+                        </select>
+                        <div style="height:5px;"></div>
+                        @Html.PasswordFor(m => m.Password, new { @class = "form-control", placeholder = "Password" })
+                        @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
+
+                        <button class="btn btn-lg btn-primary btn-block btn-sign-in" type="submit">
+                            Sign in
+                        </button>
+                        <div style="padding-left:20px;">
+                            <label class="checkbox pull-left">
+                                @Html.CheckBoxFor(m => m.RememberMe) Remember Me
+                            </label>
+                            <a href="http://203.113.146.146:775/Func/Article/?prjid=1&mnid=21&art=16" class="pull-right need-help">Need help? </a><span class="clearfix"></span>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="~/js/plugins/jquery/jquery.min.js"></script>
+
+    <script type="text/javascript">
+
+       $(document).ready(function () {
+            var userid = $('#UserName').val();
+            if (userid) {
+               LoadRoleList();
+            }
+            $('#UserName').change(function () {
+                LoadRoleList();
+            });
+
+            if ($('#popupdiv').html() != '') {
+                $("#popupdiv").show();
+            }
+            if (!$.isEmptyObject(userid)) {
+                var RoleID = "@Model.RoleID";
+                var RememberMe = '@Model.RememberMe';
+                if (!$.isEmptyObject(RoleID)) {
+                    $("#RoleID").val(RoleID).change();
+                }
+                if (RememberMe === "True") {
+                    $('#RememberMe').prop('checked', true);
+                }
+            }
+        });
+
+       function LoadRoleList() {
+           var userID = $('#UserName').val();
+               $.ajaxSetup({ async: false });
+               var xhr = $.post('/Account/GetListRole?userID=' + userID)
+                   .success(function (data) {
+                       var innerHtml = '';
+                       data.forEach(function (c) {
+                           innerHtml = innerHtml.concat('<option value="' + c.ROLEID + '">' + c.ROLEID + '-' + c.ROLEDESC + '</option>');
+                       });
+                       $('#RoleID').html(innerHtml);
+                   })
+                   .error(function (ex) {
+                       return ex;
+                   })
+               return false;
+        }
+    </script>
+</body>
+
+</html>

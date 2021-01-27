@@ -1,0 +1,548 @@
+﻿
+@{
+	ViewBag.Title = "QCO Changeover Map";
+	Layout = "~/Views/Shared/_MesLayout.cshtml";
+}
+
+<style>
+	.icon-up {
+		position: relative;
+		top: -8px;
+		color: green;
+		font-size: 13px;
+		display: inline-block;
+	}
+
+	.icon-down {
+		position: relative;
+		top: 8px;
+		color: red;
+		display: inline-block;
+		font-size: 13px;
+	}
+
+	.ThreeWeekQCOSearchingApp md-tab-item {
+		min-width: 72px;
+	}
+
+	table.IsHidden {
+		display: none;
+	}
+</style>
+
+<h2>QCO Changeover Map</h2>
+
+<section id="widget-grid">
+	<div class="row">
+		<article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+			<div class="jarviswidget jarviswidget-sortable" id="wid-id-11" data-widget-colorbutton="false" data-widget-editbutton="false" data-widget-togglebutton="false" data-widget-deletebutton="false" data-widget-fullscreenbutton="true" data-widget-custombutton="false" role="widget">
+				<!-- widget options:
+					usage: <div class="jarviswidget" id="wid-id-0" data-widget-editbutton="false">
+					data-widget-colorbutton="false"
+					data-widget-editbutton="false"
+					data-widget-togglebutton="false"
+					data-widget-deletebutton="false"
+					data-widget-fullscreenbutton="false"
+					data-widget-custombutton="false"
+					data-widget-collapsed="true"
+					data-widget-sortable="false"
+				-->
+				<header role="heading" class="ui-sortable-handle">
+					<h2><strong></strong> <i></i></h2>
+
+
+
+					<span class="jarviswidget-loader"><i class="fa fa-refresh fa-spin"></i></span>
+				</header>
+
+				<!-- widget div-->
+				<div role="content">
+					<!-- widget edit box -->
+					<div class="jarviswidget-editbox">
+						<!-- This area used as dropdown edit box -->
+					</div>
+					<!-- end widget edit box -->
+					<!-- widget content -->
+					<div class="widget-body no-padding">
+
+						<!-- widget body text-->
+						<div ng-app="ThreeWeekQCOSearchingApp" ng-controller="ThreeWeekQCOSearching">
+							<!--Seaching Criteria-->
+							<div class="row">
+								<div class="col-lg-2">
+									<div class="form-group">
+										<label class="">Factory</label>
+										<select ng-model="QCOFactory" required="" class="form-control">
+											<option value="">--Choose Factory--</option>
+											<option ng-repeat="item in FactoryList" value="{{item.Factory}}">[{{item.Factory}}] {{item.Name}}</option>
+										</select>
+									</div>
+								</div>
+
+								<div class="col-lg-2">
+									<label>QCO Year</label>
+									<select ng-model="QCOYear" required="" class="form-control"
+											ng-options="item.year as item.year for item in Years">
+										<option value="">--Choose Year--</option>
+										<!--option ng-repeat="item in Years" >{{item.year}}</!option-->
+									</select>
+								</div>
+
+								<div class="col-lg-2">
+									<label>QCO Week</label>
+									<select ng-model="QCOWeekNo" required="" class="form-control">
+										<option value="">--Choose Week--</option>
+										<option ng-repeat="item in Weeks">{{item.week}}</option>
+									</select>
+								</div>
+
+								<div class="col-lg-2">
+									<label>Number of Packages</label>
+									<select ng-model="TopRecords" required="" class="form-control">
+										<option>10</option>
+										<option>20</option>
+										<option>30</option>
+										<option>40</option>
+										<option>50</option>
+									</select>
+								</div>
+
+								<div class="col-lg-1">
+									<label></label>
+									<button class="btn btn-success btn-block" ng-click="LoadChart()">Show Chart</button>
+								</div>
+							</div>
+
+							<ul id="internal-tab-1" class="nav nav-tabs tabs-pull-right">
+								<li class="">
+									<a href="#is2" data-toggle="tab" aria-expanded="true">By Gridview</a>
+								</li>
+								<li class="active">
+									<a href="#is1" data-toggle="tab" aria-expanded="true">By Chart</a>
+								</li>
+							</ul>
+
+							<div class="tab-content padding-10">
+								<div class="tab-pane active in" id="is1">
+									<div class="row">
+										<div class="col-lg-12">
+											<canvas id="base" class="chart-horizontal-bar"
+													chart-data="data"
+													chart-labels="series" chart-series="labels"
+													chart-click="onClick"
+													chart-options="options">
+											</canvas>
+
+										</div>
+									</div> 
+								</div>
+
+								<div class="tab-pane fade" id="is2">
+									<div class="row">
+										<div class="col-lg-2"></div>
+										<div class="col-lg-8">
+											<table class="table table-striped table-hover" ng-class="{'ng-hide': rawData.length==0}">
+												<thead class="">
+													<tr>
+														<td style="width:40%;font-weight: bold; font-size:large; background-color: yellow;">Production Package</td>
+														<td style="width:20%; font-weight:bold; font-size:large; background-color: yellow;" ng-repeat="label in labels">Ranking in {{label}}</td>
+													</tr>
+												</thead>
+												<tbody>
+													<tr ng-repeat="data in rawData">
+														<td>
+															<span style="font-size:16px; font-weight:bold;">{{data[0]}}</span>
+														</td>
+														<td>
+															<span style="font-size:18px; font-weight:bold;">{{data[1]}}</span>
+														</td>
+														<td>
+															<div ng-if="parseFloat(data[1]) ==0 ">
+																<span style="color:red; font-size:18px; font-weight:bold;">{{data[2]}}</span>
+																<div class="icon-down">
+																	<i class="fas fa-arrow-down"></i>
+																	<label>({{data[3]}})</label>
+																</div>
+															</div>
+
+															<div ng-if="parseFloat(data[1]) >0 ">
+																<div ng-if="parseFloat(data[1]) >= parseFloat(data[2])">
+																	<span style="color:green; font-size:18px; font-weight:bold;">{{data[2]}}</span>
+																	<div class="icon-up">
+																		<i class="fas fa-arrow-up "></i>
+																		<label>({{data[3]}})</label>
+																	</div>
+																</div>
+																<div ng-if="parseFloat(data[1]) < parseFloat(data[2]) ">
+																	<span style="color:red; font-size:18px; font-weight:bold;">{{data[2]}}</span>
+																	<div class="icon-down">
+																		<i class="fas fa-arrow-down "></i>
+																		<label>({{data[3]}})</label>
+																	</div>
+																</div>
+															</div>
+
+															<div ng-if="parseFloat(data[1]) < 0 ">
+																<div ng-if="(parseFloat(data[1]) <= parseFloat(data[2]))">
+																	<span style="color:green; font-size:18px; font-weight:bold;">{{data[2]}}</span>
+																	<div class="icon-up">
+																		<i class="fas fa-arrow-up "></i>
+																		<label>({{data[3]}})</label>
+																	</div>
+																</div>
+																<div ng-if="(parseFloat(data[1]) > parseFloat(data[2])) ">
+																	<span style="color:red; font-size:18px; font-weight:bold;">{{data[2]}}</span>
+																	<div class="icon-down">
+																		<i class="fas fa-arrow-down "></i>
+																		<label>({{data[3]}})</label>
+																	</div>
+																</div>
+															</div>
+														</td>
+
+														<td>
+															<div ng-if="parseFloat(data[2]) == 0 ">
+																<span style="color:red; font-size:18px; font-weight:bold;">{{data[4]}}</span>
+																<div class="icon-down">
+																	<i class="fas fa-arrow-down "></i>
+																	<label>({{data[5]}})</label>
+																</div>
+															</div>
+
+															<div ng-if="parseFloat(data[2]) > 0 ">
+																<div ng-if="parseFloat(data[2]) >= parseFloat(data[4]) ">
+																	<span style="color:green; font-size:18px; font-weight:bold;">{{data[4]}}</span>
+																	<div class="icon-up">
+																		<i class="fas fa-arrow-up "></i>
+																		<label>({{data[5]}})</label>
+																	</div>
+																</div>
+
+																<div ng-if="parseFloat(data[2]) < parseFloat(data[4])  ">
+																	<span style="color:red; font-size:18px; font-weight:bold;">{{data[4]}}</span>
+																	<div class="icon-down">
+																		<i class="fas fa-arrow-down "></i>
+																		<label>({{data[5]}})</label>
+																	</div>
+																</div>
+															</div>
+
+															<div ng-if="parseFloat(data[2]) < 0 ">
+																<div ng-if="(parseFloat(data[2]) <= parseFloat(data[4])) ">
+																	<span style="color:green; font-size:18px; font-weight:bold;">{{data[4]}}</span>
+																	<div class="icon-up">
+																		<i class="fas fa-arrow-up "></i>
+																		<label>({{data[5]}})</label>
+																	</div>
+																</div>
+
+																<div ng-if="(parseFloat(data[2]) > parseFloat(data[4]))  ">
+																	<span style="color:red; font-size:18px; font-weight:bold;">{{data[4]}}</span>
+																	<div class="icon-down">
+																		<i class="fas fa-arrow-down "></i>
+																		<label>({{data[5]}})</label>
+																	</div>
+																</div>
+															</div>
+														</td>
+													</tr>
+												</tbody>
+
+											</table>
+										</div>
+										<div class="col-lg-2"></div>
+									</div> 
+								</div> 
+							</div> 
+						</div>
+
+						<!-- end widget body text-->
+						<!-- widget footer -- >
+						<div class="widget-footer text-right">
+							<span class="onoffswitch-title">
+								<i class="fa fa-check"></i> Show Tabs
+							</span>
+							<span class="onoffswitch">
+								<input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="show-tabs" checked="checked">
+								<label class="onoffswitch-label" for="show-tabs">
+									<span class="onoffswitch-inner" data-swchon-text="True" data-swchoff-text="NO"></span>
+									<span class="onoffswitch-switch"></span>
+								</label>
+							</span>
+						</div>
+						< !-- end widget footer -->
+					</div>
+					<!-- end widget content -->
+				</div>
+				<!-- end widget div -->
+			</div>
+		</article>
+	</div>
+</section>
+
+
+
+
+
+
+@section Scripts{
+	<script src="~/Assets/chartjs/Chart.min.js"></script>
+	<script src="~/Assets/chartjs/chartjs-plugin-datalabels.min.js"></script>
+
+	@*<script src="~/js/angular/angular.min.js"></script>
+		<script src="~/js/angular/angular-ui.min. js"></script>
+		<script src="~/js/angular/angular-ui-router.min.js"></script>
+		<script src="~/js/angular/angular-resource.min.js"></script>*@
+
+	<script src="~/Assets/Angular-1.7.2/JS/angular.min.js"></script>
+	<script src="~/Assets/Angular-1.7.2/JS/angular-animate.min.js"></script>
+	<script src="~/Assets/Angular-1.7.2/JS/angular-aria.min.js"></script>
+	<script src="~/Assets/Angular-1.7.2/JS/angular-messages.min.js"></script>
+
+	<script src="~/Assets/Angular-1.7.2/JS/angular-material.min.js"></script>
+
+	<script src="~/Assets/angular-chart.js/angular-chart.min.js"></script>
+
+	<script>
+		//Chart.defaults.horizontalBar.borderWidth = 0.1;
+
+		var ThreeWeekQCOSearchingApp = angular.module('ThreeWeekQCOSearchingApp', ['chart.js']);
+
+		ThreeWeekQCOSearchingApp.controller('ThreeWeekQCOSearching', function ($scope, $http) {
+			let currentYear = new Date().getFullYear();
+
+			//Default Value
+			$scope.QCOYear = 0;
+
+			$scope.FactoryList = [];
+			$scope.Weeks = [];
+			$scope.Years = [];
+			$scope.rawData = [];
+
+			//Bind the Factory List
+			$http({
+				method: 'POST',
+				url: '../QCO/GetFactoryList'
+			}).then(function successCallback(SuccResponse) {
+				// this callback will be called asynchronously
+				// when the response is available
+				//console.log(SuccResponse);
+				$scope.FactoryList = SuccResponse.data;
+
+			}, function errorCallback(ErrResponse) {
+				// called asynchronously if an error occurs
+				// or server returns response with an error status.
+				//console.log(ErrResponse);
+			});
+
+			//Bind Weeks
+			for (let i = 1; i < 53; i++) {
+				let strWeek = '';
+				strWeek = i < 10 ? '0' + i : '' + i;
+				$scope.Weeks.push({ week: 'W' + strWeek });
+			}
+
+			//Bind Year
+			for (let i = currentYear - 1; i < (currentYear + 5); i++) {
+				$scope.Years.push({ year: i, selected: (i == currentYear ? 'selected' : '') });
+			}
+
+			$scope.QCOYear = currentYear;
+
+			//console.log($scope.FactoryList);
+			//console.log($scope.Weeks);
+			//console.log($scope.Years);
+
+			$scope.labels = [];
+			//$scope.series = ['Series A', 'Series B'];
+			$scope.data = [];
+
+			//Sample Angular-chart (Line)
+			$scope.labels = [];
+			$scope.series = [];
+			$scope.data = [];
+
+			$scope.parseFloat = parseFloat;
+
+			$scope.onClick = function (points, evt) {
+				//console.log(points, evt);
+			};
+
+
+			$scope.datasetOverride = [{ yAxisID: 'y-axis-1' }, { yAxisID: 'y-axis-2' }];
+			$scope.options = {
+				tooltips: {
+					enabled: false
+					, custom: async function (tooltipModel) {
+						console.log(tooltipModel);
+
+						// Tooltip Element
+						var tooltipEl = document.getElementById('chartjs-tooltip');
+
+						// Create element on first render
+						if (!tooltipEl) {
+							tooltipEl = document.createElement('div');
+							tooltipEl.id = 'chartjs-tooltip';
+							tooltipEl.innerHTML = '<div></div>';
+							document.body.appendChild(tooltipEl);
+						}
+
+						// Hide if no tooltip
+						if (tooltipModel.opacity === 0) {
+							tooltipEl.style.opacity = 0;
+							return;
+						}
+
+						// Set caret Position
+						tooltipEl.classList.remove('above', 'below', 'no-transform');
+						if (tooltipModel.yAlign) {
+							tooltipEl.classList.add(tooltipModel.yAlign);
+						} else {
+							tooltipEl.classList.add('no-transform');
+						}
+
+
+						//function getBody(bodyItem) {
+						//	return bodyItem.lines;
+						//}
+
+						//// Set Text
+						//if (tooltipModel.body) {
+
+						var titleLines = tooltipModel.title || [];
+						//	var bodyLines = tooltipModel.body.map(getBody);
+
+						var ajaxcontent = "";
+						await $.ajax({
+							url: '/QCO/POPStyleSummary/?PRDPKG=' + titleLines[0] // Use href attribute as URL
+							, async: true
+						}).then(function (content) {
+							// Set the tooltip content upon successful retrieval
+							ajaxcontent = content;
+						}, function (xhr, status, error) {
+							// Upon failure... set the tooltip content to error
+							ajaxcontent = content;
+						});
+
+						//	var innerHtml = '<thead>';
+						//	titleLines.forEach(function (title) {
+						//		innerHtml += '<tr><th>' + title + '</th></tr>';
+						//	});
+						//	innerHtml += '</thead><tbody>';
+						//	//bodyLines.forEach(function (body, i) {
+						//	//	var colors = tooltipModel.labelColors[i];
+						//	//	var style = 'background:' + colors.backgroundColor;
+						//	//	style += '; border-color:' + colors.borderColor;
+						//	//	style += '; border-width: 2px';
+						//	//	var span = '<span style="' + style + '"></span>';
+						//	//	innerHtml += '<tr><td>' + span + body + '</td></tr>';
+						//	//});
+						//	innerHtml += '<tr><td>' + ajaxcontent + '</td></tr>';
+						//	innerHtml += '</tbody>';
+						//	var tableRoot = tooltipEl.querySelector('table');
+						//	tableRoot.innerHTML = innerHtml;
+						//}
+
+
+						tooltipEl.innerHTML = ajaxcontent;
+
+						// `this` will be the overall tooltip
+						var position = this._chart.canvas.getBoundingClientRect();
+
+						// Display, position, and set styles for font
+						tooltipEl.style.opacity = 1;
+						tooltipEl.style.position = 'absolute';
+						tooltipEl.style.left = position.left + window.pageXOffset + tooltipModel.caretX + 'px';
+						tooltipEl.style.top = position.top + window.pageYOffset + tooltipModel.caretY + 'px';
+						tooltipEl.style.fontFamily = tooltipModel._bodyFontFamily;
+						tooltipEl.style.fontSize = tooltipModel.bodyFontSize + 'px';
+						tooltipEl.style.fontStyle = tooltipModel._bodyFontStyle;
+						tooltipEl.style.padding = tooltipModel.yPadding + 'px ' + tooltipModel.xPadding + 'px';
+						tooltipEl.style.pointerEvents = 'none';
+						tooltipEl.style.background = 'white';
+						tooltipEl.style.border = '3px solid rgb(169, 3, 41)';
+						tooltipEl.style.borderRadius = '5px';
+					}
+				}
+				//, scales: {
+				//	xAxes: [{
+				//		barPercentage: 0.5
+				//	}]
+				//	, yAxes: [{
+				//		barPercentage: 0.1
+				//	}]
+				//}
+
+				//, scales: {
+				//	yAxes: [
+				//		{
+				//			id: 'y-axis-1',
+				//			type: 'linear',
+				//			display: true,
+				//			position: 'left'
+				//		},
+				//		{
+				//			id: 'y-axis-2',
+				//			type: 'linear',
+				//			display: true,
+				//			position: 'right'
+				//		}
+				//	]
+				//}
+			};
+
+			$scope.LoadChart = function () {
+				$http.post(
+					'../QCO/LoadThreeWeekChart',
+					JSON.stringify({
+						pFactory: $scope.QCOFactory
+						, pYear: $scope.QCOYear
+						, pWeekNo: $scope.QCOWeekNo
+						, pTopRecords: $scope.TopRecords
+					})
+				).then(function successCallback(SuccResponse) {
+					// this callback will be called asynchronously
+					// when the response is available
+					console.log(SuccResponse);
+
+					let mydata = SuccResponse.data;
+
+					$scope.rawData = mydata.rawData;
+
+					$scope.labels = [];
+					$scope.labels = mydata.labels;
+
+					$scope.series = [];
+					$scope.series = mydata.series;
+
+					$scope.data = [];
+
+					//for (var i = 0; i < mydata.series.length; i++) {
+					//	//let temparr = [];
+					//	//temparr.push(mydata.data1[i]);
+					//	//temparr.push(mydata.data2[i]);
+					//	//temparr.push(mydata.data3[i]);
+					//	//$scope.data.push(temparr);
+					//}
+
+					$scope.data.push(mydata.data3);
+					$scope.data.push(mydata.data2);
+					$scope.data.push(mydata.data1);
+
+					console.log($scope.data);
+
+				}, function errorCallback(ErrResponse) {
+					// called asynchronously if an error occurs
+					// or server returns response with an error status.
+					//console.log(ErrResponse);
+
+				});
+			};
+
+
+		});
+
+
+
+	</script>
+}

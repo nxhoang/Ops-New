@@ -1,0 +1,510 @@
+﻿
+
+
+@{
+    ViewBag.Title = "MES - Layout dashboard";
+    Layout = "~/Views/Shared/_MesLayout.cshtml";
+}
+
+<link href="~/assets/DayRangePicker/daterangepicker.min.css" rel="stylesheet" />
+
+<style>
+    #container {
+        background-color: #edf2f6;
+    }
+
+    #stage-parent {
+        width: 100%;
+    }
+
+    body .jqgfirstrow td {
+        padding: 0 0 !important;
+    }
+
+
+    /****/
+    .qtip-wiki {
+        max-width: calc(45%);
+        min-width: calc(33%);
+        width: calc(45%);
+        font-size: 15px;
+        color: black;
+    }
+
+        .qtip-wiki label {
+            font-weight: bold;
+        }
+
+        .qtip-wiki p {
+            margin: 0 0 6px;
+        }
+
+        .qtip-wiki h1 {
+            font-size: 20px;
+            line-height: 1.1;
+            margin: 0 0 5px;
+        }
+
+        .qtip-wiki img {
+            float: left;
+            margin: 10px 10px 10px 0;
+        }
+
+        .qtip-wiki .info {
+            overflow: hidden;
+        }
+
+        .qtip-wiki p.note {
+            font-weight: 700;
+        }
+
+
+</style>
+
+@*<h2>MES Package Process Summary</h2>*@
+
+<div class="row">
+    <div class="col-xs-2">
+        <div class="form-group">
+            <select class="form-control" id="Factory" name="Factory" required="" data-binding="FactoryList">
+                <option>--Factory--</option>
+            </select>
+        </div>
+    </div>
+    <div class="col-xs-2">
+        <div class="form-group">
+            <input class="form-control" id="StartDate" name="StartDate" required="" />
+        </div>
+    </div>
+    @*<div class="col-xs-2">
+            <div class="form-group">
+                <select class="form-control" id="MXPackage" name="MXPackage" required="">
+                    <option>--MES Package--</option>
+                </select>
+            </div>
+        </div>*@
+    <div class="col-xs-2">
+        <div class="form-group">
+            <select class="form-control" id="ViewType" required="">
+                <option value="WoArrow" selected="selected">Without flow</option>
+                <option value="WArrow">Show flow</option>
+                <option value="Gant">Gantt chart</option>
+            </select>
+        </div>
+    </div>
+    <div class="col-xs-2">
+        <div class="form-group">
+            <select class="form-control" id="SortingPara" name="SortingPara" required="">
+                <option value="OPSERIAL" selected="">Order By OPSERIAL</option>
+                <option value="OPNUM">Order By OPNUM</option>
+            </select>
+        </div>
+    </div>
+</div>
+
+<br />
+<br />
+
+<div class="row">
+    <div class="col-xs-12">
+        <table id="MESPPList" class="has-qtip"></table>  
+        <div id="MESPPListPager"></div>
+    </div>
+</div>
+
+
+
+<!-- widget grid -->
+<section id="widget-grid" class="">
+    <!-- row -->
+    <div class="row">
+        <!-- NEW WIDGET START -->
+        <article class="col-sm-12">
+            <!-- Widget ID (each widget will need unique ID)-->
+            <div class="jarviswidget jarviswidget-color-green" id="wid-id-0" data-widget-editbutton="false">
+                <header>
+                    <h4>MES - Layout dashboard</h4>
+                </header>
+
+                <!-- widget div-->
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div id="stage-parent">
+                            <div id="container"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- end widget -->
+        </article><!-- WIDGET END -->
+    </div><!-- end row -->
+
+</section>
+<!-- end widget grid -->
+
+
+@section Scripts{
+    <script src="~/assets/DayRangePicker/daterangepicker.min.js"></script>
+    <script src="~/Assets/KonvaCanvas/konva.min.js"></script>
+    <script src="~/Assets/BlockUI/jquery.blockUI.js"></script>
+    @*JQuery Grid *@
+    <script src="~/js/plugin/jqgrid/jquery.jqGrid.min.js"></script>
+    <script src="~/js/plugin/jqgrid/grid.locale-en.min.js"></script>
+    <script src="~/js/plugin/jqgrid/Common.js"></script>
+    <script>
+        Selection2("Factory");
+        Selection2("ViewType");
+        Selection2("SortingPara");
+
+        var $MESPPList;
+        var SelMXPackage = "";
+        var stageWidth = $('#stage-parent').width() * .4;
+        var maxLineWidth = 0;
+        //var stageWidth = $('#stage-parent').width();
+        var stageHeight = 666;
+        var stage = null;
+        var MousePosX = 0,
+            MousePosY = 0;
+        //Events
+        $(function () {
+            $('#StartDate').daterangepicker(
+                {
+                    singleDatePicker: true,
+                    showDropdowns: true,
+                    "setDate": new Date(),
+                    "autoclose": true,
+                    locale: {
+                        format: 'YYYY/MM/DD'
+                    },
+                    autoApply: true
+                }
+            ).on('show.daterangepicker', function (e) {
+                origStyle = $($('#StartDate').data('daterangepicker').container[0]).attr('style');
+                let neworigStyle = origStyle + "opacity: 1 ; transform : scale(1);";
+                $($('#StartDate').data('daterangepicker').container[0]).removeAttr('style');
+                $($('#StartDate').data('daterangepicker').container[0]).attr('style', neworigStyle);
+            }).on('hide.daterangepicker', function (e) {
+                $($('#StartDate').data('daterangepicker').container[0]).removeAttr('style');
+                let neworigStyle = "";
+                let arr_neworigStyle = origStyle.split(';');
+                for (var i = 0; i < arr_neworigStyle.length; i++) {
+                    let current = arr_neworigStyle[i];
+                    if (current.length > 0) {
+                        if (current.includes('display')) {
+                            neworigStyle += "display:none;";
+                        } else {
+                            neworigStyle += current + ';';
+                        }
+                    }
+                }
+                $($('#StartDate').data('daterangepicker').container[0]).attr('style', neworigStyle);
+            });
+            $.when(
+                //Bind Factory
+                $.ajax({
+                    url: '/MasterData/GetFactoriesByCorporation',
+                    type: 'POST',
+                    contentType: 'application/json',
+                    success: function (response) {
+                        response.forEach(function (val, ind) {
+                            $('select[data-binding="FactoryList"]').append(
+                                `<option value="${val.Factory}">[${val.Factory}] - ${val.Name}</option>`
+                            );
+                        });
+                    },
+                    complete: function (jqXHR, textStatus) { }
+                })
+            ).done(function () { });
+            $MESPPList = $('#MESPPList').jqGrid({
+                caption: 'MES Package',
+                url: '/MesPkgSumDashboard/GetMESPackagesByFactoryDate',
+                datatype: "local",
+                height: 100,
+                colModel: [
+                    {
+                        name: 'MXPACKAGE', index: 'MXPACKAGE', label: "MX Packages", width: 500, key: true, title: false, formatter: function (cellvalue, options, rowObject) {
+                            let aHref =
+                                '<a href="#" data-role="quickSummary" data-summaryurl="/QCO/POPStyleSummaryMESPackage/?StyleCode=' + rowObject.STYLECODE + '&StyleSize=' + rowObject.STYLESIZE + '&StyleColorSerial=' + rowObject.STYLECOLORSERIAL + '&RevNo=' + rowObject.REVNO + '&MxPackage=' + rowObject.MXPACKAGE + '&MxTarget=' + rowObject.MXTARGET + '" >' + rowObject.MXPACKAGE + '</a>';
+                            return aHref;
+                        }
+                    }
+                    , { name: 'AONO', index: 'AONO', label: "AO No.", align: 'left' }
+                    , { name: 'MESFACTORY', index: 'MESFACTORY', label: "Factory", align: 'left' }
+                    , { name: 'LINENAME', index: 'LINENAME', label: "Line", align: 'left' }
+                    , { name: 'STYLECODE', index: 'STYLECODE', label: "(PK) style code", align: 'left' }
+                    , { name: 'BUYERSTYLENAME', index: 'BUYERSTYLENAME', label: "B. style name", align: 'left' }
+                    , { name: 'STYLESIZE', index: 'STYLESIZE', label: "Style size", align: 'left' }
+                    , { name: 'STYLECOLORSERIAL', index: 'STYLECOLORSERIAL', label: "Style color#", align: 'right' }
+                    , { name: 'STYLECOLORWAYS', index: 'STYLECOLORWAYS', label: "Style color", align: 'left' }
+                    , { name: 'REVNO', index: 'REVNO', label: "Rev No.", align: 'right' }
+                    , { name: 'MXTARGET', index: 'MXTARGET', label: "Target Qty", align: 'right' }
+                    , { name: 'PLNSTARTDATE', index: 'PLNSTARTDATE', label: "Plan start date", align: 'right' }
+                ],
+                rowNum: 50 ,//20
+                rowList: [20, 25, 30, 35, 40, 50, 100, 200, 500,5000],
+                sortname: 'RANKING',
+                sortorder: "asc",
+                viewrecords: true,
+                gridview: true,
+                //loadonce: true,
+                width: null,
+                shrinkToFit: false,
+                forceFit: true,
+                pager: 'MESPPListPager',
+                onSelectRow: function (id, onselectrow) {
+                    let _this = $(this);
+                    StopHideGrid(_this);
+                    SelMXPackage = id;
+                    DrawCanvas(id, $('#ViewType').val(), $('#SortingPara').val());
+                    DoHideGrid(_this);
+                },
+                gridComplete: function () { },
+                loadComplete: function () { }
+            });
+            $('#MESPPList').hide();
+            customJqGridCss();
+        });
+        $('#Factory').on('change', function (ev) {
+            ReloadPackageDataSource();
+        });
+        $('#StartDate').on('apply.daterangepicker', function (ev, picker) {
+            //Bind the MX Package based on the "Factory" and "Select Date"
+            ReloadPackageDataSource();
+        });
+        //$('#MXPackage').on('change', function (ev) {
+        //    let _this = $(this);
+        //    DrawCanvas(_this.val(), $('#ViewType').val(), $('#SortingPara').val());
+        //});
+        $('#ViewType').on('change', function (ev) {
+            let _this = $(this);
+            DrawCanvas(SelMXPackage, _this.val(), $('#SortingPara').val());
+        });
+        $('#SortingPara').on('change', function (ev) {
+            let _this = $(this);
+            DrawCanvas(SelMXPackage, $('#ViewType').val(), _this.val());
+        });
+        //Functions:
+        var FtoggleGrid;
+        function DoHideGrid(grid) {
+            FtoggleGrid = setTimeout(function () {
+                grid.jqGrid('setGridState', 'hidden'); /* visible or hidden */
+            }, 1000 * 20);
+        }
+        function StopHideGrid() {
+            clearTimeout(FtoggleGrid);
+        }
+        function DoShowGrid(grid) {
+            FtoggleGrid = setTimeout(function () {
+                grid.jqGrid('setGridState', 'visible'); /* visible or hidden */
+            }, 500);
+        }
+        function BindMESPP(pFactory, pDate) {
+            let isOK = true;
+            if (!pFactory) isOK = false;
+            if (!pDate) isOK = false;
+            if (!isOK) {
+                ShowMessage("Invalid input", "Please choose Factory or Date", ObjMessageType.Alert);
+                return;
+            }
+            $MESPPList.jqGrid('setGridParam', {
+                datatype: 'json',
+                hiddengrid: false,
+                postData: {
+                    factory: pFactory,
+                    date: pDate
+                }
+            }).trigger('reloadGrid');
+            DoShowGrid($MESPPList);
+            $MESPPList.show();
+        }
+        function ReloadPackageDataSource() {
+            var fac = $("#Factory").val();
+            var curDate = getCurrentDate();
+            var choosedDate = new moment($('#StartDate').data('daterangepicker').startDate._d).format('YYYYMMDD');
+            if (!choosedDate)
+                choosedDate = curDate;
+            //console.log(choosedDate);
+            //GetPackageByFactoryAndDate(fac, choosedDate);
+            BindMESPP(fac, choosedDate);
+        }
+
+        function GetPackageByFactoryAndDate(factory, plnDate) {
+            if (!factory) return; //user must select the factory
+
+            var config = ObjectConfigAjaxPost(
+                "../linedashboard/GetMesPackagesByDate",
+                false,
+                JSON.stringify({ factory: factory, dt: plnDate })
+            );
+
+            AjaxPostCommon(config, function (lstPackage) {
+                var innerHtml = '';
+                if (lstPackage && lstPackage.Result && lstPackage.Result.length > 0) {
+                    innerHtml = innerHtml.concat('<option value="">--MES Package--</option>');
+                    $.each(lstPackage.Result, function (index, p) {
+                        innerHtml = innerHtml.concat('<option value="' + p.MxPackage + '">' + p.MxPackage + '</option>');
+                    });
+                }
+                //$("#MXPackage").html(innerHtml);
+            });
+        }
+        function DrawCanvas(MXPackage, ViewType, SortingPara) {
+            //console.log(MXPackage, ViewType, SortingPara);
+            if (MXPackage.length <= 0) return;
+            if (!ViewType) return;
+            if (!SortingPara) return;
+            $.ajax({
+                beforeSend: function () {
+                    $.blockUI({ message: '<h1><img src="../img/loading.gif" /> Processing...</h1>' });
+                },
+                url: '/MesPkgSumDashboard/LoadProcessSummary',
+                type: 'POST',
+                data: JSON.stringify({
+                    MXPackage: MXPackage,
+                    ViewType: ViewType,
+                    SortingPara: SortingPara
+                }),
+                contentType: 'application/json',
+                success: function (response) {
+                    let json = JSON.parse(response);
+                    if (stage)
+                        stage.destroyChildren(); 
+                    maxLineWidth = json.MaxOPperLine; //2020-11-18 Tai Le(Thomas)
+                    stage = Konva.Node.create(json.konvaStage, 'container');
+                    stage.draggable(true);
+                    stage.width(stageWidth);
+                    stage.height(stageHeight);
+                    var tooltip = new Konva.Text({
+                        text: '',
+                        fontFamily: 'Calibri',
+                        fontSize: 12,
+                        padding: 5,
+                        textFill: 'black',
+                        fill: 'black',
+                        alpha: 0.75,
+                        visible: false,
+                    });
+                    var tooltipLayer = new Konva.Layer();
+                    tooltipLayer.add(tooltip);
+                    //stage.add(tooltipLayer);
+                    fitStageIntoParentContainer();
+                    ZoomStageToWidthFit();
+                    /* set functions */
+                    //stage.find('#blueRectangle').on('mouseover mouseout', function () {
+                    //    var stroke = this.stroke();
+                    //    this.stroke(stroke === 'black' ? 'red' : 'black');
+                    //    stage.draw();
+                    //});
+                    /*set images */
+                    var ImageNodes = stage.find('Image');
+                    if (ImageNodes) {
+                        ImageNodes.forEach(function (val, ind) {
+                            //console.log(val, ind);
+                            let imageObj = new Image(val.attrs.width, val.attrs.height);
+                            imageObj.onload = function () {
+                                stage.find(`#${val.attrs.id}`)[0].image(imageObj);
+                                stage.draw();
+                            };
+                            if (val.attrs.id.length > 0)
+                                imageObj.src = `${val.attrs.urlImg}`; // `http://${val.attrs.urlImg}`;
+                            else
+                                imageObj.src = "/Assets/hrm/worker/img/NoImg.PNG";
+                        });
+                    }
+                    //var GroupNodes = stage.find('Group');
+                    //if (GroupNodes) {
+                    //    ImageNodes.forEach(function (val, ind) {
+                    //        if (val.attrs.id)
+                    //            console.log(`GroupID id= ${val.id}, name=${val.name}`);
+                    //    });
+                    //}
+                    /* //Tooltip for flow-arrow hover
+                    stage.find('Arrow').on('mouseover', function () {
+                        this.fill('green');
+                        this.stroke('green');
+                        this.draw();
+                        //let _name = this.attrs.name;
+                        //let arrName = _name.split('-');
+                        //var pointer = stage.getPointerPosition();
+                        //tooltip.position({
+                        //    x: pointer.x,
+                        //    y: pointer.y
+                        //});
+                        //console.log(pointer);
+                        //console.log(tooltip.position);
+                        //tooltip.text(`From ${arrName[0]} to ${arrName[1]}`);
+                        //tooltip.show();
+                        //tooltipLayer.batchDraw();
+                    });
+                    stage.find('Arrow').on('mouseout', function () {
+                        this.fill('black');
+                        this.stroke('black');
+                        this.draw();
+                        tooltip.hide();
+                        tooltipLayer.draw();
+                    });
+                    */
+
+                    /*
+                     * zoom in / zoom out the canvas
+                     */
+                    var scaleBy = 0.95,
+                        newScale = 1;
+                    stage.on('wheel', (e) => {
+                        e.evt.preventDefault();
+                        var oldScale = stage.scaleX();
+                        var pointer = stage.getPointerPosition();
+                        var mousePointTo = {
+                            x: (pointer.x - stage.x()) / oldScale,
+                            y: (pointer.y - stage.y()) / oldScale,
+                        };
+                        newScale =
+                            e.evt.deltaY > 0 ? oldScale * scaleBy : oldScale / scaleBy;
+                        stage.scale({ x: newScale, y: newScale });
+                        var newPos = {
+                            x: pointer.x - mousePointTo.x * newScale,
+                            y: pointer.y - mousePointTo.y * newScale,
+                        };
+                        MousePosX = newPos.x;
+                        MousePosY = newPos.y;
+                        stage.position(newPos);
+                        stage.batchDraw();
+                    });
+                },
+                complete: function (jqXHR, textStatus) {
+                    $.unblockUI();
+                }
+            });
+        }
+        function fitStageIntoParentContainer() {
+            //if (pStage) console.log(pStage.width);
+            var container = document.querySelector('#stage-parent');
+            // now we need to fit stage into parent
+            var containerWidth = container.offsetWidth;
+            // to do this we need to scale the stage
+            var scale = containerWidth /stageWidth;
+            //console.log(scale);
+            if (stage) {
+                stage.width(stageWidth * scale);
+                stageWidth = stage.width();
+
+                stage.height(stageHeight * scale);
+                stage.scale({ x: scale, y: scale });
+                stage.draw();
+            }
+            ZoomStageToWidthFit();
+        }
+        function ZoomStageToWidthFit() { 
+            if (maxLineWidth > 0) {
+                var scale = stageWidth / maxLineWidth;
+
+                if (stage) {
+                    stage.scale({ x: scale, y: scale });
+                    stage.draw();
+                }
+            }
+            
+        }
+        window.addEventListener('resize', fitStageIntoParentContainer);
+    </script>
+}

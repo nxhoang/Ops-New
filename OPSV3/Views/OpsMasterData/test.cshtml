@@ -1,0 +1,117 @@
+﻿@{
+    Layout = null;
+}
+<link href="~/css/ops/pages/Linking.css" rel="stylesheet" />
+<link href="http://trirand.com/blog/jqgrid/themes/redmond/jquery-ui-custom.css" rel="stylesheet" />
+<link href="http://trirand.com/blog/jqgrid/themes/ui.jqgrid.css" rel="stylesheet" />
+<div class="row">
+    <div class="col-sm-12">
+        <table id='navgrid'></table>
+        <div id='pagernav'></div>
+    </div>
+</div>
+<hr style="clear:both; width:100%;" />
+<p id="testClick">Click here</p>
+<script src="http://trirand.com/blog/jqgrid/js/jquery.js"></script>
+<script src="http://trirand.com/blog/jqgrid/js/jquery-ui-custom.min.js"></script>
+<script src="http://trirand.com/blog/jqgrid/js/jquery.layout.js"></script>
+<script src="http://trirand.com/blog/jqgrid/js/i18n/grid.locale-en.js"></script>
+<script src="http://trirand.com/blog/jqgrid/js/jquery.jqGrid.js"></script>
+<script>
+    $(document).ready(function () {
+        CreateMcGrid("SEW");
+        $("#testClick").click(function () {
+            //if double click return
+            //else
+            // do some thing
+            console.log("1");
+        });
+    });
+    var _rowOpened = null;
+    var arrMc = {
+        ItemCode: "Machine Code",
+        ItemName: "Machine Name",
+        ImagePath: "Machine Image",
+        CategId: "Category",
+        Category: "Category",
+        Buyer: "Buyer",
+        Brand: "Brand",
+        Machine: "Machine"
+    };
+    var MachineGrid = "navgrid";
+
+    function CreateMcGrid(gId) {
+        $("#navgrid").jqGrid({
+            datatype: "json",
+            url: "/OpsMasterData/GetOtmtsMc",
+            postData: {
+                gId: gId, machine: 1
+            },
+            rowNum: 10,
+            rowList: [10, 20, 30],
+            pager: '#pagernav',
+            sortname: 'CategId',
+            //editurl: "clientArray",
+            viewrecords: true,
+            sortorder: "desc",
+            caption: "Navigator Example",
+            //editurl: "someurl.php",
+            height: 210,
+            colModel: [
+                { name: "CategId", index: "CategId", label: arrMc.CategId, width: 100, editable: true },
+                { name: "Category", index: "Category", label: arrMc.Category, width: 100, editable: true },
+                { name: "ItemCode", index: "ItemCode", label: arrMc.ItemCode, editable: true },
+                { name: "ItemName", index: "ItemName", label: arrMc.ItemName, editable: true },
+                { name: "Brand", index: "Brand", label: arrMc.Brand, editable: true }
+            ]
+            , onCellSelect: function (rowid, cellidx) {
+                OpenRowEdit("navgrid", rowid);
+                
+            }
+
+
+        }).jqGrid('navGrid', '#pagernav', {
+            cloneToTop: true,
+            add: true,
+            edit: true,
+            del: true,
+            search: true,
+            refresh: true
+        },
+{
+
+},
+{
+    //
+    recreateForm: true, closeAfterEdit: true, closeOnEscape: true,
+    afterShowForm: function (form) {
+        SetWidthForFormEditing("tr_CategId", MachineGrid);
+        SetAlignCenterPopups("editmod");
+    }
+},
+{
+    //del
+    recreateForm: true, closeAfterEdit: true, closeOnEscape: true,
+    afterShowForm: function (form) {
+        SetWidthForFormEditing("tr_CategId", MachineGrid);
+        SetAlignCenterPopups("editmod");
+    }
+});
+    }
+    function OpenRowEdit(gridId, rowid) {
+        if (_rowOpened !== null && _rowOpened !== rowid) {
+            var result = SaveRow(gridId, _rowOpened);
+        }
+        $("#" + gridId).jqGrid("editRow", rowid, false, 'clientArray');
+        _rowOpened = rowid;
+    }
+    function SaveRow(gridId, rowid) {
+        
+        jQuery("#" + gridId).saveRow(rowid, {
+            url: "clientArray",
+            successfunc: function () {
+                return true;
+            }
+        },null);
+    }
+</script>

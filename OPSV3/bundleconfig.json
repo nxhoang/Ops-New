@@ -1,0 +1,38 @@
+[
+  {
+    "outputFileName": "assets/ops-layout/css/demo-op-layout.min.css",
+    "inputFiles": [
+      "assets/ops-layout/css/demo-op-layout.css"
+    ]
+  },
+  {
+    "outputFileName": "assets/ops-layout/css/ops-layout.min.css",
+    "inputFiles": [
+      "assets/ops-layout/css/ops-layout.css"
+    ]
+  },
+  {
+    "outputFileName": "assets/ops-layout/js/op.video-processing.min.js",
+    "inputFiles": [
+      "assets/ops-layout/js/op.video-processing.js"
+    ]
+  },
+  {
+    "outputFileName": "assets/ops-layout/css/op.video-processing.min.css",
+    "inputFiles": [
+      "assets/ops-layout/css/op.video-processing.css"
+    ]
+  },
+  {
+    "outputFileName": "assets/ops-layout/js/opl.process-detail.min.js",
+    "inputFiles": [
+      "assets/ops-layout/js/opl.process-detail.js"
+    ]
+  },
+  {
+    "outputFileName": "js/Entities/JsEntity.min.js",
+    "inputFiles": [
+      "js/Entities/JsEntity.js"
+    ]
+  }
+]

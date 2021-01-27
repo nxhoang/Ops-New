@@ -1,0 +1,1710 @@
+﻿@{
+    ViewBag.Title = "OpsTest";
+}
+
+<link href="~/css/ops/pages/ops.css?v=1.1" rel="stylesheet" />
+
+<style>
+    #mdlShowMachine {
+        z-index: 999; /*HA ADD*/
+    }
+</style>
+
+<div>
+    <div class="row">
+        <div class="col-sm-12">
+            @*<h2>Ops Registration
+                @Html.TextBox("text")
+                </h2>*@
+            <div id="dvOpsRegistration">
+                @Html.Partial("~/Views/Menu/MenuPartialView.cshtml")
+                <button type="button" id="btnDisableOp" class="btn-menu" style="display: none">
+                    <span class="glyphicon glyphicon-remove-sign"></span> Disable
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!--Key Style key code-->
+    <input id="hdStyleCode" type="hidden" />
+    <input id="hdStyleSize" type="hidden" />
+    <input id="hdStyleColor" type="hidden" />
+    <input id="hdStyleRevNo" type="hidden" />
+    <input id="hdOpsLanguage" type="hidden" />
+    <!--Keep status confirm-->
+    <input id="hdConfChkOpsMaster" type="hidden" />
+
+    <!--Keep max operation plan revision for add new ops-->
+    <input id="hdOpRevNoMax" type="hidden" />
+
+    <!--Keep Operation plan Revision no for Ops master (click row on Grid view Ops master)-->
+    <input id="hdOpRevNo" type="hidden" />
+    <input id="hdOpSerial" type="hidden" />
+
+    <!-- Modal register new operation plan -->
+    <div class="modal fade modal-custom" id="opsModal" role="dialog" data-backdrop="static" data-keyboard="false">
+        <div class="modal-dialog modal-lg">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Copy / Register new operation plan</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="modal-body-custom">
+                        <div class="modal-content-ops">
+                            <div class="row">
+                                <div class="col-sm-4 col-xs-12">
+                                    <form class="form-horizontal" role="form">
+                                        <div class="form-group">
+                                            <label class="col-sm-2 control-label no-padding-right"> Buyer </label>
+                                            <div class="col-sm-5 selec2-custom">
+                                                <select id="drpBuyer" class="form-control" data-placeholder="Select Buyer"></select>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="col-sm-4 col-xs-12">
+                                    <form class="form-horizontal" role="form">
+                                        <div class="form-group">
+                                            <label class="col-sm-4 control-label no-padding-right" for="txtAoNumber"> Ao Number </label>
+                                            <div class="col-sm-5">
+                                                <input type="text" id="txtAoNumber" class="form-control">
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="col-sm-4 col-xs-12">
+                                    <form class="form-horizontal" role="form">
+                                        <div class="form-group">
+                                            <label class="col-sm-2 control-label no-padding-right" for="txtStyleFilter"> Style </label>
+                                            <div class="col-sm-5">
+                                                <input type="text" id="txtStyleFilter" class="form-control">
+                                            </div>
+                                            <input id="btnFilter" class="btn btn-primary btn-modal" type="button" value="Search" />
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-content-ops">
+                            <div class="row ">
+                                <div class="col-sm-6 col-xs-12">
+                                    <div class="col-xs-12">
+                                        <!-- JQGRID STYLE BEGINS -->
+                                        <div class="">
+                                            <table id="gridTableStyleModal"></table>
+                                            <div id="gridPaperStyleModal"></div>
+                                        </div>
+                                        <!-- JQGRID STYLE ENDS -->
+                                    </div><!-- /.col -->
+                                </div>
+                                <div class="col-sm-6 col-xs-12">
+                                    <div class="col-xs-12">
+                                        <!-- JQGRID OPERATION DETAIL BEGINS -->
+                                        <div class="">
+                                            <table id="gridTableOpsModal"></table>
+                                            <div id="gridPagerOpsModal"></div>
+                                        </div>
+                                        <!-- JQGRID OPERATION DETAIL ENDS -->
+                                    </div><!-- /.col -->
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-content-ops">
+                            <div class="row ">
+                                <div class="col-sm-4 col-xs-12">
+                                    <div class="checkbox">
+                                        <label><input type="checkbox" id="chkRegisterNeutralColor" value="">Register as neutral color</label>
+                                    </div>
+                                    <div class="checkbox">
+                                        <label><input type="checkbox" id="chkCopyBOMPattern" value="">Copy BOM and Patterns</label>
+                                    </div>
+                                </div>
+                                <div class="col-sm-4 col-xs-12">
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <div class="checkbox">
+                                                <label><input type="checkbox" id="chkCopyToolLinking" checked="checked">Copy tool, machine linking</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <select name="countries" class="form-control pointer" id="drpLanguageOpMaster">
+                                                <option value="vn" data-image="/assets/country-dropdown/images/msdropdown/icons/blank.gif" data-imagecss="flag flag-vn" data-title="Việt Nam">Tiếng Việt</option>
+                                                <option value="gb" data-image="/assets/country-dropdown/images/msdropdown/icons/blank.gif" data-imagecss="flag flag-gb" data-title="English">English</option>
+                                                <option value="id" data-image="/assets/country-dropdown/images/msdropdown/icons/blank.gif" data-imagecss="flag flag-id" data-title="Indonesia">Bahasa</option>
+                                                <option value="mm" data-image="/assets/country-dropdown/images/msdropdown/icons/blank.gif" data-imagecss="flag flag-mm" data-title="မြန်မာဘာသာ">မြန်မာဘာသာ</option>
+                                                <option value="et" data-image="/assets/country-dropdown/images/msdropdown/icons/blank.gif" data-imagecss="flag flag-et" data-title="Amharic">Amharic</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <input id="btnTranslateProcessName" type="button" class="btn btn-info form-control btn-modal" value="Translate" style="margin-top:2px; display:none" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-4 col-xs-12">
+                                    <div class="radio">
+                                        <label><input type="radio" id="rdCopySelectPlan" name="registerPlan" checked>Copy the selected plan</label>
+                                    </div>
+                                    <div class="radio">
+                                        <label><input type="radio" id="rdRegisterEmptyPlan" name="registerPlan">Register an empty plan</label>
+                                    </div>
+                                    <div class="radio">
+                                        <label><input type="radio" id="rdImportCsv" name="registerPlan">Import from file (GSD)</label>
+                                        <input id="btnUploadCsv" type="button" class="btn btn-success btn-modal" disabled value="CSV..." />
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-content-ops">
+                            <div class="row">
+                                <div class="col-sm-2 col-xs-12">
+                                    <form class="form-horizontal" role="form">
+                                        <div class="form-group">
+                                            <label class="col-sm-6 control-label no-padding-right" for="txtStyleCode"> Style Code </label>
+                                            <div class="col-sm-6">
+                                                <input type="text" id="txtStyleCode" placeholder="" class="form-control" readonly>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-6 control-label no-padding-right" for="txtStyleSize"> Style Size </label>
+                                            <div class="col-sm-6">
+                                                <input type="text" id="txtStyleSize" placeholder="" class="form-control" readonly>
+                                            </div>
+                                        </div>
+                                    </form>
+
+                                </div>
+                                <div class="col-sm-2 col-xs-12">
+                                    <form class="form-horizontal" role="form">
+                                        <div class="form-group">
+                                            <label class="col-sm-6 control-label no-padding-right" for="txtColor"> Color </label>
+                                            <div class="col-sm-6">
+                                                <input type="text" id="txtColor" placeholder="" class="form-control" readonly>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-6 control-label no-padding-right" for="txtRevNo"> Revision </label>
+                                            <div class="col-sm-6">
+                                                <input type="text" id="txtRevNo" placeholder="" class="form-control" readonly>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="col-sm-2 col-xs-12">
+                                    <form class="form-horizontal" role="form">
+                                        <div class="form-group">
+                                            <label class="col-sm-6 control-label no-padding-right" for="txtProcess"> Processes </label>
+                                            <div class="col-sm-6">
+                                                <input type="text" id="txtProcess" placeholder="" class="form-control" readonly>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-6 control-label no-padding-right" for="txtMachine"> Machines </label>
+                                            <div class="col-sm-6">
+                                                <input type="text" id="txtMachine" placeholder="" class="form-control" readonly>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="col-sm-2 col-xs-12">
+                                    <form class="form-horizontal" role="form">
+                                        <div class="form-group">
+                                            <label class="col-sm-6 control-label no-padding-right" for="txtWorkerModal"> Workers </label>
+                                            <div class="col-sm-6">
+                                                <input type="text" id="txtWorkerModal" placeholder="" class="form-control" readonly>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-6 control-label no-padding-right" for="txtTime"> Time </label>
+                                            <div class="col-sm-6">
+                                                <input type="text" id="txtTime" placeholder="" class="form-control" readonly>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="col-sm-2 col-xs-12">
+                                    <form class="form-horizontal" role="form">
+                                        <div class="form-group">
+                                            <label class="col-sm-6 control-label no-padding-right" for="txtOpRevision"> Op Revision </label>
+                                            <div class="col-sm-6">
+                                                <input type="text" id="txtOpRevision" placeholder="" class="form-control" readonly>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-6 control-label no-padding-right"> Target edition </label>
+
+                                            <div class="col-sm-6 selec2-custom">
+                                                <select id="drpTargetEdition" class="form-control" data-placeholder="Select edition"></select>
+                                            </div>
+
+                                        </div>
+                                    </form>
+                                </div>
+                                @*HA Start Mod*@
+                                <div class="col-sm-2 col-xs-12">
+                                    <form class="form-horizontal" role="form">
+                                        <div class="form-group">
+                                            @*<label class="col-sm-5 control-label no-padding-right"> Factory </label>*@
+
+                                            <div class="col-sm-12 selec2-custom">
+                                                <select id="drpFactoryOpmt" class="form-control" data-placeholder="Factory"></select>
+                                            </div>
+
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="col-sm-6">
+                                                <button type="button" id="btnRegisterOps" class="btn btn btn-primary btn-modal form-control">Register</button>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <button type="button" class="btn btn btn-primary btn-modal form-control" data-dismiss="modal">Close</button>
+                                            </div>
+                                        </div>
+                                    </form>
+
+                                </div>
+                                @*HA SEndtart Mod*@
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                @*<div class="modal-footer">
+                        <button type="button" id="btnRegisterOps" class="btn btn btn-primary btn-modal">Register</button>
+                        <button type="button" class="btn btn btn-primary btn-modal" data-dismiss="modal">Close</button>
+                    </div>*@
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Modal import CSV file -->
+    <div class="modal fade modal-custom" id="modalImportCsv" role="dialog" data-backdrop="static" data-keyboard="false">
+        <div class="modal-dialog modal-lg">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Import operation plan</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="modal-body-custom">
+                        @*<div class="modal-content-ops">*@
+                        <div class="row">
+                            <div class="col-sm-12 col-xs-12">
+
+                                <form>
+                                    <label class="radio-inline"><input type="radio" id="rdSelectProcessName" name="ProcessRadio">Select process name</label>
+                                    <label class="radio-inline"><input type="radio" id="rdAddNewProcess" name="ProcessRadio">Add new processes</label>
+                                </form>
+                                <div class="space-4"></div>
+                                <div id="dvImportFileError" class="error" style="display:none"></div>
+                                @*<div id="dvOpsTableImport" class="jqgrid-container">*@
+                                <div class="col-xs-12" style="padding-left:1px;">
+                                    <table id="gridOpsTableImport"></table>
+                                </div>
+                                @*</div>*@
+                            </div>
+                        </div>
+                        @*</div>*@
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <label class="btn btn btn-primary btn-modal">
+                        <i class="glyphicon glyphicon-import"></i>
+                        <span>Csv...</span>
+                        <input type="file" id="flImportCsv" accept=".csv" style="display: none;">
+                    </label>
+                    <button type="button" id="btnAccept" class="btn btn btn-primary btn-modal">Accept</button>
+                    <button type="button" class="btn btn btn-primary btn-modal" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal import CSV file -->
+    <div class="modal fade modal-custom" id="mdlUpdateProcessTime" role="dialog" data-backdrop="static" data-keyboard="false">
+        <div class="modal-dialog modal-lg">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Update process time</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="modal-body-custom">
+                        <div class="row">
+                            <div class="col-sm-12 col-xs-12">
+                                <div id="divUpdateProcessTimeError" style="color:red"></div>
+                                <div class="space-4"></div>
+                                <div class="col-xs-12" style="padding-left:1px;">
+                                    <table id="tblUpdateProcessTime"></table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <label class="btn btn btn-primary btn-modal">
+                        <i class="glyphicon glyphicon-import"></i>
+                        <span>Csv...</span>
+                        <input type="file" id="flImportProcessCsv" accept=".csv" style="display: none;">
+                    </label>
+                    <button type="button" id="btnUpdateOpTime" class="btn btn btn-primary btn-modal">Update</button>
+                    <button type="button" class="btn btn btn-primary btn-modal" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal upload machine file -->
+    <div class="modal fade modal-custom modal-custom-width" id="modalUploadFileOpDetail" role="dialog" data-backdrop="static" data-keyboard="false">
+        <div class="modal-dialog modal-lg">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Upload Process Files</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="modal-body-custom">
+                        @*<div class="modal-content-ops">*@
+
+                        <input id="hdOpSerialOpDetail" type="hidden" />
+                        <input id="hdFileTypeOpDetail" type="hidden" />
+                        <input id="hdOpDetailEdition" type="hidden" />
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <fieldset class="pro-file">
+                                    <legend class="pro-file">Video:</legend>
+                                    <label class="radio rd-pro-file">
+                                        <input id="rdUploadVideoOpDetail" type="radio" name="uploadFileOpDetail" checked> Upload video
+                                    </label>
+                                    <label class="radio rd-pro-file">
+                                        <input id="rdGetVideoFromServer" type="radio" name="uploadFileOpDetail" checked> Video from server
+                                    </label>
+                                    <label class="radio rd-pro-file">
+                                        <input id="rdAddRefVideoLink" type="radio" name="uploadFileOpDetail"> Adding video link
+                                    </label>
+                                </fieldset>
+                            </div>
+                            <div class="col-sm-4">
+                                <fieldset class="pro-file">
+                                    <legend class="pro-file">Jig:</legend>
+                                    <label class="radio rd-pro-file">
+                                        <input id="rdUploadJigFile" type="radio" name="uploadFileOpDetail"> Upload Jig File
+                                    </label>
+
+                                </fieldset>
+                            </div>
+                            <div class="col-sm-4">
+                                <fieldset class="pro-file">
+                                    <legend class="pro-file">Other:</legend>
+                                    <label class="radio rd-pro-file">
+                                        <input id="rdUploadMachineFileOpDetail" type="radio" name="uploadFileOpDetail"> Upload machine file
+                                    </label>
+                                    <label class="radio rd-pro-file">
+                                        <input id="rdGetFileFromDms" type="radio" name="uploadFileOpDetail"> Files From PDM
+                                    </label>
+                                </fieldset>
+                            </div>
+                            @*<div class="col-sm-12">
+                                <label class="radio-inline">
+                                <input id="rdUploadVideoOpDetail" type="radio" name="uploadFileOpDetail" checked> Upload video
+                                </label>
+                                <label class="radio-inline">
+                                <input id="rdGetVideoFromServer" type="radio" name="uploadFileOpDetail" checked> Video from server
+                                </label>
+                                <label class="radio-inline">
+                                <input id="rdUploadMachineFileOpDetail" type="radio" name="uploadFileOpDetail"> Upload machine file
+                                </label>
+                                <label class="radio-inline">
+                                <input id="rdGetFileFromDms" type="radio" name="uploadFileOpDetail"> Files From PDM
+                                </label>
+                                <label class="radio-inline">
+                                <input id="rdUploadJigFile" type="radio" name="uploadFileOpDetail"> Upload Jig File
+                                </label>
+                                <label class="radio-inline">
+                                <input id="rdAddRefVideoLink" type="radio" name="uploadFileOpDetail"> Adding video link
+                                </label>
+                                </div>*@
+                        </div>
+                        <!-- Process bar
+                            <div class="row">
+                            <div class="progress">
+                                <div id="divProcessBar" class="progress-bar progress-bar-success progress-bar-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="width:0%"></div>
+                            </div>
+                        </div>-->
+                        <div class="row space-5"></div>
+                        <fieldset class="pro-file">
+                            <legend class="pro-file">Upload files</legend>
+
+                            <div class="row" id="divRefVideoLink">
+                                <div class="col-sm-12">
+
+                                    <form class="form-horizontal" role="form">
+                                        <div class="form-group">
+                                            <label class="col-sm-2 control-label no-padding-right" for="txtStyleCode">Video Name: </label>
+                                            <div class="col-sm-7">
+                                                <input type="text" id="txtRefVideoName" placeholder="" class="form-control">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-2 control-label no-padding-right" for="txtStyleCode">Reference video link: </label>
+                                            <div class="col-sm-7">
+                                                <input type="text" id="txtRefVideoLink" placeholder="" class="form-control">
+                                            </div>
+                                            <div class="col-sm-2">
+                                                <button type="button" id="btnAddRefVideoLink" class="btn btn btn-primary btn-modal form-control">
+                                                    <i class="glyphicon glyphicon-plus"> </i> Add link
+                                                </button>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-sm-2 control-label no-padding-right" for=""></label>
+                                                <div class="col-sm-7">
+                                                    <label class="control-label" for="">(PK video link only)</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        @*<div class="form-group">
+                                                <div class="col-sm-7">
+                                                    <video width="320" height="240" controls src="http://video.pungkookvn.com:8888/api/Media/Play?fol=10082001&f=47X8w2sbzGUmc2T.mp4" >
+                                                        Your browser does not support the video tag.
+                                                    </video>
+                                                </div>
+                                            </div>*@
+                                    </form>
+
+
+                                </div>
+                            </div>
+                            <div class="row space-10"></div>
+                            <div class="row">
+
+                                <div class="col-sm-3 selec2-custom" id="divUploadJigFile">
+                                    <select id="drpJigFileType" class="form-control" data-placeholder="Select a file type"></select>
+                                </div>
+                                <div class="col-sm-9">
+                                    <input id="flOpDetail" accept="video/*" type="file" multiple />
+                                </div>
+
+                            </div>
+                            <div class="row space-4"></div>
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div id="dvPreviewOpFile">
+                                        <video class="video-preview" controls>
+                                            <source src="" id="opDetailVideoPreview" type="video/mp4">
+                                            Your browser does not support HTML5 video.
+                                        </video>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--Get video from video server.-->
+                            <div id="divVideoList" style="display:none">
+                                <div class="row">
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <form class="form-horizontal" role="form">
+                                                <div class="form-group">
+                                                    <label class="col-sm-1 control-label no-padding-right" for="txtStyleCode">Code </label>
+                                                    <div class="col-sm-2">
+                                                        <input type="text" id="txtStyleCodeVideo" readonly placeholder="" class="form-control">
+                                                    </div>
+                                                    <label class="col-sm-1 control-label no-padding-right" for="txtStyleCode">Size </label>
+                                                    <div class="col-sm-2">
+                                                        <input type="text" id="txtStyleSizeVideo" readonly placeholder="" class="form-control">
+                                                    </div>
+                                                    <label class="col-sm-1 control-label no-padding-right" for="txtStyleCode">Color </label>
+                                                    <div class="col-sm-2">
+                                                        <input type="text" id="txtStyleColorVideo" readonly placeholder="" class="form-control">
+                                                    </div>
+                                                    <label class="col-sm-1 control-label no-padding-right" for="txtStyleCode">Revision </label>
+                                                    <div class="col-sm-2">
+                                                        <input type="text" id="txtStyleRevNoVideo" readonly placeholder="" class="form-control">
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                    <div class="row space-4"></div>
+
+                                    <div class="row">
+
+                                        <div class="col-sm-12">
+                                            <table id="tblVideo"></table>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </fieldset>
+                        @*</div>*@
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="btnUploadFileOpDetail" class="btn btn btn-primary btn-modal">
+                        <i class="glyphicon glyphicon-upload"> </i> Upload
+                    </button>
+                    <button type="button" id="btnRemoveFileOpDetail" class="btn btn btn-warning btn-modal">
+                        <i class="glyphicon glyphicon-trash"> </i> Remove
+                    </button>
+                    <button type="button" class="btn btn btn-primary btn-modal" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Modal download machine file -->
+    <div class="modal fade modal-custom modal-custom-width" id="mdlDownloadFileOpDetail" role="dialog" data-backdrop="static" data-keyboard="false">
+        <div class="modal-dialog modal-lg">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Download Operation Plan File</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="modal-body-custom">
+                        <div class="row">
+                            <div class="col-xs-12">
+
+                                <table id="tblFilesDownload"></table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    @*<button type="button" id="btnDownloadFileOpDetail" class="3btn btn btn-primary btn-modal">
+                        <i class="glyphicon glyphicon-download"> </i> Download
+                        </button>*@
+                    <button type="button" class="btn btn btn-primary btn-modal" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Modal linking files from PDM -->
+    <div class="modal fade modal-custom modal-custom-width" id="mdlUploadMachineFile" role="dialog" data-backdrop="static" data-keyboard="false">
+        <div class="modal-dialog modal-lg">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">PLM File Linking</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="modal-body-custom">
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <form class="form-horizontal" role="form">
+                                    <div class="form-group">
+                                        <label class="col-sm-5 control-label no-padding-right" for="txtStyleCode">Uploading Type </label>
+                                        <div class="col-sm-7 selec2-custom">
+                                            <select id="drpTypeFileUploading" class="form-control">
+                                                <option value="cad">CAD File</option>
+                                                <option value="emb">Embroidery Design</option>
+                                                <option value="pri">Printing</option>
+                                                <option value="jig">Jig</option>
+                                                <option value="oth">Others</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-sm-5 control-label no-padding-right" for="txtStyleSize"> Style Size </label>
+                                        <div class="col-sm-7">
+                                            <input type="text" id="txtStyleSizeUploading" placeholder="" class="form-control">
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="col-sm-4">
+                                <form class="form-horizontal" role="form">
+                                    <div class="form-group">
+                                        <label class="col-sm-5 control-label no-padding-right"> File Type </label>
+                                        <div class="col-sm-7 selec2-custom">
+                                            <select id="drpFileTypeUploading" class="form-control" data-placeholder="File type"></select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-sm-5 control-label no-padding-right" for="txtStyleCode">Style Color </label>
+                                        <div class="col-sm-7">
+                                            <input type="text" id="txtStyleColorUploading" placeholder="" class="form-control">
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="col-sm-4">
+                                <form class="form-horizontal" role="form">
+                                    <div class="form-group">
+                                        <label class="col-sm-5 control-label no-padding-right" for="txtStyleCode">Style Code </label>
+                                        <div class="col-sm-7">
+                                            <input type="text" id="txtStyleCodeUploading" placeholder="" class="form-control">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-sm-5 control-label no-padding-right" for="txtStyleCode">Revision </label>
+                                        <div class="col-sm-7">
+                                            <input type="text" id="txtRevisionUploading" placeholder="" class="form-control">
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="space-2"></div>
+                        <div class="row">
+                            <div class="col-sm-4">
+
+                            </div>
+                            <div class="col-sm-4"></div>
+                            <div class="col-sm-4">
+                                <form class="form-horizontal" role="form">
+                                    <div class="form-group">
+                                        <label class="col-sm-5 control-label no-padding-right" for="txtStyleCode"> </label>
+                                        <div class="col-sm-7">
+                                            <button type="button" id="btnFindDmsFile" class="btn btn btn-primary btn-modal form-control">
+                                                <i class="glyphicon glyphicon-search"> </i> Find PDM Files
+                                            </button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="space-4"></div>
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <table id="tblFiles"></table>
+                                @*<div id="tblFilesPager"></div>*@
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="btnUploadFileFromDms" class="btn btn btn-primary btn-modal">
+                        <i class="glyphicon glyphicon-link"> </i> Link
+                    </button>
+                    <button type="button" class="btn btn btn-primary btn-modal" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!--Modal Process Chart-->
+    <div class="modal fade modal-custom" id="mdlProcessChart" role="dialog" data-backdrop="static" data-keyboard="false">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Line Balancing</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="modal-body-custom">
+
+
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn btn-primary btn-modal" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!--Modal select language for process name-->
+    <div class="modal fade modal-custom" id="mdlProcessName" role="dialog" data-backdrop="static" data-keyboard="false">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Translate Process Name</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="modal-body-custom">
+                        @*<div class="modal-content-ops">*@
+                        <div class="row">
+                            <div class="col-sm-12 col-xs-12">
+                                <table id="tbProcessNameTranslate"></table>
+                            </div>
+                        </div>
+                        @*</div>*@
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="btnSaveProcessName" class="btn btn btn-primary btn-modal" data-dismiss="modal">Ok</button>
+                    <button type="button" class="btn btn btn-primary btn-modal" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Modal Input Operation time -->
+    <div class="modal fade modal-custom modal-custom-width" id="mdlInputOpTime" role="dialog" data-backdrop="static" data-keyboard="false">
+        <div class="modal-dialog modal-lg">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Sub process detail</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="modal-body-custom">
+                        @*<div class="modal-content-ops">*@
+                        <div class="row">
+                            <div id="divInputOptime" class="col-sm-12 col-xs-12">
+                                <table id="tbInputOptime"></table>
+                            </div>
+                        </div>
+                        @*</div>*@
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="btnGetOptime" class="btn btn btn-primary btn-modal">Ok</button>
+                    <button type="button" class="btn btn btn-primary btn-modal" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--Search Style-->
+    @Html.Partial("~/Views/UIControl/_SearchStyle.cshtml")
+
+    <!-- Partial view process modal -->
+    @Html.Partial("~/Views/UIControl/ProcessPartialView.cshtml")
+
+    <!--Play video modal-->
+    @Html.Partial("~/Views/UiControl/PlayVideoPartialView.cshtml")
+
+    <div class="row">
+        <div class="col-xs-12">
+            <!-- PAGE CONTENT BEGINS -->
+            <div style="">
+                <table id="gridOpsTable"></table>
+                <div id="gridOpsPaper"></div>
+            </div>
+            <!-- PAGE CONTENT ENDS -->
+        </div><!-- /.col -->
+    </div><!-- /.row -->
+
+    <div class="clearfix"></div>
+
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="tabbable">
+                <ul class="nav nav-tabs" id="tabOps">
+                    <li>
+                        <a data-toggle="tab" id="achStyleDetail" href="#tabStyleDetail">
+                            Style Detail
+                        </a>
+                    </li>
+                    <li class="active">
+                        <a data-toggle="tab" id="achOperationPlan" href="#operationPlan">
+                            Operation Plan
+                        </a>
+                    </li>
+                    <li>
+                        <a data-toggle="tab" id="achLineBalancing" href="#lineBalancing">
+                            Line Balancing
+                        </a>
+                    </li>
+                    <li>
+                        <a data-toggle="tab" id="achModuleRevision" href="#moduleRevision">
+                            BOM Modules
+                        </a>
+                    </li>
+                    <li>
+                        <a data-toggle="tab" id="achModule" href="#module">
+                            Modules
+                        </a>
+                    </li>
+                    @*<li>
+        <a data-toggle="tab" id="achLayout" href="#">
+        Layout
+        </a>
+        </li>*@
+                </ul>
+                <div class="tab-content">
+                    <div id="tabStyleDetail" class="tab-pane fade">
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <div class="row">
+                                    <div class="img-style">
+                                        <img id="imgPreviewDetail" class="img-responsive" src="~/img/no-image.png" alt="Style image" style="max-width: 400px; max-height:250px; margin: 0 auto;" />
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="row">
+                                        <div class="dvImageDetail">
+                                            <div class="col-sm-9 nopadding">
+                                                <label class="btn btn-success fileinput-button btn-upload-file">
+                                                    <i class="glyphicon glyphicon-plus"></i>
+                                                    <span>Add image...</span>
+                                                    <input type="file" id="flImageDetail" accept="image/*" style="display: none;">
+                                                </label>
+                                            </div>
+                                            <div class="col-sm-3 nopadding">
+                                                <button id="btnRemoveImgDetail" disabled class="btn btn-danger btn-ops btn-width-full" data-toggle="tooltip" title="Remove image">
+                                                    <i class="glyphicon glyphicon-trash"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div id="dvUploadImageStyle">
+                                            <button id="btnUploadImageStyle" class="btn btn-primary btn-ops btn-width-full">
+                                                <i class="glyphicon glyphicon-upload"></i>
+                                                Upload Image
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-3">
+                                <form class="form-horizontal" role="form">
+                                    <div class="form-group">
+                                        <label class="col-sm-6 control-label no-padding-right"> Style Code </label>
+                                        <div class="col-sm-6">
+                                            <input type="text" id="txtStyleCodeDetail" class="form-control" readonly>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-sm-6 control-label no-padding-right"> Style Name </label>
+                                        <div class="col-sm-6">
+                                            <input type="text" id="txtStyleNameDetail" class="form-control" readonly>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-sm-6 control-label no-padding-right"> Old Style Code </label>
+                                        <div class="col-sm-6">
+                                            <input type="text" id="txtOldStyleCodeDetail" class="form-control" readonly>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-sm-6 control-label no-padding-right"> Style Group </label>
+                                        <div class="col-sm-6">
+                                            <input type="text" id="txtStyleGroupDetail" class="form-control" readonly>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-sm-6 control-label no-padding-right"> Style Sub Group </label>
+                                        <div class="col-sm-6">
+                                            <input type="text" id="txtStyleSubGroupDetail" class="form-control" readonly>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-sm-6 control-label no-padding-right"> Style Sub Sub Group </label>
+                                        <div class="col-sm-6">
+                                            <input type="text" id="txtStyleSubSubGroupDetail" class="form-control" readonly>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-sm-6 control-label no-padding-right"> Buyer </label>
+                                        <div class="col-sm-6">
+                                            <input type="text" id="txtBuyerDetail" class="form-control" readonly>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-sm-6 control-label no-padding-right"> Buyer Code </label>
+                                        <div class="col-sm-6">
+                                            <input type="text" id="txtBuyerCodeDetail" class="form-control" readonly>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="col-sm-3">
+                                <form class="form-horizontal" role="form">
+                                    <div class="form-group">
+                                        <label class="col-sm-6 control-label no-padding-right"> Unit </label>
+                                        <div class="col-sm-6">
+                                            <input type="text" id="txtUnitDetail" class="form-control" readonly>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-sm-6 control-label no-padding-right"> Size (H W L) </label>
+                                        <div class="col-sm-6">
+                                            <input type="text" id="txtSizeDetail" class="form-control" readonly>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-sm-6 control-label no-padding-right"> Price </label>
+                                        <div class="col-sm-6">
+                                            <input type="text" id="txtPriceDetail" class="form-control" readonly>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-sm-6 control-label no-padding-right"> Currency </label>
+                                        <div class="col-sm-6">
+                                            <input type="text" id="txtCurrencyDetail" class="form-control" readonly>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-sm-6 control-label no-padding-right"> Input Unit </label>
+                                        <div class="col-sm-6">
+                                            <input type="text" id="txtInputUnitDetail" class="form-control" readonly>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-sm-6 control-label no-padding-right"> Input Volume </label>
+                                        <div class="col-sm-6">
+                                            <input type="text" id="txtInputVolumeDetail" class="form-control" readonly>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-sm-6 control-label no-padding-right"> Factory </label>
+                                        <div class="col-sm-6">
+                                            <input type="text" id="txtFactoryDetail" class="form-control" readonly>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-sm-6 control-label no-padding-right"> Buyer Name </label>
+                                        <div class="col-sm-6">
+                                            <input type="text" id="txtBuyerNameDetail" class="form-control" readonly>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="col-sm-3">
+                                <form class="form-horizontal" role="form">
+                                    <div class="form-group">
+                                        <label class="col-sm-6 control-label no-padding-right"> Status </label>
+                                        <div class="col-sm-6">
+                                            <input type="text" id="txtStatus" class="form-control" readonly>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-sm-6 control-label no-padding-right"> Registrar </label>
+                                        <div class="col-sm-6">
+                                            <input type="text" id="txtRegisterDetail" class="form-control" readonly>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-sm-6 control-label no-padding-right"> Pattern Designer </label>
+                                        <div class="col-sm-6">
+                                            <input type="text" id="txtPatternDesignerDetail" class="form-control" readonly>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-sm-6 control-label no-padding-right"> Item Manager </label>
+                                        <div class="col-sm-6">
+                                            <input type="text" id="txtItemManagerDetail" class="form-control" readonly>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-sm-6 control-label no-padding-right"> Item Dev Manager </label>
+                                        <div class="col-sm-6">
+                                            <input type="text" id="txtItemDevmanagerDetail" class="form-control" readonly>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-sm-6 control-label no-padding-right"> Technician </label>
+                                        <div class="col-sm-6">
+                                            <input type="text" id="txtTechnicianDetail" class="form-control" readonly>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-sm-6 control-label no-padding-right"> Confirmed </label>
+                                        <div class="col-sm-6">
+                                            <input type="text" id="txtConfirmedDetail" class="form-control" readonly>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-sm-6 control-label no-padding-right"> Registry Date </label>
+                                        <div class="col-sm-6">
+                                            <input type="text" id="txtRegistryDateDetail" class="form-control" readonly>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="operationPlan" class="tab-pane fade in active">
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <div id="divOpPlan">
+                                    @Html.Partial("~/Views/Menu/MenuPartialView.cshtml")
+                                </div>
+                            </div>
+                            <div class="col-sm-1 ops__op-management--drp-group">
+                                <div class="selec2-custom">
+                                    @Html.Partial("~/Views/UIControl/_OpdtGroup.cshtml")
+                                </div>
+                            </div>
+                            <div class="col-sm-5">
+                                <button type="button" id="btnUpdateProcessTime" class="btn-menu" style="display:none">
+                                    <span class="glyphicon glyphicon-edit"></span> Update OpTime
+                                </button>
+                                <button type="button" id="btnShowNoneStdName" class="btn-menu" style="width:95px">Non Std</button>
+                                <button type="button" id="btnShowVideo" class="btn-menu ops__op-management--btn">Video</button>
+                                <button type="button" id="btnMachine" class="btn-menu ops__op-management--btn">Machine</button>
+                                <button type="button" id="btnShowLayout" class="btn-menu ops__op-management--btn" onclick="location.href = '/OpsLayout/OpsLayout';">Layout</button>
+                                @*<button type="button" id="btnVideoProcessing" class="btn-menu" style="width: 118px" data-toggle="modal" data-target="#vdpModal">Video Processing</button>*@
+                            </div>
+                            <div class="col-sm-3">
+                                <div class="pull-right">
+                                    <button type="button" id="btnSaveOpName" class="btn-menu invisible-ele" style="width: 117px">
+                                        <span class="fa fa-floppy-o"></span> Save Op Name
+                                    </button>
+                                    <select name="countries" class="form-control" id="drpLanguages">
+                                        <option value="df" data-image="/assets/country-dropdown/images/msdropdown/icons/pk-flag.png" data-imagecss="" data-title="Default Language">&nbsp;Default</option>
+                                        <option value="gb" data-image="/assets/country-dropdown/images/msdropdown/icons/blank.gif" data-imagecss="flag flag-gb" data-title="English">&nbsp;English</option>
+                                        <option value="vn" data-image="/assets/country-dropdown/images/msdropdown/icons/blank.gif" data-imagecss="flag flag-vn" data-title="Tiếng Việt">&nbsp;Tiếng Việt</option>
+                                        <option value="id" data-image="/assets/country-dropdown/images/msdropdown/icons/blank.gif" data-imagecss="flag flag-id" data-title="Bahasa">&nbsp;Bahasa</option>
+                                        <option value="mm" data-image="/assets/country-dropdown/images/msdropdown/icons/blank.gif" data-imagecss="flag flag-mm" data-title="မြန်မာဘာသာ">&nbsp;မြန်မာဘာသာ</option>
+                                        <option value="et" data-image="/assets/country-dropdown/images/msdropdown/icons/blank.gif" data-imagecss="flag flag-et" data-title="Amharic">&nbsp;Amharic</option>
+                                    </select>
+
+                                    <button type="button" id="btnExportCsvOpDetail" class="btn-menu" style="width: 117px">
+                                        <span class="glyphicon glyphicon-export"></span> CSV
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <div class="jqgrid-ops-detail" id="divOpsDetail">
+                                    <table id="gridOpsDetail"></table>
+                                    <div id="gridPagerOpsDetail"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="lineBalancing" class="tab-pane fade">
+                        <div class="row">
+
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <form class="form-horizontal" role="form">
+                                        <div class="form-group">
+                                            <div class="col-sm-1"></div>
+                                            <div class="col-sm-5 selec2-custom">
+                                                <select id="drpShowChart" class="form-control">
+                                                    <option value="99">Show all process</option>
+                                                    <option value="1">Show only process with time</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-sm-5 selec2-custom">
+                                                <select id="drpChartType" class="form-control">
+                                                    <option value="line">Line chart</option>
+                                                    <option value="column2d">Bar chart</option>
+                                                    @*<option value="scrollline2d">Line chart with scroll</option>
+                                        <option value="scrollcolumn2d">Column chart with scroll</option>*@
+                                                </select>
+                                            </div>
+
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="col-sm-4 selec2-custom">
+                                        <select id="drpShowTime" class="form-control">
+                                            <option value="1">Show Original Time</option>
+                                            <option value="2">Show Optimize Time</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <div class="checkbox">
+                                            <label class="checkbox-inline"><input type="checkbox" id="chkShowValue" value="">Show times (Second)</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <div class="pull-right">
+                                            <button type="button" id="btnExportBalToExcel" class="btn-menu">
+                                                <span class="fa fa-edit"></span> Excel
+                                            </button>
+                                            <button type="button" id="btnSaveBalancingTime" class="btn-menu">
+                                                <span class="fa fa-edit"></span> Edit
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12 col-xs-12">
+                                    <div style="width:100%; height:700px;">
+                                        <div id="chart-container">FusionCharts XT will load here!</div>
+                                        @*<canvas id="cvsProcessChart"></canvas>*@
+                                    </div>
+                                </div>
+                            </div>
+                            @*<div class="row">
+                <div style="text-align:center; font-size:15px">Process</div>
+                </div>*@
+                        </div>
+                    </div>
+
+                    <div id="moduleRevision" class="tab-pane fade ">
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <table id="tbModuleRevision"></table>
+                                <div id="divModuleRevisionPager"></div>
+                            </div>
+                        </div>
+                        <div class="row" style="margin-top:5px">
+                            <div class="col-sm-11"></div>
+                            <div class="col-sm-1">
+                                <button type="button" id="btnSaveLinkedModule" style="float:right; width: 130px" class="btn-menu">
+                                    <span class="fa fa-save"></span> Save
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="module" class="tab-pane fade ">
+                        <div class="row">
+                            <div class="col-sm-10"></div>
+                            <div class="col-sm-2">
+                                <button type="button" id="btnAddPart" style="float:right; width: 160px" class="btn-menu">
+                                    <span class="fa fa-plus-circle"></span> Manage Assemblies
+                                </button>
+                            </div>
+                        </div>
+                        <div id="divPartManagement" style="display:none">
+                            <div class="row">
+                                <div class="col-sm-2"></div>
+                                <div class="col-sm-8">
+                                    <div class="col-sm-3">
+
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <label class="radio-inline">
+                                            <input type="radio" id="rdDefineModule" name="selectmodule" checked>Parts
+                                        </label>
+                                        <label class="radio-inline">
+                                            <input type="radio" id="rdStandardModule" name="selectmodule">Standard Modules
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-sm-2"></div>
+                            </div>
+
+                            <div class="space-10"></div>
+
+                            <div id="divStandardModule" class="row form-horizontal" style="display:none">
+                                <div class="col-sm-4">
+                                    <div class="form-group">
+                                        <label class="col-sm-5 control-label no-padding-right"> Style Group </label>
+                                        <div class="col-sm-7 selec2-custom">
+                                            <select id="drpStyleGroup" class="form-control" data-placeholder="Style Group"></select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-sm-5 control-label no-padding-right"> Machine Range </label>
+                                        <div class="col-sm-7 selec2-custom">
+                                            <select id="drpMachineRange" class="form-control" data-placeholder="Style Group"></select>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="col-sm-4">
+                                    <div class="form-group">
+                                        <label class="col-sm-5 control-label no-padding-right"> Style Sub Group </label>
+                                        <div class="col-sm-7 selec2-custom">
+                                            <select id="drpStyleSubGroup" class="form-control" data-placeholder="Style Sub Group"></select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-sm-5 control-label no-padding-right"> Module</label>
+                                        <div id="dvModuleLevel" class="col-sm-7 selec2-custom">
+                                            <select id="drpModuleLevel" class="form-control" data-placeholder="Module name" multiple="multiple"></select>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="col-sm-4">
+                                    <div class="form-group">
+                                        <label class="col-sm-5 control-label no-padding-right"> Style Sub Sub Group </label>
+                                        <div class="col-sm-7 selec2-custom">
+                                            <select id="drpStyleSubSubGroup" class="form-control" data-placeholder="Style Sub Sub Group"></select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        @*<label class="col-sm-5 control-label   checkbox-inline"><input type="checkbox" id="chkFinalAssembly" value="">Final assembly</label>*@
+                                        <div class="col-sm-5" style="text-align:right">
+                                            <label class="col-sm-5 control-label   checkbox-inline"></label>
+                                        </div>
+                                        <div class="col-sm-7">
+
+                                            <button type="button" id="btnAddModule" class="btn-menu">
+                                                <span class="fa fa-save"></span> Save
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div id="divDefineModule" class="row form-horizontal">
+                                <div class="col-sm-3"></div>
+                                <div class="col-sm-4">
+                                    <div class="form-group">
+                                        <label class="col-sm-5 control-label no-padding-right"> Part </label>
+                                        <div class="col-sm-7 selec2-custom">
+                                            <select id="drpModulePart" class="form-control" data-placeholder="Select Part" multiple="multiple"></select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-4">
+                                    <div class="form-group">
+                                        <div class="col-sm-7">
+
+                                            <button type="button" id="btnAddModulePart" class="btn-menu">
+                                                <span class="fa fa-save"></span> Save
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="space-10"></div>
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <table id="tbModule"></table>
+                                <div id="dvModulePager"></div>
+                            </div>
+                        </div>
+
+                        <div class="space-10"></div>
+
+                        <div class="row">
+                            <div class="col-sm-10"></div>
+                            <div class="col-sm-2">
+                                <button type="button" id="btnSaveComment" style="float:right; width: 130px" class="btn-menu">
+                                    <span class="fa fa-save"></span> Save Comment
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div><!-- /.col -->
+    </div>
+    <div class="space-10"></div>
+    <div class="modal fade" id="imgPreviewDt" role="dialog">
+        <div class="modal-dialog  modal-lg" style="width:auto">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <img style="max-height:400px; max-width:400px" id="imgDetailDt" src="~/img/no-image.png" />
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+<!-- START ADD: HA -->
+<!-- Modal Video Link-->
+<div class="modal fade modal-custom modal-custom-width" id="mdlShowVideo" role="dialog" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-lg">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Show Video</h4>
+            </div>
+            <div class="modal-body">
+                <div class="modal-body-custom">
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <table id="tbVideoLink"></table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn btn-primary btn-modal" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- END ADD: HA -->
+<!-- START ADD: HA -->
+<!-- Modal Machine -->
+<div class="modal fade modal-custom modal-custom-width" id="mdlShowMachine" role="dialog" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-lg">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Machine</h4>
+            </div>
+            <div class="modal-body">
+                <div class="modal-body-custom">
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <div class="row">
+                                <table id="tbMachine"></table>
+                                <div id="pagerMachine" style="text-align:center; margin:0; padding:0;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="btnExportMachine" type="button" class="btn btn btn-primary btn-modal">Export</button>
+                <button type="button" class="btn btn btn-primary btn-modal" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+<!-- END ADD: HA -->
+
+<div id="vdpModal" class="modal fade vdp-modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                <h4 class="modal-title" id="myLargeModalLabel">&nbsp;🎦 Video processing</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-8">
+                        <div class="hide" id="divVideoTag">
+                            <button id="btnCloseVdPreview" type="button" class="vdp__btn-close-pv"><span aria-hidden="true">✖</span></button>
+                            <video id="vdProcess" src="" class="op-vdp__video" controls>
+                                Your browser doesn't support the video tag.
+                            </video>
+                            <div class="filter-item">
+                                <div id="divSliderWrap" class="slider-wrap">
+                                    <a id="aVdPlay" class="video-preview"></a>
+                                    <input type="hidden" value="0">
+                                    <input type="hidden" value="100">
+                                    @*<div class="slider-bar" style="left: 24.21%; width: 20%;"></div>*@
+                                    @*<span class="slider-split" style="left: 4.21%; width: 20%;"></span>*@
+                                    <span id="spSplitBar" class="slider-split slider-bar" style="left: 24.21%; width: 20%;"></span>
+                                    <div id="sliderLeft" class="slider-button-wrap-left" style="left: 24.21%;">
+                                        <div class="tooltip">
+                                            <div class="tooltip-rel">
+                                                <div tabindex="0" class="slider-button"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div id="sliderRight" class="slider-button-wrap-right" style="left: 44.21%;">
+                                        <div class="tooltip">
+                                            <div class="tooltip-rel">
+                                                <div tabindex="0" class="slider-button"></div>
+                                                @*<div class="slider-start-wrap triangle-start"></div>
+                                                    <div class="slider-start-wrap rect-start"></div>*@
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div id="divCurrentSlider" class="slider-button-wrap-current " style="left: 0%;">
+                                        <div class="tooltip">
+                                            <div class="tooltip-rel">
+                                                <div tabindex="0" class="slider-button"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div><span tabindex="-1" data="about:blank" type="text/html" class="slider-line"></span></div>
+                                    <div class="video-Time">
+                                        <span id="spCurentTime">00:00:00</span> / <span id="spTotalTime">00:00:00</span>
+                                    </div>
+                                </div>
+                                <div class="crop-range">
+                                    <div class="start-splitting-controls">
+                                        <button id="btnSplit" type="button" class="start-splitting">Start Spliting</button>
+                                    </div>
+                                    <div class="crop-input">
+                                        <input id="startH" type="text" placeholder="00" maxlength="2" value="00"> <span>：</span>
+                                        <input id="startM" type="text" placeholder="00" maxlength="2" value="00"> <span>：</span>
+                                        <input id="startS" type="text" placeholder="00" maxlength="2" value="00">
+                                    </div> <span>一</span>
+                                    <div class="crop-input">
+                                        <input id="endH" type="text" placeholder="00" maxlength="2" value="00"> <span>：</span>
+                                        <input id="endM" type="text" placeholder="00" maxlength="2" value="00"> <span>：</span>
+                                        <input id="endS" type="text" placeholder="00" maxlength="2" value="00">
+                                    </div>
+                                    <div id="msgBox" class="msg-box" style="display: none;">Minimum length is 1 second!</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="divLoadVideo">
+                            <div id="divDropVideo" class="vdp__div-input-file">
+                                <input class="vdp-input--upload" id="inputUploadVideo" accept="image/*,video/mp4,video/webm,video/*,video/3gpp,video/avi,video/x-flv,.mkv,video/x-ms-wmv" type="file">
+                                <label id="lbUploadVideo" for="inputUploadVideo" class="vdp-input--label">
+                                    Click to upload
+                                    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1em" width="1em" style="display: inline-block">
+                                        <path d="M9 16h6v-6h4l-7-7-7 7h4zm-4 2h14v2H5z"></path>
+                                    </svg>
+                                    <br />or, drag and drop a video file here
+                                </label>
+                            </div>
+                            <div class="vdp_div--input-url">
+                                <div class="form-group has-success has-feedback">
+                                    <label class="control-label sr-only" for="txtInputUrl">Video URL</label>
+                                    <div class="input-group">
+                                        <span class="input-group-addon">🔗</span>
+                                        <input type="text" class="form-control vdp__input-url" id="txtInputUrl" aria-describedby="inputUrlStatus"
+                                               placeholder="Paste an image or video URL (e.g. http://video.pungkookvn.com:8888/api/Media/Play?fol=UNI0037LRG001001&f=58X3YVwxgBqqvgU.mp4)">
+                                    </div>
+                                    <span class="glyphicon glyphicon-ok form-control-feedback hide" aria-hidden="true"></span>
+                                    <span id="inputUrlStatus" class="sr-only">(success)</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 vdp-modal--part-col">
+                        <div class="row">
+                            <div class="col-md-9">
+                                <video src="http://video.pungkookvn.com:8888/api/Media/Play?fol=10102001&f=7c76afbd-a971-4a5c-9027-b6c2ada299a4.mp4" class="op-vdp__video" controls></video>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="row">Part 1</div>
+                                <div class="row">Duration: 5:15 - 7:30</div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-9">
+                                <video src="http://video.pungkookvn.com:8888/api/Media/Play?fol=10102001&f=7c76afbd-a971-4a5c-9027-b6c2ada299a4.mp4" class="op-vdp__video" controls></video>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="row">Part 2</div>
+                                <div class="row">Duration: 5:15 - 7:30</div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-9">
+                                <video src="http://video.pungkookvn.com:8888/api/Media/Play?fol=10102001&f=7c76afbd-a971-4a5c-9027-b6c2ada299a4.mp4" class="op-vdp__video" controls></video>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="row">Part 3</div>
+                                <div class="row">Duration: 5:15 - 7:30</div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-9">
+                                <video src="http://video.pungkookvn.com:8888/api/Media/Play?fol=10102001&f=7c76afbd-a971-4a5c-9027-b6c2ada299a4.mp4" class="op-vdp__video" controls></video>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="row">Part 4</div>
+                                <div class="row">Duration: 5:15 - 7:30</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div>
+
+@section Scripts
+{
+    <script src="~/assets/csv/jquery.csv.min.js"></script>
+    <script src="~/js/ops/generic/jqgrid-common.js"></script>
+    <script src="~/js/ops/Pages/process-partial-view.js?v=2.9"></script>
+    <script src="~/js/ops/Pages/ops-video.js?v=1.4"></script>
+    <script src="~/js/ops/Pages/ops.js?v=3.4.3"></script>
+    <script src="~/js/ops/menu/menu.js"></script>
+    <script src="~/js/ops/Pages/ops-csv.js?v=1.0.1"></script>
+    <script src="~/assets/chart/Chart.min.js"></script>
+    <script src="~/assets/chart/fusioncharts/fusioncharts.js"></script>
+    <script src="~/assets/chart/fusioncharts/fusioncharts.theme.fint.js"></script>
+    <script src="~/assets/chart/fusioncharts/fusioncharts-jquery-plugin.min.js"></script>
+    <script src="~/js/ops/Pages/ops-chart.js"></script>
+    <script src="~/js/ops/Pages/ops-event.js?v=3.1.6"></script>
+
+    <script>
+
+        $(document).ready(function () {
+
+            OpenReadySearch();
+
+            InitPage();
+
+            // #region Ops Registration
+
+            ClickButtonAddOpsMaster();
+            ClickButtonConfirmOpsMaster();
+            ClickButtonDeleteOpsMaster();
+
+            SelectStyleImageChange();
+            ClickButtonUploadImageStyle();
+            ClickButtonRemovePreviewStyleImage();
+
+            // #endregion
+
+            // #region Balancing
+            ClickTabBalancing();
+            Selection2("drpShowChart");
+            Selection2("drpChartType");
+            Selection2("drpShowTime");
+
+            ClickCheckboxShowVaule();
+
+            SelectChartType();
+            SelectShowChart();
+
+            SelectShowTime();
+            SaveBlancingTime();
+
+            ClickButtonExportBalancingToExcel();
+
+            // #endregion
+
+            // #region Operation Plan
+
+            ClickOperationPlanTab();
+            ClickLayoutTab();
+
+            //Event menu button
+            BtnAddClick();
+            BtnEditClick();
+            BtnDeleteClick();
+
+            SelectLanguageChange2();
+
+            ClickButtonExportOpDetailToCsv();
+
+            ShowNoneStandardName();
+
+            ClickButtonSaveOpName();
+            SelectChangeGroupShow();
+            Tooltip();
+
+            ClickButtonUpdateOpTime();
+            SelectProcessCsvFile();
+            ClickButtonUpdateProcessTime();
+
+            // #region Gridview upload machine file modal
+            SelectRadioUploadVideoOpDetail();
+            SelectVideoFromServer();
+            SelectRadioUploadMachineFileOpDetail();
+            ClickButtonRemoveFileOpDetail();
+            ClickButtonUploadOpDetailFile();
+
+            // #endregion
+
+            // #region Download and upload file
+            SelectShowModalGetFileFromDms();
+            SelectFileOpDetailUploadChange();
+            SelectTypeUploading();
+            ClickButtonFindDmsFile();
+            ClickButtonUploadFileFromDms();
+            SelectRadioUploadJigFile();
+            SelectRadioAddRefVideoLink();
+            ClickButtonAddRefVideoLink();
+            // #endregion
+
+            // #region Modal add new process
+
+            //Envent on modal
+            ClickButtonRemoveImg();
+            ClickButtonRemoveVideo();
+            ClickButtonSaveProcess();
+            ClickButtonUpdateProcess();
+            flProcessImageChange();
+
+            ClickButtonOpTime();
+            ClickLoadAllProcessName();
+            ClickButtonOk();
+
+            //START ADD) SON (2019.08.29) - 29 August 2019
+            InitModalProcessPartialView();
+            //END ADD) SON (2019.08.29) - 29 August 2019
+
+            //Event using template
+            ClickButtonUsingTeplate();
+
+            //ClickButtonGetProNameTemplate();
+
+            SelectModule();
+
+            EventKeyUpMachineCount();
+            EventKeyUpManCount();
+
+            //START ADD: HA
+            //GetTempName();
+            EventButtonClickTemplate();
+            //jqGridProcessTemplate("", "", ""); //MOD - SON) 23/Oct/2020 - No use this function
+            GetActionItemMainLevel();
+            ClickButtonOkTemplate();
+            GetSelectMachineType();
+            FillDataToDropDownlistJobType(OpType);
+            SelectToolID();
+            FillDataToDropDownlistActionCode("ActionCode");
+
+            EventButtonOkSubProcessDetail();
+            EventChangeTemplate();
+            //LoadOpNameByGetTemplate(); //MOD - SON) 23/Oct/2020 - Don't use template
+
+            CheckVideoOpsTable();
+            //CheckMachineOpsTable();
+            BtnClickShowVideo();
+            JqGridMachine("", "", "", "", "", "");
+
+            //  7 March 2019
+            ButtonClickEnterProcess();
+            ClickButtonOkInputOpTime();
+            CloseOpTime();
+            //EventButtonOkEnterProcessDetail();
+            //END ADD: HA
+
+            // #endregion
+
+            // #endregion
+
+            // #region Ops master modal
+
+            //Event on modal
+            EventEnterOnTextboxStyle();
+            ClickButonFilter();
+            ClickButonImportCsvFile();
+            ClickButtonRegisterOps();
+            ClickButtonAcceptImportFile();
+            ClickCheckboxRegisterNeutralColor();
+            SelectRadioCopySelectPlan();
+            SelectRadioRegisterEmptyPlan();
+            SelectRadioImportFileCsv();
+            $('#flImportCsv').bind('change', handleFileSelect);
+
+            SelectEditionOpsMaster();
+            SelectLanguageAddNewOP();
+            ClickButtonTranslateProcessName();
+            // #endregion
+
+            // #region Module
+            //Init grid module
+            //BindDataToJqGridModule("", "");
+            //BindDataToJqGridModuleRevision('', '', '', '');
+
+            ClickTabModule();
+            ClickButtonAddModule();
+
+            SelectMachineRange();
+            SelectStyleGroup();
+            SelectStyleSubGroup();
+            SelectStyleSubSubGroup();
+
+            SelectModuleType();
+            ClickButtonAddModulePart();
+            ClickButtonAddParts();
+            ClickButtonSaveComment();
+            // #endregion
+
+            //Event click button
+            eventClickButton();
+
+            //This function is moved from ClickOperationPlanTab function in ops-event.js
+            //START ADD) SON - 2019.03.1.0 - 07/Mar/2019: Init master data for process modal
+            initMasterDataProcessModal();
+            //END ADD) SON - 2019.03.1.0 - 07/Mar/2019
+        });
+
+    </script>
+
+    <link href="~/assets/op-management/css/op_video-process.min.css" rel="stylesheet" />
+    <script src="~/assets/op-management/js/op_video-process.js"></script>
+}

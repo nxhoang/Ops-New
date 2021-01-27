@@ -1,0 +1,1269 @@
+﻿
+@{
+    ViewBag.Title = "Corporation QCO Ranking";
+    Layout = "~/Views/Shared/_MesLayout.cshtml";
+}
+
+
+@* Fancy Box *@
+<link href="~/Assets/fancybox-master/dist/jquery.fancybox.css" rel="stylesheet" />
+
+@*<link href="~/assets/DayRangePicker/daterangepicker.min.css" rel="stylesheet" />*@
+<link href="~/Assets/Pikaday/css/pikaday.css" rel="stylesheet" />
+<link href="~/Assets/Pikaday/css/BundleCss.css" rel="stylesheet" />
+
+
+@*<link href="~/Assets/qtip/jquery.qtip.min.css" rel="stylesheet" />*@
+
+<link href="~/Assets/Gridstack/gridstack.min.css" rel="stylesheet" />
+
+<link href="~/css/MES/QCO/QCOController.css" rel="stylesheet" />
+
+<link href="~/Assets/dhtmlxList_v51_std/codebase/dhtmlxlist.css" rel="stylesheet" />
+
+<style>
+
+    /*Fancybox Customize */
+    /*.fancybox-slide {
+        width: 100%;
+        height: 100%;
+        left: 0px;
+    }*/
+    .fancybox-caption-wrap {
+        display: none;
+    }
+
+    .fancybox-title-caption {
+        position: absolute;
+        font-size: 20px;
+        color: whitesmoke;
+        margin-top: 7px;
+        text-decoration: none;
+    }
+
+        .fancybox-title-caption:hover {
+            color: whitesmoke;
+            cursor: default;
+        }
+
+    .fancybox-title-caption-right {
+        /*position: absolute;
+        right: 50px;
+        width: 45px;
+        font-size: 20px;*/
+        color: white !important;
+        text-decoration: none;
+        opacity: 0.75;
+    }
+
+        .fancybox-title-caption-right:hover {
+            opacity: 1;
+            animation: ease-in;
+            -moz-animation: ease-in;
+        }
+
+    .fancyboxmessage {
+        color: black !important;
+    }
+
+
+    /* Other Customize */
+    #FactorySettingDesc {
+        height: 100px;
+        /*border: 1px solid rgba(0, 0, 0, 0.1);*/
+        background: none;
+        padding-left: 8px;
+    }
+
+    .jqgrid-row-even {
+        background: whitesmoke;
+    }
+
+    .SortingPara {
+        border: none !important;
+        font-weight: bold;
+    }
+
+    .btnCenter {
+        align-content: center;
+        text-align: center;
+        align-items: center;
+    }
+
+    .mt-1 {
+        margin-top: 1%
+    }
+
+    .mt-2 {
+        margin-top: 2%
+    }
+
+    .mt-3 {
+        margin-top: 3%
+    }
+
+    .mt-4 {
+        margin-top: 4%
+    }
+
+    .modal-content {
+        background: whitesmoke;
+    }
+
+    .myCenterPopup {
+        display: none;
+        top: 33%;
+        left: 25%;
+        position: fixed;
+        margin: 20px 20px;
+        border: 1px solid black;
+        border-radius: 5px;
+        width: 50%;
+        height: auto;
+        background-color: white;
+        line-height: 1.3em;
+        z-index: 101;
+    }
+
+        .myCenterPopup > .popup-header {
+            height: 50px;
+            background-color: #2196F3;
+            color: whitesmoke;
+        }
+
+            .myCenterPopup > .popup-header > div {
+                margin-left: 10px;
+            }
+
+        .myCenterPopup > .popup-body {
+            margin: 15px 15px;
+            font-size: 14px;
+            text-align: left;
+        }
+
+        .myCenterPopup > .popup-footer {
+            height: 45px;
+            background-color: #2196F3;
+            color: whitesmoke;
+        }
+
+            .myCenterPopup > .popup-footer button {
+                margin: 5px 5px;
+            }
+
+    /*QCO Detail Modal*/
+    #myModal {
+        height: 100vh;
+    }
+
+        #myModal .modal-dialog {
+            width: calc(97%);
+            height: 93vh;
+        }
+
+        #myModal .modal-body {
+            height: 85vh;
+            overflow: auto;
+        }
+
+    .jqgrid-row-qcochanged {
+        background-color: #6495ed3d !important;
+    }
+
+    .ui-pg-table td[align="left"] {
+        width: unset !important;
+    }
+
+    body .jqgfirstrow td {
+        padding: 0 0 !important;
+    }
+
+
+
+    /****/
+    .qtip-wiki {
+        max-width: calc(45%);
+        min-width: calc(33%);
+        width: calc(45%);
+        font-size: 15px;
+        color: black;
+    }
+
+        .qtip-wiki label {
+            font-weight: bold;
+        }
+
+        .qtip-wiki p {
+            margin: 0 0 6px;
+        }
+
+        .qtip-wiki h1 {
+            font-size: 20px;
+            line-height: 1.1;
+            margin: 0 0 5px;
+        }
+
+        .qtip-wiki img {
+            float: left;
+            margin: 10px 10px 10px 0;
+        }
+
+        .qtip-wiki .info {
+            overflow: hidden;
+        }
+
+        .qtip-wiki p.note {
+            font-weight: 700;
+        }
+
+
+    i[data-role="quickSummary"] {
+        z-index: 100;
+    }
+</style>
+
+
+<div class="searchingBoxToggleIcon">
+    <i class="fa fa-search fa-2x" onclick="ToggleSearchBox(this,'.searchingBoxToggle');"></i>
+</div>
+
+<div class="searchingBoxToggleBackground" data-targetDomClass=""></div>
+<div class="searchingBoxToggle" data-targetDomClass="searchingBoxToggleIcon">
+    <div class="searchingBoxToggleHeader">
+        <i class="fa fa-times fa-2x pull-right"></i>
+    </div>
+
+    <div class="searchingBoxToggleBody">
+        <div class="row">
+            <div class="col-lg-2 col-md-3 col-sm-3 col-xs-6">
+                <div class="">
+                    <label for="charlie_Corporation" class="label-control">
+                        Corporation
+                    </label>
+                    <select id="charlie_Corporation" class="form-control form-inline" style="background: white; width:100%;">
+                        <option></option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-lg-1 col-md-3 col-sm-3 col-xs-6">
+                <div class="form-group">
+                    <label for="charlie_Year" class="">Year</label>
+                    <select id="charlie_Year" class="form-control form-inline" style="background: white; width:100%;">
+                        <option></option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-lg-1 col-md-3 col-sm-3 col-xs-6">
+                <div class="form-group">
+                    <label for="charlie_WeekNo" class="">Week No</label>
+                    <select id="charlie_WeekNo" class="form-control form-inline" style="background: white; width:100%;">
+                        <option></option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-lg-2 col-md-3 col-sm-3 col-xs-6">
+                <div class="form-group">
+                    <label for="QCORankingFilter" class="label-control">QCO Display</label>
+                    <select id="charlie_RankingFilter" name="charlie_RankingFilter" class="form-control form-inline" style="width:100%;">
+                        <option value="All" selected="selected">All</option>
+                        <option value="Neg">Negative Ranking</option>
+                        <option value="Pos" selected="selected">Positive Ranking</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="col-lg-2 col-md-3 col-sm-3 col-xs-6">
+                <div class="form-group">
+                    <label for="charlie_DeliveryDate" class="label-control">Delivery Date</label>
+                    <input type="text" id="charlie_DeliveryDate" name="charlie_DeliveryDate" class="form-control" data-format="DateRangeOpener" />
+                </div>
+            </div>
+
+            <div class="col-lg-2 col-md-3 col-sm-3 col-xs-6">
+                <div class="form-group">
+                    <label for="charlie_AOType" class="label-control">AO Type</label>
+                    <select id="charlie_AOType" name="charlie_AOType" class="form-control form-inline" style="width:100%;" multiple>
+                    </select>
+                </div>
+            </div>
+
+            @*<div class="col-lg-2 col-md-3 col-sm-3 col-xs-6">
+                    <div class="form-group">
+                        <label for="charlie_AONo" class="label-control">AO No</label>
+                        <input id="charlie_AONo" name="charlie_AONo" class="form-control form-inline" style="width:100%;" />
+                    </div>
+                </div>*@
+
+            @*</div><div class="row mt-1">*@
+
+            <div class="col-lg-2">
+                <div class="form-group">
+                    <button class="btn btn-primary btn-block" type="button" id="ShowCorpQCO">Display Corp. QCO</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="searchingBoxToggleFooter"></div>
+</div>
+
+
+<div id="popupColumnSelectionBackground"></div>
+<div id="popupColumnSelection">
+
+    <div id="popupColumnSelectionHeader">
+        <span style="font-size: 18px;font-weight: bold;">QCO Column Selection</span>
+        <span>Please select the column you wish to visualize QCO.</span>
+    </div>
+
+    <div id="popupColumnSelectionBody">
+        <form id="popupColumnSelectionBodyFrm">
+            <div class="row">
+                <div class="col-sm-12">
+                    @*Picking the column to display*@
+                    <div class="divTable">
+                        <div class="divTableHeading">
+                            <div class="divTableRow">
+                                <div class="divTableHead"></div>
+                            </div>
+                        </div>
+                        <div class="divTableBody">
+
+                            <!--MORE COLUMNS PART -->
+                            <div class="divTableRow">
+                                <div class="divTableCell">
+                                    <span style="font-size: 17px; font-weight: bold;">Standard Columns</span>
+                                </div>
+                            </div>
+
+                            <div class="divTableRow">
+                                <div class="divTableCell">
+                                    <label class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" checked="" disabled="">
+                                        <span class="custom-control-indicator"></span>
+                                        <span class="custom-control-description">System Ranking</span>
+                                    </label>
+                                </div>
+                                <div class="divTableCell">
+                                    <label class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" checked="" disabled="">
+                                        <span class="custom-control-indicator"></span>
+                                        <span class="custom-control-description">Custom Ranking</span>
+                                    </label>
+                                </div>
+                                <div class="divTableCell">
+                                    <label class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" checked="" disabled="">
+                                        <span class="custom-control-indicator"></span>
+                                        <span class="custom-control-description">Last Week Ranking</span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="divTableRow">
+                                <div class="divTableCell">
+                                    <label class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" checked="" disabled="">
+                                        <span class="custom-control-indicator"></span>
+                                        <span class="custom-control-description">Production Package</span>
+                                    </label>
+                                </div>
+                                <div class="divTableCell">
+                                    <label class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" checked="" disabled="">
+                                        <span class="custom-control-indicator"></span>
+                                        <span class="custom-control-description">Due Date</span>
+                                    </label>
+                                </div>
+                                <div class="divTableCell">
+                                    <label class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" checked="" disabled="">
+                                        <span class="custom-control-indicator"></span>
+                                        <span class="custom-control-description">Material Readiness</span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="divTableRow">
+                                <div class="divTableCell">
+                                    <label class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" checked="" disabled="">
+                                        <span class="custom-control-indicator"></span>
+                                        <span class="custom-control-description">AO No</span>
+                                    </label>
+                                </div>
+                                <div class="divTableCell">
+                                    <label class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" checked="" disabled="">
+                                        <span class="custom-control-indicator"></span>
+                                        <span class="custom-control-description">Line No</span>
+                                    </label>
+                                </div>
+
+                                <div class="divTableCell">
+                                    <label class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" checked="" disabled="">
+                                        <span class="custom-control-indicator"></span>
+                                        <span class="custom-control-description">Package Qty</span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="divTableRow">
+                                <div class="divTableCell">
+                                    <label class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" checked="" disabled="">
+                                        <span class="custom-control-indicator"></span>
+                                        <span class="custom-control-description">Buyer Style Code</span>
+                                    </label>
+                                </div>
+                                <div class="divTableCell">
+                                    <label class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" checked="" disabled="">
+                                        <span class="custom-control-indicator"></span>
+                                        <span class="custom-control-description">Buyer Style Name</span>
+                                    </label>
+                                </div>
+                                <div class="divTableCell">
+                                    <label class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" checked="" disabled="">
+                                        <span class="custom-control-indicator"></span>
+                                        <span class="custom-control-description">Style Size</span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="divTableRow">
+                                <div class="divTableCell">
+                                    <label class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" checked="" disabled="">
+                                        <span class="custom-control-indicator"></span>
+                                        <span class="custom-control-description">Style Color Ways</span>
+                                    </label>
+                                </div>
+                                <div class="divTableCell">
+                                    <label class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" checked="" disabled="">
+                                        <span class="custom-control-indicator"></span>
+                                        <span class="custom-control-description">Rev No</span>
+                                    </label>
+                                </div>
+                                <div class="divTableCell">
+                                    <label class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" checked="" disabled="">
+                                        <span class="custom-control-indicator"></span>
+                                        <span class="custom-control-description">QCO Start Date</span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="divTableRow">
+                                <hr />
+                            </div>
+
+                            <!--MORE COLUMNS PART -->
+                            <div class="divTableRow">
+                                <div class="divTableCell">
+                                    <span style="font-size: 17px; font-weight: bold;">More Columns</span>
+                                </div>
+
+                                <div class="divTableCell">
+                                    <button type="button" class="btn btn-primary" name="popupColumnSelectionSelAll">Select All</button>
+                                </div>
+                                <div class="divTableCell">
+                                    <button type="button" class="btn btn-warning" name="popupColumnSelectionDeselAll">Deselect All</button>
+                                </div>
+                            </div>
+
+                            <div class="divTableRow">
+                                <div class="divTableCell">
+                                    <label class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" name="MESALLOCATESTATUS">
+                                        <span class="custom-control-indicator"></span>
+                                        <span class="custom-control-description">MES Scheduling Status</span>
+                                    </label>
+                                </div>
+                                <div class="divTableCell">
+                                    <label class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" name="MESSTARTDATE">
+                                        <span class="custom-control-indicator"></span>
+                                        <span class="custom-control-description">MES Start Date</span>
+                                    </label>
+                                </div>
+                                <div class="divTableCell">
+                                    <label class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" name="MATPRIORITYA;MATPRIORITYB;MATPRIORITYC">
+                                        <span class="custom-control-indicator"></span>
+                                        <span class="custom-control-description">Star-rating Material</span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="divTableRow">
+                                <div class="divTableCell">
+                                    <label class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" name="AOPRDSDAT">
+                                        <span class="custom-control-indicator"></span>
+                                        <span class="custom-control-description">Start Plan</span>
+                                    </label>
+                                </div>
+                                <div class="divTableCell">
+                                    <label class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" name="AOPRDEDAT">
+                                        <span class="custom-control-indicator"></span>
+                                        <span class="custom-control-description">Finish Plan</span>
+                                    </label>
+                                </div>
+                                <div class="divTableCell">
+                                    <label class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" name="ORDQTY">
+                                        <span class="custom-control-indicator"></span>
+                                        <span class="custom-control-description">Order Qty</span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="divTableRow">
+                                <div class="divTableCell">
+                                    <label class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" name="ADTYPENAME">
+                                        <span class="custom-control-indicator"></span>
+                                        <span class="custom-control-description">AO Type</span>
+                                    </label>
+                                </div>
+                                <div class="divTableCell">
+                                    <label class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" name="CREATEDATE">
+                                        <span class="custom-control-indicator"></span>
+                                        <span class="custom-control-description">Last Updated Date</span>
+                                    </label>
+                                </div>
+                                <div class="divTableCell">
+                                    <label class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" name="REASON">
+                                        <span class="custom-control-indicator"></span>
+                                        <span class="custom-control-description">Custom Ranking Reason</span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="divTableRow">
+                                <div class="divTableCell">
+                                    <label class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" name="FINSOREADINESSSHOW">
+                                        <span class="custom-control-indicator"></span>
+                                        <span class="custom-control-description">Final Sample Order Readiness</span>
+                                    </label>
+                                </div>
+                                <div class="divTableCell">
+                                    <label class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" name="JIGREADINESSSHOW">
+                                        <span class="custom-control-indicator"></span>
+                                        <span class="custom-control-description">JIG Readiness</span>
+                                    </label>
+                                </div>
+                                <div class="divTableCell">
+                                    <label class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" name="SOPREADINESSSHOW">
+                                        <span class="custom-control-indicator"></span>
+                                        <span class="custom-control-description">SOP Readiness</span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="divTableRow">
+                                <hr />
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-12">
+                    <span style="font-size: 17px; font-weight: bold;">Sorting Parameters</span>
+                </div>
+
+                @*Picking the Sorting level to display *@
+                <div class="col-lg-5">
+                    <label>* Selected Sorting Paramter(s)</label>
+                    <label>Double click to remove sorting paremeter</label>
+                    <div id="DHTMLXListSelected" style="min-height: 200px;height:200px;"></div>
+                </div>
+                <div class="col-lg-5">
+                    <label>* Master Sorting Paramter(s)</label>
+                    <label>Double click to select sorting paremeter(s)</label>
+                    <div id="DHTMLXListMaster" style="min-height: 200px;height:200px;"></div>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <div id="popupColumnSelectionFooter">
+        <div class="pull-right">
+            <button class="btn btn-success" type="button" name="popupColumnSelectionConfirm">Confirm</button>
+            <button class="btn btn-default" type="button" name="popupColumnSelectionClose">Cancel</button>
+        </div>
+    </div>
+</div>
+
+<!-- widget grid -->
+<section id="widget-grid" class="">
+    <!-- row -->
+    <div class="row">
+        <!-- NEW WIDGET START -->
+        <article class="col-sm-12">
+            <!-- Widget ID (each widget will need unique ID)-->
+            <div class="jarviswidget jarviswidget-color-green" id="wid-id-0" data-widget-editbutton="false">
+                <header>
+                    <span style="font-size:19px; color:white; ">Corporation QCO</span>
+                </header>
+
+                <!-- widget div-->
+                <div>
+                    <div class="" style="width:99%;">
+                        <table id="QCPSGrid" class="gridWithNavTab has-qtip"></table>
+                        <div id="QCPSGridPager"></div>
+                    </div> 
+                </div>
+            </div>
+            <!-- end widget -->
+        </article><!-- WIDGET END -->
+    </div><!-- end row -->
+
+</section>
+<!-- end widget grid -->
+
+
+
+
+@section Scripts{
+    <script src="~/js/mes/QCO/QCOController.js"></script>
+
+    <script src="~/js/plugin/multiselect/bootstrap-multiselect.min.js"></script>
+
+    @*JQuery qtip
+        <script src="~/Assets/qtip/jquery.qtip.min.js"></script>*@
+
+    @*JQuery Grid *@
+    <script src="~/js/plugin/jqgrid/jquery.jqGrid.min.js"></script>
+    <script src="~/js/plugin/jqgrid/grid.locale-en.min.js"></script>
+    <script src="~/js/plugin/jqgrid/Common.js"></script>
+
+
+    @*Bootstrap Notify *@
+    <script src="~/Assets/remarkable-bootstrap-notify/dist/bootstrap-notify.min.js"></script>
+    <script src="~/Assets/remarkable-bootstrap-notify/dist/Common.js"></script>
+
+
+    @* Fancy Box *@
+    @*<script src="~/Assets/fancybox-master/dist/jquery.fancybox.min.js"></script>*@
+    <script src="~/Assets/fancybox-master/dist/jquery.fancybox.js"></script>
+    @*<script src="~/Assets/fancybox-master/dist/Common.js"></script>*@
+
+    @*<script src="~/assets/DayRangePicker/daterangepicker.min.js"></script>*@
+    <script src="~/Assets/Pikaday/pikaday.js"></script>
+    <script src="~/Assets/Pikaday/plugins/pikaday.jquery.js"></script>
+    <script src="~/Assets/Pikaday/common.js"></script>
+
+
+    @*<script type="text/javascript"> var GS; $(function () { GS = $('.grid-stack').gridstack({}); });  $('i[data-role="grid-stack-action-minimize"]').on('click', function (ev) { let $this = $(this);  let $evTarget = $(ev.target); let Class = $evTarget.attr('class'); console.log(Class);  let $gridstackItem = $this.closest('.grid-stack-item'); let GSdata = GS.data('gridstack');  let Height = 1; let classText = "";  if (Class.includes('minus')) { classText = 'fa fa-plus fa-border'; } else if (Class.includes('plus')) { classText = 'fa fa-minus fa-border'; Height = 2; }  GSdata.maxHeight($gridstackItem, Height);  $evTarget.removeClass(); $evTarget.addClass(classText); }); </script>*@
+
+    <script src="~/Assets/dhtmlxList_v51_std/codebase/dhtmlxlist.js"></script>
+
+    <script>
+        var frmColumSelection; //2020-04-11 Tai Le(Thomas)
+        var mUrl, charlie_Corporation, charlie_Year, charlie_WeekNo; //2020-04-11 Tai Le(Thomas)
+
+        /////////////////////////////////////////////////
+        var QCODetailBox;
+        /**QCPSGrid*********/
+        var lastSel_QCPSGrid;
+        var lastSel;
+        var jqGridDataType = 'local';
+
+        var QCPSGrid_colModels = [];
+
+        QCPSGrid_colModels.push({ name: 'RANKING', index: 'RANKING', label: 'Corp Ranking', align: 'right', width: 65, hidden: false }); //For change the position purpose
+
+        QCPSGrid_colModels.push({ name: 'QCOSOURCE', index: 'QCOSOURCE', label: 'QCOSOURCE', align: 'right', hidden: true });//For change the position purpose
+        QCPSGrid_colModels.push({ name: 'QCOVERSION', index: 'QCOVERSION', label: 'QCOVERSION', align: 'right', hidden: true });//For change the position purpose
+
+        QCPSGrid_colModels.push({ name: 'QCORANKINGNEW', index: 'QCORANKINGNEW', label: 'QCORANKING<br/>NEW', align: 'right', width: 40, hidden: true });//For change the position purpose
+        QCPSGrid_colModels.push({ name: 'QCOFACTORY', index: 'QCOFACTORY', label: 'QCO<BR/>FACTORY', align: 'center', width: 80, hidden: true });//For change the position purpose
+        QCPSGrid_colModels.push({ name: 'QCOYEAR', index: 'QCOYEAR', label: 'QCO<BR/>YEAR', align: 'center', width: 80, hidden: true });//For change the position purpose
+        QCPSGrid_colModels.push({ name: 'QCOWEEKNO', index: 'QCOWEEKNO', label: 'QCO<BR/>WEEK NO', align: 'center', width: 80, hidden: true });//For change the position purpose
+
+        QCPSGrid_colModels.push({ name: 'QCORANK', index: 'QCORANK', label: 'System<BR/>Ranking', align: 'right', width: 65, sortable: false, classes: 'pointer', key: true, hidden: true });
+        QCPSGrid_colModels.push({ name: 'CHANGEQCORANK', index: 'CHANGEQCORANK', label: 'Factory<BR/>Ranking', align: 'right', width: 65, sortable: false, classes: 'pointer', editable: true, hidden: true});
+        QCPSGrid_colModels.push({ name: 'PRECUSTOMRANK', index: 'PRECUSTOMRANK', label: 'Last Week<br/>Custom Ranking', align: 'right', width: 65, sortable: false, classes: 'pointer', editable: false, hidden: true});
+
+        QCPSGrid_colModels.push({
+            name: 'PRDPKGSHOW', index: 'PRDPKGSHOW', label: 'Production<BR/>Package', align: 'right', width: 200, sortable: false, classes: '', title: false, formatter: function (cellvalue, options, rowObject) {
+                //console.log(rowObject);
+                let aHref =
+                    '<a href="#" data-role="quickSummary" data-summaryurl="/QCO/POPStyleSummary/?StyleCode=' + rowObject.STYLECODE + '&StyleSize=' + rowObject.STYLESIZE + '&StyleColorSerial=' + rowObject.STYLECOLORSERIAL + '&RevNo=' + rowObject.REVNO + '&PRDPKG=' + rowObject.PRDPKG + '" >' + rowObject.PRDPKG + '</a>';
+                return aHref;
+            }
+        });
+
+        QCPSGrid_colModels.push({ name: 'QCOSTARTDATE', index: 'QCOSTARTDATE', label: 'QCO<br/>Start Date', align: 'right', width: 80, sortable: false, editable: false });
+
+        QCPSGrid_colModels.push({ name: 'MESALLOCATESTATUS', index: 'MESALLOCATESTATUS', label: 'MES<br/>Scheduling Status', align: 'center', width: 70, sortable: false, editable: false });
+        QCPSGrid_colModels.push({ name: 'MESSTARTDATE', index: 'MESSTARTDATE', label: 'MES<br/>Start Date', align: 'right', width: 80, sortable: false, editable: false });
+
+        QCPSGrid_colModels.push({ name: 'PRDPKG', index: 'PRDPKG', label: 'PRDPKG', align: 'right', width: 10, sortable: false, editable: false, hidden: true });
+        QCPSGrid_colModels.push({ name: 'DELIVERYDATE', index: 'DELIVERYDATE', label: 'Due<BR/>Date', align: 'right', width: 80, sortable: false, editable: false, classes: 'pointer' });
+
+        QCPSGrid_colModels.push({ name: 'MATPRIORITYA', index: 'MATPRIORITYA', label: '<i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i>', align: 'right', width: 90, sortable: false, classes: 'pointer' });
+        QCPSGrid_colModels.push({ name: 'MATPRIORITYB', index: 'MATPRIORITYB', label: '<i class="fa fa-star"></i><i class="fa fa-star"></i>', align: 'right', width: 90, sortable: false, classes: 'pointer' });
+        QCPSGrid_colModels.push({ name: 'MATPRIORITYC', index: 'MATPRIORITYC', label: '<i class="fa fa-star"></i>', align: 'right', width: 90, sortable: false, classes: 'pointer' });
+
+        QCPSGrid_colModels.push({ name: 'NORMALIZEDPERCENT', index: 'NORMALIZEDPERCENT', label: 'Material<BR/>Readiness', align: 'right', width: 0, sortable: false, classes: 'pointer', hidden: true });
+
+        QCPSGrid_colModels.push({
+            name: 'NORMALIZEDPERCENTSHOW', index: 'NORMALIZEDPERCENTSHOW', label: 'Material<BR/>Readiness', align: 'right', width: 90, sortable: false,
+            formatter: function (cellvalue, options, rowObject) {
+                let aHref = '<a href="#" onclick="OpenQCODetailDialog(this);"  data-ulr="/QCO/QCODetailPop/?Factory=' + rowObject.QCOFACTORY + '&LINENO=' + rowObject.LINENO + '&AONO=' + rowObject.AONO +
+                    '&STYLECODE=' + rowObject.STYLECODE + '&STYLESIZE=' + rowObject.STYLESIZE + '&STYLECOLORSERIAL=' + rowObject.STYLECOLORSERIAL + '&REVNO=' + rowObject.REVNO +
+                    '&PRDPKG=' + rowObject.PRDPKG + '&QCOYEAR=' + rowObject.QCOYEAR + '&QCOWEEKNO=' + rowObject.QCOWEEKNO + '&QCOSOURCE=' + rowObject.QCOSOURCE + '" >' + rowObject.NORMALIZEDPERCENT + '</a>';
+                return aHref;
+            }
+        });
+
+        QCPSGrid_colModels.push({ name: 'AOPRDSDAT', index: 'AOPRDSDAT', label: 'Start<BR/>plan', align: 'right', width: 100, sortable: false, editable: false, classes: 'pointer' });
+        QCPSGrid_colModels.push({ name: 'AOPRDEDAT', index: 'AOPRDEDAT', label: 'Finish<BR/>plan', align: 'right', width: 100, sortable: false, editable: false, classes: 'pointer' });
+
+        QCPSGrid_colModels.push({ name: 'PLANQTY', index: 'PLANQTY', label: 'Pkg<BR/>Qty', align: 'right', width: 80, sortable: false, editable: false, classes: 'pointer' });
+        QCPSGrid_colModels.push({ name: 'ORDQTY', index: 'ORDQTY', label: 'Order<BR/>Qty', align: 'right', width: 80, sortable: false, editable: false, classes: 'pointer' });
+
+        QCPSGrid_colModels.push({ name: 'CHANGEFACTORY', index: 'CHANGEFACTORY', label: 'Factory', align: 'left', width: 64, sortable: false, classes: 'pointer', hidden: true });
+        QCPSGrid_colModels.push({ name: 'AONO', index: 'AONO', label: 'AO No', align: 'center', width: 100, sortable: false, classes: 'pointer' });
+        QCPSGrid_colModels.push({ name: 'ADTYPENAME', index: 'ADTYPENAME', label: 'AO Type', align: 'left', width: 100, sortable: false, classes: 'pointer' });
+        QCPSGrid_colModels.push({ name: 'LINENO', index: 'LINENO', label: 'Line<BR/>No', align: 'center', width: 80, sortable: false });
+
+        QCPSGrid_colModels.push({ name: 'STYLECODE', index: 'STYLECODE', label: 'STYLE<BR/>CODE', align: 'left', width: 100, sortable: false, hidden: true });
+        QCPSGrid_colModels.push({ name: 'STYLENAME', index: 'STYLENAME', label: 'STYLE<BR/>NAME', align: 'left', width: 100, sortable: false, hidden: true });
+
+        QCPSGrid_colModels.push({ name: 'BUYERSTYLECODE', index: 'BUYERSTYLECODE', label: 'Buyer<BR/>Style Code', align: 'left', width: 100, sortable: false, classes: 'pointer' });
+        QCPSGrid_colModels.push({ name: 'BUYERSTYLENAME', index: 'BUYERSTYLENAME', label: 'Buyer<BR/>Style Name', align: 'left', width: 200, sortable: false, classes: 'pointer' });
+
+        QCPSGrid_colModels.push({ name: 'STYLESIZE', index: 'STYLESIZE', label: 'Style<BR/>Size', align: 'center', width: 64, sortable: false, classes: 'pointer' });
+
+        QCPSGrid_colModels.push({ name: 'STYLECOLORSERIAL', index: 'STYLECOLORSERIAL', label: 'Style<BR/>Color Serial', align: 'left', width: 120, sortable: false, hidden: true });
+        QCPSGrid_colModels.push({ name: 'STYLECOLORWAYS', index: 'STYLECOLORWAYS', label: 'Style<BR/>Color Ways', align: 'left', width: 200, sortable: false, classes: 'pointer' });
+
+        QCPSGrid_colModels.push({ name: 'REVNO', index: 'REVNO', label: 'Rev No', align: 'right', width: 64, sortable: false, classes: 'pointer' });
+
+        QCPSGrid_colModels.push({ name: 'CREATEDATE', index: 'CREATEDATE', label: 'Last Updated Date', align: 'right', width: 140, sortable: false, classes: 'pointer', key: true });
+
+        QCPSGrid_colModels.push({ name: 'CHANGEBY', index: 'CHANGEBY', label: 'CHANGEBY', align: 'left', width: 1, sortable: false, hidden: true, classes: 'pointer' });
+        QCPSGrid_colModels.push({ name: 'REASON', index: 'REASON', label: 'QCO Change<BR/>Reason', align: 'left', width: 100, sortable: false, classes: 'pointer' });
+
+        QCPSGrid_colModels.push({ name: 'FINSOREADINESSSHOW', index: 'FINSOREADINESSSHOW', label: 'Final Sample Order<br/>Readiness', align: 'left', width: 100, sortable: false, classes: 'pointer' });
+        QCPSGrid_colModels.push({ name: 'JIGREADINESSSHOW', index: 'JIGREADINESSSHOW', label: 'JIG<br/>Readiness', align: 'left', width: 100, sortable: false, classes: 'pointer' });
+        QCPSGrid_colModels.push({ name: 'SOPREADINESSSHOW', index: 'SOPREADINESSSHOW', label: 'SOP<br/>Readiness', align: 'left', width: 100, sortable: false, classes: 'pointer' });
+
+        var QCPSGrid = CreateJqGridObject('QCPSGrid', '', jqGridDataType, QCPSGrid_colModels, false, '', 100);
+
+        QCPSGrid.jqGrid('navGrid', '#' + 'QCPSGrid' + 'Pager'
+            , { add: false, edit: false, del: false, search: false }
+            , { /*edit option*/ }
+            , { /*add option*/ }
+            , { /*delete option*/ }
+            , { /*search option*/ }
+            , { /*View option*/ }
+        );
+
+        //QCPSGrid.sortableRows();
+        //QCPSGrid.jqGrid('gridDnD');
+        customJqGridCss();
+
+
+        ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        // Defined Functions
+
+        function QCPSToExcel() {
+            //var charlie_Corp = $('#charlie_drpFactory').val();
+            //var charlie_Year = $('#charlie_Year').val();
+            //var charlie_WeekNo = $('#charlie_WeekNo').val();
+
+            var QCORankingFilter = $('#charlie_RankingFilter').val();
+
+            var pUrl = '../QCO/QCPSToExcel' + "/" + charlie_Corporation + '?_searchFieldQCOYEAR=' + charlie_Year + '&_searchFieldQCOWEEKNO=' + charlie_WeekNo + '&QCORankingFilter=' + QCORankingFilter + '&Type=A&sidx=ranking&rows=9999999';
+
+            if (charlie_Corporation.length <= 0 || charlie_Year.length <= 0 || charlie_WeekNo.length <= 0) {
+                Notify('[Factory], [Year] and [Week No] are required. Please check and try again.', 'warning');
+            } else {
+                window.location = pUrl;
+            }
+        }
+
+        async function ShowQCO() {
+            //charlie_drpFactory = $('#charlie_drpFactory').val();
+            //charlie_Year = $('#charlie_Year').val();
+            //charlie_WeekNo = $('#charlie_WeekNo').val();
+
+            console.log(charlie_Corporation, charlie_Year, charlie_WeekNo);
+
+            if (charlie_Corporation.length <= 0 || charlie_Year.length <= 0 || charlie_WeekNo.length <= 0) {
+                Notify('[Corporation] and [Year] and [Week No] are required. Please check and try again.', 'warning');
+                return;
+            }
+
+            var QCORankingFilter = $('#charlie_RankingFilter').val();
+            //var charlie_DeliveryDate = $('#charlie_DeliveryDate').val();
+
+            mUrl = '../QCO/ShowCoprQCO' + "/" + charlie_Corporation + '?QCOYEAR=' + charlie_Year + '&QCOWEEKNO=' + charlie_WeekNo + '&QCORankingFilter=' + QCORankingFilter;
+
+            let charlie_AOType = $('#charlie_AOType').val();
+            if (Array.isArray(charlie_AOType)) {
+                if (charlie_AOType.length > 0)
+                    mUrl = mUrl + '&_searchFieldStrIncADType=' + charlie_AOType.join(";");
+            }
+
+            ToggleShowColumn('popupColumnSelection');
+        }
+
+        function QCPSGridTrigger(pUrl, pUrlOpt) {
+            QCPSGrid.setGridParam({
+                url: pUrl + pUrlOpt,
+                sortname: 'ranking',
+                datatype: 'json',
+                loadui: 'block',
+                loadtext: '',
+                loadComplete: function (data) {
+                    if (data.hasOwnProperty('retResult')) {
+                        if (!data["retResult"]) {
+                            Notify(data["dataRow"], 'warning');
+                        }
+                    }
+                    QCPSGrid.setGridParam({
+                        url: pUrl
+                    }).trigger('reloadGrid');
+                }
+                , loadError: function (xhr, status, error) {
+                    console.log('loadError');
+                    console.log(xhr);
+                    console.log(status);
+                    console.log(error);
+                }
+                , onSelectRow: function (id, onselectrow) { }
+                , ondblClickRow: function (id, iRow, iCol, e) { }
+                , gridComplete: function () {
+                    var selfgridID = this.id;
+                    var ids = jQuery("#" + selfgridID).jqGrid('getDataIDs');
+                    var modvalue;
+
+                    for (var i = 0; i < ids.length; i++) {
+                        var dtRow = jQuery("#" + this.id).jqGrid('getRowData', ids[i]);
+                        modvalue = (i + 1) % 2;
+
+                        /*#Noted: Set row background color for chẵn and lẻ row */
+                        var backgroundColor;
+                        if (modvalue === 0) {
+                            backgroundColor = 'jqgrid-row-even';
+                        } else {
+                            backgroundColor = 'jqgrid-row-odd';
+                        }
+
+                        if (dtRow.CHANGEBY)
+                            backgroundColor = 'jqgrid-row-qcochanged';
+
+                        jQuery("#" + selfgridID).jqGrid('setRowData', ids[i], {}, backgroundColor);
+
+                        if ('Yes' === dtRow.FINSOREADINESSSHOW)
+                            jQuery("#" + selfgridID).setCell(ids[i], 'FINSOREADINESSSHOW', '', { background: 'green', color: 'white' });
+
+                        if ('Yes' === dtRow.JIGREADINESSSHOW)
+                            jQuery("#" + selfgridID).setCell(ids[i], 'JIGREADINESSSHOW', '', { background: 'green', color: 'white' });
+
+                        if ('Yes' === dtRow.SOPREADINESSSHOW)
+                            jQuery("#" + selfgridID).setCell(ids[i], 'SOPREADINESSSHOW', '', { background: 'green', color: 'white' });
+
+
+                        if ('Not Scheduled' === dtRow.MESALLOCATESTATUS) {
+                            //jQuery("#" + selfgridID).setCell(ids[i], 'MESALLOCATESTATUS', '', { background: 'green', color: 'white' });
+                        } else if ('Fully Scheduled' === dtRow.MESALLOCATESTATUS) {
+                            jQuery("#" + selfgridID).setCell(ids[i], 'MESALLOCATESTATUS', '', { background: 'green', color: 'white' });
+                        }
+                        else if ('Partially Scheduled' === dtRow.MESALLOCATESTATUS) {
+                            jQuery("#" + selfgridID).setCell(ids[i], 'MESALLOCATESTATUS', '', { background: 'orange', color: 'white' });
+                        }
+                    }
+
+                    //2020-04-11 Tai Le(Thomas): show/hide the columns here
+                    //console.log('frmColumSelection inside gridComplete', frmColumSelection);
+
+                    frmColumSelection.forEach(function (ele, index) {
+                        if (ele.name.length > 0) {
+                            let methodName = ele.value ? 'showCol' : 'hideCol';
+
+                            let arrName = ele.name.split(';');
+                            arrName.forEach(
+                                element => { jQuery("#" + selfgridID).jqGrid(methodName, element); }
+                            );
+                        }
+                    });
+                    frmColumSelection = [];
+                    //::END		2020-04-11 Tai Le(Thomas): show/hide the columns here
+
+                }
+            }).trigger("reloadGrid");
+        };
+
+        function resizeGrid() {
+            var $grid = $(".gridWithNavTab"),
+                newWidth = $grid.closest(".ui-jqgrid").parent().width();
+            $grid.jqGrid("setGridWidth", newWidth, false);
+        }
+
+        function OpenQCODetailDialog($this) {
+            $.post($($this).attr('data-ulr'))
+                .done(function (res) {
+                    //console.log(res);
+                    let $mymodal = $("#myModal");
+                    //remove modal-header
+                    $mymodal.find("div.modal-header").remove();
+                    //update the modal's body with the response received
+                    $mymodal.find("div.modal-body").html(res);
+                    //remove modal-footer
+                    //$mymodal.find("div.modal-footer").remove();
+                    // Show the modal
+                    $mymodal.modal("show");
+                });
+            return false;
+        }
+
+        function CloseSearchingBoxToggle() {
+            $('.searchingBoxToggle').find('i').trigger('click');
+        }
+
+        var blShowColumnVisible = false;
+        function ToggleShowColumn(DOM_Ele) {
+            //Reset the form
+            $('#' + DOM_Ele).find('form').trigger('reset');
+
+            var BackgrDIV = DOM_Ele + 'Background';
+
+            if (!blShowColumnVisible) {
+                $('#' + BackgrDIV).show();
+                $('#' + DOM_Ele).show(500);
+            } else {
+                $('#' + DOM_Ele).hide();
+                $('#' + BackgrDIV).hide(500);
+            }
+            blShowColumnVisible = !blShowColumnVisible;
+        }
+
+        var myDHTMLXListMaster, myDHTMLXListSelected;
+
+        /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        // Control Events
+
+        $(window).resize(function () {
+            resizeGrid();
+        });
+
+        $(document).ready(function () {
+            resizeGrid();
+
+            $('#charlie_Corporation,#charlie_Year,#charlie_WeekNo,#charlie_RankingFilter').select2({
+                placeholder: "-Choose One-",
+                allowClear: true,
+                dropdownAutoWidth: true
+            });
+
+
+            /* initialize default value to DOM */
+            var CurDate = new Date();
+            var CurYear = CurDate.getFullYear();
+            var i = CurYear - 5;
+
+            for (i = CurYear; i < CurYear + 6; i++) {
+                if (i == CurDate.getFullYear()) {
+                    $('#charlie_Year').append($('<option>',
+                        {
+                            value: i,
+                            text: i,
+                            selected: true
+                        })
+                    );
+                    $('#charlie_Year option[value="' + i + '"]').text(i);
+                } else {
+                    $('#charlie_Year').append($('<option>',
+                        {
+                            value: i,
+                            text: i
+                        })
+                    );
+                }
+            }
+
+            //Bind Master QCO Sorting
+            myDHTMLXListMaster = new dhtmlXList({
+                container: "DHTMLXListMaster",
+                type: {
+                    template: function (item) {
+                        //"#PARAMETERNAME#<BR/>#SORTDIRECT#",
+                        return `${item.PARAMETERNAME}<BR/>${item.SORTDIRECT}`;
+                    },
+                    height: 69
+                },
+                select: true
+            });
+            myDHTMLXListMaster.attachEvent("onItemDblClick",
+                function (id, ev, html) {
+                    let self = this;
+
+                    // Selected Element of Master Setting
+                    let RowData = self.get(id);
+                    let count = myDHTMLXListSelected.dataCount();
+
+                    // ADD To DHTMLXList_FactorySettings
+                    myDHTMLXListSelected.add(
+                        {
+                            ID: count + 1,
+                            PARAMETERNAME: RowData.PARAMETERNAME,
+                            SORTDIRECT: RowData.SORTDIRECT,
+                            DBFIELDNAME: RowData.DBFIELDNAME
+                        },
+                        count + 1);
+
+                    return true;
+                });
+
+            //Bind Master QCO Sorting
+            myDHTMLXListSelected = new dhtmlXList({
+                container: "DHTMLXListSelected",
+                type: {
+                    template: "#PARAMETERNAME#<BR/>#SORTDIRECT#",
+                    height: 69
+                },
+                select: true,
+                drag: true
+            });
+            myDHTMLXListSelected.attachEvent("onItemDblClick",
+                function (id, ev, html) {
+                    let self = this;
+                    myDHTMLXListSelected.remove(id);
+                    return true;
+                });
+
+
+            $.when(
+                /*GetYearWeeks*/
+                $.ajax({
+                    url: '/QCO/GetYearWeeks',
+                    type: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify({ vstrYear: $('#charlie_Year').val() }),
+                    success: function (data) {
+                        //console.log(data);
+                        $('#charlie_WeekNo').append($('<option>',
+                            {
+                                value: '',
+                                text: '----'
+                            })
+                        );
+                        for (var i = 1; i <= data.NumberOfWeeks; i++) {
+                            if (i < 10)
+                                i = '0' + i;
+                            $('#charlie_WeekNo').append($('<option>',
+                                {
+                                    value: 'W' + i,
+                                    text: 'W' + i
+                                })
+                            );
+                        }
+                        //2019-11-29 Tai Le(Thomas): Assign Current Week
+                        $('#charlie_WeekNo').val("W" + data.CurrentWeek).change();
+                    }
+                })
+                //Bind the ADType
+                , $.ajax({
+                    url: '/QCO/GetAOTypeList',
+                    type: 'POST',
+                    contentType: 'application/json',
+                    success: function (response) {
+                        if (Array.isArray(response)) {
+                            $.each(response, function (i, item) {
+                                $('#charlie_AOType').append(
+                                    $('<option>', {
+                                        value: item.S_Code
+                                        , text: item.Code_Name
+                                    })
+                                );
+                            });
+
+                            $('#charlie_AOType').multiselect({
+                                includeSelectAllOption: true,
+                                enableFiltering: true,
+                                maxHeight: 500,
+                                buttonWidth: '100%'
+                            });
+                        }
+                    }
+                })
+                //Bind the Corp List
+                , $.ajax({
+                    url: '/MasterData/GetCompanyListCoporation',
+                    type: 'POST',
+                    contentType: 'application/json',
+                    success: function (response) {
+                        if (Array.isArray(response)) {
+                            $.each(response, function (i, item) {
+                                $('#charlie_Corporation').append(
+                                    $('<option>', {
+                                        value: item.DeptCode
+                                        , text: `[${item.DeptCode}] ${item.ShortName}`
+                                    })
+                                );
+                            });
+                        }
+                    }
+                })
+                //Bind Master Sorting Para
+                , $.ajax({
+                    type: "POST",
+                    async: true,
+                    url: '/FactorySortingParameter/GetMasterSettings',
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: function (response) {
+                        myDHTMLXListMaster.parse(response, "json");
+                    },
+                    error: function (response) {
+                        //console.log(response);
+                    }
+                })
+            );
+
+            $('#charlie_Corporation').trigger('change');
+            $('#charlie_Year').trigger('change');
+            $('#charlie_WeekNo').trigger('change');
+
+        });
+
+        $('button').on('click', function () {
+            let self_ID = this.id;
+
+            switch (self_ID) {
+                case "myCenterPopupClose":
+                    {
+                        $('.myCenterPopup').hide(500);
+                    }
+                    break;
+                case "myCenterPopupConfirm":
+                    {
+                        let myCenterPopupReason = $('#myCenterPopupReason').val();
+
+                        if (myCenterPopupReason && myCenterPopupReason.length > 0) {
+                            //Get jqGrid Data
+                            var GridData = QCPSGrid.getRowData();
+                            var postData = JSON.stringify(GridData);
+
+                            $.ajax({
+                                contentType: "application/json; charset=utf-8",
+                                dataType: "json",
+                                url: "/QCO/SaveQCPSRanking",
+                                type: "POST",
+                                async: true,
+                                data: JSON.stringify({ data: postData, Reason: myCenterPopupReason }),
+                                success: function (response, textStatus, xhr) {
+                                    //console.log(response, textStatus, xhr);
+
+                                    if (response.retResult) {
+                                        Notify('SaveQCPSRanking Success!!!', 'success');
+                                        //Trigger the Grid again
+                                        ShowQCO();
+                                    }
+                                    else if (!response.retResult)
+                                        Notify(response.retMsg, 'warning');
+                                },
+                                error: function (xhr, textStatus, errorThrown) {
+                                    Notify('SaveQCPSRanking Failed!!!', 'danger');
+                                },
+                                complete: function () {
+                                    $('.myCenterPopup').hide(500);
+                                    //Clear "Reason" textbox
+                                    $('#myCenterPopupReason').val('');
+                                }
+                            });
+                        }
+                    }
+                    break;
+                case "ShowCorpQCO":
+                    {
+                        ShowQCO();
+                    }
+                    break;
+            }
+        });
+
+        $('#popupColumnSelection').find('button').on('click', function (e) {
+            let $form = $('#popupColumnSelection').find('#popupColumnSelectionBodyFrm');
+
+            if (e.target.name == "popupColumnSelectionConfirm") {
+                frmColumSelection = getFormData($form, 'array');
+
+                //Inject the Sorting Parameter
+                if (myDHTMLXListSelected.dataCount() <= 1) {
+                    Notify('Please choose at least 2 Sorting Parameters', 'warning');
+                    return;
+                }
+
+                myDHTMLXListSelected.selectAll();
+                _data = myDHTMLXListSelected.getSelected();
+
+                if (!Array.isArray(_data))
+                    _data = [_data];
+
+                let postData = "";
+                if (Array.isArray(_data)) {
+                    let seperator = "";
+                    _data.forEach(function (val, ind) {
+                        if (postData.length > 0) seperator = "&";
+
+                        postData = postData.concat(`${seperator}SortPara=${myDHTMLXListSelected.get(val).DBFIELDNAME};${myDHTMLXListSelected.get(val).SORTDIRECT}`);
+                    });
+                }
+
+                //Close Column Selection Popup
+                ToggleShowColumn('popupColumnSelection');
+
+                QCPSGridTrigger(`${mUrl}&${postData}`, '');
+
+                //$('#PageBreadcrumb').html(` > ${charlie_drpFactory} - ${charlie_Year} - ${charlie_WeekNo}`);
+                /*2020-04-09 Tai Le(Thomas) Close the Searching pop-up*/
+                CloseSearchingBoxToggle();
+
+                $('#charlie_AONo').val(''); //2020-05-06 Tai Le(Thomas) reset AO No
+
+            } else if (e.target.name == "popupColumnSelectionSelAll") {
+                //Pick all
+                $form.find('input[type="checkbox"]').not(":disabled").prop('checked', true);
+            } else if (e.target.name == "popupColumnSelectionDeselAll") {
+                //Unpick All
+                $form.find('input[type="checkbox"]').not(":disabled").prop('checked', false);
+            } else if (e.target.name == "popupColumnSelectionClose") {
+                //Close
+                ToggleShowColumn('popupColumnSelection');
+            }
+        });
+
+
+        $('#charlie_Corporation').on('change', function () {
+            charlie_Corporation = $(this).val();
+        });
+        $('#charlie_Year').on('change', function () {
+            charlie_Year = $(this).val();
+        });
+        $('#charlie_WeekNo').on('change', function () {
+            charlie_WeekNo = $(this).val();
+        });
+
+    </script>
+}
+

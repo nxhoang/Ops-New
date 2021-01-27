@@ -1,0 +1,100 @@
+﻿@{
+    ViewBag.Title = "Video Link";
+}
+
+<style>
+    #btnAddComment {
+        height: 32px !important;
+    }
+
+    #txtComment {
+        border-radius: 4px !important;
+    }
+
+    .data-container {
+        overflow: scroll;
+        height: 380px !important;
+    }
+
+    .ui-jqgrid tr.jqgrow td {
+        word-wrap: break-word;
+        white-space: pre-wrap;
+        overflow: hidden;
+        height: auto;
+        vertical-align: middle;
+    }
+
+    #divShoutBox {
+        position: relative;
+        width: 400px;
+        height: 300px;
+        overflow: auto;
+    }
+
+    #txtCommentNote {
+        width: 400px;
+        height: 100px;
+    }
+
+    .data-container li:hover {
+        cursor: pointer;
+    }
+</style>
+
+<!--Search Style-->
+@Html.Partial("~/Views/UIControl/_SearchStyle.cshtml")
+
+@Html.Partial("~/Views/UiControl/OpsMasterPartialView.cshtml")
+
+<link href="~/css/ops/pages/CAD-Button.css" rel="stylesheet" />
+<link href="~/assets/jquery-comments/css/jquery-comments.css" rel="stylesheet" />
+
+<div class="row" id="windowsHeight">
+    <div class="col-sm-6">
+        <div class="row">
+            <div class="div-video-preview">
+                <video class="video-preview" poster="" id="videoPreview" style="height:400px" controls></video>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6">
+        @*<div class="row">
+            <input type="text" id="txtComment" placeholder="Enter your comment" style="width:500px" />
+            <button type="button" id="btnAddComment" class="btn-menu">
+                <span class="glyphicon glyphicons-shower"></span>Add
+            </button>
+        </div>
+        <div class="row">
+            <table id="tbComment"></table>
+            <div id="pagerComment" style="text-align:center; margin:0; padding:0;"></div>
+        </div>*@
+        <div class="row">
+            <label>Video pause at: </label>
+            <input type="number" id="txtVideoTime" placeholder="" style="width:150px" />
+            <label> (seconds)</label>
+        </div>
+        @*<div onmousedown="whichElement(event)">*@
+            <div class="row" style="margin-top:10px; " >
+                <div id="comments-container" ></div>
+            </div>
+        
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/ops/Pages/VideoLink.js?v=1.5"></script>
+    @*<script src="~/assets/jquery-comments/js/jquery-comments.min.js"></script>*@
+    <script src="~/assets/jquery-comments/js/jquery-comments.js?v=1.2"></script>
+    <script>
+
+        $(document).ready(function () {
+            PlayVideoComment();
+            $("#windowsHeight").height($(window).height() - 150);
+            JqueryComments();
+            GetTimePause();
+            GetVideoByTimeComment();
+        });
+        
+    </script>
+}
+

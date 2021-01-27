@@ -1,0 +1,181 @@
+﻿.wrapper-chart-iot {
+    display: block;
+    overflow: hidden;
+    margin: 0 auto;
+    padding: 20px 50px;
+    background: transparent;
+    border-radius: 4px;
+}
+
+canvas {
+    background: transparent;
+    height: 400px;
+}
+
+#chartjs-tooltip {
+    opacity: 1;
+    position: absolute;
+    background: rgba(0, 0, 0, .7);
+    color: white;
+    border-radius: 3px;
+    -webkit-transition: all .1s ease;
+    transition: all .1s ease;
+    pointer-events: none;
+    -webkit-transform: translate(-50%, 0);
+    transform: translate(-50%, 0);
+    z-index: 9999;
+}
+
+.chartjs-tooltip-key {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    margin-right: 10px;
+}
+
+#info-detail-chart {
+    /*padding-top: 30px;*/
+}
+
+#table-info {
+    margin: 0 auto;
+}
+
+#table-info tr {
+    padding: 5px;
+    color: black;
+    line-height: 0;
+}
+
+#table-info tr td {
+    font-size: 14px;
+    border: 1px solid black;
+    border-collapse: collapse;
+}
+
+#table-info th, td {
+    padding: 15px;
+}
+
+#row-value-mes-pkg td {
+    font-weight: bold;
+}
+
+#rowspan-mes-pkg {
+    font-weight: bold;
+}
+
+#label-buyer-st-name {
+    font-size: 15px;
+    font-weight: 600;
+}
+
+#tbl-img-product tr td {
+    text-align: center;
+}
+
+#imgMesIot {
+    max-height: 50px;
+    width: auto;
+}
+
+#list3 tr td {
+    cursor: pointer;
+}
+
+#gview_list3 .ui-jqgrid-titlebar-close {
+    width: 80%;
+}
+
+#gview_list3 .ui-icon-circle-triangle-n, .ui-icon-circle-triangle-s {
+    float: right;
+}
+#title-buyer-style-name a {
+    color: #fff !important;
+}
+.right {
+    text-align: right;
+    font-weight: bold;
+}
+.widget-defect {
+    min-height: 150px !important;
+}
+
+#info-defect {
+    margin: 0 auto;
+}
+
+#info-defect tr {
+    padding: 5px;
+    color: black;
+}
+
+#info-defect tr td {
+    font-size: 14px;
+    border: 1px solid black;
+    border-collapse: collapse;
+}
+
+#info-defect th, td {
+    padding: 15px;
+}
+#row-value {
+    font-weight: bold;
+}
+#table-info-defect {
+    width: 100%;
+}
+#chartjs-tooltip table {
+    width: 100%;
+}
+#chartjs-tooltip table .image-employee {
+    margin: 0 auto;
+    width: 100%;
+}
+#chartjs-tooltip table .image-employee td {
+    text-align: center;
+}
+#chartjs-tooltip table .image-employee img {
+    width: 100px;
+    height: auto;
+}
+.center {
+    text-align: center;
+}
+.center img {
+    width: 100px !important;
+    height: auto !important;
+}
+.width150 {
+    min-width: 150px;
+    text-align: left !important;
+}
+.avg {
+    text-align: right;
+    /*background: #FFFF00;*/
+    /*color: #FF0000;*/
+    font-weight: bold;
+}
+#operation {
+    line-height: normal !important;
+    /*background: #FFFF00;*/
+}
+#operation td {
+    min-width: 150px !important;
+    text-align: center;
+    padding: 5px;
+}
+.first-opname {
+    padding-left: 15px !important;
+    text-align: left !important;
+}
+#machineId td {
+    text-align: center;
+}
+.text-last {
+    min-width: 150px;
+    /*background: #FFFF00;*/
+    border-right: none !important;
+    border-bottom: none !important;
+    border-top: none !important;
+}

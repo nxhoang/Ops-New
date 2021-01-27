@@ -1,0 +1,128 @@
+﻿
+
+@{
+    ViewBag.Title = "Inspection";
+    Layout = "~/Views/Shared/_MesLayout.cshtml";
+}
+<link href="~/assets/DayRangePicker/daterangepicker.min.css" rel="stylesheet" />
+<link href="~/Assets/bootstrap-multiselect/bootstrap-multiselect.min.css" rel="stylesheet" />
+
+<style>
+    #endline {
+        height: 70vh;
+    }
+    #chartjs-tooltip {
+        opacity: 1;
+        position: absolute;
+        background: rgba(0, 0, 0, .7);
+        color: white;
+        border-radius: 3px;
+        -webkit-transition: all .1s ease;
+        transition: all .1s ease;
+        pointer-events: none;
+        -webkit-transform: translate(-50%, 0);
+        transform: translate(-50%, 0);
+    }
+
+    .chartjs-tooltip-key {
+        display: inline-block;
+        width: 10px;
+        height: 10px;
+        margin-right: 10px;
+    }
+
+    .tooltip-pad-left {
+        padding-left: 5px;
+    }
+</style>
+
+<div class="row">
+    <div class="col-sm-12">
+        <div class="form-horizontal bv-form">
+            <div class="form-group">
+                <label class="col-sm-1 control-label">Factory</label>
+                <div class="col-sm-2">
+                    <select id="selFactory" name="factoryId" class="form-control" onchange="handleChangeFactory()">
+                        <option value="0">---</option>
+                    </select>
+                </div>
+
+                <label class="col-sm-1 control-label">Date</label>
+                <div class="col-sm-1">
+                    <input type="text" id="beginDate" class="form-control" style="padding-right:0;">
+                </div>
+
+                <label class="col-sm-1 control-label">Report by</label>
+                <div class="col-sm-2">
+                    <select id="selOutputTarget" class="form-control" onchange="handleChangeOutputTarget()">
+                        <option value="output">Output</option>
+                        <option selected value="target">Target</option>
+                    </select>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<section id="widget-grid" class="">
+    <!-- row -->
+    <div class="row">
+        <!-- NEW WIDGET START -->
+        <article class="col-sm-12">
+
+            <!-- Widget ID (each widget will need unique ID)-->
+            <div class="jarviswidget jarviswidget-color-green" id="wid-id-0" data-widget-editbutton="false">
+
+                <header>
+                    <div id="title-buyer-style-name" style="margin-left: 10px"><h2><b>Quality Performance</b></h2></div>
+                </header>
+
+                <!-- widget div-->
+                <div>
+                    <!-- widget content -->
+                    <div class="widget-body">
+
+                        @*drawchart*@
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="wrapper-chart-iot" id="chart-machine-iot">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12" style="overflow-x:auto;">
+                                <div id="info-detail-chart">
+                                </div>
+                            </div>
+                        </div>
+                        @*end drawchart*@
+
+
+                    </div>
+                    <!-- end widget div -->
+
+                </div>
+                <!-- end widget -->
+            </div>
+        </article>
+        <!-- WIDGET END -->
+    </div>
+
+    <!-- end row -->
+</section>
+<!-- end widget grid -->
+
+
+@section Scripts{
+    <script src="~/assets/DayRangePicker/daterangepicker.min.js"></script>
+    <script src="~/Assets/chartjs/Chart.min.js"></script>
+    <script src="~/Assets/chartjs/chartjs-plugin-datalabels.min.js"></script>
+    <script src="~/js/mes/mes-common.js?v=1.0.3"></script>
+    <script src="~/js/mes/end-line-spection/end-line-spection.js"></script>
+    <script src="~/Assets/jquery.blockUI/jquery.blockUI.js"></script>
+    <script src="~/js/plugin/jqgrid/jquery.jqGrid.min.js"></script>
+    <script src="~/js/plugin/jqgrid/grid.locale-en.min.js"></script>
+
+}
+
