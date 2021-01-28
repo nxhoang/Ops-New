@@ -4,14 +4,14 @@
     getBuyerList();
     setDateRangePicker4('#txtDateRange');
 
-    //event selection dropdown list on page
-    eventSelectionDropdownlist();
-
-    bindDataToGridStyle(null, null, null, null, 'uni0037');
+    bindDataToGridStyle(null, null, null, null, '---');
     bindDataToJqGridBom(null, null, null, null);
     bindDataToJqGridOpPlan(null, null, null, null, null);
     bindDataToJqGridOpPlanDetail(null, null, null, null, null, null, null);
     bindDataToJqGridMbom(null, null, null, null);
+
+    //event selection dropdown list on page
+    eventSelectionDropdownlist();
 }
 
 //#region get data master
@@ -57,22 +57,20 @@ function bindDataToGridStyle(buyer, startDate, endDate, aoNumber, styleInfo) {
             buyer: buyer, startDate: startDate, endDate: endDate, aoNumber: aoNumber, styleInfo: styleInfo
         },
         colModel: [
-            { name: "StyleCode", index: "StyleCode", label: arrColname.STYLECODE, search: true, searchoptions: { sopt: ["cn", "eq", "ne"] }, width: 100 },
-            { name: "StyleName", index: "StyleName", label: arrColname.STYLENAME, search: true, searchoptions: { sopt: ["cn", "eq", "ne"] } },
-            { name: "BuyerName", index: "BuyerName", label: arrColname.BuyerName, search: true, searchoptions: { sopt: ["cn", "eq", "ne"] } },
-            { name: "BuyerStyleCode", index: "BuyerStyleCode", label: arrColname.BUYERSTYLECODE, align: "center", search: true, searchoptions: { sopt: ["cn", "eq", "ne"] }, width: 100 },
-            { name: "BuyerStyleName", index: "BuyerStyleName", label: arrColname.BUYERSTYLENAME, search: true, searchoptions: { sopt: ["cn", "eq", "ne"] } },
-            { name: "StyleSize", index: "StyleSize", label: arrColname.STYLESIZE, search: true, searchoptions: { sopt: ["cn", "eq", "ne"] }, width: 80 },
-            { name: "StyleColorSerial", index: "StyleColorSerial", label: arrColname.STYLECOLORSERIAL, hidden: true },
-            { name: "StyleColorWays", index: "StyleColorWays", label: arrColname.STYLECOLORSERIAL, search: true, width: 120 },
-            { name: "RevNo", index: "RevNo", label: arrColname.REVNO, align: "center", search: true, searchoptions: { sopt: ["cn", "eq", "ne"] }, width: 80 },
-            { name: "StaTus", index: "StaTus", label: arrColname.STATUS, align: "center", search: true, searchoptions: { sopt: ["cn", "eq", "ne"] } },
-            { name: "RegistryDate", index: "RegistryDate", label: arrColname.REGISTRYDATE, align: "center", search: true, searchoptions: { sopt: ["cn", "eq", "ne"] } },
-            { name: "Register", index: "Register", label: arrColname.REGISTER_NAME, align: "center", search: true, searchoptions: { sopt: ["cn", "eq", "ne"] } },
-            { name: "AdConfirm", index: "AdConfirm", label: arrColname.AD_CONFIRM, align: "center", search: true, searchoptions: { sopt: ["cn", "eq", "ne"] }, width: 140 },
-            { name: "AdDevSale", index: "AdDevSale", label: arrColname.AD_DEV_SALES, align: "center", search: true, searchoptions: { sopt: ["cn", "eq", "ne"] } },
-            { name: "Have", index: "Have", hidden: true },
-            { name: "AdDevSale", index: "AdDevSale", label: arrColname.AD_DEV_SALES, align: "center", search: true, searchoptions: { sopt: ["cn", "eq", "ne"] } },
+            { name: "StyleCode", index: "StyleCode", label: 'Style Code', search: true, searchoptions: { sopt: ["cn", "eq", "ne"] }, width: 100 },
+            { name: "StyleName", index: "StyleName", label: 'Style Name', search: true, searchoptions: { sopt: ["cn", "eq", "ne"] } },
+            { name: "BuyerName", index: "BuyerName", label: 'Buyer Name', search: true, searchoptions: { sopt: ["cn", "eq", "ne"] } },
+            { name: "BuyerStyleCode", index: "BuyerStyleCode", label: 'Buyer Style Code', align: "center", search: true, searchoptions: { sopt: ["cn", "eq", "ne"] }, width: 100 },
+            { name: "BuyerStyleName", index: "BuyerStyleName", label: 'Buyer Style Name', search: true, searchoptions: { sopt: ["cn", "eq", "ne"] } },
+            { name: "StyleSize", index: "StyleSize", label: 'Style Size', search: true, searchoptions: { sopt: ["cn", "eq", "ne"] }, width: 80 },
+            { name: "StyleColorSerial", index: "StyleColorSerial", hidden: true },
+            { name: "StyleColorWays", index: "StyleColorWays", label: 'Color', search: true, width: 120 },
+            { name: "RevNo", index: "RevNo", label: 'RevNo', align: "center", search: true, searchoptions: { sopt: ["cn", "eq", "ne"] }, width: 80 },
+            { name: "StaTus", index: "StaTus", label: 'Status', align: "center", search: true, searchoptions: { sopt: ["cn", "eq", "ne"] } },
+            { name: "RegistryDate", index: "RegistryDate", label: 'Registry Date', align: "center", search: true, searchoptions: { sopt: ["cn", "eq", "ne"] } },
+            { name: "Register", index: "Register", label: 'Register', align: "center", search: true, searchoptions: { sopt: ["cn", "eq", "ne"] } },
+            { name: "AdConfirm", index: "AdConfirm", label: 'AD Confirm', align: "center", search: true, searchoptions: { sopt: ["cn", "eq", "ne"] }, width: 140 },
+            { name: "AdDevSale", index: "AdDevSale", label: 'AD Dev Sale', align: "center", search: true, searchoptions: { sopt: ["cn", "eq", "ne"] } },
             { name: 'StyleGroup', index: 'StyleGroup', hidden: true },
             { name: 'SubGroup', index: 'SubGroup', hidden: true },
             { name: 'SubSubGroup', index: 'SubSubGroup', hidden: true },

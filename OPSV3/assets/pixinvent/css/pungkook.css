@@ -575,11 +575,54 @@ form label {
 }
 
 .app-sidebar .logo-img img /*, .off-canvas-sidebar .logo-img img */ {
-    width: 50px !important;
+    /*width: 50px !important ;*/
+    width: 60px !important;
+    margin: -5px 0px 0px -5px !important;
 }
 
 .app-sidebar .logo /*, .off-canvas-sidebar .logo*/ {
-    padding: 18px 0px 15px 5px !important;
+    /*padding: 18px 0px 15px 5px !important; Oanh edit 25Jan2021*/
+    padding: 5px 0px 10px 5px !important;
+}
+
+    .app-sidebar .logo .logo-text {
+        padding: 0px !important;
+    }
+
+.ops-text {
+    font-family: 'Audiowide', cursive;
+    font-size: 32px;
+    margin-left: 10px;
+}
+
+.ops-text-under {
+    position: relative;
+    z-index: 4;
+    padding: 9px 0px 10px 5px !important;
+    font-family: 'Audiowide', cursive;
+    font-size: 20px;
+    font-weight: 700;
+    background: #d7e0ea;
+    margin-top: -10px;
+    color: #153a65;
+    /*display: block !important;*/
+}
+
+.wrapper.nav-collapsed.menu-collapsed .app-sidebar .ops-text-under {
+    display: block !important;
+    -webkit-animation: fadeIn 0.5s;
+}
+
+.wrapper.nav-collapsed .app-sidebar:hover .ops-text-under {
+    display: none !important;
+    /*transition: visibility 0s, opacity 0.5s linear;*/
+    transition: opacity 1s ease-out;
+}
+
+.app-sidebar .sidebar-header .ops-text-under.clearfix {
+    display: none !important;
+    transition: opacity 1s ease-out;
+    -webkit-animation: fadeOut 1s;
 }
 
 .container-fluid {
@@ -674,8 +717,8 @@ div.msgBoxTitle {
 }
 
 .ui-jqgrid-view > .ui-jqgrid-titlebar {
-    border-left: 1px solid;
-    border-right: 1px solid;
+    /*border-left: 1px solid;
+    border-right: 1px solid;*/
 }
 
 h4.category {
@@ -694,6 +737,10 @@ h4, .h4 {
 /*Oanh change color title 6 Jan 2021*/
 .color-customize[data-background-color='default'] {
     background: #1296c3;
+}
+
+.default {
+    background-color: #1296c3 !important;
 }
 
 .color-customize[data-background-color='sublime-vivid'] {
@@ -1032,4 +1079,12 @@ h4, .h4 {
 hr {
     margin-top: 1rem !important;
     margin-bottom: 1rem !important;
+}
+
+.togglebutton .switch {
+    display: flow-root;
+}
+
+.modal-body-custom .row .form-horizontal {
+    width: 100%;
 }

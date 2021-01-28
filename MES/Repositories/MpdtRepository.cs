@@ -95,24 +95,74 @@ namespace MES.Repositories
         //Get mes package by date and factory
         public async Task<IEnumerable<Mpdt>> GetMesPackagesByDateAsync(string factory, string date)
         {
-            var result = MySqlDBManager.GetAll<Mpdt>($@"SELECT DISTINCT T_MX_MPDT.*,
+            //var result = MySqlDBManager.GetAll<Mpdt>($@"SELECT DISTINCT T_MX_MPDT.*,
+            //                                            v.STYLECODE,
+            //                                            v.STYLESIZE,
+            //                                            v.STYLECOLORSERIAL,
+            //                                            v.STYLECOLORWAYS,
+            //                                            v.STYLENAME,
+            //                                            v.REVNO,
+            //                                            v.LINENAME,
+            //                                            v.MXTARGET,
+            //                                            v.BUYERSTYLENAME,
+            //                                            v.BUYERSTYLECODE,
+            //                                            x.AONO
+            //                                            FROM T_MX_MPDT
+            //                                            JOIN view_mpdt_opdt_mc v ON T_MX_MPDT.MXPACKAGE = v.MXPACKAGE
+            //                                            JOIN v_mesgroup_ao x ON x.PACKAGEGROUP = v.PACKAGEGROUP
+            //                                            WHERE 
+            //                                            T_MX_MPDT.FACTORY = @factory
+            //                                            AND T_MX_MPDT.PLNSTARTDATE = @dt
+            //                                            ", System.Data.CommandType.Text, new MySqlParameter[] {
+            //    new MySqlParameter("factory", factory),
+            //    new MySqlParameter("dt", date),
+            //});
+            //update 20210127  
+            var result = MySqlDBManager.GetAll<Mpdt>($@"
+                                                        select * from (
+                                                         Select T_MX_MPDT.MXPackage , 
                                                         v.STYLECODE,
                                                         v.STYLESIZE,
                                                         v.STYLECOLORSERIAL,
-                                                        v.STYLECOLORWAYS,
-                                                        v.STYLENAME,
+                                                        T_00_scmt.STYLECOLORWAYS,
+                                                        T_00_stmt.STYLENAME,
                                                         v.REVNO,
-                                                        v.LINENAME,
-                                                        v.MXTARGET,
-                                                        v.BUYERSTYLENAME,
-                                                        v.BUYERSTYLECODE,
+                                                        t_cm_line.LINENAME,
+                                                        T_MX_MPDT.MXTARGET,
+                                                        T_00_stmt.BUYERSTYLENAME,
+                                                        T_00_stmt.BUYERSTYLECODE,
                                                         x.AONO
-                                                        FROM T_MX_MPDT
-                                                        JOIN view_mpdt_opdt_mc v ON T_MX_MPDT.MXPACKAGE = v.MXPACKAGE
-                                                        JOIN v_mesgroup_ao x ON x.PACKAGEGROUP = v.PACKAGEGROUP
+                                                        FROM T_MX_MPDT 
+                                                        join T_MX_MPMT v ON v.PACKAGEGROUP = T_MX_MPDT.PACKAGEGROUP
+                                                        JOIN v_mesgroup_ao x ON x.PACKAGEGROUP = T_MX_MPDT.PACKAGEGROUP
+                                                        left join T_00_stmt on v.STYLECODE = T_00_stmt.StyleCode 
+                                                        left join T_00_scmt on v.STYLECODE = T_00_scmt.StyleCode And v.STYLECOLORSERIAL = T_00_scmt.STYLECOLORSERIAL 
+                                                        join t_cm_line on T_MX_MPDT.LineSerial = t_cm_line.LINESERIAL 
                                                         WHERE 
                                                         T_MX_MPDT.FACTORY = @factory
                                                         AND T_MX_MPDT.PLNSTARTDATE = @dt
+                                                        ) t1 
+                                                        join (
+                                                        select T_MX_opmt.MXPackage
+                                                        from T_MX_MPDT
+                                                        join T_MX_opmt on T_MX_opmt.MXPackage = T_MX_MPDT.MXPackage
+                                                        Join t_mx_opdt on
+                                                        T_MX_opmt.StyleCode = t_mx_opdt.StyleCode AND
+                                                        T_MX_opmt.StyleSize = t_mx_opdt.StyleSize AND
+                                                        T_MX_opmt.StyleColorSerial = t_mx_opdt.StyleColorSerial AND
+                                                        T_MX_opmt.RevNo = t_mx_opdt.RevNo AND
+                                                        T_MX_opmt.OPREVNO = t_mx_opdt.OPREVNO
+                                                        JOIN t_mx_opdt_mc ON
+                                                        t_mx_opdt.StyleCode = t_mx_opdt_mc.StyleCode AND
+                                                        t_mx_opdt.StyleSize = t_mx_opdt_mc.StyleSize AND
+                                                        t_mx_opdt.StyleColorSerial = t_mx_opdt_mc.StyleColorSerial AND
+                                                        t_mx_opdt.RevNo = t_mx_opdt_mc.RevNo AND
+                                                        t_mx_opdt.OPREVNO = t_mx_opdt_mc.OPREVNO AND
+                                                        t_mx_opdt.OPSERIAL = t_mx_opdt_mc.OPSERIAL
+                                                        Where T_MX_MPDT.PLNSTARTDATE = @dt and T_MX_MPDT.Factory = @factory
+                                                        Group By T_MX_opmt.MXPackage
+                                                        ) t2
+                                                        on t1.mxpackage = t2.mxpackage
                                                         ", System.Data.CommandType.Text, new MySqlParameter[] {
                 new MySqlParameter("factory", factory),
                 new MySqlParameter("dt", date),
@@ -339,9 +389,9 @@ namespace MES.Repositories
         /*----- Start code by Dinh Van 2021-01-06 -----*/
         public async Task<IEnumerable<OpdtMc>> GetLobRateByMesPackage(string mesPkg)
         {
-            var result = MySqlDBManager.GetObjects<OpdtMc>($@"Select t_mx_mpdt.MXPackage, 
-                                                                MAX(IFNULL(t_mx_opdt.OPTIME,0)) LongestOPTime , 
-                                                                SUM(IFNULL(t_mx_opdt.OPTIME,0)) TotalOPTime , 
+            var result = MySqlDBManager.GetObjects<OpdtMc>($@"Select t_mx_mpdt.MXPackage,
+                                                                MAX(IFNULL(t_mx_opdt.OPTIME,0)) LongestOPTime,
+                                                                SUM(IFNULL(t_mx_opdt.OPTIME,0)) TotalOPTime,
                                                                 COUNT(t_mx_opdt.OPSERIAL) NumOfOP,
                                                                 SUM(IFNULL(t_mx_opdt.OPTIME,0)) / (MAX(IFNULL(t_mx_opdt.OPTIME,0)) * COUNT(t_mx_opdt.OPSERIAL)) * 100 as LOB
                                                             from t_mx_mpdt

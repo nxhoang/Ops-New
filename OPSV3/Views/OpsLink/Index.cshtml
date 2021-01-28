@@ -79,9 +79,12 @@
                 $(".msgBox").hide();
             });
             SelectEditionOpsMaster();
-           // Test();
+            // Test();
+
+            // Oanh add 27Jan2021
+            setBackgroundColorJqGridModal();
         });
-        
+
 
         function CheckRoleLink(edition, opsConfirm, SystemId, MenuId, divName, role) {
             var mn = MenuId;
@@ -91,7 +94,7 @@
             }
             UserRole = GetUserRoleInfo(SystemId, mn);
             //START MOD) SON - 1/Jul/2019 - check role for MES edition
-            if (!isEmptyOrWhiteSpace(opsConfirm)) {               
+            if (!isEmptyOrWhiteSpace(opsConfirm)) {
                 // opsConfirm: is confirm
                 SetMenuActionMode(divName, ReadOnly, UserRole);
             } else {
@@ -105,7 +108,7 @@
             //} else {
             //    SetMenuActionMode(divName, role, UserRole);
             //}
-            //START MOD) SON - 1/Jul/2019 
+            //START MOD) SON - 1/Jul/2019
         }
 
         function CheckRoleCurrent(role) {
@@ -114,9 +117,9 @@
 
         //START ADD) SON - 07/May/2019
         function GetModulesByStyleCode(styleCode) {
-           
+
         }
-        //END ADD) SON - 07/May/2019
+                //END ADD) SON - 07/May/2019
     </script>
 }
 

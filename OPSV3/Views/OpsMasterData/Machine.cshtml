@@ -1,4 +1,4 @@
-﻿@{ 
+﻿@{
     ViewBag.Title = "Machine management";
     ViewBag.PageTitle = "Machine management";
 }
@@ -11,7 +11,7 @@
     <script src="~/js/ops/Pages/Machine.js?v=1.0.6"></script>
     <script>
         $(document).ready(function () {
-            CreateMcGrid($("#cbBuyerId").val(),MachineType.machine, "Machine management");
+            CreateMcGrid($("#cbBuyerId").val(), MachineType.machine, "Machine management");
             AppendMcmtByCode(MachineType.machine);
             AppendBuyerTocb();
             AppendBrand();
@@ -23,6 +23,8 @@
             //START ADD - SON) 8/Oct/2020
             getOperationGroup("0", '');
             //END ADD - SON) 8/Oct/2020
+            // Oanh add 27Jan2021
+            setBackgroundColorJqGridModal();
         });
         var arrMc = {
             ItemCode: "Code",
@@ -39,11 +41,11 @@
         };
 
         var arrAcction = {
-            editTitle: CheckRoleEdit()?"Edit machine":"Machine",
+            editTitle: CheckRoleEdit() ? "Edit machine" : "Machine",
             submintBtn: "Update",
             cancelBtn: "Close",
             addTitle: "Add machine",
-            addBtn:"Add"
+            addBtn: "Add"
         }
 
         function GetKeyCodeStyle(styleCode, styleSize, styleColorSerial, revNo) {

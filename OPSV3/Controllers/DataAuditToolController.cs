@@ -119,6 +119,9 @@ namespace OPSV3.Controllers
 
         public JsonResult SearchStyle(GridSettings gridRequest, string buyer, string startDate, string endDate, string aoNumber, string styleInfo)
         {
+            //if initial page then return null
+            if(styleInfo == "----") return Json(null, JsonRequestBehavior.AllowGet);
+
             if (!string.IsNullOrEmpty(startDate) && string.IsNullOrEmpty(endDate))
             {
                 endDate = DateTime.Now.ToString("yyyy/MM/dd", CultureInfo.InvariantCulture);

@@ -441,6 +441,7 @@
     <Content Include="assets\pixinvent\img\logos\logo-color-big.png" />
     <Content Include="assets\pixinvent\img\logos\logo-OPS-PK-pink.svg" />
     <Content Include="assets\pixinvent\img\logos\logo-OPS-PK.svg" />
+    <Content Include="assets\pixinvent\img\OPS-symbol.svg" />
     <Content Include="assets\pixinvent\img\OPS.png" />
     <Content Include="assets\pixinvent\img\pages\sativa.png" />
     <Content Include="assets\pixinvent\img\pages\signature-scan.png" />
@@ -461,6 +462,7 @@
     <Content Include="assets\pixinvent\img\photos\7.jpg" />
     <Content Include="assets\pixinvent\img\photos\8.jpg" />
     <Content Include="assets\pixinvent\img\photos\no-image.png" />
+    <Content Include="assets\pixinvent\img\PK-logo.svg" />
     <Content Include="assets\pixinvent\img\portfolio\portfolio-1.jpg" />
     <Content Include="assets\pixinvent\img\portfolio\portfolio-2.jpg" />
     <Content Include="assets\pixinvent\img\portfolio\portfolio-3.jpg" />

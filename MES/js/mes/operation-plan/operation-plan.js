@@ -181,7 +181,7 @@ function loadChart(list, mesPackage, plnStartDate) {
 
 function drawChart(obj) {
     var ctx = document.getElementById("myChart4").getContext('2d');
-    
+    var title_opname = '';
     var myChart = new Chart(ctx, {
         type: 'bar',
         data: {
@@ -206,10 +206,9 @@ function drawChart(obj) {
                 // Disable the on-canvas tooltip
                 enabled: false,
                 custom: function (tooltipModel) {
-                    var listTime = this._chart.data.listTime;
                     // Tooltip Element
                     var tooltipEl = document.getElementById('chartjs-tooltip');
-
+                    console.log(tooltipModel);
                     // Create element on first render
                     if (!tooltipEl) {
                         tooltipEl = document.createElement('div');
@@ -274,21 +273,10 @@ function drawChart(obj) {
                     tooltipEl.style.pointerEvents = 'none';
                 },
                 callbacks: {
-                    //title: function (tooltipItem, data) {
-                    //    listTime.map((item) => {
-                    //        if (item.OpName == tooltipsLabel[tooltipItem[0].index]) {
-                    //            //console.log(item);
-                    //            var hms = item.timeMaxMin.MinDate.substr(-8);   // input string
-                    //            var a = hms.split(':'); // split it at the colons
-                    //            var seconds = (+a[0]) * 60 * 60 + (+a[1]) * 60 + (+a[2]); 
-                    //            start_sec = seconds - item.timeMaxMin.MinPowerTime;
-                    //            startTime = formatIntToTime(start_sec);
-                    //            endTime = item.timeMaxMin.MaxDate.substr(-8);
-                    //            //console.log(start_sec);
-                    //        }
-                    //    })
-                    //    return tooltipsLabel[tooltipItem[0].index];
-                    //}
+                    //return full title when hover color
+                    title: function (tooltipItem, data) {
+                        return data.labels[tooltipItem[0].index];
+                    }
                 }
 
             },
@@ -299,7 +287,17 @@ function drawChart(obj) {
                         display: false,
                     },
                     ticks: {
-                        autoSkip: false
+                        autoSkip: false,
+                        //hide text of lables
+                        callback: function (label, index, labels) {
+                            if (label.length > 15) {
+                                title_opname = label;
+                                let opname = label.substr(0, 15) + '...';
+                                return opname;
+                            } else {
+                                return label;
+                            }
+                        }
                     }
                 }],
                 yAxes: [{

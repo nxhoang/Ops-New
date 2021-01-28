@@ -875,7 +875,7 @@ function dragStartVideo1(e) {
 function allowDropCanvas(event) {
     event.preventDefault();
     //console.log("Allowing dropping video to canvas.");
-    
+
 }
 
 function dropCanvas(event) {
@@ -884,24 +884,29 @@ function dropCanvas(event) {
 
     if (_isDraggingVideo) {
         if (window.CurrentOpmt) {
-            const videoNo = event.dataTransfer.getData("VideoNo"),
-                dragVideo = _videoOpdts1.find(x => x.PartNo.toString() === videoNo);
-
-            console.log(`videoNo: ${videoNo}`);
-            console.log("dragVideo");
-            console.log(dragVideo);
+            //console.log(`videoNo: ${videoNo}`);
+            //console.log("dragVideo");
+            //console.log(dragVideo);
             //console.log(event.currentTarget);
 
-            console.log(event.offsetX);
-            console.log(event.offsetY);
-            console.log(event.top);
-            console.log(event.left);
-            console.log(event.clientX);
-            console.log(event.clientY);
-            console.log(event.pageX);
-            console.log(event.pageY);
+            //console.log(event.offsetX);
+            //console.log(event.offsetY);
+            //console.log(event.currentTarget.pageX);
+            //console.log(event.currentTarget.pageY);
+            //console.log(event.clientX);
+            //console.log(event.clientY);
+            //console.log(event.pageX);
+            //console.log(event.pageY);
+            //console.log(event.currentTarget.getBoundingClientRect());
+            //console.log(x);
+            //console.log(y);
 
             console.log(window.CurrentOpmt);
+
+            const videoNo = event.dataTransfer.getData("VideoNo"),
+                dragVideo = _videoOpdts1.find(x => x.PartNo.toString() === videoNo);
+            console.log(videoNo);
+            console.log(dragVideo);
 
             // Beginning add a node to canvas
             AsyncGetMaxOpSerial((opSerial) => {
@@ -913,7 +918,8 @@ function dropCanvas(event) {
                             angular.element(_appElement).scope().layoutPage.pageNo, 0, 0, "#FFFFFFFF"),
                         opnts = [new Opnt(abbEdition, window.CurrentOpmt.StyleCode, window.CurrentOpmt.StyleColorSerial,
                             window.CurrentOpmt.StyleSize, window.CurrentOpmt.RevNo, window.CurrentOpmt.OpRevNo, opSerial, 1, 3600)], // Currently, default OpNameId is 3600 in opnm table that was added by Naveen. OpnSerial is from 1.
-                        ajaxConfig = new AjaxConfig(InsertProcessUrl, true, JSON.stringify({ opDetail: opdt, lstOpMachine: [], lstOpTool: [], lstOpnt: opnts }));
+                        ajaxConfig = new AjaxConfig(InsertProcessUrl, true, JSON.stringify({ opDetail: opdt, lstOpMachine: [], lstOpTool: [], lstOpnt: opnts })),
+                        selectedOpdt = _videoOpdts1.find(x => x.OpSerial === opSerial.trim());
 
                     AjaxPostCommon(ajaxConfig, (res) => {
                         console.log(res);
@@ -926,6 +932,9 @@ function dropCanvas(event) {
                                 true, 0, 0, null, "", ["settings.svg"], window.ProcessIconPath, "settings.svg");
 
                             toolkit.addNode(layoutProcess);
+
+                            if (selectedOpdt) selectedOpdt.OpSerial = null; // assigning null to replace another video.
+                            dragVideo.OpSerial = opSerial.trim();
 
                             ShowMessageOk("001", SmsFunction.Add, MessageType.Success, MessageContext.Add, ObjMessageType.Info);
                         } else {
@@ -959,37 +968,38 @@ function dropVideo1(event) {
         selectedOpdt = _videoOpdts1.find(x => x.OpSerial === opSerial),
         pOpName = document.getElementById(`pOpName${opSerial}`);
 
-    if (selectedOpdt) {
-        MsgInform("Alert", `This process was selected for video number: ${selectedOpdt.PartNo}`, "error", true, true);
+    _isDraggingVideo = false; // to prevent generate new process
+
+    //if (selectedOpdt) {
+    //    MsgInform("Alert", `This process was selected for video number: ${selectedOpdt.PartNo}`, "error", true, true);
+    //} else {
+    if (videoNo) {
+        if (selectedOpdt) selectedOpdt.OpSerial = null; // assigning null to replace another video.
+        dragVideo.OpSerial = opSerial;
+        dragVideo.DisplayName = pOpName.innerHTML;
+
+        console.log(`Video number: ${videoNo}`);
+        console.log(`OpSerial: ${opSerial}`);
+        console.log($(`#selP${videoNo}`));
+
+        //$(`#selP${videoNo}`).multiselect('refresh');
+        $(`#selP${videoNo}`).multiselect('deselectAll', false);
+        $(`#selP${videoNo}`).multiselect('select', [opSerial.toString()]);
+
+        //alert(`Selected ${[opSerial.toString()]}.`);
+        //$(`#selP${videoNo}`).multiselect('updateButtonText');
+
+        $(`#selP${videoNo}`).multiselect('refresh');
+
+        const vdpAlerts = document.getElementById("vdpAlerts"),
+            alertTag = createInformTag1(`&nbsp;Assigned video number '${videoNo}' to process: ${pOpName.innerHTML}`);
+
+        vdpAlerts.appendChild(alertTag);
+        setTimeout(() => { alertTag.remove(); }, 5000);
     } else {
-        if (videoNo) {
-            dragVideo.OpSerial = opSerial;
-            dragVideo.DisplayName = pOpName.innerHTML;
-
-            console.log(`Video number: ${videoNo}`);
-            console.log(`OpSerial: ${opSerial}`);
-            console.log($(`#selP${videoNo}`));
-
-            //$(`#selP${videoNo}`).multiselect('refresh');
-            $(`#selP${videoNo}`).multiselect('deselectAll', false);
-            $(`#selP${videoNo}`).multiselect('select', [opSerial.toString()]);
-
-            //alert(`Selected ${[opSerial.toString()]}.`);
-            //$(`#selP${videoNo}`).multiselect('updateButtonText');
-
-            $(`#selP${videoNo}`).multiselect('refresh');
-
-            const vdpAlerts = document.getElementById("vdpAlerts"),
-                alertTag = createInformTag1(`&nbsp;Assigned video number '${videoNo}' to process: ${pOpName.innerHTML}`);
-
-            vdpAlerts.appendChild(alertTag);
-            setTimeout(() => { alertTag.remove(); }, 5000);
-
-            _isDraggingVideo = false;
-        } else {
-            console.log("Wrong source element!");
-        }
+        console.log("Wrong source element!");
     }
+    //}
 }
 
 function droppableProcessNodes1() {

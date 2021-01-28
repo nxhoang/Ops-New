@@ -409,7 +409,8 @@ p {
     height: 100%
 }
 
-/*#imgOpIcon1 {
+/*this just for viewing, do not push to TFS*/
+#imgOpIcon1 {
     background-color: red
 }
 
@@ -427,7 +428,8 @@ p {
 
 #imgOpIcon5 {
     background-color: rgb(255, 0, 64)
-}*/
+}
+/*this just for viewing, do not push to TFS*/
 
 #mdlProcessDetail .arrow-op {
     height: 132px !important

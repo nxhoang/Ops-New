@@ -7,12 +7,12 @@
 
 @section Scripts
 {
-<script src="~/js/ops/uicontrol/SearchStyle.js?v=1.0.5"></script>
+    <script src="~/js/ops/uicontrol/SearchStyle.js?v=1.0.5"></script>
     <script src="~/js/ops/generic/SmSgManager.js"></script>
     <script src="~/js/ops/Pages/Machine.js?v=1.0.6"></script>
     <script>
         $(document).ready(function () {
-            CreateMcGrid($("#cbBuyerId").val(),MachineType.tool, "Tools management");
+            CreateMcGrid($("#cbBuyerId").val(), MachineType.tool, "Tools management");
             AppendMcmtByCode(MachineType.tool);
             AppendBuyerTocb();
             AppendBrand();
@@ -20,6 +20,8 @@
             ChangeType(MachineType.tool);
             OpenReadySearch();
             AppendUnit("UnitCode");
+            // Oanh add 27Jan2021
+            setBackgroundColorJqGridModal();
         });
 
         var arrMc = {
@@ -37,7 +39,7 @@
         };
 
         var arrAcction = {
-            editTitle: CheckRoleEdit()?"Edit tool":"Tool",
+            editTitle: CheckRoleEdit() ? "Edit tool" : "Tool",
             submintBtn: "Update",
             cancelBtn: "Close",
             addTitle: "Add tool",
