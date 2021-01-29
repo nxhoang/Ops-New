@@ -68,14 +68,14 @@ html, body {
     position: relative;
     top: -30px;*/
     /* M.O edits*/
-    background: #edeef5;
     width: 64px;
     height: 64px;
     border-radius: 50%;
     margin: 0 auto;
     position: relative;
     top: -40px;
-    box-shadow: 0 0 8px 0 rgb(52 66 90 / 20%), 0 6px 20px 0 rgb(52 66 90 / 5%);
+    box-shadow: 0 4px 8px 0 rgb(0 0 0 / 5%), 0 6px 20px 0 rgb(0 0 0 / 10%);
+    background-image: linear-gradient(to bottom right, #ffffff, #edeef5);
 }
 
 /*M.O has edited*/
@@ -231,8 +231,8 @@ p {
 .card {
     border: 1px solid #ccc;
     border-radius: 2px;
-    box-shadow: 0 4px 8px 0 #000000, 0 6px 20px 0 #000000;
-    box-shadow: 0 4px 8px 0 rgb(52 66 90 / 5%), 0 6px 20px 0 rgb(52 66 90 / 5%);
+    /*box-shadow: 0 4px 8px 0 #000000, 0 6px 20px 0 #000000;*/
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,.05), 0 6px 20px 0 rgba(0,0,0,.05);
     float: left;
     z-index: 12;
     display: flex;
@@ -261,8 +261,8 @@ p {
     /*-moz-box-shadow: 10px 10px 5px #808080;
     -webkit-box-shadow: 10px 10px 5px #808080;
     box-shadow: 10px 10px 5px #808080;*/
-    box-shadow: 0 8px 20px 0 #8e9dbe, 0 8px 20px 0 #8e9dbe;
-    box-shadow: 0 8px 20px 0 rgb(142 157 190 / 50%), 0 8px 20px 0 rgb(142 157 190 / 50%);
+    box-shadow: 0 8px 20px 0 #53bbfd, 0 8px 20px 0 #53bbfd;
+    box-shadow: 0 8px 20px 0 rgba(142,157,190,.5), 0 8px 20px 0 rgba(142,157,190,.5);
 }
 
 .process-title {
@@ -298,7 +298,7 @@ p {
     width: 100%;
     position: absolute;
     /*padding: 2px 5px;*/
-    /*background-image: linear-gradient(to right, #fc6586, #53bbfd);*/
+    background-image: linear-gradient(to right, #fc6586, #53bbfd) !important;
     border-radius: 0 0 1px 1px;
     bottom: 0;
     right: 0;
@@ -461,9 +461,9 @@ p {
 }
 
 /* M.O edits*/
-.op__controls {
+/*.op__controls {
     background-image: linear-gradient(to right, #1488cc, #2832b2);
-}
+}*/
 .op__control-div:after {
     background-color: #34425a !important;
 }
@@ -478,4 +478,12 @@ p {
         width: 226px !important;
         border: none !important;
     }
+.btn-primary-mo {
+    background-color: #7f8fb1 !important;
+    border-color: #7f8fb1;
+}
+.btn-primary-mot {
+    background-color: #7f8fb1 !important;
+    border-color: #7f8fb1;
+}
 /*M.O has edited*/
