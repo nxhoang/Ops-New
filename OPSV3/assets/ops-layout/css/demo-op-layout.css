@@ -29,14 +29,24 @@ html, body {
 }
 
 .circle {
-    width: 44px;
+    /*width: 44px;
     height: 44px;
     border-radius: 50%;
     margin-left: 2rem;
     position: relative;
     margin: 0 auto;
     padding: 1px;
-    top: -78px;
+    top: -78px;*/
+    /* M.O edits*/
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin-left: 2rem;
+    position: relative;
+    margin: 0 auto;
+    padding: 1.1px;
+    top: -97px !important;
+    /* M.O has edited*/
 }
 
 .circle2 {
@@ -50,19 +60,30 @@ html, body {
 }
 
 .grey-circle {
-    background: #edeef5;
+    /*background: #edeef5;
     width: 52px;
     height: 52px;
     border-radius: 50%;
     margin: 0 auto;
     position: relative;
-    top: -30px;
+    top: -30px;*/
+    /* M.O edits*/
+    background: #edeef5;
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    margin: 0 auto;
+    position: relative;
+    top: -40px;
+    box-shadow: 0 0 8px 0 rgb(52 66 90 / 20%), 0 6px 20px 0 rgb(52 66 90 / 5%);
 }
+
+/*M.O has edited*/
 
 .rounded-0 {
     width: 2.2em;
     display: block;
-    margin: 8px;
+    margin: 10px;
 }
 
 .circle3 {
@@ -211,7 +232,7 @@ p {
     border: 1px solid #ccc;
     border-radius: 2px;
     box-shadow: 0 4px 8px 0 #000000, 0 6px 20px 0 #000000;
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.05), 0 6px 20px 0 rgba(0, 0, 0, 0.05);
+    box-shadow: 0 4px 8px 0 rgb(52 66 90 / 5%), 0 6px 20px 0 rgb(52 66 90 / 5%);
     float: left;
     z-index: 12;
     display: flex;
@@ -241,7 +262,7 @@ p {
     -webkit-box-shadow: 10px 10px 5px #808080;
     box-shadow: 10px 10px 5px #808080;*/
     box-shadow: 0 8px 20px 0 #8e9dbe, 0 8px 20px 0 #8e9dbe;
-    box-shadow: 0 8px 20px 0 rgba(142, 157, 190, 0.5), 0 8px 20px 0 rgba(142, 157, 190, 0.5);
+    box-shadow: 0 8px 20px 0 rgb(142 157 190 / 50%), 0 8px 20px 0 rgb(142 157 190 / 50%);
 }
 
 .process-title {
