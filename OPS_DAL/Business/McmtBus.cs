@@ -12,6 +12,83 @@ namespace OPS_DAL.Business
     public class McmtBus
     {
         #region Oracle database
+
+        /// <summary>
+        /// Get buyer by factory. get list buyer in t_sd_dorm table
+        /// </summary>
+        /// <param name="factoryId"></param>
+        /// <returns></returns>
+        /// Author: Son Nguyen Cao
+        /// Date: 28/Jan/2021
+        public static List<Mcmt> GetBuyersByFactory(string factoryId)
+        {
+            var oraParams = new List<OracleParameter>();
+
+            string whereFactoryId;
+            if (!string.IsNullOrEmpty(factoryId))
+            {
+                //where with specific factory
+                whereFactoryId = " and factory = :p_factory";
+                oraParams.Add(new OracleParameter("p_factory", factoryId));
+            }
+            else
+            {
+                //where with the list development team id
+                whereFactoryId = @" and factory in ( 
+                                            select factory 
+                                            from t_cm_fcmt 
+                                            where type = 'P' and substr(factory, 1, 1) <> 'P' and status = 'OK'
+                                        )";
+            }
+
+            string strSql = $@"select mcm.M_CODE MASTERCODE, mcm.S_CODE SUBCODE, mcm.CODE_NAME CODENAME, mcm.CODE_DESC CODEDESC
+                                        , mcm.CODE_DETAIL CODEDETAIL, mcm.CODE_DETAIL2 CODEDETAIL2, mcm.CODE_STATUS CODESTATUS 
+                                from (
+                                    select distinct substr(stylecode, 0,3) as buyer 
+                                    from t_sd_dorm
+                                    where 1 = 1 {whereFactoryId}
+                                ) t1
+                                join t_cm_mcmt mcm on mcm.s_code = t1.buyer
+                                where mcm.m_code = 'Buyer' ";
+            var lstMasterCode = OracleDbManager.GetObjectsByType<Mcmt>(strSql, CommandType.Text, oraParams.ToArray());
+
+            return lstMasterCode;
+        }
+
+        /// <summary>
+        /// get list buyer by sale team
+        /// </summary>
+        /// <param name="teamId"></param>
+        /// <returns></returns>
+        /// Author: Son Nguyen Cao
+        /// Date: 28/Jan/2021
+        public static List<Mcmt> GetBuyersBySaleTeam(string teamId)
+        {
+            var oraParams = new List<OracleParameter>();
+
+            string whereTeamId = string.Empty;
+            if (!string.IsNullOrEmpty(teamId))
+            {
+                //where with specific team
+                whereTeamId = " and code_desc = :p_teamid";
+                oraParams.Add(new OracleParameter("p_teamid", teamId));
+            }          
+
+            string strSql = $@"select mcm.M_CODE MASTERCODE, mcm.S_CODE SUBCODE, mcm.CODE_NAME CODENAME, mcm.CODE_DESC CODEDESC
+                                        , mcm.CODE_DETAIL CODEDETAIL, mcm.CODE_DETAIL2 CODEDETAIL2, mcm.CODE_STATUS CODESTATUS
+                                from t_cm_mcmt mcm
+                                where m_code = 'Buyer' and code_desc in (
+                                    SELECT T1.code_desc FROM (                            
+                                        SELECT DISTINCT CODE_DESC 
+                                        FROM T_CM_MCMT WHERE M_CODE = 'Buyer'                            
+                                    )T1 JOIN T_CM_URLM URL ON URL.ROLEID = T1.CODE_DESC
+                                ) 
+                                and 1 = 1 {whereTeamId}";
+            var lstMasterCode = OracleDbManager.GetObjectsByType<Mcmt>(strSql, CommandType.Text, oraParams.ToArray());
+
+            return lstMasterCode;
+        }
+
         /// <summary>
         /// Get list buyer base on AO qty
         /// </summary>

@@ -199,9 +199,9 @@
                         <!--<li class=" nav-item"><a href="/default/default"><i class="icon-home"></i><span data-i18n="" class="menu-title">PK OPS</span></a></li>-->
                         <li class=" nav-item"><a href="/default/default"><i class="icon-home"></i><span data-i18n="" class="menu-title">Home</span></a></li>
                         <!--<li class="nav-item" id="txtSearch"><a href="#"><i class="icon-magnifier"></i><span data-i18n="" class="menu-title xn-text">Search Operation Plan</span></a></li>
-                        <li class="nav-item"><a href="/Ops/ops" <a class="linkOfOpsLink"><i class="icon-screen-desktop"></i><span data-i18n="" class="menu-title">Operation Plans</span></a></li>
-                        <li class=" nav-item"><a href="/OpsLink/index" <a class="linkOfOpsLink"><i class="icon-link"></i><span data-i18n="" class="menu-title">Engineering Data</span></a></li>
-                        <li class="nav-item"><a href="/OpsLayout/OpsLayout" class="linkOfOpsLink"><i class="icon-puzzle"></i><span data-i18n="" class="menu-title">Plan Layout</span></a></li>-->
+    <li class="nav-item"><a href="/Ops/ops" <a class="linkOfOpsLink"><i class="icon-screen-desktop"></i><span data-i18n="" class="menu-title">Operation Plans</span></a></li>
+    <li class=" nav-item"><a href="/OpsLink/index" <a class="linkOfOpsLink"><i class="icon-link"></i><span data-i18n="" class="menu-title">Engineering Data</span></a></li>
+    <li class="nav-item"><a href="/OpsLayout/OpsLayout" class="linkOfOpsLink"><i class="icon-puzzle"></i><span data-i18n="" class="menu-title">Plan Layout</span></a></li>-->
                         <li class="has-sub nav-item">
                             <a href="#" class="linkOfOpsLink"><i class="icon-screen-desktop"></i><span data-i18n="" class="menu-title">Operation Plans</span></a>
                             <ul class="menu-content">
@@ -231,13 +231,20 @@
                                     <a href="/OpName/OpName" class="menu-item">Operation Name</a>
                                 </li>
                                 <li>
-                                    <a href="/DataAuditTool/DataAuditTool" class="menu-item">Data Audit Tool</a>
-                                </li>
-                                <li>
                                     <a href="/Ops/ProcessTemplate" class="menu-item"><span>Process Template</span></a>
                                 </li>
                             </ul>
                         </li>
+                        <!--START ADD - SON) 28/Jan/2021-->
+                        <li class="has-sub nav-item">
+                            <a href="#" class="linkOfOpsLink"><i class="fa fa-cogs"></i><span data-i18n="" class="menu-title">Tool</span></a>
+                            <ul class="menu-content">
+                                <li>
+                                    <a href="/DataAuditTool/DataAuditTool" class="menu-item">Audit Tool</a>
+                                </li>                                
+                            </ul>
+                        </li>
+                        <!--END ADD - SON) 28/Jan/2021-->
                         <li class="has-sub nav-item">
                             <a href="#" class="linkOfOpsLink"><i class="ft-search"></i><span data-i18n="" class="menu-title">Find</span></a>
                             <ul class="menu-content">
@@ -317,7 +324,6 @@
                                 <a href="/OpsMasterData/Machine" class="dropdown-item py-1"><span>Machine</span></a>
                                 <a href="/OpsMasterData/Tools" class="dropdown-item py-1"><span>Tool</span></a>
                                 <a href="/OpName/OpName" class="dropdown-item py-1"><span>Operation Name</span></a>
-                                <a href="/DataAuditTool/DataAuditTool" class="dropdown-item py-1"><span>Data Audit Tool</span></a>
                                 <a href="/Ops/ProcessTemplate" class="dropdown-item py-1"><span>Process Template</span></a>
                             </div>
                         </div>
@@ -338,6 +344,19 @@
                         </div>
                     </div>
 
+                    <!--START ADD - SON) 28/Jan/2021-->
+                    <div class="dropdown display-inline-block">
+                        <a id="apps" href="#" data-toggle="dropdown" class="nav-link position-relative dropdown-toggle">
+                            <i class="fa fa-cogs blue-grey darken-4"></i>
+                            <span class="mx-1 blue-grey darken-4 text-bold-400">Tool</span>
+                        </a>
+                        <div class="apps dropdown-menu">
+                            <div class="arrow_box">
+                                <a href="/DataAuditTool/DataAuditTool" class="dropdown-item py-1"><span>Audit Tool</span></a>
+                            </div>
+                        </div>
+                    </div>
+                    <!--END ADD - SON) 28/Jan/2021-->
                     @*<div class=" ml-2 display-inline-block">*@
                     <div class="display-inline-block">
                         <a target="_blank" href="http://203.113.146.146:775/Func?prjid=1"><i class="icon-support blue-grey darken-4"></i><span class="mx-1 blue-grey darken-4 text-bold-400">Documentation</span></a>

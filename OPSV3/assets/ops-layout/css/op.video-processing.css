@@ -1,7 +1,7 @@
 ﻿.op__control-ck {
     /*width: 13px;*/
     display: flex;
-    margin: 0 auto
+    /*margin: 0 auto*/
 }
 
     .op__control-ck input {
@@ -410,8 +410,8 @@
 }
 
     .n-crop-range .n-crop-input {
-        margin-top: 5px;
-        height: 30px;
+        /*margin-top: 5px;*/
+        height: 35px;
         border: 1px solid #999;
         border-radius: 4px;
         overflow: hidden;
@@ -420,8 +420,8 @@
 
         .n-crop-range .n-crop-input span {
             width: 8px;
-            line-height: 26px;
-            height: 28px;
+            line-height: 35px;
+            height: 35px;
             float: left;
             margin: 0;
             padding: 0;
@@ -432,9 +432,9 @@
             width: 20px;
             float: left;
             color: #333;
-            line-height: 28px;
+            line-height: 35px;
             border: 0 solid transparent;
-            padding: 0;
+            padding: 0
         }
 
     .n-crop-range span {

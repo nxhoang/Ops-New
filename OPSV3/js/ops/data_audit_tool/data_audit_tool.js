@@ -1,7 +1,7 @@
 ﻿const initialDataAuditToolPage = () => {
     Selection2('drpTeamGroup');
     Selection2('drpTeam');
-    getBuyerList();
+    getBuyersSaleTeam();
     setDateRangePicker4('#txtDateRange');
 
     bindDataToGridStyle(null, null, null, null, '---');
@@ -15,8 +15,12 @@
 }
 
 //#region get data master
-const getBuyerList = () => {
-    getBuyers($('#drpTeam').val(), response => FillDataToDropDownlist("drpBuyer", response, "SubCode", "CodeName"));
+const getBuyersSaleTeam = (teamId) => {
+    getBuyersBySaleTeam(teamId, response => FillDataToDropDownlist("drpBuyer", response, "SubCode", "CodeName"));
+}
+
+const getBuyersProductTeam = (factoryId) => {
+    getBuyersByFactory(factoryId, response => FillDataToDropDownlist("drpBuyer", response, "SubCode", "CodeName"));
 }
 //#endregion
 
@@ -99,9 +103,6 @@ function bindDataToGridStyle(buyer, startDate, endDate, aoNumber, styleInfo) {
         searchtext: "",
         refresh: true, refreshicon: "ace-icon fa fa-refresh green", refreshtext: 'Refresh'
     });
-    //$("#" + tableNavName).find("option[value=20]").text(arrButtonAction.all);
-    //merge header 2 column button Save Delete
-    //SearchFilter(myJqgrid);
 }
 
 const bindDataToJqGridBom = (styleCode, styleSize, styleColorSerial, revNo) => {

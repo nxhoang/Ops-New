@@ -330,11 +330,11 @@ Use search to find needed section.
                             <a href="/ActiveLineMes/ActiveLine">MES Active Lines </a>
                         </li>
                         @*<li>
-             <a href="/DgsTarget/DgsTarget">Production Line Dashboard</a>
-         </li>
-        <li>
-             <a href="/LineDashboard/Index">Line Dashboard</a>
-         </li>*@
+                     <a href="/DgsTarget/DgsTarget">Production Line Dashboard</a>
+                 </li>
+                <li>
+                     <a href="/LineDashboard/Index">Line Dashboard</a>
+                 </li>*@
                         <li>
                             <a href="/LineDashboard/Index">Line Dashboard</a>
                             <ul>
@@ -349,8 +349,8 @@ Use search to find needed section.
                                     <a href="/LineDashboard/OperationPlanDashboard">Operation Plan Dashboard</a>
                                 </li>
                                 @*<li>
-            <a href="/DgsTarget/DgsTarget">Production Line Dashboard</a>
-        </li>*@
+                            <a href="/DgsTarget/DgsTarget">Production Line Dashboard</a>
+                        </li>*@
                                 <li>
                                     <a href="/MesPkgSumDashboard/Index">Layout Dashboard</a>
                                 </li>
@@ -369,14 +369,14 @@ Use search to find needed section.
                         <li>
                             <!-- 2020/09/28 Dinh Van add -->
                             <a href="#">Efficiency</a>
-							<ul>
-								<li>
+                            <ul>
+                                <li>
                                     <a href="/MesPkgIotMachineTimeDashboard/Index">Machine Utilization</a>
-								</li>
-								<li>
-									<a href="/ActiveLineMes/MesActiveLine">Mes Active Lines Detail</a>
-								</li>
-							</ul>
+                                </li>
+                                <li>
+                                    <a href="/ActiveLineMes/MesActiveLine">Mes Active Lines Detail</a>
+                                </li>
+                            </ul>
                         </li>
 
                         <li>
@@ -412,7 +412,7 @@ Use search to find needed section.
                         </li>
                         <li>
                             @Html.ActionLink("Productivity Efficiency", "WeeklyEfficiencySetting", "QCO")
-                        </li> 
+                        </li>
                         <li>
                             @Html.ActionLink("Corporation QCO", "QCOCorp", "QCO")
                         </li>
@@ -448,8 +448,8 @@ Use search to find needed section.
                             </ul>
                         </li>
                         @*<li>
-            @Html.ActionLink("Package Readiness", "PackageReadiness", "PackageReadiness")
-        </li>*@
+                    @Html.ActionLink("Package Readiness", "PackageReadiness", "PackageReadiness")
+                </li>*@
                     </ul>
                 </li>
 
@@ -477,8 +477,8 @@ Use search to find needed section.
                             </ul>
                         </li>
                         @*<li>
-            @Html.ActionLink("QC Alerts Setup", "Index", "QCAlertSetup") 
-        </li>*@
+                    @Html.ActionLink("QC Alerts Setup", "Index", "QCAlertSetup")
+                </li>*@
                     </ul>
                 </li>
 
@@ -553,6 +553,16 @@ Use search to find needed section.
 
                 <li>
                     <a href="#"><i class="fa fa-lg fa-fw fa-list-alt"></i> <span class="menu-item-parent">Reports</span></a>
+                </li>
+
+                <li>
+                    @*2021-01-27 Tai Le(Thomas): add new Menu for IoT*@
+                    <a href="#"><i class="fa fa-lg fa-fw fa-tablet"></i> <span class="menu-item-parent">IoT</span></a>
+                    <ul>
+                        <li>
+                            @Html.ActionLink("Mapping Machine", "MachineIot", "IotMes")
+                        </li>
+                    </ul>
                 </li>
 
                 <li>

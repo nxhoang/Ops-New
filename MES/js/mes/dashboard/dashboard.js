@@ -30,6 +30,12 @@ function InitPage() {
     //Fill list weekno to dropdownlist
     FillDataToDropDownlist("drpWeekNo", CreateWeekNo(), "WeekNo", "WeekName");
 
+    //handle year
+    for (var i = 0; i <= 4; i++) {
+        let year = CUR_YEAR - 3 + i;
+        $('#drpYear').append(`<option>${year}</option>`);
+    }
+
     Selection2("drpYear");
     Selection2("drpMonth");
     Selection2("drpShowBy");

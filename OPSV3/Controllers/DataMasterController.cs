@@ -23,15 +23,22 @@ namespace OPSV3.Controllers
             return Json(listTeams, JsonRequestBehavior.AllowGet);
         }
 
-        public JsonResult GetBuyers(string teamId)
+        public JsonResult GetBuyersByTeam(string teamId)
         {
-            var listAcc = McmtBus.GetMasterCode("Buyer");
+            var listAcc = McmtBus.GetBuyersBySaleTeam(teamId);
             //If team id is null or empty then get all buyer
             if (string.IsNullOrEmpty(teamId)) return Json(listAcc, JsonRequestBehavior.AllowGet);
 
             //filter buyer by team id
             var listAccByTeam = listAcc.FindAll(x => x.CodeDesc == teamId);
             return Json(listAccByTeam, JsonRequestBehavior.AllowGet);
+        }
+      
+        public JsonResult GetBuyersByFactory(string factoryId)
+        {
+            var listAcc = McmtBus.GetBuyersByFactory(factoryId);
+
+            return Json(listAcc, JsonRequestBehavior.AllowGet);
         }
     }
 }

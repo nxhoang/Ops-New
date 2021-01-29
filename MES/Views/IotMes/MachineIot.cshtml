@@ -1,0 +1,147 @@
+﻿
+@{
+    ViewBag.Title = "MachineIot";
+    Layout = "~/Views/Shared/_MesLayout.cshtml";
+}
+<link href="~/js/plugin/dropzone/dropzone.css" rel="stylesheet" />
+
+<h2>Machine-Iot mapping</h2>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="dropzoneContainer">
+            <div class="dropzoneModalUploadExcelQCO">
+                <div class="dz-default dz-message">
+                    <span>
+                        <span class="text-center">
+                            <span class="font-lg visible-xs-block visible-sm-block visible-lg-block">
+                                <span class="font-lg">
+                                    <i class="fa fa-caret-right text-danger"></i> Drop file (.xlsx) here&nbsp;<span class="font-xs">to upload</span>
+                                </span>
+                                <span>
+                                    &nbsp;&nbsp;
+                                    <h4 class="display-inline"> (Or Click)</h4>
+                                </span>
+                            </span>
+                        </span>
+                    </span>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+<style>
+    .dropzone {
+        border: 2px solid rgba(255, 255, 255, 1);
+        background: grey;
+        padding: 0 20px;
+    }
+
+        .dropzone .dz-preview {
+            text-align: center;
+        }
+
+    .dz-preview .dz-success-mark, .dz-preview .dz-error-mark {
+        display: none;
+    }
+
+    .dropzoneContainer {
+        border-radius: 5px;
+        width: 40%;
+        margin: auto;
+        bordeR: 1px solid #adabab;
+        padding: 15px 15px;
+    }
+     
+</style>
+
+@section Scripts{
+    <script src="~/js/plugin/dropzone/dropzone.min.js"></script>
+    @*Bootstrap Notify *@
+    <script src="~/Assets/remarkable-bootstrap-notify/dist/bootstrap-notify.min.js"></script>
+    <script src="~/Assets/remarkable-bootstrap-notify/dist/Common.js"></script>
+    <script>
+        Dropzone.autoDiscover = false;
+
+        ///////////
+        var DropzoneOptions = {
+            autoProcessQueue: false
+            , init: function () {
+                this.on("addedfile", function (file) {
+                    var _this = this;
+                    var fileExtension = file.name.split('.')[1];
+                    if (fileExtension !== 'xlsx') {
+                        Notify('Only Excel(2003+) is acceptable. Please choose another file.', 'warning');
+                        _this.removeFile(file);
+                    }
+                    // Create the manual Upload button
+                    var uploadButton = Dropzone.createElement('<button type="button" class="btn btn-success">Upload</button>&nbsp;&nbsp;');
+                    // Capture the Dropzone instance as closure.
+                    // Listen to the click event
+                    uploadButton.addEventListener("click",
+                        function (e) {
+                            // Make sure the button click doesn't submit the form:
+                            e.preventDefault();
+                            e.stopPropagation();
+
+                            $(e.target).prop('disabled', true);
+                            //$(e.target).prop('disabled', false);
+
+                            // Update the file preview.
+                            _this.processFile(file);
+
+                            // If you want to the delete the file on the server as well,
+                            // you can do the AJAX request here.
+                        });
+                    // Add the button to the file preview element.
+                    file.previewElement.appendChild(uploadButton);
+                    // Create the manual remove button
+                    var removeButton = Dropzone.createElement('<button type="button" class="btn btn-danger">Remove</button>&nbsp;&nbsp;');
+                    // Listen to the click event
+                    removeButton.addEventListener("click",
+                        function (e) {
+                            // Make sure the button click doesn't submit the form:
+                            e.preventDefault();
+                            e.stopPropagation();
+
+                            // Remove the file preview.
+                            _this.removeFile(file);
+
+                            // If you want to the delete the file on the server as well,
+                            // you can do the AJAX request here.
+                        });
+                    // Add the button to the file preview element.
+                    file.previewElement.appendChild(removeButton);
+                });
+                this.on("maxfilesexceeded", function () {
+                    if (this.files[1] != null) {
+                        //Notify('Only accept 1 file', 'warning');
+                        this.removeFile(this.files[1]);
+                    }
+                });
+            }
+            , url: '.'
+            , maxFilesize: 15 //Unit= MB
+            , maxFiles: 1
+        };
+        var dropzoneModalUploadExcelQCO = new Dropzone("div.dropzoneModalUploadExcelQCO",
+            $.extend(DropzoneOptions, { url: '../IotMes/UploadMapping' })
+        );
+        //Binding an event
+        dropzoneModalUploadExcelQCO.on("complete",
+            function (file) { }).on('error',
+                function (file, errorMessage) {
+                    Notify(errorMessage, 'danger');
+                }).on('success', function (file, response) {
+                    let _Notify_type = 'success';
+                    if (!response.retResult)
+                        _Notify_type = 'danger';
+                    Notify(response.retMsg, _Notify_type);
+                    /*Remove success file */
+                    dropzoneModalUploadExcelQCO.removeFile(file);
+                });
+    </script>
+}
