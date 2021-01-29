@@ -1,5 +1,6 @@
 ﻿@section scripts {
     <!-- Common files -->
+    <link href="~/assets/ops-layout/css/demo-op-layout.css" rel="stylesheet" />
     <link href="~/Content/font-awesome.min.css" rel="stylesheet">
     <link href="~/Content/ui-bootstrap-csp.css" rel="stylesheet" />
     <link href="~/css/glyphicons/glyphicons.css" rel="stylesheet" />
@@ -73,7 +74,6 @@
     <script src="~/assets/ops-layout/js/opl.process-detail.min.js?v=2.2"></script>
     @*<script src="~/assets/ops-layout/js/opl.process-detail-event.js"></script>*@
 
-    <link href="~/assets/ops-layout/css/demo-op-layout.min.css" rel="stylesheet" />
     <script src="../../assets/ops-layout/js/demo-op-layout.js?v=2.2.1"></script>
 
     <!--Print PNG-->
@@ -403,18 +403,18 @@
         </div>
         <div class="modal-body" id="modal-body">
             <div class="row" style="padding: 5px 0">
-                <div class="col-lg-3">
+                <div class="col-lg-4">
                     <label for="txtPageNo">Page Number: </label>
                 </div>
-                <div class="col-lg-9">
+                <div class="col-lg-8">
                     <input id="txtPageNo" type="number" value="$ctrl.processPage.pageNo" ng-model="$ctrl.processPage.pageNo" title="Page of process" />
                 </div>
             </div>
             <div class="row" style="padding: 5px 0" ng-show="$ctrl.isShowBtnUpdateModule">
-                <div class="col-lg-3">
+                <div class="col-lg-4">
                     <label for="ddlModule">Modules: </label>
                 </div>
-                <div class="col-lg-9">
+                <div class="col-lg-8">
                     <multiselect id="ddlModule" style="display:inherit" class="input-xlarge multiselect" ng-model="$ctrl.selectedModule" header="Select Module"
                                  options="p.ModuleId as p.ModuleName for p in $ctrl.modules" selected-header="options selected"
                                  multiple="false" complex-models="true" enable-filter="true" filter-placeholder="Search Module">
@@ -423,9 +423,9 @@
             </div>
         </div>
         <div class="modal-footer">
-            <button class="btn btn-primary" type="button" ng-click="$ctrl.updatePage()">Update Page</button>
-            <button class="btn btn-primary" type="button" ng-click="$ctrl.updateModule()" ng-show="$ctrl.isShowBtnUpdateModule">Update Module</button>
-            <button class="btn btn-warning" type="button" ng-click="$ctrl.cancel()">Close</button>
+            <button class="btn btn-primary btn-primary-mo" type="button" ng-click="$ctrl.updatePage()">Update Page</button>
+            <button class="btn btn-primary btn-primary-mot" type="button" ng-click="$ctrl.updateModule()" ng-show="$ctrl.isShowBtnUpdateModule">Update Module</button>
+            <button class="btn btn-warning btn-warning-mo" type="button" ng-click="$ctrl.cancel()">Close</button>
         </div>
     </script>
 
@@ -981,7 +981,7 @@
                                     </div>
                                 </div>
                                 <div class="op__control-ck">
-                                    <input type="checkbox" title="Click to select all videos."/>
+                                    <input type="checkbox" title="Click to select all videos." />
                                 </div>
                             </div>
                             <div class="col-md-4 op__height-100p" id="divPartVideoSide2">
@@ -1009,7 +1009,7 @@
                 </jsplumb-toolkit>
             </div>
 
-        <script type="text/ng-template" id="node_template.tpl">
+            <script type="text/ng-template" id="node_template.tpl">
                 <div class="card card2" id="divP{{node.id}}" ondrop="dropVideo1(event)" ondragover="allowDropVideo1(event)" style="height:{{node.ProcessHeight}}px; width: {{node.ProcessWidth}}px;">
                     <div class="card-header">
                         <div class="grey-circle">

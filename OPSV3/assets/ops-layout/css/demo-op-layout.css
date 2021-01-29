@@ -277,7 +277,7 @@ p {
     width: 100%;
     position: absolute;
     /*padding: 2px 5px;*/
-    background-image: linear-gradient(to right, #fc6586, #53bbfd);
+    /*background-image: linear-gradient(to right, #fc6586, #53bbfd);*/
     border-radius: 0 0 1px 1px;
     bottom: 0;
     right: 0;
@@ -438,3 +438,23 @@ p {
 .jtk-miniview-collapse {
     line-height: 26px
 }
+
+/* M.O edits*/
+.op__controls {
+    background-image: linear-gradient(to right, #1488cc, #2832b2);
+}
+.op__control-div:after {
+    background-color: #34425a !important;
+}
+
+#ddlModule .btn-group .btn.btn-default.dropdown-toggle {
+    box-shadow: none !important;
+}
+    #ddlModule .btn-group .btn.btn-default.dropdown-toggle .pull-left{
+        text-align: left;
+    }
+    #txtPageNo {
+        width: 226px !important;
+        border: none !important;
+    }
+/*M.O has edited*/
