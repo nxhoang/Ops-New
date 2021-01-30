@@ -5,9 +5,9 @@
 .jtk-node {
     border-radius: 8px;
     border: 2px solid #073150;
-    box-shadow: #66afe9 0 0 8px;
-    /*box-shadow: rgba(102, 175, 233, 0.6) 0 0 8px;*/
-    box-shadow: rgba( 128, 128, 128,1) 0 0 14px;
+    /*box-shadow: #66afe9 0 0 8px;
+    box-shadow: rgba(102, 175, 233, 0.6) 0 0 8px;
+    box-shadow: rgba( 128, 128, 128,1) 0 0 14px;*/
     cursor: move;
     font-size: 12px;
     position: absolute;

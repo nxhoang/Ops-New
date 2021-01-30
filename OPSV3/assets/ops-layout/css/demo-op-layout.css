@@ -50,13 +50,16 @@ html, body {
 }
 
 .grey-circle {
-    background: #edeef5;
-    width: 52px;
-    height: 52px;
+    background: #edeef5;   
+    /* M.O edits*/
+    width: 64px;
+    height: 64px;
     border-radius: 50%;
     margin: 0 auto;
     position: relative;
-    top: -30px;
+    top: -40px;
+    box-shadow: 0 4px 8px 0 rgb(0 0 0 / 5%), 0 6px 20px 0 rgb(0 0 0 / 10%);
+    background-image: linear-gradient(to bottom right, #ffffff, #edeef5);
 }
 
 .rounded-0 {
@@ -277,7 +280,7 @@ p {
     width: 100%;
     position: absolute;
     /*padding: 2px 5px;*/
-    background-image: linear-gradient(to right, #fc6586, #53bbfd);
+    background-image: linear-gradient(to right, #fc6586, #53bbfd) !important;
     border-radius: 0 0 1px 1px;
     bottom: 0;
     right: 0;
@@ -438,3 +441,31 @@ p {
 .jtk-miniview-collapse {
     line-height: 26px
 }
+
+/* M.O edits*/
+/*.op__controls {
+    background-image: linear-gradient(to right, #1488cc, #2832b2);
+}*/
+.op__control-div:after {
+    background-color: #34425a !important;
+}
+
+#ddlModule .btn-group .btn.btn-default.dropdown-toggle {
+    box-shadow: none !important;
+}
+    #ddlModule .btn-group .btn.btn-default.dropdown-toggle .pull-left{
+        text-align: left;
+    }
+    #txtPageNo {
+        width: 226px !important;
+        border: none !important;
+    }
+.btn-primary-mo {
+    background-color: #7f8fb1 !important;
+    border-color: #7f8fb1;
+}
+.btn-primary-mot {
+    background-color: #7f8fb1 !important;
+    border-color: #7f8fb1;
+}
+/*M.O has edited*/
