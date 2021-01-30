@@ -2,7 +2,7 @@
 "use strict";
 
 const TxtVideoLink = "txtVideoLink", JqTxtVideoLink = $(`#${TxtVideoLink}`), VdOpdt = "vdoOpsDetail", JqVdOpdt = $(`#${VdOpdt}`),
-    DivOpVideoList = "divOpVideoList";
+    DivOpVideoList = "divOpVideoList", DefaultDisplayColor = "#A9A9A9", DefaultColor = "#FFFFFFFF", DefaultIcon = "settings.svg";
 
 var opsGroups = [], opsNodes = [], opsEdges = [], opsData = {
     "groups": opsGroups,
@@ -97,6 +97,34 @@ function getOpNameByLang(opdt, lang) {
             break;
         default:
             opName = opdt.OpName ? opdt.OpName : "";
+            break;
+    }
+    return opName;
+}
+
+function GetOpnmByLang(opnm, lang) {
+    let opName;
+    switch (lang) {
+        case "vn":
+            opName = opnm.Vietnam;
+            break;
+        case "gb":
+            opName = opnm.English;
+            break;
+        case "mm":
+            opName = opnm.Myanmar;
+            break;
+        case "id":
+            opName = opnm.Indonesia;
+            break;
+        case "et":
+            opName = opnm.Ethiopia;
+            break;
+        case "kr":
+            opName = opnm.Korea;
+            break;
+        default:
+            opName = opnm.English ? opnm.English : "";
             break;
     }
     return opName;
@@ -355,7 +383,7 @@ function loadLayout(opsMaster, lang, groupMode, page) {
                                         opName, group, title, top, left;
                                     opName = getOpNameByLang(value, lang);
 
-                                    const displayColor = value.DisplayColor === null || value.DisplayColor === "" || value.DisplayColor === "#FFFFFFFF" ? "#A9A9A9" : `#${value.DisplayColor.substr(3, 8)}`,
+                                    const displayColor = value.DisplayColor === null || value.DisplayColor === "" || value.DisplayColor === DefaultColor ? DefaultDisplayColor : `#${value.DisplayColor.substr(3, 8)}`,
                                         page = value.Page === 0 ? 1 : value.Page,
                                         showButtonPlayVideo = $.isEmptyObject(value.VideoFile) ? 0 : 1,
                                         opNum = value.OpNum === null || value.OpNum === undefined ? " " : value.OpNum;
@@ -452,7 +480,7 @@ function loadLayout(opsMaster, lang, groupMode, page) {
                                     //}
 
                                     //if (iconNameArr.length === 0) iconNameArr.push("settings.svg");
-                                    const iconName = value.IconName ? value.IconName : "settings.svg";
+                                    const iconName = value.IconName ? value.IconName : DefaultIcon;
 
                                     const layoutProcess = new LayoutProcess(value.OpSerial.toString(), `[${opNum}] ${opName}`, value.OpTime, value.MachineCount,
                                         machineName, value.ManCount, opName, value.VnOpName, value.GbOpName, value.MmOpName, value.IdOpName, value.EtOpName,
@@ -535,6 +563,11 @@ function loadLayout(opsMaster, lang, groupMode, page) {
             });
         }
     }
+
+    // Oanh add change color card 26Jan2021
+    setTimeout(function () {
+        setBackgroundColor_Layout_Load();
+    }, 1000);
 
     $.unblockUI();
 }
@@ -1080,7 +1113,7 @@ app.filter("trustUrl", ["$sce", function ($sce) {
 app.controller("OpsLayoutController", function ($uibModal, $log, $document, $scope, $http, jsPlumbService, sharedService) {
     //#region JsPlumb
     var ctrl = this;
-    var toolkit;
+    let toolkit;
     var surface;
     window.jsps = jsPlumbService;
     window.ctrl = this;
@@ -1220,6 +1253,10 @@ app.controller("OpsLayoutController", function ($uibModal, $log, $document, $sco
                     break;
             }
         }
+        //beforeStartConnect: (node, edgeType) => {
+        //    console.log("beforeStartConnect");
+        //    return { label: "..." };
+        //}
     };
 
     ctrl.renderParams = {
@@ -1426,6 +1463,11 @@ app.controller("OpsLayoutController", function ($uibModal, $log, $document, $sco
                     constrain: false, // only allowing drop inside the group.
                     events: {
                         click: (params) => {
+                            console.log("click group");
+                            //surface.repaintEverything();
+                            //surface.getJsPlumb().repaintEverything();
+                            //surface.refresh();
+
                             const isDisplayColorpicker = $("#panel-colorpicker").is(":visible");
                             if (isDisplayColorpicker) {
                                 const color = $scope.opsColor.hexPicker;
@@ -1500,6 +1542,20 @@ app.controller("OpsLayoutController", function ($uibModal, $log, $document, $sco
                             });
                         }
                     }
+                    //dragOptions: {
+                    //    start: (g) => {
+                    //        console.log(g);
+                    //        surface.repaintEverything();
+                    //        surface.getJsPlumb().repaintEverything();
+                    //        surface.refresh();
+                    //    },
+                    //    stop: (g) => {
+                    //        //console.log(g);
+                    //        //surface.repaintEverything();
+                    //        //surface.getJsPlumb().repaintEverything();
+                    //        //surface.refresh();
+                    //    }
+                    //}
                 },
                 constrained: {
                     parent: "default",
@@ -1676,8 +1732,11 @@ app.controller("OpsLayoutController", function ($uibModal, $log, $document, $sco
 
         toolkit.beforeConnect = function (source, target) {
             var result = true;
+            //surface.repaintEverything();
+            //surface.getJsPlumb().repaintEverything();
+            //surface.refresh();
 
-            toolkit.eachEdge(function (index, value) {
+            toolkit.eachEdge((index, value) => {
                 if (source.id === value.source.id) {
                     const msg = getMsgByLang(msgAcceptLineFlow);
                     ShowMessage(msg.title, msg.value, ObjMessageType.Error);
@@ -1689,6 +1748,7 @@ app.controller("OpsLayoutController", function ($uibModal, $log, $document, $sco
                 }
             });
 
+            //console.log(result);
             return result;
         };
 
@@ -1697,7 +1757,11 @@ app.controller("OpsLayoutController", function ($uibModal, $log, $document, $sco
             if (hasRefreshCanvas === false) {
                 surface.refresh();
                 hasRefreshCanvas = true;
+
+                console.log("refreshed canvas before connect");
             }
+
+            //console.log("not work");
         };
 
         loadLayout();
@@ -2399,7 +2463,7 @@ app.controller("OpsLayoutController", function ($uibModal, $log, $document, $sco
                                 node.data.IconUrl = $scope.IconUrl;
                             }
                         }
-                        if (iconNameArr.length === 0) iconNameArr.push("settings.svg");
+                        if (iconNameArr.length === 0) iconNameArr.push(DefaultIcon);
                         //console.log(iconNameArr);
 
                         node.data.IconNameArr = iconNameArr;
@@ -2419,7 +2483,7 @@ app.controller("OpsLayoutController", function ($uibModal, $log, $document, $sco
                                 node.data.IconUrl = $scope.IconUrl;
                             }
                         }
-                        if (iconNameArr.length === 0) iconNameArr.push("settings.svg");
+                        if (iconNameArr.length === 0) iconNameArr.push(DefaultIcon);
                         //console.log(iconNameArr);
 
                         node.data.IconNameArr = iconNameArr;
@@ -2972,7 +3036,7 @@ app.controller("OpsLayoutController", function ($uibModal, $log, $document, $sco
                 n.data.DisplayColor = sc.value;
                 toolkit.updateNode(n);
             } else {
-                n.data.DisplayColor = "#fff";
+                n.data.DisplayColor = DefaultDisplayColor;
                 toolkit.updateNode(n);
             }
         }

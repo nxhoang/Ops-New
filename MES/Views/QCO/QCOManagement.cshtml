@@ -3,13 +3,10 @@
 	Layout = "~/Views/Shared/_MesLayout.cshtml";
 }
 @* Fancy Box *@
-<link href="~/Assets/fancybox-master/dist/jquery.fancybox.css" rel="stylesheet" />
-@*<link href="~/assets/DayRangePicker/daterangepicker.min.css" rel="stylesheet" />*@
+<link href="~/Assets/fancybox-master/dist/jquery.fancybox.css" rel="stylesheet" /> 
 <link href="~/Assets/Pikaday/css/pikaday.css" rel="stylesheet" />
 <link href="~/Assets/Pikaday/css/BundleCss.css" rel="stylesheet" />
-<link href="~/js/plugin/dropzone/dropzone.css" rel="stylesheet" />
-@*<link href="~/Assets/qtip/jquery.qtip.min.css" rel="stylesheet" />*@
-<link href="~/Assets/Gridstack/gridstack.min.css" rel="stylesheet" />
+<link href="~/js/plugin/dropzone/dropzone.css" rel="stylesheet" /> 
 <link href="~/css/MES/QCO/QCOController.css" rel="stylesheet" />
 <style>
 	/*Dropzone customize*/
@@ -770,6 +767,7 @@
 		</div><!-- /.modal-content -->
 	</div><!-- /.modal-dialog -->
 </div>
+
 <div class="modal fade" id="ModalUpdateReadiness">
 	<div class="modal-dialog">
 		<div class="modal-content">
@@ -816,11 +814,6 @@
 @section Scripts{
 	<script src="~/js/mes/QCO/QCOController.js"></script>
 	<script src="~/js/plugin/multiselect/bootstrap-multiselect.min.js"></script>
-	@* Gridstack *@
-	<script src="~/Assets/Gridstack/gridstack.min.js"></script>
-	<script src="~/Assets/Gridstack/gridstack.jQueryUI.min.js"></script>
-	@*JQuery qtip
-		<script src="~/Assets/qtip/jquery.qtip.min.js"></script>*@
 	@*JQuery Grid *@
 	<script src="~/js/plugin/jqgrid/jquery.jqGrid.min.js"></script>
 	<script src="~/js/plugin/jqgrid/grid.locale-en.min.js"></script>
@@ -837,7 +830,6 @@
 	<script src="~/Assets/Pikaday/plugins/pikaday.jquery.js"></script>
 	<script src="~/Assets/Pikaday/common.js"></script>
 	<script src="~/js/plugin/dropzone/dropzone.min.js"></script>
-	@*<script type="text/javascript"> var GS; $(function () { GS = $('.grid-stack').gridstack({}); });  $('i[data-role="grid-stack-action-minimize"]').on('click', function (ev) { let $this = $(this);  let $evTarget = $(ev.target); let Class = $evTarget.attr('class'); console.log(Class);  let $gridstackItem = $this.closest('.grid-stack-item'); let GSdata = GS.data('gridstack');  let Height = 1; let classText = "";  if (Class.includes('minus')) { classText = 'fa fa-plus fa-border'; } else if (Class.includes('plus')) { classText = 'fa fa-minus fa-border'; Height = 2; }  GSdata.maxHeight($gridstackItem, Height);  $evTarget.removeClass(); $evTarget.addClass(classText); }); </script>*@
 <script>
     /***************************/
     Dropzone.autoDiscover = false;
@@ -1001,7 +993,8 @@
                 dropzoneModalUploadExcelQCO.removeFile(file);
                 /*2020-04-09 Tai Le(Thomas) Close the Searching pop-up*/
                 CloseSearchingBoxToggle();
-            });
+			});
+	//-------------------------------------------------------
     var dropzoneModalUpdateReadiness = new Dropzone("div.dropzoneModalUpdateReadiness",
         $.extend(DropzoneOptions, { url: '../QCO/ExcelUploadReadiness' })
     );

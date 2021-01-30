@@ -1,7 +1,7 @@
 ﻿const initialDataAuditToolPage = () => {
     Selection2('drpTeamGroup');
     Selection2('drpTeam');
-    getBuyerList();
+    getBuyersSaleTeam();
     setDateRangePicker4('#txtDateRange');
 
     bindDataToGridStyle(null, null, null, null, '---');
@@ -15,8 +15,12 @@
 }
 
 //#region get data master
-const getBuyerList = () => {
-    getBuyers($('#drpTeam').val(), response => FillDataToDropDownlist("drpBuyer", response, "SubCode", "CodeName"));
+const getBuyersSaleTeam = (teamId) => {
+    getBuyersBySaleTeam(teamId, response => FillDataToDropDownlist("drpBuyer", response, "SubCode", "CodeName"));
+}
+
+const getBuyersProductTeam = (factoryId) => {
+    getBuyersByFactory(factoryId, response => FillDataToDropDownlist("drpBuyer", response, "SubCode", "CodeName"));
 }
 //#endregion
 
@@ -48,7 +52,7 @@ function bindDataToGridStyle(buyer, startDate, endDate, aoNumber, styleInfo) {
         shrinkToFit: false,
         width: null,
         gridview: true,
-        height: 180,
+        height: 150,
         url: "/DataAuditTool/SearchStyle",
         caption: "Style",
         datatype: "json",
@@ -99,9 +103,6 @@ function bindDataToGridStyle(buyer, startDate, endDate, aoNumber, styleInfo) {
         searchtext: "",
         refresh: true, refreshicon: "ace-icon fa fa-refresh green", refreshtext: 'Refresh'
     });
-    //$("#" + tableNavName).find("option[value=20]").text(arrButtonAction.all);
-    //merge header 2 column button Save Delete
-    //SearchFilter(myJqgrid);
 }
 
 const bindDataToJqGridBom = (styleCode, styleSize, styleColorSerial, revNo) => {
@@ -114,7 +115,7 @@ const bindDataToJqGridBom = (styleCode, styleSize, styleColorSerial, revNo) => {
             revNo: revNo
         },
         datatype: "json",
-        height: 340,
+        height: 140,
         width: null,
         shrinkToFit: false,
         viewrecords: false,
@@ -243,7 +244,7 @@ const bindDataToJqGridOpPlan = (styleCode, styleSize, styleColor, revNo, edition
         },
         datatype: "json",
         width: null,
-        height: 300,
+        height: 100,
         shrinkToFit: false,
         scroll: false,
         deepempty: true,

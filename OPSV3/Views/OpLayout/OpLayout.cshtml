@@ -1,6 +1,5 @@
 ﻿@section scripts {
     <!-- Common files -->
-    <link href="~/assets/ops-layout/css/demo-op-layout.css" rel="stylesheet" />
     <link href="~/Content/font-awesome.min.css" rel="stylesheet">
     <link href="~/Content/ui-bootstrap-csp.css" rel="stylesheet" />
     <link href="~/css/glyphicons/glyphicons.css" rel="stylesheet" />
@@ -35,7 +34,7 @@
     <link rel="stylesheet" href="../../assets/ops-layout/css/jsplumbtoolkit.min.css">
     <script src="../../assets/ops-layout/js/braintree.js"></script>
     <script src="../../assets/ops-layout/js/ops-layout-angular.js"></script>
-    <script src="../../assets/ops-layout/js/jsplumbtoolkit.min.js"></script>
+    <script src="../../assets/ops-layout/js/jsplumbtoolkit.min.js?v=2.3.0"></script>
     <script src="../../assets/ops-layout/js/syntax-highlighter.js"></script>
 
     <!-- Ops Layout page files -->
@@ -45,7 +44,7 @@
     <script src="~/js/ops/uicontrol/SearchStyle.js?v=1.0.6"></script>
     <script src="~/js/ops/Pages/ops-video.js?v=1.4"></script>
 
-    <script src="~/js/Entities/JsEntity.min.js"></script>
+    <script src="~/js/Entities/JsEntity.min.js?v=1.1"></script>
     <script src="~/js/Entities/Opmt.js?v=1.0"></script>
     <script src="~/js/Entities/Opdt.js?v=1.0"></script>
 
@@ -57,7 +56,7 @@
         <script src="~/assets/op-management/js/op_video-process.min.js?v=1.6"></script>*@
 
     <link href="~/assets/ops-layout/css/op.video-processing.min.css" rel="stylesheet" />
-    <script src="~/assets/ops-layout/js/op.video-processing.min.js?v=2.2.1"></script>
+    <script src="~/assets/ops-layout/js/op.video-processing.min.js?v=2.2.3"></script>
 
     <!--START ADD - SON NGUYEN CAO-->
     <script src="~/assets/ops-layout/js/ops-layout-process.js?v=1.1"></script>
@@ -74,7 +73,8 @@
     <script src="~/assets/ops-layout/js/opl.process-detail.min.js?v=2.2"></script>
     @*<script src="~/assets/ops-layout/js/opl.process-detail-event.js"></script>*@
 
-    <script src="../../assets/ops-layout/js/demo-op-layout.js?v=2.2.1"></script>
+    <link href="~/assets/ops-layout/css/demo-op-layout.min.css" rel="stylesheet" />
+    <script src="../../assets/ops-layout/js/demo-op-layout.js?v=2.3.0"></script>
 
     <!--Print PNG-->
     <script src="~/js/plugins/html2canvas.js"></script>
@@ -403,18 +403,18 @@
         </div>
         <div class="modal-body" id="modal-body">
             <div class="row" style="padding: 5px 0">
-                <div class="col-lg-4">
+                <div class="col-lg-3">
                     <label for="txtPageNo">Page Number: </label>
                 </div>
-                <div class="col-lg-8">
+                <div class="col-lg-9">
                     <input id="txtPageNo" type="number" value="$ctrl.processPage.pageNo" ng-model="$ctrl.processPage.pageNo" title="Page of process" />
                 </div>
             </div>
             <div class="row" style="padding: 5px 0" ng-show="$ctrl.isShowBtnUpdateModule">
-                <div class="col-lg-4">
+                <div class="col-lg-3">
                     <label for="ddlModule">Modules: </label>
                 </div>
-                <div class="col-lg-8">
+                <div class="col-lg-9">
                     <multiselect id="ddlModule" style="display:inherit" class="input-xlarge multiselect" ng-model="$ctrl.selectedModule" header="Select Module"
                                  options="p.ModuleId as p.ModuleName for p in $ctrl.modules" selected-header="options selected"
                                  multiple="false" complex-models="true" enable-filter="true" filter-placeholder="Search Module">
@@ -423,9 +423,9 @@
             </div>
         </div>
         <div class="modal-footer">
-            <button class="btn btn-primary btn-primary-mo" type="button" ng-click="$ctrl.updatePage()">Update Page</button>
-            <button class="btn btn-primary btn-primary-mot" type="button" ng-click="$ctrl.updateModule()" ng-show="$ctrl.isShowBtnUpdateModule">Update Module</button>
-            <button class="btn btn-warning btn-warning-mo" type="button" ng-click="$ctrl.cancel()">Close</button>
+            <button class="btn btn-primary" type="button" ng-click="$ctrl.updatePage()">Update Page</button>
+            <button class="btn btn-primary" type="button" ng-click="$ctrl.updateModule()" ng-show="$ctrl.isShowBtnUpdateModule">Update Module</button>
+            <button class="btn btn-warning" type="button" ng-click="$ctrl.cancel()">Close</button>
         </div>
     </script>
 
@@ -981,7 +981,7 @@
                                     </div>
                                 </div>
                                 <div class="op__control-ck">
-                                    <input type="checkbox" title="Click to select all videos." />
+                                    <input id="ckAllVideo" type="checkbox" title="Click to select all videos." />
                                 </div>
                             </div>
                             <div class="col-md-4 op__height-100p" id="divPartVideoSide2">
@@ -1332,13 +1332,13 @@
                                 <div id="divPartNoMax" class="n-op__part-no">0</div>
                             </div>
                             <div class="col-md-9">
-                                <div id="divRangTimeMax" class="row">00:00:00 - 00:00:00</div>
+                                <div id="divRangeTimeMax" class="row">00:00:00 - 00:00:00</div>
                                 <div class="row">Total time:&nbsp; <span id="spTotalTimeMax" class="n-op__total-time">00:00:00</span></div>
                             </div>
                         </div>*@
                     <div class="row" style="margin-top: 10px; padding: 0 31px; ">
                         <div class="col-md-4">
-                            <div id="divRangTimeMax" class="row">00:01:00 : 00:02:00</div>
+                            <div id="divRangeTimeMax" class="row">00:01:00 : 00:02:00</div>
                         </div>
                         <div class="col-md-4 n-op__part-no-div">
                             <div id="divPartNoMax" class="n-op__part-no">2</div>

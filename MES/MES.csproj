@@ -303,6 +303,7 @@
     <Compile Include="Controllers\EmployeeController.cs" />
     <Compile Include="Controllers\ExcelMesController.cs" />
     <Compile Include="Controllers\DefectionDashboardController.cs" />
+    <Compile Include="Controllers\IotMesController.cs" />
     <Compile Include="Controllers\LineDashboardController.cs" />
     <Compile Include="Controllers\FactoryController.cs" />
     <Compile Include="Controllers\DgsTargetController.cs" />
@@ -346,11 +347,13 @@
     <Compile Include="Repositories\IFactoryRepository.cs" />
     <Compile Include="Repositories\ILineRepository.cs" />
     <Compile Include="Repositories\IIohtRepository.cs" />
+    <Compile Include="Repositories\IMachineIoTMappingRepo.cs" />
     <Compile Include="Repositories\IMpdtRepository.cs" />
     <Compile Include="Repositories\ITableSpaceRepository.cs" />
     <Compile Include="Repositories\LineRepository.cs" />
     <Compile Include="Repositories\IOpsRepository.cs" />
     <Compile Include="Repositories\IohtRepository.cs" />
+    <Compile Include="Repositories\MachineIoTMappingRepo.cs" />
     <Compile Include="Repositories\MpdtRepository.cs" />
     <Compile Include="Repositories\OpsRepository.cs" />
     <Compile Include="Repositories\TableSpaceRepository.cs" />
@@ -1896,6 +1899,7 @@
     <Content Include="Views\UtilizationDefect\MainGroupDefect.cshtml" />
     <Content Include="Views\QCO\MTOPPPCuttingReadinessPop.cshtml" />
     <Content Include="Views\LineDashboard\OperationPlanDashboard.cshtml" />
+    <Content Include="Views\IotMes\MachineIot.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

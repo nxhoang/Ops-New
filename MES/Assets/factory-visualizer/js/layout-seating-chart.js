@@ -1863,7 +1863,6 @@ var CurrentFactory, CurrentProcessViewMode = 2, CurrentLineSerial, isShowModuleM
                     facWorkers.model = new go.GraphLinksModel(processes);
                     break;
                 case "2":
-                    console.log(window.ProcessGroups);
                     opGroups = getOpGroup(window.ProcessGroups, remainOpdts);
                     groups = sumProcessGroup(opGroups, window.MesProcesses);
                     facWorkers.model = new go.GraphLinksModel(groups);
@@ -2046,8 +2045,6 @@ function reloadProcesses() {
                 window.MesProcesses = res.opdts.nodes;
                 window.GetProcesses(window.MesProcesses);
                 window.LoadProcessGroup(res.opdts.groups);
-
-                console.log(res);
 
                 //console.log(opGroupTb);
                 opGroupTb[0].bindOpGroup(res.opdts.groups);

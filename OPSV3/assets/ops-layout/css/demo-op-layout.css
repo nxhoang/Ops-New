@@ -29,24 +29,14 @@ html, body {
 }
 
 .circle {
-    /*width: 44px;
+    width: 44px;
     height: 44px;
     border-radius: 50%;
     margin-left: 2rem;
     position: relative;
     margin: 0 auto;
     padding: 1px;
-    top: -78px;*/
-    /* M.O edits*/
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    margin-left: 2rem;
-    position: relative;
-    margin: 0 auto;
-    padding: 1.1px;
-    top: -97px !important;
-    /* M.O has edited*/
+    top: -78px;
 }
 
 .circle2 {
@@ -60,30 +50,19 @@ html, body {
 }
 
 .grey-circle {
-    /*background: #edeef5;
+    background: #edeef5;
     width: 52px;
     height: 52px;
     border-radius: 50%;
     margin: 0 auto;
     position: relative;
-    top: -30px;*/
-    /* M.O edits*/
-    background: #edeef5;
-    width: 64px;
-    height: 64px;
-    border-radius: 50%;
-    margin: 0 auto;
-    position: relative;
-    top: -40px;
-    box-shadow: 0 0 8px 0 rgb(52 66 90 / 20%), 0 6px 20px 0 rgb(52 66 90 / 5%);
+    top: -30px;
 }
-
-/*M.O has edited*/
 
 .rounded-0 {
     width: 2.2em;
     display: block;
-    margin: 10px;
+    margin: 8px;
 }
 
 .circle3 {
@@ -232,7 +211,7 @@ p {
     border: 1px solid #ccc;
     border-radius: 2px;
     box-shadow: 0 4px 8px 0 #000000, 0 6px 20px 0 #000000;
-    box-shadow: 0 4px 8px 0 rgb(52 66 90 / 5%), 0 6px 20px 0 rgb(52 66 90 / 5%);
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.05), 0 6px 20px 0 rgba(0, 0, 0, 0.05);
     float: left;
     z-index: 12;
     display: flex;
@@ -262,7 +241,7 @@ p {
     -webkit-box-shadow: 10px 10px 5px #808080;
     box-shadow: 10px 10px 5px #808080;*/
     box-shadow: 0 8px 20px 0 #8e9dbe, 0 8px 20px 0 #8e9dbe;
-    box-shadow: 0 8px 20px 0 rgb(142 157 190 / 50%), 0 8px 20px 0 rgb(142 157 190 / 50%);
+    box-shadow: 0 8px 20px 0 rgba(142, 157, 190, 0.5), 0 8px 20px 0 rgba(142, 157, 190, 0.5);
 }
 
 .process-title {
@@ -298,7 +277,7 @@ p {
     width: 100%;
     position: absolute;
     /*padding: 2px 5px;*/
-    /*background-image: linear-gradient(to right, #fc6586, #53bbfd);*/
+    background-image: linear-gradient(to right, #fc6586, #53bbfd);
     border-radius: 0 0 1px 1px;
     bottom: 0;
     right: 0;
@@ -459,23 +438,3 @@ p {
 .jtk-miniview-collapse {
     line-height: 26px
 }
-
-/* M.O edits*/
-.op__controls {
-    background-image: linear-gradient(to right, #1488cc, #2832b2);
-}
-.op__control-div:after {
-    background-color: #34425a !important;
-}
-
-#ddlModule .btn-group .btn.btn-default.dropdown-toggle {
-    box-shadow: none !important;
-}
-    #ddlModule .btn-group .btn.btn-default.dropdown-toggle .pull-left{
-        text-align: left;
-    }
-    #txtPageNo {
-        width: 226px !important;
-        border: none !important;
-    }
-/*M.O has edited*/
