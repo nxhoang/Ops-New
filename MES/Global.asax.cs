@@ -50,6 +50,7 @@ namespace MES
             builder.RegisterType<ConfigService>().As<IConfigService>();
             builder.RegisterType<MpdtRepository>().As<IMpdtRepository>();
             builder.RegisterType<IohtRepository>().As<IIohtRepository>();
+            builder.RegisterType<MachineIoTMappingRepo>().As<IMachineIoTMappingRepo>(); //2021-01-25 Tai Le(Thomas): for iot--machine mapping 
 
             //2020-03-12 Tai Le(Thomas)  
             builder.RegisterType<OPS_DAL.CuttingPlanService.CutTicketService>().As<OPS_DAL.CuttingPlanService.ICutTicketService>();

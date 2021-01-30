@@ -50,12 +50,14 @@ const InputUploadVideo1 = "inputUploadVideo1",
     BtnMinimizeNvpModal = "btnMinimizeNvpModal",
     VdPreviewMax = "vdPreviewMax",
     DivPartNoMax = "divPartNoMax",
-    DivRangTimeMax = "divRangTimeMax",
+    DivRangeTimeMax = "divRangeTimeMax",
     SpTotalTimeMax = "spTotalTimeMax",
     DivProgressBarWrapper = "divProgressBarWrapper",
     DivProgressBar = "divProgressBar",
     AjaxWaitMes1 = "<h3>Please wait...</h3>",// blockUI message
-    InsertProcessUrl = "/PlanManagement/AddNewProcess_New";
+    InsertProcessUrl = "/PlanManagement/AddNewProcess_New",
+    CkAllVideo = "ckAllVideo",
+    defaultOpnm = new Opnm(3600, "Opname", "Opname", "Opname", "Opname", "Opname", "Opname");// Currently, default OpNameId is 3600 in opnm table that was added by Naveen. OpnSerial is from 1.
 var _modalFixedVp,
     _inputUploadVideo1,
     _isSlide1 = false,
@@ -809,7 +811,7 @@ function PreviewVideo(videoSrc, data) {
     };
 
     document.getElementById(DivPartNoMax).innerHTML = data.PartNo;
-    document.getElementById(DivRangTimeMax).innerHTML = `${data.StartTime} : ${data.EndTime}`;
+    document.getElementById(DivRangeTimeMax).innerHTML = `${data.StartTime} : ${data.EndTime}`;
     document.getElementById(SpTotalTimeMax).innerHTML = data.TotalTimeStr;
 }
 
@@ -875,77 +877,122 @@ function dragStartVideo1(e) {
 function allowDropCanvas(event) {
     event.preventDefault();
     //console.log("Allowing dropping video to canvas.");
-
 }
 
-function dropCanvas(event) {
+async function generateSimpleProcessAsync(dragVideo, xPos, yPos, opnSerial) {
+    const opSerial = await GetMaxOpSerialAsync();
+
+    if (opSerial && opSerial.trim() !== "") {
+        console.log(`OpSerial: ${opSerial}`);
+
+        const opName = GetOpnmByLang(defaultOpnm, angular.element(_appElement).scope().selectedLang),
+            abbEdition = window.CurrentOpmt.Edition.substring(0, 1),
+            opdt = new Opdt(abbEdition, window.CurrentOpmt.Edition, window.CurrentOpmt.StyleCode, window.CurrentOpmt.StyleColorSerial,
+                window.CurrentOpmt.StyleSize, window.CurrentOpmt.RevNo, window.CurrentOpmt.OpRevNo, opSerial, opName,
+                null, null, null, null, angular.element(_appElement).scope().layoutPage.pageNo, xPos, 0, DefaultColor, parseInt(opSerial).toString()),
+            opnts = [new Opnt(abbEdition, window.CurrentOpmt.StyleCode, window.CurrentOpmt.StyleColorSerial,
+                window.CurrentOpmt.StyleSize, window.CurrentOpmt.RevNo, window.CurrentOpmt.OpRevNo, opSerial, opnSerial, defaultOpnm.OpNameId)],
+            ajaxConfig = new AjaxConfig(InsertProcessUrl, true, JSON.stringify({ opDetail: opdt, lstOpMachine: [], lstOpTool: [], lstOpnt: opnts })),
+            selectedOpdt = _videoOpdts1.find(x => x.OpSerial === opSerial.trim());
+
+        const res = await PostAjaxAsync(ajaxConfig);
+
+        console.log(res);
+        if (res === "success") {
+            console.log("💋");
+            console.log(xPos);
+
+            const layoutProcess = new LayoutProcess(opSerial.toString(), `[${parseInt(opSerial).toString()}] ${opName}`, 0, 0, "", 0,
+                opName, defaultOpnm.Vietnam, defaultOpnm.English, defaultOpnm.Myanmar, defaultOpnm.Indonesia,
+                defaultOpnm.Ethiopia, "", [], [], xPos, yPos, opSerial, "", null, null,
+                null, DefaultDisplayColor, angular.element(_appElement).scope().pLayoutModifier.pWidth,
+                angular.element(_appElement).scope().pLayoutModifier.pHeight,
+                angular.element(_appElement).scope().opsFont.fontSize, [], true, window.LayoutPage, window.CanDelete,
+                true, xPos, 0, null, "", [DefaultIcon], window.ProcessIconPath, DefaultIcon);
+
+            toolkit.addNode(layoutProcess);
+
+            if (selectedOpdt) selectedOpdt.OpSerial = null; // assigning null to replace another video.
+            dragVideo.OpSerial = opSerial.trim();
+
+            //ShowMessageOk("001", SmsFunction.Add, MessageType.Success, MessageContext.Add, ObjMessageType.Info);
+        } else {
+            ShowMessageOk("001", SmsFunction.Add, MessageType.Error, MessageContext.Error, ObjMessageType.Error, res);
+        }
+
+    } else {
+        console.log("Could not get max of OpSerial");
+    }
+}
+
+function generateSimpleProcess(dragVideo, xPos, yPos, opnSerial) {
+    AsyncGetMaxOpSerial((opSerial) => {
+        if (opSerial && opSerial.trim() !== "") {
+            console.log(`OpSerial: ${opSerial}`);
+
+            const opName = GetOpnmByLang(defaultOpnm, angular.element(_appElement).scope().selectedLang),
+                abbEdition = window.CurrentOpmt.Edition.substring(0, 1),
+                opdt = new Opdt(abbEdition, window.CurrentOpmt.Edition, window.CurrentOpmt.StyleCode, window.CurrentOpmt.StyleColorSerial,
+                    window.CurrentOpmt.StyleSize, window.CurrentOpmt.RevNo, window.CurrentOpmt.OpRevNo, opSerial, opName,
+                    null, null, null, null, angular.element(_appElement).scope().layoutPage.pageNo, 0, 0, DefaultColor, parseInt(opSerial).toString()),
+                opnts = [new Opnt(abbEdition, window.CurrentOpmt.StyleCode, window.CurrentOpmt.StyleColorSerial,
+                    window.CurrentOpmt.StyleSize, window.CurrentOpmt.RevNo, window.CurrentOpmt.OpRevNo, opSerial, opnSerial, defaultOpnm.OpNameId)],
+                ajaxConfig = new AjaxConfig(InsertProcessUrl, true, JSON.stringify({ opDetail: opdt, lstOpMachine: [], lstOpTool: [], lstOpnt: opnts })),
+                selectedOpdt = _videoOpdts1.find(x => x.OpSerial === opSerial.trim());
+
+            AjaxPostCommon(ajaxConfig, (res) => {
+                console.log(res);
+                if (res === "success") {
+                    const layoutProcess = new LayoutProcess(opSerial.toString(), `[${parseInt(opSerial).toString()}] ${opName}`, 0, 0, "", 0,
+                        opName, defaultOpnm.Vietnam, defaultOpnm.English, defaultOpnm.Myanmar, defaultOpnm.Indonesia,
+                        defaultOpnm.Ethiopia, "", [], [], xPos, yPos, opSerial, "", null, null,
+                        null, DefaultDisplayColor, angular.element(_appElement).scope().pLayoutModifier.pWidth,
+                        angular.element(_appElement).scope().pLayoutModifier.pHeight,
+                        angular.element(_appElement).scope().opsFont.fontSize, [], true, window.LayoutPage, window.CanDelete,
+                        true, 0, 0, null, "", [DefaultIcon], window.ProcessIconPath, DefaultIcon);
+
+                    toolkit.addNode(layoutProcess);
+
+                    if (selectedOpdt) selectedOpdt.OpSerial = null; // assigning null to replace another video.
+                    dragVideo.OpSerial = opSerial.trim();
+
+                    ShowMessageOk("001", SmsFunction.Add, MessageType.Success, MessageContext.Add, ObjMessageType.Info);
+                } else {
+                    ShowMessageOk("001", SmsFunction.Add, MessageType.Error, MessageContext.Error, ObjMessageType.Error, res);
+                }
+            });
+
+        } else {
+            console.log("Could not get max of OpSerial");
+        }
+    });
+}
+
+async function dropCanvas(event) {
     event.preventDefault();
     //console.log(event);
 
     if (_isDraggingVideo) {
         if (window.CurrentOpmt) {
-            //console.log(`videoNo: ${videoNo}`);
-            //console.log("dragVideo");
-            //console.log(dragVideo);
-            //console.log(event.currentTarget);
-
-            //console.log(event.offsetX);
-            //console.log(event.offsetY);
-            //console.log(event.currentTarget.pageX);
-            //console.log(event.currentTarget.pageY);
-            //console.log(event.clientX);
-            //console.log(event.clientY);
-            //console.log(event.pageX);
-            //console.log(event.pageY);
-            //console.log(event.currentTarget.getBoundingClientRect());
-            //console.log(x);
-            //console.log(y);
-
-            console.log(window.CurrentOpmt);
-
             const videoNo = event.dataTransfer.getData("VideoNo"),
-                dragVideo = _videoOpdts1.find(x => x.PartNo.toString() === videoNo);
+                dragVideo = _videoOpdts1.find(x => x.PartNo.toString() === videoNo),
+                ckAllVideo = document.getElementById(CkAllVideo);
             console.log(videoNo);
             console.log(dragVideo);
 
-            // Beginning add a node to canvas
-            AsyncGetMaxOpSerial((opSerial) => {
-                if (opSerial && opSerial.trim() !== "") {
-                    console.log(`OpSerial: ${opSerial}`);
-                    const abbEdition = window.CurrentOpmt.Edition.substring(0, 1),
-                        opdt = new Opdt(abbEdition, window.CurrentOpmt.Edition, window.CurrentOpmt.StyleCode, window.CurrentOpmt.StyleColorSerial,
-                            window.CurrentOpmt.StyleSize, window.CurrentOpmt.RevNo, window.CurrentOpmt.OpRevNo, opSerial, "Opname", null, null, null, null,
-                            angular.element(_appElement).scope().layoutPage.pageNo, 0, 0, "#FFFFFFFF"),
-                        opnts = [new Opnt(abbEdition, window.CurrentOpmt.StyleCode, window.CurrentOpmt.StyleColorSerial,
-                            window.CurrentOpmt.StyleSize, window.CurrentOpmt.RevNo, window.CurrentOpmt.OpRevNo, opSerial, 1, 3600)], // Currently, default OpNameId is 3600 in opnm table that was added by Naveen. OpnSerial is from 1.
-                        ajaxConfig = new AjaxConfig(InsertProcessUrl, true, JSON.stringify({ opDetail: opdt, lstOpMachine: [], lstOpTool: [], lstOpnt: opnts })),
-                        selectedOpdt = _videoOpdts1.find(x => x.OpSerial === opSerial.trim());
+            if (ckAllVideo.checked) {
+                console.log("generate processes based on all videos.");
+                let xPos = 0, yPos = 0;
 
-                    AjaxPostCommon(ajaxConfig, (res) => {
-                        console.log(res);
-                        if (res === "success") {
-                            const layoutProcess = new LayoutProcess(opSerial.toString(), `[] Opname`, 0, 0, "", 0, "Opname", "Opname",
-                                "Opname", "Opname", "Opname", "Opname", "", [], [], 0, 0, "", "", null, null,
-                                null, "#A9A9A9", angular.element(_appElement).scope().pLayoutModifier.pWidth,
-                                angular.element(_appElement).scope().pLayoutModifier.pHeight,
-                                angular.element(_appElement).scope().opsFont.fontSize, [], true, window.LayoutPage, window.CanDelete,
-                                true, 0, 0, null, "", ["settings.svg"], window.ProcessIconPath, "settings.svg");
-
-                            toolkit.addNode(layoutProcess);
-
-                            if (selectedOpdt) selectedOpdt.OpSerial = null; // assigning null to replace another video.
-                            dragVideo.OpSerial = opSerial.trim();
-
-                            ShowMessageOk("001", SmsFunction.Add, MessageType.Success, MessageContext.Add, ObjMessageType.Info);
-                        } else {
-                            ShowMessageOk("001", SmsFunction.Add, MessageType.Error, MessageContext.Error, ObjMessageType.Error, res);
-                        }
-                    });
-
-                } else {
-                    console.log("Could not get max of OpSerial");
+                for (var v of _videoOpdts1) {
+                    await generateSimpleProcessAsync(v, xPos, yPos, 1);
+                    xPos += 150;
                 }
-            });
+                ShowMessageOk("001", SmsFunction.Add, MessageType.Success, MessageContext.Add, ObjMessageType.Info);
+            } else {
+                // Beginning add a node to canvas
+                generateSimpleProcess(dragVideo, 0, 0, 1);
+            }
         } else {
             console.log("No current opmt.");
         }

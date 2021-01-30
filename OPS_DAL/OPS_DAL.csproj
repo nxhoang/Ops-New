@@ -149,6 +149,7 @@
     <Compile Include="MesBus\DfmpBus.cs" />
     <Compile Include="MesBus\EmployeeBus.cs" />
     <Compile Include="MesBus\JgrqBus.cs" />
+    <Compile Include="MesBus\McmpBus.cs" />
     <Compile Include="MesBus\MXOpdtBus.cs" />
     <Compile Include="MesBus\OplsBus.cs" />
     <Compile Include="Business\OpmtBus.cs" />
@@ -183,6 +184,7 @@
     <Compile Include="MesEntities\Jgrq.cs" />
     <Compile Include="MesEntities\KApiEntities.cs" />
     <Compile Include="MesEntities\KonvaJSMapping.cs" />
+    <Compile Include="MesEntities\Mcmp.cs" />
     <Compile Include="MesEntities\MXOpdt.cs" />
     <Compile Include="MesEntities\Opls.cs" />
     <Compile Include="Entities\OpTimeEntity.cs" />

@@ -378,8 +378,8 @@ function InitPage() {
     ////END MOD) SON - 14/Jun/2019
 
     //get user role from sessioin storage
-    UserRoleOpm = JSON.parse(sessionStorage.getItem('UserRoleOpm'));
-    const userRoleFom = JSON.parse(sessionStorage.getItem('UserRoleFom'));
+    UserRoleOpm = JSON.parse(localStorage.getItem('UserRoleOpm'));
+    const userRoleFom = JSON.parse(localStorage.getItem('UserRoleFom'));
     UserRoleFom = userRoleFom;
     UserRoleMes = userRoleFom;
     //END MOD - SON - 2021.01.15) 18/Jan/2021

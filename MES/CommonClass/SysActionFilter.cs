@@ -31,7 +31,7 @@ namespace MES.CommonClass
             {
                 bool IsAccess = false;
 
-                var ExeRole = HttpContext.Current.Session["LoginRole"].ToString();
+                //var ExeRole = HttpContext.Current.Session["LoginRole"].ToString();
 
                 //Get Role from T_CM_SRMT  
                 var _Srmt = SrmtBus.GetUserRoleInfoMySql(HttpContext.Current.Session["LoginRole"].ToString(), SystemID, MenuID);
@@ -74,11 +74,8 @@ namespace MES.CommonClass
                         }
                     }
                 }
-                else
-                {
-                    if (HttpContext.Current.Session["LoginUserID"].ToString() == "22171078")
-                        IsAccess = true;
-                }
+                else 
+                    if (HttpContext.Current.Session["LoginUserID"].ToString() == "22171078")IsAccess = true;
 
                 if (!IsAccess)
                 {

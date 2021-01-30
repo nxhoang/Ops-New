@@ -12,7 +12,6 @@ namespace OPS_DAL.DAL
     public class MySqlDBManager
     {
         #region MES My Sql
-
         public static List<T> GetObjects<T>(string commandText, CommandType commandType, MySqlParameter[] parameters) where T : new()
         {
             using (var connection = new MySqlConnection(ConstantGeneric.ConnectionStrMesMySql))
@@ -226,6 +225,10 @@ namespace OPS_DAL.DAL
                         command.Parameters.AddRange(ConvertNullToDbNull(parameters));
                     }
                     var dataReader = await command.ExecuteReaderAsync();
+
+                    if (!dataReader.HasRows)
+                        return null;
+
                     var properties = typeof(T).GetProperties(BindingFlags.Public | BindingFlags.Instance);
                     var result = new List<T>();
 

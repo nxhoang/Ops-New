@@ -813,6 +813,15 @@ const setSelect2DropdownBelowWidthList = (listDropdownId, dropWidth) => {
         setSelect2DropdownBelowWidth(dropId, dropWidth);
     });
 }
+
+//clear dropdownlist
+const clearDropdownlist = (dropdownId) => {
+    $("#" + dropdownId).empty();
+    var option = '';
+    option += "<option></option>";
+   
+    $('#' + dropdownId).append(option);
+}
 //#endregion
 
 //#region daterangepicker

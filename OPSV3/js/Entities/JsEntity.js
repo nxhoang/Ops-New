@@ -34,3 +34,23 @@ class Opnt extends StyleMaster {
         this.VideoFile = videoFile;
     }
 }
+
+class Opnm {
+    constructor(opNameId, english, vietnam, indonesia, myanmar, korea, ethiopia, remark, groupLevel, parentId, code,
+        machineGroup, machineId, iconName) {
+        this.OpNameId = opNameId;
+        this.English = english;
+        this.Vietnam = vietnam;
+        this.Indonesia = indonesia;
+        this.Myanmar = myanmar;
+        this.Korea = korea;
+        this.Ethiopia = ethiopia;
+        this.Remark = remark;
+        this.GroupLevel = groupLevel;
+        this.ParentId = parentId;
+        this.Code = code;
+        this.MachineGroup = machineGroup;
+        this.MachineId = machineId;
+        this.IconName = iconName;
+    }
+}
