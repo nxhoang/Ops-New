@@ -47,10 +47,7 @@ namespace OPS_DAL.Business
 
         public static List<OpColor> GetColour()
         {
-            string q = @"SELECT
-                            *
-                        FROM
-                            t_op_color";
+            var q = @"select * from t_op_color where ISMODULECOLOR = '1'";
 
             var colour = OracleDbManager.GetObjects<OpColor>(q, CommandType.Text, null);
             return colour;

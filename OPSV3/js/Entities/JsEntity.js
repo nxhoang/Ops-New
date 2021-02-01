@@ -10,7 +10,7 @@
 class Opnt extends StyleMaster {
     constructor(edition, styleCode, styleColorSerial, styleSize, revNo, opRevNo, opSerial, opnSerial, opNameId,
         firstGroupLevel, secondGroupLevel, thirdGroupLevel, imageName, iotType, machineCount, machineType,
-        mainProcess, manCount, maxTime, opTime, remarks, stitchesPerInch, stitchingLength, videoFile) {
+        mainProcess, manCount, maxTime, opTime, stitchesPerInch, stitchingLength, videoFile) {
         super(styleCode, styleColorSerial, styleSize, revNo);
         this.Edition = edition;
         this.OpRevNo = opRevNo;
@@ -28,6 +28,7 @@ class Opnt extends StyleMaster {
         this.ManCount = manCount;
         this.MaxTime = maxTime;
         this.OpTime = opTime;
+        this.OpnSerial = opnSerial;
         this.Remarks = remarks;
         this.StitchesPerInch = stitchesPerInch;
         this.StitchingLength = stitchingLength;

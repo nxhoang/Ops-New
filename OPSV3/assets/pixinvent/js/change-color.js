@@ -43,6 +43,9 @@ function setBackgroundColorBySideBar(objColor) {
     $('.ui-accordion .ui-accordion-header').css({ "background-image": objColor.BgImage, "color": objColor.FontColor });
     //$('.ui-accordion .ui-accordion-header').css({ "color": objColor.FontColor });
 
+    //Oanh Add 29Jan2021
+    $('#edithdMachineGrid').css({ "background-image": objColor.BgImage, "color": objColor.FontColor });
+
     localStorage.setItem('sideBarColor', objColor.BgImage);
     localStorage.setItem('sideBarFontColor', objColor.FontColor);
 

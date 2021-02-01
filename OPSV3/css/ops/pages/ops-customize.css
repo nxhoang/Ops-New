@@ -22,10 +22,11 @@
 /*START ADD - SON) 3/Nov/2020*/
 .def-mul-op {
     display: inline-block;
-    height: 80px;
+    height: 90px;
     width: 90px;
     display: table-cell;
     vertical-align: middle;
+    background-color: #858d95;
 }
 
 .img-op-icon {
@@ -453,6 +454,9 @@ input[type=text] {
 }
 
 .ui-jqgrid-btable input {
+    width: 100%;
+}
+.ui-jqgrid-btable select {
     width: 100%;
 }
 /*#endregion*/

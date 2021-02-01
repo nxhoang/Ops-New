@@ -105,6 +105,12 @@ var isChange = false;
 var CanSave = false;
 
 let _initialPage = true; //ADD - SON - 2021.01.15) 18/Jan/2021
+//START ADD - SON) 29/Jan/2021
+let _moduleColors = []; //ADD - SON) 29/Jan/2021
+let _listModules = [];
+let _moduleBgColor = '#eeeeee';
+let _moduleBgColorDefault = '#858d95';
+//END ADD - SON) 29/Jan/2021
 
 // #region Message
 
@@ -628,12 +634,12 @@ function GetUserRoleInfoAsync(sysId, menuId, callBack) {
 const getOpsUserRole = () => {
     //Get user role for operation plan has PDM edition
     GetUserRoleInfoAsync(SystemIdOps, GetMenuIdByEdition(editionPdm), (res) => {
-        sessionStorage.setItem('UserRoleOpm', JSON.stringify(res));
+        localStorage.setItem('UserRoleOpm', JSON.stringify(res));
     });
 
     //Get user role for operation plan has AOM and MES edition
     GetUserRoleInfoAsync(SystemIdOps, GetMenuIdByEdition(editionAom), (res) => {
-        sessionStorage.setItem('UserRoleFom', JSON.stringify(res));
+        localStorage.setItem('UserRoleFom', JSON.stringify(res));
     });
 }
 //END ADD - SON) 18/Jan/2021
@@ -897,6 +903,47 @@ function GetMaxOpSerialByCode(styleCode, styleSize, styleColorSerial, revNo, opR
 }
 
 //Get max Operation Plan Serial
+async function GetMaxOpSerialAsync() {
+    console.log("Get max of OpSerial.");
+
+    let styleCode = "", styleSize = "", styleColorSerial = "", revNo = "", opRevNo = "", edition = "", result;
+
+    try {
+        // Get ops master from the grid.
+        const objOpsMaster = GetSelectedOneRowData(gridOpsTableId);
+
+        if (!$.isEmptyObject(objOpsMaster)) {
+            styleCode = objOpsMaster.StyleCode;
+            styleSize = objOpsMaster.StyleSize;
+            styleColorSerial = objOpsMaster.StyleColorSerial;
+            revNo = objOpsMaster.RevNo;
+            opRevNo = objOpsMaster.OpRevNo;
+            edition = objOpsMaster.Edition;
+        }
+        const opdt = { edition, styleCode, styleSize, styleColorSerial, revNo, opRevNo };
+
+        result = await $.ajax({
+            url: "/Ops/GetMaxOpSerial",
+            async: true,
+            type: "POST",
+            data: JSON.stringify(opdt),
+            dataType: "json",
+            contentType: "application/json",
+            error: (jqXhr, status, errorThrown) => {
+                console.log(jqXhr);
+                console.log(status);
+
+                ShowMessage("Get Max Operation Serial", "Cannot get max Operation Plan serial!\n" + errorThrown.message, MessageTypeError);
+                $("txtProcessNo").val("");
+            }
+        });
+
+        return result;
+    } catch (e) {
+        console.error(e);
+    }
+}
+
 function AsyncGetMaxOpSerial(callBack) {
     console.log("Get max of OpSerial.");
 
@@ -1061,6 +1108,11 @@ function SetValueForLanguage(idDropdowlist, lanId) {
     }
 }
 
+const changeBackgroundColorDefineMultilOperations = (colorHexa) => {
+    for (let i = 1; i <= 5; i++) {
+        $(`#divOpeartion${i}`).css({ 'background-color': `#${colorHexa}` });
+    }
+}
 // #endregion
 
 // #region Common Functions
@@ -1507,6 +1559,24 @@ function AjaxPostCommon(config, callback) {
     });
 
     return request;
+}
+
+async function PostAjaxAsync(config) {
+    let result;
+    try {
+        result = await $.ajax({
+            type: "POST",
+            async: config.async,
+            url: config.url,
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            data: config.postData
+        });
+
+        return result;
+    } catch (error) {
+        console.error(error);
+    }
 }
 
 function AjaxGetCommon(config, callback) {

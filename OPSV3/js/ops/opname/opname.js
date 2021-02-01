@@ -7,17 +7,20 @@
 var _selectMchOpSub = true;
 var _opNameIdOpType = '';
 var _uploadIconOp = 0;
+let _operationsRole = null;
 
 $(() => {
     initScriptOpNamePage();
 });
 
 const initScriptOpNamePage = () => {
-    bindDataOnGridOpName(_groupLevel.Level_0, '');
-
-    bindDataOnGridMachineCategories('');
-    bindDataOnGridMachine('', '', '');
-    //bindDataOnGridMachineGroup('');
+    GetUserRoleInfoAsync(SystemIdOps, 'OPN', userRole => {
+        console.log('userRole', userRole);
+        _operationsRole = userRole;
+        bindDataOnGridOpName(_groupLevel.Level_0, '');
+        bindDataOnGridMachineCategories('');
+        bindDataOnGridMachine('', '', '');
+    });
 
     eventClickButtonOpNamePage();
 }
@@ -33,25 +36,20 @@ const bindDataOnGridOpName = (groupLevel, parentId) => {
         datatype: "json",
         gridview: true,
         colModel: [
-            { name: "Code", index: "Code", label: 'Code', width: 30 },
-            { label: ' ', width: 50, align: 'center', formatter: showOpNameIcon },
+            { name: "Code", index: "Code", label: 'Code', width: 70, align: 'center' },
+            { label: ' ', align: 'center', width: 70, formatter: showOpNameIconOperationLevel0 },
             { name: "OpNameId", index: "OpNameId", label: 'OPNAME ID', hidden: true },
-            { name: "English", index: "English", label: 'Operation Type', width: 700 },
-            //{ name: "Vietnam", index: "Vietnam", label: 'Operation Type', hidden: true },
-            //{ name: "Indonesia", index: "Indonesia", label: 'Operation Type', hidden: true },
-            //{ name: "Myanmar", index: "Myanmar", label: 'Operation Type', hidden: true },
-            //{ name: "Ethiopia", index: "Ethiopia", label: 'Operation Type', hidden: true },
-            //{ name: "MchGroupName", index: "MchGroupName", label: 'Machine Group', width: 250 },
-            //{ label: ' ', width: 80, align: 'center', formatter: selectMachineGroup },
-            { label: ' ', width: 60, align: 'center', formatter: uploadOpIcon },
+            { name: "English", index: "English", label: 'Operation Type', width: 1000 },
+            { name: 'UploadIcon', index: 'UploadIcon', label: ' ', width: 100, align: 'center', formatter: uploadOpIcon },
             { name: "IconLink", index: "IconLink", hidden: true },
             { name: "GroupLevel", index: "GroupLevel", hidden: true },
             { name: "ParentId", index: "ParentId", hidden: true },
-            //{ name: "MachineGroup", index: "MachineGroup", hidden: true },
             { name: "HasChild", index: "HasChild", hidden: true }
         ],
         rowNum: 100,
-        autowidth: true,
+        //autowidth: true,
+        shrinkToFit: false,
+        width: null,
         height: 350,
         onSelectRow: function (rowid) {
             //Hide machine category gridview
@@ -79,11 +77,22 @@ const bindDataOnGridOpName = (groupLevel, parentId) => {
         subGridRowExpanded: getOpSubGroups,
     });
 
-     //Resize girdview
+    checkOperationPageRole();
+
+    //Resize girdview
     $(window).on('resize', function () {
         var wd = $(window).height() - 200;
         $('#tbOpName').setGridHeight(wd);
     }).trigger('resize');
+
+}
+
+const checkOperationPageRole = () => {
+    if (_operationsRole.IsUpdate === '1') {
+        jQuery("#tbOpName").showCol("UploadIcon");
+    } else {
+        jQuery("#tbOpName").hideCol("UploadIcon");
+    }
 }
 
 function getOpSubGroups(subgrid_id, row_id) {
@@ -104,27 +113,25 @@ function getOpSubGroups(subgrid_id, row_id) {
         },
         datatype: "json",
         gridview: true,
-        colModel: [            
-            { name: "Code", index: "Code", label: 'Code', width: 60  },
-            { name: "OpNameId", index: "OpNameId", label: 'OPNAME ID', hidden: true },
+        colModel: [
+            { name: "Code", index: "Code", label: 'Code', width: 60 },
             { name: "English", index: "English", label: 'Operation Sub', width: 500 },
-            //{ name: "Vietnam", index: "Vietnam", label: 'OP NAME', width: 80 },
-            //{ name: "Indonesia", index: "Indonesia", label: 'OP NAME', width: 150 },
-            //{ name: "Myanmar", index: "Myanmar", label: 'OP NAME', width: 80 },
-            //{ name: "Ethiopia", index: "Ethiopia", label: 'OP NAME', width: 80 },
             { name: "ItemName", index: "ItemName", label: 'Machine', width: 350 },
-            { label: ' ', width: 60, align: 'center', formatter: selectMachineOpSub },
-            { label: ' ', width: 60, align: 'center', formatter: showOpNameIcon },
-            { label: ' ', width: 60, align: 'center', formatter: uploadOpIcon },
+            { name: "SelectMachine", index: "SelectMachine", label: ' ', width: 60, align: 'center', formatter: selectMachineOpSub },
+            { label: ' ', width: 100, align: 'center', formatter: showOpNameIcon },
+            { name: "UploadOpIcon", index: "UploadOpIcon", label: ' ', width: 60, align: 'center', formatter: uploadOpIcon },
             { name: "IconLink", index: "IconLink", hidden: true },
             { name: "MachineId", index: "MachineId", hidden: true },
             { name: "GroupLevel", index: "GroupLevel", hidden: true },
             { name: "ParentId", index: "ParentId", hidden: true }, /*OpNameId of GroupLevel_0*/
-            { name: "HasChild", index: "HasChild", hidden: true }
+            { name: "HasChild", index: "HasChild", hidden: true },
+            { name: "OpNameId", index: "OpNameId", label: 'OPNAME ID', hidden: true }
         ],
         rowNum: 100,
         height: 'auto',
-        autowidth: true,
+        //autowidth: true,
+        shrinkToFit: false,
+        width: null,
         onSelectRow: function (rowid) {
             //get selected row data
             let dtRow = $('#' + subgrid_table_id).jqGrid("getRowData", rowid);
@@ -151,6 +158,18 @@ function getOpSubGroups(subgrid_id, row_id) {
         subGrid: true,
         subGridRowExpanded: getOpDetails,
     });
+
+    checkRoleForGridLevel1(subgrid_table_id);
+}
+
+const checkRoleForGridLevel1 = (gridId) => {
+    if (_operationsRole.IsUpdate === '1') {
+        jQuery(`#${gridId}`).showCol("UploadOpIcon");
+        jQuery(`#${gridId}`).showCol("SelectMachine");
+    } else {
+        jQuery(`#${gridId}`).hideCol("UploadOpIcon");
+        jQuery(`#${gridId}`).hideCol("SelectMachine");
+    }
 }
 
 function getOpDetails(subgrid_id, row_id) {
@@ -178,7 +197,7 @@ function getOpDetails(subgrid_id, row_id) {
             { name: "Ethiopia", index: "Ethiopia", label: 'Operation Detail', hidden: true },
             { name: "OpNameId", index: "OpNameId", label: 'OPNAME ID', hidden: true },
             { name: "ItemName", index: "ItemName", label: 'Machine', width: 350 },
-            { label: ' ', width: 60, align: 'center', formatter: selectMachineOpDetail },
+            { name: "SelectMachine", index: "SelectMachine", label: ' ', width: 60, align: 'center', formatter: selectMachineOpDetail },
             { name: "GroupLevel", index: "GroupLevel", hidden: true },
             { name: "ParentId", index: "ParentId", hidden: true }, /*OpNameId of GroupLevel_1*/
             { name: "MachineId", index: "MachineId", hidden: true },
@@ -198,6 +217,16 @@ function getOpDetails(subgrid_id, row_id) {
             ReloadJqGrid('tbMachineCat', { opNameId: '' });
         }
     });
+
+    checkRoleForGridLevel2(subgrid_table_id);
+}
+
+const checkRoleForGridLevel2 = (gridId) => {
+    if (_operationsRole.IsUpdate === '1') {
+        jQuery(`#${gridId}`).showCol("SelectMachine");
+    } else {
+        jQuery(`#${gridId}`).hideCol("SelectMachine");
+    }
 }
 
 const bindDataOnGridMachineCategories = (opNameId) => {
@@ -274,26 +303,33 @@ const bindDataOnGridMachineGroup = (opNameId) => {
 
 //#region formatter
 function selectMachineGroup(cellvalue, options, rowObject) {
-    return `<i class='fa fa-edit' style='cursor: pointer; color: #42a5f5' onclick='showModalMachineGroup(${rowObject.OpNameId})'></i>`;
+    return `<i class='icon-note' style='cursor: pointer; color: #42a5f5' onclick='showModalMachineGroup(${rowObject.OpNameId})'></i>`;
 }
 
 function selectMachineOpSub(cellvalue, options, rowObject) {
-    return `<i class='fa fa-edit' style='cursor: pointer; color: #42a5f5' onclick='showModalMachineOpSub(${rowObject.ParentId}, ${rowObject.OpNameId})'></i>`;
+    return `<i class='icon-note' style='cursor: pointer; color: #42a5f5' onclick='showModalMachineOpSub(${rowObject.ParentId}, ${rowObject.OpNameId})'></i>`;
 }
 
 function uploadOpIcon(cellvalue, options, rowObject) {
     //If grid id is table operation name then set upload icon is 0
     _uploadIconOp = options.gid === 'tbOpName' ? 0 : 1;
-    return `<i class='fa fa-upload' style='cursor: pointer; color: #42a5f5' onclick='showModalUploadOpIcon(${rowObject.OpNameId})'></i>`;
+    return `<i class='icon-cloud-upload' style='cursor: pointer; color: #42a5f5' onclick='showModalUploadOpIcon(${rowObject.OpNameId})'></i>`;
 }
 
 function selectMachineOpDetail(cellvalue, options, rowObject) {
-    return `<i class='fa fa-edit' style='cursor: pointer; color: #42a5f5' onclick='showModalMachineOpDetail(${rowObject.GroupLevel_0}, ${rowObject.ParentId}, ${rowObject.OpNameId})'></i>`;
+    return `<i class='icon-note' style='cursor: pointer; color: #42a5f5' onclick='showModalMachineOpDetail(${rowObject.GroupLevel_0}, ${rowObject.ParentId}, ${rowObject.OpNameId})'></i>`;
+}
+
+function showOpNameIconOperationLevel0(cellvalue, options, rowObject) {
+    if (!$.isEmptyObject(rowObject.IconName)) {
+        return `<div style="background-color: #858d95"><img style="width:45px; height:45px;" src="${rowObject.IconLink}"/></div>`;
+    }
+
+    return '';
 }
 
 function showOpNameIcon(cellvalue, options, rowObject) {
     if (!$.isEmptyObject(rowObject.IconName)) {
-        //return `<img style="width:60px; height:30px;" src="../../img/opnameicon/${rowObject.IconName}"/>`;
         return `<img style="width:60px; height:30px;" src="${rowObject.IconLink}"/>`;
     }
 

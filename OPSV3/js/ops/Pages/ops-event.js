@@ -1425,7 +1425,7 @@ function ClickTabModule() {
         //Get list module part
         GetModulePart();
         // Oanh add function change color 19Jan2021
-        setBackgroundColorJqGridModal();
+        setBackgroundColorJqGridModal();        
     });
 
     $("#achModuleRevision").click(function () {
@@ -1609,6 +1609,7 @@ function ClickButtonSaveComment() {
             $.each(gridData, function (idx, value) {
                 value.PartComment = $("#txtPartComment_" + i).val();
                 //value.SubGroup = $("#drpSubGroupModule_" + i).val(); //ADD - SON) 8/Sep/2020
+                value.Color = $(`#drpModuleColor_${i}`).val()
                 i++;
             });
 

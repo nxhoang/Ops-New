@@ -72,7 +72,7 @@
     <!-- Oanh lock file 18Jan2021-->
     <!--<link rel="stylesheet" type="text/css" href="~/assets/pixinvent/vendors/css/chartist.min.css">-->
     <link rel="stylesheet" type="text/css" href="~/assets/pixinvent/css/app.css">
-    <link rel="stylesheet" type="text/css" href="~/assets/pixinvent/css/pungkook.css?v=1.0.0">
+    <link rel="stylesheet" type="text/css" href="~/assets/pixinvent/css/pungkook.css?v=1.0.1">
     <!--end Oanh new template-->
 
     <link href="~/css/ops/pages/ops-customize.css?v=1.6" rel="stylesheet" />
@@ -185,12 +185,8 @@
                 <div class="logo clearfix">
                     <a href="#" class="logo-text float-left">
                         <!--<div class="logo-img"><img src="~/assets/pixinvent/img/Exclude.png" /></div><span class="text align-middle">OPS</span>-->
-                        <!--<div class="logo-img"><img src="~/assets/pixinvent/img/OPS.png" /></div><span class="text align-middle"></span>-->
-                        <div class="logo-img"><img src="~/assets/pixinvent/img/PK-logo.svg" /></div><span class="text align-middle ops-text">OPS</span>
+                        <div class="logo-img"><img src="~/assets/pixinvent/img/OPS.png" /></div><span class="text align-middle"></span>
                     </a><a id="sidebarToggle" href="javascript:;" class="nav-toggle d-none d-sm-none d-md-none d-lg-block"><i data-toggle="expanded" class="ft-disc toggle-icon"></i></a><a id="sidebarClose" href="javascript:;" class="nav-close d-block d-md-block d-lg-none d-xl-none"><i class="ft-circle"></i></a>
-                </div>
-                <div class="ops-text-under clearfix">
-                    <div class="logo-img"><span class=" align-middle">OPS</span></div>
                 </div>
             </div>
             <div class="sidebar-content">
@@ -218,26 +214,30 @@
                             </ul>
                         </li>
                         <li class="has-sub nav-item">
-                            <a href="#" class="linkOfOpsLink"><i class="icon-grid"></i><span data-i18n="" class="menu-title">Master Data Setup</span></a>
+                            <a href="#" class="linkOfOpsLink"><i class="icon-grid"></i><span data-i18n="" class="menu-title">Master Data</span></a>
                             <ul class="menu-content">
                                 <li>
-                                    <a href="/OpsMasterData/Machine" class="menu-item">Machince</a>
+                                    <a href="/OpsMasterData/Machine" class="menu-item">Machines</a>
                                 </li>
                                 <li>
                                     <a href="/OpsMasterData/Tools" class="menu-item">Tools</a>
                                 </li>
                                 <li>
                                 <li>
-                                    <a href="/OpName/OpName" class="menu-item">Operation Name</a>
-                                </li>
-                                <li>
-                                    <a href="/DataAuditTool/DataAuditTool" class="menu-item">Data Audit Tool</a>
-                                </li>
-                                <li>
-                                    <a href="/Ops/ProcessTemplate" class="menu-item"><span>Process Template</span></a>
+                                    <a href="/OpName/OpName" class="menu-item">Operations</a>
                                 </li>
                             </ul>
                         </li>
+                        <!--START ADD - SON) 28/Jan/2021-->
+                        <li class="has-sub nav-item">
+                            <a href="#" class="linkOfOpsLink"><i class="icon-wrench"></i><span data-i18n="" class="menu-title">Tools</span></a>
+                            <ul class="menu-content">
+                                <li>
+                                    <a href="/DataAuditTool/DataAuditTool" class="menu-item">Data Audit Tool</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <!--END ADD - SON) 28/Jan/2021-->
                         <li class="has-sub nav-item">
                             <a href="#" class="linkOfOpsLink"><i class="ft-search"></i><span data-i18n="" class="menu-title">Find</span></a>
                             <ul class="menu-content">
@@ -249,9 +249,9 @@
                                 </li>
                             </ul>
                         </li>
-                        <li class="nav-item"><a href="#" class="linkOfOpsLink" onclick="ShowModalUpdateEmail()"><i class="icon-notebook"></i><span data-i18n="" class="menu-title">Messages</span></a></li>
+                        <!-- <li class="nav-item"><a href="#" class="linkOfOpsLink" onclick="ShowModalUpdateEmail()"><i class="icon-notebook"></i><span data-i18n="" class="menu-title">Messages</span></a></li> -->
                         <li class="nav-item">
-                            <a target="_blank" href="http://203.113.146.146:775/Func?prjid=1"><i class="icon-support"></i><span data-i18n="" class="menu-title">Documentation</span></a>
+                            <a target="_blank" href="http://203.113.146.146:775/Func?prjid=1"><i class="icon-book-open"></i><span data-i18n="" class="menu-title">Documentation</span></a>
                         </li>
                         <li class="nav-item">
                             <a href="#"><i class="icon-settings"></i><span data-i18n="" class="menu-title">Settings</span></a>
@@ -311,14 +311,12 @@
 
                     @*<div class="dropdown ml-2 display-inline-block">*@
                     <div class="dropdown display-inline-block">
-                        <a id="apps" href="#" data-toggle="dropdown" class="nav-link position-relative dropdown-toggle"><i class="ft-edit blue-grey darken-4"></i><span class="mx-1 blue-grey darken-4 text-bold-400">Master</span></a>
+                        <a id="apps" href="#" data-toggle="dropdown" class="nav-link position-relative dropdown-toggle"><i class="ft-edit blue-grey darken-4"></i><span class="mx-1 blue-grey darken-4 text-bold-400">Master Data</span></a>
                         <div class="apps dropdown-menu">
                             <div class="arrow_box">
-                                <a href="/OpsMasterData/Machine" class="dropdown-item py-1"><span>Machine</span></a>
-                                <a href="/OpsMasterData/Tools" class="dropdown-item py-1"><span>Tool</span></a>
-                                <a href="/OpName/OpName" class="dropdown-item py-1"><span>Operation Name</span></a>
-                                <a href="/DataAuditTool/DataAuditTool" class="dropdown-item py-1"><span>Data Audit Tool</span></a>
-                                <a href="/Ops/ProcessTemplate" class="dropdown-item py-1"><span>Process Template</span></a>
+                                <a href="/OpsMasterData/Machine" class="dropdown-item py-1"><span>Machines</span></a>
+                                <a href="/OpsMasterData/Tools" class="dropdown-item py-1"><span>Tools</span></a>
+                                <a href="/OpName/OpName" class="dropdown-item py-1"><span>Operations</span></a>
                             </div>
                         </div>
                     </div>
@@ -338,9 +336,22 @@
                         </div>
                     </div>
 
+                    <!--START ADD - SON) 28/Jan/2021-->
+                    <div class="dropdown display-inline-block">
+                        <a id="apps" href="#" data-toggle="dropdown" class="nav-link position-relative dropdown-toggle">
+                            <i class="icon-wrench blue-grey darken-4"></i>
+                            <span class="mx-1 blue-grey darken-4 text-bold-400">Tools</span>
+                        </a>
+                        <div class="apps dropdown-menu">
+                            <div class="arrow_box">
+                                <a href="/DataAuditTool/DataAuditTool" class="dropdown-item py-1"><span>Data Audit Tool</span></a>
+                            </div>
+                        </div>
+                    </div>
+                    <!--END ADD - SON) 28/Jan/2021-->
                     @*<div class=" ml-2 display-inline-block">*@
                     <div class="display-inline-block">
-                        <a target="_blank" href="http://203.113.146.146:775/Func?prjid=1"><i class="icon-support blue-grey darken-4"></i><span class="mx-1 blue-grey darken-4 text-bold-400">Documentation</span></a>
+                        <a target="_blank" href="http://203.113.146.146:775/Func?prjid=1"><i class="icon-book-open blue-grey darken-4"></i><span class="mx-1 blue-grey darken-4 text-bold-400">Documentation</span></a>
                     </div>
 
                 </div>
@@ -391,9 +402,9 @@
                                 </a>
                                 <div aria-labelledby="dropdownBasic3" class="dropdown-menu dropdown-menu-right">
                                     <div class="arrow_box_right">
-                                        <a href="#" class="dropdown-item py-1"><i class="ft-edit mr-2"></i><span>My Profile</span></a>
+                                        <a href="#" class="dropdown-item py-1" onclick="ShowModalUpdateEmail()"><i class="ft-edit mr-2"></i><span>My Profile</span></a>
                                         <input id="hdUsername" type="hidden" value="@users.UserName" />
-                                        <a href="#" class="dropdown-item py-1"><i class="ft-edit mr-2"></i><span>@users.Name (@users.RoleID)</span></a>
+                                        <a href="#" class="dropdown-item py-1"><i class="ft-user-check mr-2"></i><span>@users.Name (@users.RoleID)</span></a>
                                         <a href="#" class="mb-control dropdown-item" data-box="#mb-signout"><i class="ft-power mr-2"></i><span>Logout</span></a>
                                     </div>
                                 </div>
@@ -408,16 +419,14 @@
         <!--Oanh new menu Top =====================================================================-->
         <!-- END PAGE SIDEBAR -->
         <!-- PAGE CONTENT -->
-        <div class="">
-
-
+        <div class="op__page-content">
             <div class="main-panel">
                 <div class="main-content">
                     <div class="content-wrapper">
                         <div class="container-fluid">
                             <section class="selection-n-deletion">
-                                <div class="row">
-                                    <div class="col-12">
+                                <div class="row op__page-content-row">
+                                    <div class="col-12 op__page-content-col12">
                                         <div class="card-header">
                                             <div class="card-title-wrap bar-success">
                                                 <h4 class="card-title">@ViewBag.PageTitle</h4>

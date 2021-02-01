@@ -289,10 +289,10 @@ namespace OPS_DAL.Business
         /// <param name="trans"></param>
         /// <param name="oraConn"></param>
         /// <returns></returns>
-        private static bool UpdateModuleComment(string styleCode, string moduleId, string partComment, OracleTransaction trans, OracleConnection oraConn)
+        private static bool UpdateModuleComment(string styleCode, string moduleId, string partComment, string color, OracleTransaction trans, OracleConnection oraConn)
         {
             //START MOD - SON) 8/Sep/2020            
-            var strSql = @" UPDATE T_00_SAMT SET PARTCOMMENT = :P_PARTCOMMENT WHERE STYLECODE = :P_STYLECODE AND MODULEID = :P_MODULEID ";
+            var strSql = @" UPDATE T_00_SAMT SET PARTCOMMENT = :P_PARTCOMMENT, COLOR = :P_COLOR WHERE STYLECODE = :P_STYLECODE AND MODULEID = :P_MODULEID ";
             
             //var strSql = @" UPDATE T_00_SAMT SET PARTCOMMENT = :P_PARTCOMMENT, SUBGROUP = :P_SUBGROUP WHERE STYLECODE = :P_STYLECODE AND MODULEID = :P_MODULEID ";
             //END MOD - SON) 8/Sep/2020
@@ -300,6 +300,7 @@ namespace OPS_DAL.Business
             List<OracleParameter> oraParams = new List<OracleParameter>
             {
                 new OracleParameter("P_PARTCOMMENT", partComment),
+                new OracleParameter("P_COLOR", color), //ADD - SON) 30/Jan/2021
                 //new OracleParameter("P_SUBGROUP", subGroup), //ADD - SON) 8/Sep/2020
                 new OracleParameter("P_STYLECODE", styleCode),
                 new OracleParameter("P_MODULEID", moduleId)
@@ -325,7 +326,7 @@ namespace OPS_DAL.Business
                 {
                     foreach (var mdl in listModule)
                     {
-                        if (UpdateModuleComment(mdl.StyleCode, mdl.ModuleId, mdl.PartComment, trans, connection)) continue; //MOD - SON) 8/Sep/2020 - Add mdl.SubGroup
+                        if (UpdateModuleComment(mdl.StyleCode, mdl.ModuleId, mdl.PartComment, mdl.Color, trans, connection)) continue; //MOD - SON) 30/Jan/2021 - add color
 
                         trans.Rollback();
                         return false;

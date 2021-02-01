@@ -318,7 +318,9 @@
     <Content Include="assets\op-management\js\op_video-process.min.js" />
     <Content Include="assets\ops-fileupload\videos\COMPADEPART\m9F59loE8efrI33.mp4" />
     <Content Include="assets\ops-layout\css\app.css" />
-    <Content Include="assets\ops-layout\css\app.min.css" />
+    <Content Include="assets\ops-layout\css\app.min.css">
+      <DependentUpon>app.css</DependentUpon>
+    </Content>
     <Content Include="assets\ops-layout\css\demo-op-layout.css" />
     <Content Include="assets\ops-layout\css\demo-op-layout.min.css">
       <DependentUpon>demo-op-layout.css</DependentUpon>

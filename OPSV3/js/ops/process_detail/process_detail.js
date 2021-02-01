@@ -2038,6 +2038,7 @@ const eventOnTextBoxOld = () => {
 function GetModulesByStyleCode(styleCode) {
     var config = ObjectConfigAjaxPost("/Ops/GetModulesListByStyleCode", false, JSON.stringify({ styleCode: styleCode }));
     AjaxPostCommon(config, function (respone) {
+        _listModules = respone;
         FillDataToDropDownlist("drpModule", respone, "ModuleId", "ModuleName");
     });
 }
@@ -2757,8 +2758,6 @@ const SaveNewProcess_New = async (callBackFunc, oploCallBack) => {
 
                 //console.log(lstMachine);
 
-                console.log(_listOpnt);
-
                 let blAddPro = AddNewProcess_New(objOpDetail, lstMachine, lstTool, _listOpnt);
 
                 if (blAddPro === true) {
@@ -2838,9 +2837,6 @@ function UpdateProcess_New(callBackFunc, oploCallBack) {
             //let lstMachine = getMachinesList(opMaster);
             let lstMachine = [];
             let lstTool = [];
-
-            console.log("opdt 🐃");
-            console.log(objOpDetail);
 
             //Update process detail
             var blUpdate = UpdateOpDetail_New(objOpDetail, lstMachine, lstTool, _listOpnt);

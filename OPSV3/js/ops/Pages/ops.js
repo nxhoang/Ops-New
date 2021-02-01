@@ -378,8 +378,8 @@ function InitPage() {
     ////END MOD) SON - 14/Jun/2019
 
     //get user role from sessioin storage
-    UserRoleOpm = JSON.parse(sessionStorage.getItem('UserRoleOpm'));
-    const userRoleFom = JSON.parse(sessionStorage.getItem('UserRoleFom'));
+    UserRoleOpm = JSON.parse(localStorage.getItem('UserRoleOpm'));
+    const userRoleFom = JSON.parse(localStorage.getItem('UserRoleFom'));
     UserRoleFom = userRoleFom;
     UserRoleMes = userRoleFom;
     //END MOD - SON - 2021.01.15) 18/Jan/2021
@@ -441,8 +441,7 @@ function InitPage() {
 
     //START ADD) SON - 2019.03.1.0 - 09/Mar/2019
     loadTooltipForProcessNameTextbox();
-    //START ADD) SON - 2019.03.1.0 - 09/Mar/2019
-
+    //START ADD) SON - 2019.03.1.0 - 09/Mar/2019        
 }
 
 // #endregion
@@ -1326,7 +1325,6 @@ function BindDataToJqGridModule(styleCode, moduleItemCode) {
             { name: 'ModuleName', index: 'ModuleName', width: 400, label: arrColNameGridModule.MODULENAME, classes: 'pointer', hidden: true },
             { name: 'PartId', index: 'PartId', width: 100, label: "ID", classes: 'pointer' },
             { name: 'ItemName', index: 'ItemName', width: 400, label: arrColNameGridModule.ITEMNAME, classes: 'pointer' },
-            //{ name: 'SubGroup', index: 'SubGroup', width: 120, label: arrColNameGridModule.SUBGROUP, align: 'center', formatter: createDropdownSubGroup },
             { name: 'FinalAssembly', index: 'FinalAssembly', width: 200, label: arrColNameGridModule.FINALASSEMBLY, classes: 'pointer' },
             {
                 name: 'PartComment', width: 300, label: "Custom name", classes: 'pointer',
@@ -1339,6 +1337,8 @@ function BindDataToJqGridModule(styleCode, moduleItemCode) {
                     return '<input type="text" name="txtPartComment" id="txtPartComment_' + option.rowId + '" value="' + cellValue + '" readonly/>';
                 }
             },
+            { name: 'DropdownModuleColor', index: 'DropdownModuleColor', width: 200, label: 'Color', formatter: generateModuleColorDropdown },
+            { name: 'Color', index: 'Color', hidden: true },
             { name: 'StyleCode', index: 'StyleCode', hidden: true }
         ],
         loadError: function (xhr, status, err) {
@@ -1346,31 +1346,23 @@ function BindDataToJqGridModule(styleCode, moduleItemCode) {
         },
         onPaging: function (pgButton) {
             if (pgButton === "records") {
-
                 SetPaging($(TableModuleId), DivPagerModuleName);
             }
-        },
-        onSelectRow: function (rowid) {
-            //var row = $(TableModuleId).jqGrid("getRowData", rowid);
-
-            //Save ops master key to local storage
-            //localStorage.setItem(OpsMasterInfo, JSON.stringify(row));
-
         },
         gridComplete: function () {
             setTimeout(function () {
                 updatePagerIcons();
             }, 0);
 
-        },
-        loadComplete: function (gridData) {
-            //if (gridData.length > 0 || typeof gridData.length !== 'undefined') {
-            //    $.each(gridData, function (idx, rowData) {
-            //        let rowId = idx + 1;
-            //        //console.log(rowId);
-            //        $(`#drpSubGroupModule_${rowId}`).val(rowData.SubGroup);
-            //    });
-            //}
+            //START ADD - SON) 29/Jan/2021
+            const rows = $(TableModuleId).getDataIDs();
+            rows.forEach(rowId => {
+                let dropdownId = `drpModuleColor_${rowId}`;
+                fillDataToDropDownlistModuleColor(dropdownId, _moduleColors, 'HexaValue', 'HexaValue')
+                let rowData = jQuery(TableModuleId).jqGrid('getRowData', rowId);
+                $(`#${dropdownId}`).val(rowData.Color).trigger("change");
+            });
+            //END ADD - SON) 29/Jan/2021
         }
     });
 
@@ -1418,11 +1410,31 @@ function BindDataToJqGridModule(styleCode, moduleItemCode) {
 
     $("#pg_" + DivPagerModuleName + " option[value=40]").text(arrButtonAction.all);
 
-    //function createDropdownSubGroup(cellValue, option) {
-    //    let selSubGroup = `<select id="drpSubGroupModule_${option.rowId}"><option value="0">Unlinked</option><option value="1">Linked</option></select>`;
+    function generateModuleColorDropdown(cellValue, option) {
+        const dropdownId = `drpModuleColor_${option.rowId}`;
+        let moduleColorDropdown = `<select id="${dropdownId}"><option></option></select>`;
+        return moduleColorDropdown;
+    }
+}
 
-    //    return selSubGroup;
-    //}
+function fillDataToDropDownlistModuleColor(idDropdownlist, arrDataSource, valueField, textFiled) {
+    $("#" + idDropdownlist).empty();
+    var option = '';
+    option += "<option></option>"; //add empty data
+    for (var i = 0; i < arrDataSource.length; i++) {
+        option += '<option value="' + arrDataSource[i][valueField] + '">' + arrDataSource[i][textFiled] + "</option>";
+    }
+    $('#' + idDropdownlist).append(option);
+
+    $("#" + idDropdownlist).select2({
+        templateResult: formatOptionModuleColor,
+        templateSelection: formatOptionModuleColor,
+        escapeMarkup: function (m) { return m; }
+    });
+}
+
+function formatOptionModuleColor(color) {
+    return `<div style="width: 100%; height: 26px; background-color: #${color.id}"><div/>` + color.text;
 }
 
 // #endregion
@@ -3167,7 +3179,14 @@ function LoadDataForAddingModule(styleCode) {
     //};
     //ReloadJqGrid(TableModuleName, postData);
 
-    BindDataToJqGridModule(styleCode, "");
+    //START ADD - SON) 29/Jan/2021
+    getModuleColorsAsync((response) => {
+        _moduleColors = response;
+        BindDataToJqGridModule(styleCode, "");
+    });
+    //END ADD - SON) 29/Jan/2021
+
+    //BindDataToJqGridModule(styleCode, "");
 
     if (UserRoleMdl.IsAdd !== "1") return;
 

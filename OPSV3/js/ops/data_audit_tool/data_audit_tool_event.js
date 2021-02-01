@@ -6,19 +6,26 @@
         switch (teamGroup) {
             case '1':
                 getSaleTeams(response => FillDataToDropDownlist("drpTeam", response, "RoleId", "RoleDesc"));
+                getBuyersProductTeam(null);
                 break;
             case '2':
                 getProductTeams(response => FillDataToDropDownlist("drpTeam", response, "FactoryId", "FactoryName"));
                 break
             default:
-            //clear data in dropdonwlist
+                //get all buyers
+                getBuyersSaleTeam(null);
         }
     });
 
     $('#drpTeam').change(() => {
         //get list buyer buy team
         const teamGroup = $('#drpTeamGroup').val();
-        if (teamGroup === '1') getBuyerList();
+        const teamId = $('#drpTeam').val();
+        if (teamGroup === '1') {
+            getBuyersSaleTeam(teamId);
+        } else if (teamGroup === '2') {
+            getBuyersProductTeam(teamId);
+        }
     });
 
     $('#drpOpPlanEdition').change(() => {

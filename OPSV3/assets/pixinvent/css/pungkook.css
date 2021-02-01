@@ -233,7 +233,7 @@ li, dd {
 
 #searchStyle {
     border: 1px solid #ffffff !important;
-    width: 265px !important;
+    width: auto !important;
 }
 
     #searchStyle:focus {
@@ -347,6 +347,22 @@ li, dd {
 .mr-bottom-login {
     margin-bottom: -12px !important;
 }
+/*Oanh Add 28Jan2021*/
+/**/
+/*.card-header {
+    padding: 0.5rem 1.0rem !important;
+}
+.account-wall .card-body {
+    padding: 0.8rem !important;
+}
+.form-signin .form-group {
+    margin-bottom: 0.85rem;
+}
+.card-footer {
+    padding: 0.5rem 1.25rem !important;
+    margin: 0rem 1.0rem;
+}*/
+/*end Oanh Add 28Jan2021*/
 /* end Login page*/
 /* start Process Detail Planmanagement Page*/
 .btn-w-5 {
@@ -575,14 +591,13 @@ form label {
 }
 
 .app-sidebar .logo-img img /*, .off-canvas-sidebar .logo-img img */ {
-    /*width: 50px !important ;*/
-    width: 60px !important;
-    margin: -5px 0px 0px -5px !important;
+    width: 50px !important;
 }
 
 .app-sidebar .logo /*, .off-canvas-sidebar .logo*/ {
-    /*padding: 18px 0px 15px 5px !important; Oanh edit 25Jan2021*/
-    padding: 5px 0px 10px 5px !important;
+    padding: 18px 0px 15px 5px !important;
+    /*Oanh edit 25Jan2021*/
+    /*padding: 5px 0px 10px 5px !important;*/
 }
 
     .app-sidebar .logo .logo-text {
@@ -1087,4 +1102,8 @@ hr {
 
 .modal-body-custom .row .form-horizontal {
     width: 100%;
+}
+/*Oanh Add 29Jan2021*/
+.customizer {
+    z-index: 100000 !important;
 }

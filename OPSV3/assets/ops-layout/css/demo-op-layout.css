@@ -2,7 +2,10 @@ html, body {
     height: 100%
 }
 
-.ops__page-content {
+.op__page-content, .op__page-content .content-wrapper, .op__page-content .main-content, .op__page-content-row,
+.op__page-content-col12, .op__page-content .selection-n-deletion, .op__page-content .col-md-12.page-body,
+.op__page-content .panel.panel-default, .op__page-content .panel-body, .jtk-container, .jtk-page-container,
+.jtk-ops-main {
     height: 100%
 }
 
@@ -74,7 +77,8 @@ html, body {
     margin: 0 auto;
     position: relative;
     top: -40px;
-    box-shadow: 0 4px 8px 0 rgb(0 0 0 / 5%), 0 6px 20px 0 rgb(0 0 0 / 10%);
+    box-shadow: 0 4px 8px 0 #000000, 0 6px 20px 0 #000000;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.05), 0 6px 20px 0 rgba(0, 0, 0, 0.15);
     background-image: linear-gradient(to bottom right, #ffffff, #edeef5);
 }
 
@@ -232,7 +236,8 @@ p {
     border: 1px solid #ccc;
     border-radius: 2px;
     /*box-shadow: 0 4px 8px 0 #000000, 0 6px 20px 0 #000000;*/
-    box-shadow: 0 4px 8px 0 rgba(0,0,0,.05), 0 6px 20px 0 rgba(0,0,0,.05);
+    box-shadow: 0 4px 8px 0 #000000, 0 6px 20px 0 #000000;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.05), 0 6px 20px 0 rgba(0, 0, 0, 0.05);
     float: left;
     z-index: 12;
     display: flex;
@@ -298,7 +303,7 @@ p {
     width: 100%;
     position: absolute;
     /*padding: 2px 5px;*/
-    background-image: linear-gradient(to right, #fc6586, #53bbfd) !important;
+    background-image: linear-gradient(to right, #fc6586, #53bbfd);
     border-radius: 0 0 1px 1px;
     bottom: 0;
     right: 0;
@@ -312,21 +317,16 @@ p {
         cursor: pointer
     }
 
-.op__control-icon {
-    /*width: 96px;
-    margin: 0 auto*/
+.op__control-icon svg {
+    display: inline-block;
+    color: white;
+    margin-right: 17%;
+    cursor: pointer
 }
 
-    .op__control-icon svg {
-        display: inline-block;
-        color: white;
-        margin-right: 17%;
-        cursor: pointer
-    }
-
-    .op__control-icon img {
-        margin-bottom: 3px;
-    }
+.op__control-icon img {
+    margin-bottom: 3px;
+}
 
 .op__control-icon-flag1 {
     float: left
@@ -471,17 +471,21 @@ p {
 #ddlModule .btn-group .btn.btn-default.dropdown-toggle {
     box-shadow: none !important;
 }
-    #ddlModule .btn-group .btn.btn-default.dropdown-toggle .pull-left{
+
+    #ddlModule .btn-group .btn.btn-default.dropdown-toggle .pull-left {
         text-align: left;
     }
-    #txtPageNo {
-        width: 226px !important;
-        border: none !important;
-    }
+
+#txtPageNo {
+    width: 226px !important;
+    border: none !important;
+}
+
 .btn-primary-mo {
     background-color: #7f8fb1 !important;
     border-color: #7f8fb1;
 }
+
 .btn-primary-mot {
     background-color: #7f8fb1 !important;
     border-color: #7f8fb1;

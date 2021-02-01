@@ -323,6 +323,21 @@ const getSubGridJqGrid = (jqGridParentId) => {
 }
 
 const eventOnChangeSelection = () => {
+
+    $('#drpModule').change(() => {
+        const selectionModuleId = $('#drpModule').val();
+        if (!isEmptyOrWhiteSpace(selectionModuleId)) {
+            const color = _listModules.find(x => x.ModuleId === selectionModuleId).Color;
+            if (!isEmptyOrWhiteSpace(color)) {
+                changeBackgroundColorDefineMultilOperations(color);
+                _moduleBgColor = `#${color}`;
+                console.log('_moduleBackgroundColor', _moduleBgColor);
+            } else {
+                changeBackgroundColorDefineMultilOperations(_moduleBgColorDefault);
+            }
+        }
+    });
+
     //On change classification
     $('#drpClassificationSub').change(() => {
         classificationChange(`drpMachineOpName${_addOpName}`);

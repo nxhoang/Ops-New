@@ -21,6 +21,7 @@
         public string HasItem { get; set; } //ADD) SON - 12 December 2019
         public string IsNew { get; set; } //ADD - SON)18/Jul/2020
         public int ItemCount { get; set; } //ADD - SON) 27/Jan/2021
+        public string Color { get; set; } //ADD - SON) 29/Jan/2021
 
     }
 }

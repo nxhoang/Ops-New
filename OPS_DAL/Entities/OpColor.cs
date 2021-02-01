@@ -12,5 +12,6 @@
         public string ColorDesc { get; set; }
         public string OpGroup { get; set; }
         public string ModuleId { get; set; }
+        public string IsModuleColor { get; set; } //ADD - SON) 29/Jan/2021
     }
 }

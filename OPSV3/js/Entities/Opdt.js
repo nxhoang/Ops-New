@@ -1,6 +1,6 @@
 ﻿class Opdt extends Opmt {
     constructor(edition, edition2, styleCode, styleColorSerial, styleSize, revNo, opRevNo, opSerial, opName, opGroup, machineType,
-        moduleId, nextOp, page, x, y, displayColor) {
+        moduleId, nextOp, page, x, y, displayColor, opNum) {
         super(edition, edition2, styleCode, styleColorSerial, styleSize, revNo, opRevNo);
         this.OpSerial = opSerial;
         this.OpName = opName;
@@ -12,5 +12,6 @@
         this.X = x;
         this.Y = y;
         this.DisplayColor = displayColor;
+        this.OpNum = opNum;
     }
 }

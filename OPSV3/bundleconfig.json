@@ -34,5 +34,11 @@
     "inputFiles": [
       "js/Entities/JsEntity.js"
     ]
+  },
+  {
+    "outputFileName": "assets/ops-layout/css/app.min.css",
+    "inputFiles": [
+      "assets/ops-layout/css/app.css"
+    ]
   }
 ]

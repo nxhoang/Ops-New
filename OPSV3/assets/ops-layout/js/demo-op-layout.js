@@ -2,7 +2,7 @@
 "use strict";
 
 const TxtVideoLink = "txtVideoLink", JqTxtVideoLink = $(`#${TxtVideoLink}`), VdOpdt = "vdoOpsDetail", JqVdOpdt = $(`#${VdOpdt}`),
-    DivOpVideoList = "divOpVideoList";
+    DivOpVideoList = "divOpVideoList", DefaultDisplayColor = "#A9A9A9", DefaultColor = "#FFFFFFFF", DefaultIcon = "settings.svg";
 
 var opsGroups = [], opsNodes = [], opsEdges = [], opsData = {
     "groups": opsGroups,
@@ -97,6 +97,34 @@ function getOpNameByLang(opdt, lang) {
             break;
         default:
             opName = opdt.OpName ? opdt.OpName : "";
+            break;
+    }
+    return opName;
+}
+
+function GetOpnmByLang(opnm, lang) {
+    let opName;
+    switch (lang) {
+        case "vn":
+            opName = opnm.Vietnam;
+            break;
+        case "gb":
+            opName = opnm.English;
+            break;
+        case "mm":
+            opName = opnm.Myanmar;
+            break;
+        case "id":
+            opName = opnm.Indonesia;
+            break;
+        case "et":
+            opName = opnm.Ethiopia;
+            break;
+        case "kr":
+            opName = opnm.Korea;
+            break;
+        default:
+            opName = opnm.English ? opnm.English : "";
             break;
     }
     return opName;
@@ -355,7 +383,7 @@ function loadLayout(opsMaster, lang, groupMode, page) {
                                         opName, group, title, top, left;
                                     opName = getOpNameByLang(value, lang);
 
-                                    const displayColor = value.DisplayColor === null || value.DisplayColor === "" || value.DisplayColor === "#FFFFFFFF" ? "#A9A9A9" : `#${value.DisplayColor.substr(3, 8)}`,
+                                    const displayColor = value.DisplayColor === null || value.DisplayColor === "" || value.DisplayColor === DefaultColor ? DefaultDisplayColor : `#${value.DisplayColor.substr(3, 8)}`,
                                         page = value.Page === 0 ? 1 : value.Page,
                                         showButtonPlayVideo = $.isEmptyObject(value.VideoFile) ? 0 : 1,
                                         opNum = value.OpNum === null || value.OpNum === undefined ? " " : value.OpNum;
@@ -436,25 +464,8 @@ function loadLayout(opsMaster, lang, groupMode, page) {
 
                                     // Getting icon
                                     let iconNameArr = [];
-                                    //if (value.MainProcessArr) {
-                                    //    // ex: MainProcessArr: "1-0-0" and IconNames: "3485.svg-3486.svg-347.svg", pick up 3485.svg (main process is 1)
-                                    //    const tempMainProcessArr = value.MainProcessArr.split("-");
-                                    //    if (tempMainProcessArr && tempMainProcessArr.length > 0 && value.IconNames) {
-                                    //        const tempIconNameArr = value.IconNames.split("-");
-
-                                    //        for (let i = 0; i < tempIconNameArr.length; i++) {
-                                    //            if (tempMainProcessArr[i] === "1" && tempIconNameArr[i].trim() !== "_")
-                                    //                iconNameArr.push(tempIconNameArr[i]);
-                                    //        }
-                                    //        //node.data.IconNameArr = iconNameArr;
-                                    //        //node.data.IconUrl = response.iconUrl;
-                                    //    }
-                                    //}
-
-                                    //if (iconNameArr.length === 0) iconNameArr.push("settings.svg");
-                                    const iconName = value.IconName ? value.IconName : "settings.svg";
-
-                                    const layoutProcess = new LayoutProcess(value.OpSerial.toString(), `[${opNum}] ${opName}`, value.OpTime, value.MachineCount,
+                                    const iconName = value.IconName ? value.IconName : DefaultIcon,
+                                        layoutProcess = new LayoutProcess(value.OpSerial.toString(), `[${opNum}] ${opName}`, value.OpTime, value.MachineCount,
                                         machineName, value.ManCount, opName, value.VnOpName, value.GbOpName, value.MmOpName, value.IdOpName, value.EtOpName,
                                         value.Codes, value.IconNames, value.MainProcessArr, hotSpot, opsState, opNum, remarks, value.OpGroup, value.MachineType,
                                         value.ModuleId, displayColor, pWidth, pHeight, fontSize, [], isDisplay, page, window.CanDelete, showButtonPlayVideo,
@@ -504,7 +515,7 @@ function loadLayout(opsMaster, lang, groupMode, page) {
                             $scope.Opdts = opsNodes;
                             $scope.opdtMode = groupMode;
                             $scope.opsFont.fontSize = parseInt(fontSize);
-                            $scope.canvasStyle.height = parseInt(canvasHeight);
+                            $scope.canvasStyle.height = "100%"; // just use height of canvas in case of printing
                             $scope.pLayoutModifier.pHeight = parseInt(pHeight);
                             $scope.pLayoutModifier.pWidth = parseInt(pWidth);
                             $scope.layoutPage.pageNo = page;
@@ -535,6 +546,11 @@ function loadLayout(opsMaster, lang, groupMode, page) {
             });
         }
     }
+
+    // Oanh add change color card 26Jan2021
+    setTimeout(function () {
+        setBackgroundColor_Layout_Load();
+    }, 700);
 
     $.unblockUI();
 }
@@ -2399,7 +2415,7 @@ app.controller("OpsLayoutController", function ($uibModal, $log, $document, $sco
                                 node.data.IconUrl = $scope.IconUrl;
                             }
                         }
-                        if (iconNameArr.length === 0) iconNameArr.push("settings.svg");
+                        if (iconNameArr.length === 0) iconNameArr.push(DefaultIcon);
                         //console.log(iconNameArr);
 
                         node.data.IconNameArr = iconNameArr;
@@ -2419,7 +2435,7 @@ app.controller("OpsLayoutController", function ($uibModal, $log, $document, $sco
                                 node.data.IconUrl = $scope.IconUrl;
                             }
                         }
-                        if (iconNameArr.length === 0) iconNameArr.push("settings.svg");
+                        if (iconNameArr.length === 0) iconNameArr.push(DefaultIcon);
                         //console.log(iconNameArr);
 
                         node.data.IconNameArr = iconNameArr;
@@ -2972,7 +2988,7 @@ app.controller("OpsLayoutController", function ($uibModal, $log, $document, $sco
                 n.data.DisplayColor = sc.value;
                 toolkit.updateNode(n);
             } else {
-                n.data.DisplayColor = "#fff";
+                n.data.DisplayColor = DefaultDisplayColor;
                 toolkit.updateNode(n);
             }
         }
