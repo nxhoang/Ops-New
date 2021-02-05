@@ -625,6 +625,11 @@ input[type=text] {
     padding: 3px 4px;
 }
 
+/*selection row*/
+.ui-jqgrid-btable .ui-widget-content.ui-state-highlight {
+    background-color: #cad6ab !important;
+}
+
 /*.modal.modal-custom .ui-jqgrid .ui-jqgrid-pager {
     height: 35px;
 }

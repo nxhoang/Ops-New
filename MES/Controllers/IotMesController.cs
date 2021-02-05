@@ -1,8 +1,10 @@
 ﻿using Google.Protobuf.Collections;
 using MES.CommonClass;
+using MES.Repositories;
 using OfficeOpenXml;
 using OPS_DAL.MesBus;
 using OPS_DAL.MesEntities;
+using Org.BouncyCastle.Bcpg;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,15 +14,20 @@ using System.Web.Mvc;
 
 namespace MES.Controllers
 {
+    [SessionTimeout]
     public class IotMesController : Controller
     {
-        McmpBus _mcmpBus = new McmpBus();
-        public IotMesController()
-        {
+        public OPS_DAL.Entities.Usmt UserInf => (OPS_DAL.Entities.Usmt)Session["LoginUser"];
+        //McmpBus _mcmpBus = new McmpBus("");
 
+        private readonly IMachineIoTMappingRepo _machineIoTMappingRepo;
+
+        public IotMesController(IMachineIoTMappingRepo machineIoTMappingRepo)
+        {
+            _machineIoTMappingRepo = machineIoTMappingRepo;
         }
 
-        //[SysActionFilter(SystemID = "MES", MenuID = "IOT", Action = "")]
+        [SysActionFilter(SystemID = "MES", MenuID = "IOT", Action = "")]
         public ActionResult MachineIot()
         {
             return View();
@@ -74,13 +81,22 @@ namespace MES.Controllers
                     int SuccessCtn = 0, FailCtn = 0;
                     foreach (var item in mcmpLst)
                     {
-                        var res = await _mcmpBus.UpdateMachineIotMapping(item);
-                        if (res == "OK")
+                        var res = await _machineIoTMappingRepo.UpdateMachineIotMappingAsync(item , UserInf.UserName);
+                        if (res.IsSuccess)
                         {
                             SuccessCtn++;
                         }
                         else
                             FailCtn++;
+
+                        //await _mcmpBus.UpdateDGSMachineIotMappingAsync(item);
+                        //var res = await _mcmpBus.UpdateMachineIotMappingAsync(item);
+                        //if (string.Equals(res, "OK", StringComparison.OrdinalIgnoreCase))
+                        //{
+                        //    SuccessCtn++;
+                        //}
+                        //else
+                        //    FailCtn++;
                     }
                     strAccumMsg = $"-Success: {SuccessCtn}<br/> -Fail: {FailCtn}";
 

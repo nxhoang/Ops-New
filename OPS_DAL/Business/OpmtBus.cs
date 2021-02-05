@@ -241,6 +241,7 @@ namespace OPS_DAL.Business
             sb.AppendLine("              , STM.BUYERSTYLECODE, STM.BUYERSTYLENAME, STM.BUYER, STM.STYLEGROUP, STM.SUBGROUP, STM.SUBSUBGROUP, '' FACTORY ");
             sb.AppendLine("              , SOP.REGISTERID, SOP.CONFIRMEDID, '' AS MXPACKAGE ");
             sb.AppendLine("              , sum(opd.optime) As TotalOpTime ");
+            sb.AppendLine("              , mcm.code_name as reasonname, sop.opsource "); //ADD - SON) 30/Jan/2021
             sb.AppendLine("         FROM ");
             sb.AppendLine("              T_SD_OPMT SOP ");
             sb.AppendLine("              LEFT JOIN T_00_SCMT SCM ON (SOP.STYLECODE = SCM.STYLECODE AND SOP.STYLECOLORSERIAL = SCM.STYLECOLORSERIAL) ");
@@ -248,6 +249,7 @@ namespace OPS_DAL.Business
             sb.AppendLine(@"             left join t_sd_opdt opd on opd.stylecode = SOP.STYLECODE and OPD.STYLESIZE = sop.stylesize 
                                                 and opd.stylecolorserial = sop.stylecolorserial
                                                 and opd.revno = sop.revno and OPD.OPREVNO = SOP.OPREVNO ");
+            sb.AppendLine("             left join t_cm_mcmt mcm on mcm.s_code = sop.reason and m_code = 'OPReason' "); //ADD - SON) 30/Jan/2021
             sb.AppendLine("         WHERE ");
             sb.AppendLine("              SOP.STYLECODE = :STYLECODE AND SOP.STYLESIZE = :STYLESIZE ");
             sb.AppendLine("              AND (SOP.STYLECOLORSERIAL = :STYLECOLORSERIAL OR SOP.STYLECOLORSERIAL = '000') AND SOP.REVNO = :REVNO ");
@@ -256,7 +258,7 @@ namespace OPS_DAL.Business
                                           , SOP.PROCESSWIDTH, SOP.PROCESSHEIGHT, SOP.GROUPMODE, SOP.CANVASHEIGHT, SOP.LAYOUTFONTSIZE 
                                           , SOP.STYLECOLORSERIAL , SCM.STYLECOLORWAYS
                                           , STM.BUYERSTYLECODE, STM.BUYERSTYLENAME, STM.BUYER, STM.STYLEGROUP, STM.SUBGROUP, STM.SUBSUBGROUP
-                                          , SOP.REGISTERID, SOP.CONFIRMEDID ");
+                                          , SOP.REGISTERID, SOP.CONFIRMEDID, mcm.code_name, sop.opsource ");
             sb.AppendLine("         UNION ");
             sb.AppendLine("         SELECT ");
             sb.AppendLine("              4 AS SORTING, 'O' AS EDITION, 'OPS' AS EDITION2, OOP.STYLECODE, OOP.STYLESIZE, OOP.STYLECOLORSERIAL, OOP.REVNO, OOP.OPREVNO, OOP.OPTIME, OOP.OPPRICE ");
@@ -266,6 +268,7 @@ namespace OPS_DAL.Business
             sb.AppendLine("              , STM.BUYERSTYLECODE, STM.BUYERSTYLENAME, STM.BUYER, STM.STYLEGROUP, STM.SUBGROUP, STM.SUBSUBGROUP, '' FACTORY ");
             sb.AppendLine("              , OOP.REGISTERID, OOP.CONFIRMEDID, '' AS MXPACKAGE ");
             sb.AppendLine("              , sum(opd.optime) As TotalOpTime ");
+            sb.AppendLine("              , mcm.code_name as reasonname, OOP.opsource "); //ADD - SON) 30/Jan/2021
             sb.AppendLine("         FROM ");
             sb.AppendLine("              T_OP_OPMT OOP ");
             sb.AppendLine("              LEFT JOIN T_00_SCMT SCM ON (OOP.STYLECODE = SCM.STYLECODE AND OOP.STYLECOLORSERIAL = SCM.STYLECOLORSERIAL) ");
@@ -273,6 +276,7 @@ namespace OPS_DAL.Business
             sb.AppendLine(@"             left join t_op_opdt opd on opd.stylecode = OOP.STYLECODE and OPD.STYLESIZE = OOP.stylesize 
                                                 and opd.stylecolorserial = OOP.stylecolorserial  
                                                 and opd.revno = OOP.revno and OPD.OPREVNO = OOP.OPREVNO ");
+            sb.AppendLine("             left join t_cm_mcmt mcm on mcm.s_code = oop.reason and m_code = 'OPReason' "); //ADD - SON) 30/Jan/2021
             sb.AppendLine("         WHERE ");
             sb.AppendLine("             OOP.STYLECODE = :STYLECODE AND OOP.STYLESIZE = :STYLESIZE ");
             sb.AppendLine("             AND (OOP.STYLECOLORSERIAL = :STYLECOLORSERIAL OR OOP.STYLECOLORSERIAL = '000') AND OOP.REVNO = :REVNO ");
@@ -281,7 +285,7 @@ namespace OPS_DAL.Business
                                               , OOP.PROCESSWIDTH, OOP.PROCESSHEIGHT, OOP.GROUPMODE, OOP.CANVASHEIGHT, OOP.LAYOUTFONTSIZE 
                                               , OOP.STYLECOLORSERIAL , SCM.STYLECOLORWAYS
                                               , STM.BUYERSTYLECODE, STM.BUYERSTYLENAME, STM.BUYER, STM.STYLEGROUP, STM.SUBGROUP, STM.SUBSUBGROUP
-                                              , OOP.REGISTERID, OOP.CONFIRMEDID  ");
+                                              , OOP.REGISTERID, OOP.CONFIRMEDID, mcm.code_name, OOP.opsource  ");
             sb.AppendLine("         UNION ");
             sb.AppendLine("         SELECT ");
             sb.AppendLine("              2 AS SORTING, 'A' AS EDITION, 'AOMTOPS' AS EDITION2, AOM.STYLECODE, AOM.STYLESIZE, AOM.STYLECOLORSERIAL, AOM.REVNO, AOM.OPREVNO, AOM.OPTIME, AOM.OPPRICE ");
@@ -291,6 +295,7 @@ namespace OPS_DAL.Business
             sb.AppendLine("              , STM.BUYERSTYLECODE, STM.BUYERSTYLENAME, STM.BUYER, STM.STYLEGROUP, STM.SUBGROUP, STM.SUBSUBGROUP, f.name as factory");
             sb.AppendLine("              , AOM.REGISTERID, AOM.CONFIRMEDID, '' AS MXPACKAGE");
             sb.AppendLine("              , sum(opd.optime) As TotalOpTime ");
+            sb.AppendLine("              , mcm.code_name as reasonname, aom.opsource"); //ADD - SON) 30/Jan/2021
             sb.AppendLine("         FROM ");
             sb.AppendLine("              T_MT_OPMT AOM ");
             sb.AppendLine("              LEFT JOIN T_00_SCMT SCM ON (AOM.STYLECODE = SCM.STYLECODE AND AOM.STYLECOLORSERIAL = SCM.STYLECOLORSERIAL) ");
@@ -298,6 +303,7 @@ namespace OPS_DAL.Business
             sb.AppendLine(@"             left join t_mt_opdt opd on opd.stylecode = AOM.STYLECODE and OPD.STYLESIZE = AOM.stylesize 
                                                 and opd.stylecolorserial = AOM.stylecolorserial  
                                                 and opd.revno = AOM.revno and OPD.OPREVNO = AOM.OPREVNO  ");
+            sb.AppendLine("             left join t_cm_mcmt mcm on mcm.s_code = aom.reason and m_code = 'OPReason' "); //ADD - SON) 30/Jan/2021
             sb.AppendLine("         WHERE ");
             sb.AppendLine("             AOM.STYLECODE = :STYLECODE AND AOM.STYLESIZE = :STYLESIZE ");
             sb.AppendLine("             AND (AOM.STYLECOLORSERIAL = :STYLECOLORSERIAL OR AOM.STYLECOLORSERIAL = '000') AND AOM.REVNO = :REVNO ");
@@ -306,7 +312,7 @@ namespace OPS_DAL.Business
                                           , AOM.PROCESSWIDTH, AOM.PROCESSHEIGHT, AOM.GROUPMODE, AOM.CANVASHEIGHT, AOM.LAYOUTFONTSIZE 
                                           , AOM.STYLECOLORSERIAL , SCM.STYLECOLORWAYS
                                           , STM.BUYERSTYLECODE, STM.BUYERSTYLENAME, STM.BUYER, STM.STYLEGROUP, STM.SUBGROUP, STM.SUBSUBGROUP,  f.name
-                                          , AOM.REGISTERID, AOM.CONFIRMEDID ");
+                                          , AOM.REGISTERID, AOM.CONFIRMEDID, mcm.code_name, AOM.opsource ");
             sb.AppendLine("         UNION ");
             sb.AppendLine("         SELECT ");
             sb.AppendLine("              1 AS SORTING, 'M' AS EDITION, 'MES' AS EDITION2, MES.STYLECODE, MES.STYLESIZE, MES.STYLECOLORSERIAL, MES.REVNO, MES.OPREVNO, MES.OPTIME, MES.OPPRICE ");
@@ -316,6 +322,7 @@ namespace OPS_DAL.Business
             sb.AppendLine("              , STM.BUYERSTYLECODE, STM.BUYERSTYLENAME, STM.BUYER, STM.STYLEGROUP, STM.SUBGROUP, STM.SUBSUBGROUP, f.name as factory");
             sb.AppendLine("              , '' AS REGISTERID, '' AS CONFIRMEDID, MES.MXPACKAGE ");
             sb.AppendLine("              , sum(opd.optime) As TotalOpTime ");
+            sb.AppendLine("              , mcm.code_name as reasonname, mes.opsource "); //ADD - SON) 30/Jan/2021
             sb.AppendLine("         FROM ");
             sb.AppendLine("              PKMES.T_MX_OPMT MES "); //MOD) SON - 04/Jun/2019 - Get MES edition from MES schema
             sb.AppendLine("              LEFT JOIN T_00_SCMT SCM ON (MES.STYLECODE = SCM.STYLECODE AND MES.STYLECOLORSERIAL = SCM.STYLECOLORSERIAL) ");
@@ -323,6 +330,7 @@ namespace OPS_DAL.Business
             sb.AppendLine(@"             left join PKMES.t_MX_opdt opd on opd.stylecode = MES.STYLECODE and OPD.STYLESIZE = MES.stylesize 
                                                 and opd.stylecolorserial = MES.stylecolorserial  
                                                 and opd.revno = MES.revno and OPD.OPREVNO = MES.OPREVNO  ");
+            sb.AppendLine("             left join t_cm_mcmt mcm on mcm.s_code = MES.reason and m_code = 'OPReason' "); //ADD - SON) 30/Jan/2021
             sb.AppendLine("         WHERE ");
             sb.AppendLine("             MES.STYLECODE = :STYLECODE AND MES.STYLESIZE = :STYLESIZE ");
             sb.AppendLine("             AND (MES.STYLECOLORSERIAL = :STYLECOLORSERIAL OR MES.STYLECOLORSERIAL = '000') AND MES.REVNO = :REVNO ");
@@ -331,7 +339,7 @@ namespace OPS_DAL.Business
                                           , MES.PROCESSWIDTH, MES.PROCESSHEIGHT, MES.GROUPMODE, MES.CANVASHEIGHT, MES.LAYOUTFONTSIZE 
                                           , MES.STYLECOLORSERIAL , SCM.STYLECOLORWAYS
                                           , STM.BUYERSTYLECODE, STM.BUYERSTYLENAME, STM.BUYER, STM.STYLEGROUP, STM.SUBGROUP, STM.SUBSUBGROUP, f.name
-                                          , MES.MXPACKAGE ");
+                                          , MES.MXPACKAGE, mcm.code_name, mes.opsource ");
             sb.AppendLine("         ORDER BY LastUpdateTime DESC");
 
             OracleParameter[] prams = new OracleParameter[4];
@@ -776,6 +784,55 @@ namespace OPS_DAL.Business
         }
 
         /// <summary>
+        /// Add operation plan master for new OPS
+        /// </summary>
+        /// <param name="opmt"></param>
+        /// <param name="oraConn"></param>
+        /// <param name="trans"></param>
+        /// <returns></returns>
+        /// Author: Son Nguyen Cao
+        /// Date: 4/Feb/2021
+        public static bool AddOpMaster_New(Opmt opmt, OracleConnection oraConn, OracleTransaction trans)
+        {            
+            var oracleParams = new OpsOracleParams(opmt?.Edition.Substring(0, 1), opmt.StyleCode, opmt.StyleSize, opmt.StyleColorSerial, opmt.RevNo, opmt.OpRevNo)
+            {
+                new OracleParameter("P_OPTIME", opmt.OpTime),
+                new OracleParameter("P_OPPRICE", opmt.OpPrice),
+                new OracleParameter("P_MACHINECOUNT", opmt.MachineCount),
+                new OracleParameter("P_OPCOUNT", opmt.OpCount),
+                new OracleParameter("P_MANCOUNT", opmt.ManCount),
+                new OracleParameter("P_FILENAME", opmt.FileName),
+                new OracleParameter("P_FILENAME2", opmt.FileName2),
+                new OracleParameter("P_FILEPDF", opmt.FilePdf),
+                new OracleParameter("P_FILEPDF2", opmt.FilePdf2),
+                new OracleParameter("P_PDMFILE", opmt.PdmFile),//10
+                new OracleParameter("P_PROCESSWIDTH", opmt.ProcessWidth),
+                new OracleParameter("P_PROCESSHEIGHT", opmt.ProcessHeight),
+                new OracleParameter("P_LAYOUTFONTSIZE", opmt.LayoutFontSize),
+                new OracleParameter("P_LANGUAGE", opmt.Language),
+                new OracleParameter("P_BENCHMARKTIME", opmt.BenchMarkTime),
+                new OracleParameter("P_REMARKS", opmt.Remarks),
+                new OracleParameter("P_TARGETOFFERPRICE", opmt.TargetOfferPrice),
+                new OracleParameter("P_OFFEROPPRICE", opmt.OfferOpPrice),
+                new OracleParameter("P_REGISTERID", opmt.RegisterId),
+                new OracleParameter("P_GROUPMODE", opmt.GroupMode), //20
+                new OracleParameter("P_CANVASHEIGHT", opmt.CanvasHeight),
+                new OracleParameter("P_PLANPDF", opmt.PlanPdf),
+                new OracleParameter("P_COLORTHEME", opmt.ColorTheme),
+                new OracleParameter("P_FACTORY", opmt.Factory), //24
+                new OracleParameter("P_MXPACKAGE", opmt.MxPackage),
+                new OracleParameter("P_SYNCED", opmt.Synced),
+                new OracleParameter("P_REASON", opmt.Reason),
+                new OracleParameter("P_OPSOURCE", opmt.OpSource),
+                new OracleParameter("P_AFFECTEDROWS", OracleDbType.Int16) {Direction = ParameterDirection.Output}
+            };
+
+            var resAdd = OracleDbManager.ExecuteQuery("sp_ops_insertopmt_opmt_new", oracleParams.ToArray(), CommandType.StoredProcedure, trans, oraConn);
+
+            return resAdd != null;
+        }
+
+        /// <summary>
         /// Adds the new ops master detail.
         /// </summary>
         /// <param name="edition">The edition.</param>
@@ -875,6 +932,124 @@ namespace OPS_DAL.Business
                             else
                             {
                                 OpdtBus.AddOpDetail(opdt, connection, trans);
+                            }
+                        }
+                    }
+
+                    trans.Commit();
+                    return true;
+                }
+                catch (Exception)
+                {
+                    trans.Rollback();
+                    throw;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Add new operation plan for ops v3
+        /// </summary>
+        /// <param name="edition"></param>
+        /// <param name="opMaster"></param>
+        /// <param name="lstOpdt"></param>
+        /// <param name="lstOpnt"></param>
+        /// <param name="lstOptl"></param>
+        /// <param name="copyToolLinking"></param>
+        /// <param name="copySelectPlan"></param>
+        /// <param name="registerEmptyPlan"></param>
+        /// <param name="importFile"></param>
+        /// <param name="listProt"></param>
+        /// <returns></returns>
+        /// Author: Son Nguyen Cao
+        /// Date: 4/Feb/2021
+        public static bool AddNewOpsMasterDetail_New(string edition, Opmt opMaster, List<Opdt> lstOpdt, List<Opnt> lstOpnt,
+            List<Optl> lstOptl, string copyToolLinking, string copySelectPlan, string registerEmptyPlan, string importFile, List<Prot> listProt)
+        {
+            using (var connection = new OracleConnection(ConstantGeneric.ConnectionStr))
+            {
+                connection.Open();
+                var trans = connection.BeginTransaction();
+                try
+                {
+                    //Check NEUTRAL color, if color is neutral then must insert to t_00_scmt table.
+                    if (opMaster.StyleColorSerial == ConstantGeneric.NeutralColorSerial)
+                    {
+                        //Check exist neutral color.
+                        var lstScmt = ScmtBus.GetStyleColorByStyleCode(opMaster.StyleCode);
+                        var neuScmt = lstScmt.Where(s => s.StyleColorSerial == ConstantGeneric.NeutralColorSerial).FirstOrDefault();
+                        //If style neutral color is null then insert new color.
+                        if (neuScmt == null)
+                        {
+                            //Get style color of the latest color serial
+                            var styleColor = lstScmt.FirstOrDefault().StyleColor;
+
+                            var scmt = new Scmt
+                            {
+                                StyleCode = opMaster.StyleCode,
+                                StyleColorWays = ConstantGeneric.NeutralColorWays,
+                                StyleColorSerial = ConstantGeneric.NeutralColorSerial,
+                                StyleColor = styleColor
+                            };
+                            ScmtBus.InsertStyleColor(scmt, connection, trans);
+                        }
+                    }
+
+                    //Add operation master
+                    AddOpMaster_New(opMaster, connection, trans);
+
+                    if (copySelectPlan == ConstantGeneric.True)
+                    {
+                        //Copy operation plan detail
+                        foreach (var opdt in lstOpdt)
+                        {
+                            if (opdt.Edition == ConstantGeneric.EditionMes)
+                            {
+                                OpdtBus.CreateOpdt(opdt, connection, trans);
+                            }
+                            else
+                            {
+                                OpdtBus.AddOpDetail_New(opdt, connection, trans);
+                            }
+                        }
+
+                        foreach (var opnt in lstOpnt)
+                        {
+                            OpntBus.InsertOpNameDetail_New(opnt, connection, trans);
+                        }
+
+                        //Add list of patterns linking
+                        foreach (var prot in listProt)
+                        {
+                            ProtBus.AddPatternBom(prot, connection, trans);
+                        }
+
+                        if (copyToolLinking == ConstantGeneric.True)
+                        {
+                            //Copy tool linking
+                            foreach (var tool in lstOptl)
+                            {
+                                OptlBus.AddToolLinking(tool, connection, trans);
+                            }
+                        }
+                    }
+                    else if (importFile == ConstantGeneric.True)
+                    {
+                        foreach (var opnt in lstOpnt)
+                        {
+                            OpntBus.InsertOpNameDetail_New(opnt, connection, trans);
+                        }
+
+                        //Copy operation plan from csv file
+                        foreach (var opdt in lstOpdt)
+                        {
+                            if (opdt.Edition == ConstantGeneric.EditionMes)
+                            {
+                                OpdtBus.CreateOpdt(opdt, connection, trans);
+                            }
+                            else
+                            {
+                                OpdtBus.AddOpDetail_New(opdt, connection, trans);
                             }
                         }
                     }
@@ -1066,11 +1241,11 @@ namespace OPS_DAL.Business
         }
 
         /// <summary>
-        /// Copy and Opdt.
+        /// Copying opmt and opdt.
         /// </summary>
-        /// <param name="opmt">The opmt.</param>
-        /// <param name="opdts">The LST opdt.</param>
-        /// Author: VitHV
+        /// <param name="opmt">Operation master.</param>
+        /// <param name="opdts">The list of operation details.</param>
+        /// Author: Nguyen Xuan Hoang
         public static bool CopyOpsMaster(Opmt opmt, List<Opdt> opdts)
         {
             using (var connection = new OracleConnection(ConstantGeneric.ConnectionStr))
@@ -1136,6 +1311,7 @@ namespace OPS_DAL.Business
                         oldOpmt.CanvasHeight = opmt.CanvasHeight;
                         if (!string.IsNullOrWhiteSpace(opmt.Factory)) oldOpmt.Factory = opmt.Factory;
                         oldOpmt.Remarks = opmt.Remarks;
+                        oldOpmt.Reason = opmt.Reason;
                         oldOpmt.Edition = edition;
 
                         AddOpMaster(oldOpmt, connection, trans);

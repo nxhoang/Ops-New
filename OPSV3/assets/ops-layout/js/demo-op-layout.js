@@ -2,7 +2,9 @@
 "use strict";
 
 const TxtVideoLink = "txtVideoLink", JqTxtVideoLink = $(`#${TxtVideoLink}`), VdOpdt = "vdoOpsDetail", JqVdOpdt = $(`#${VdOpdt}`),
-    DivOpVideoList = "divOpVideoList", DefaultDisplayColor = "#A9A9A9", DefaultColor = "#FFFFFFFF", DefaultIcon = "settings.svg";
+    DivOpVideoList = "divOpVideoList", DefaultDisplayColor = "#A9A9A9", DefaultColor = "#FFFFFFFF", DefaultIcon = "settings.svg",
+    DrpReasonOp = "drpReasonOp", BottomCardBgColor = "bgColorLayout", BottomCardBgImage = "linear-gradient(to right, #fc6586, #53bbfd)",
+    DefaultFontColor = "#ffffff";
 
 var opsGroups = [], opsNodes = [], opsEdges = [], opsData = {
     "groups": opsGroups,
@@ -309,6 +311,9 @@ function loadLayout(opsMaster, lang, groupMode, page) {
                     window.CurrentOpmt = response.opmt;
                     window.ProcessIconPath = response.iconUrl;
 
+                    // Assigning value to reason combobox.
+                    $(`#${DrpReasonOp}`).val(opmt.Reason).trigger("change");
+
                     if (opmt !== null && opmt !== undefined && opdts !== null && opdts !== undefined) {
                         const fontSize = opmt.LayoutFontSize === 0 || opmt.LayoutFontSize === undefined ?
                             defaultFontSize : opmt.LayoutFontSize;
@@ -463,13 +468,16 @@ function loadLayout(opsMaster, lang, groupMode, page) {
                                     }
 
                                     // Getting icon
-                                    let iconNameArr = [];
+                                    const bgColorLayout = JSON.parse(localStorage.getItem(BottomCardBgColor));
+                                    let iconNameArr = [],
+                                        bgImage = bgColorLayout ? bgColorLayout.BgImage : BottomCardBgImage,
+                                        btFontColor = bgColorLayout ? bgColorLayout.FontColor : DefaultFontColor;
                                     const iconName = value.IconName ? value.IconName : DefaultIcon,
                                         layoutProcess = new LayoutProcess(value.OpSerial.toString(), `[${opNum}] ${opName}`, value.OpTime, value.MachineCount,
-                                        machineName, value.ManCount, opName, value.VnOpName, value.GbOpName, value.MmOpName, value.IdOpName, value.EtOpName,
-                                        value.Codes, value.IconNames, value.MainProcessArr, hotSpot, opsState, opNum, remarks, value.OpGroup, value.MachineType,
-                                        value.ModuleId, displayColor, pWidth, pHeight, fontSize, [], isDisplay, page, window.CanDelete, showButtonPlayVideo,
-                                        left, top, group, title, iconNameArr, response.iconUrl, iconName);
+                                            machineName, value.ManCount, opName, value.VnOpName, value.GbOpName, value.MmOpName, value.IdOpName, value.EtOpName,
+                                            value.Codes, value.IconNames, value.MainProcessArr, hotSpot, opsState, opNum, remarks, value.OpGroup, value.MachineType,
+                                            value.ModuleId, displayColor, pWidth, pHeight, fontSize, [], isDisplay, page, window.CanDelete, showButtonPlayVideo,
+                                            left, top, group, title, iconNameArr, response.iconUrl, iconName, bgImage, btFontColor);
 
                                     opsNodes.push(layoutProcess);
                                 });
@@ -515,7 +523,12 @@ function loadLayout(opsMaster, lang, groupMode, page) {
                             $scope.Opdts = opsNodes;
                             $scope.opdtMode = groupMode;
                             $scope.opsFont.fontSize = parseInt(fontSize);
-                            $scope.canvasStyle.height = "100%"; // just use height of canvas in case of printing
+
+                            //console.log("height");
+                            //console.log($(window).height());
+                            //console.log(window.innerHeight);
+
+                            $scope.canvasStyle.height = 100; // just use height of canvas in case of printing
                             $scope.pLayoutModifier.pHeight = parseInt(pHeight);
                             $scope.pLayoutModifier.pWidth = parseInt(pWidth);
                             $scope.layoutPage.pageNo = page;
@@ -548,9 +561,9 @@ function loadLayout(opsMaster, lang, groupMode, page) {
     }
 
     // Oanh add change color card 26Jan2021
-    setTimeout(function () {
-        setBackgroundColor_Layout_Load();
-    }, 700);
+    //setTimeout(function () {
+    //    setBackgroundColor_Layout_Load();
+    //}, 700);
 
     $.unblockUI();
 }
@@ -1057,6 +1070,47 @@ app.directive("someVideo", () => {
         }
     };
 });
+
+app.directive("context", [() => {
+    return {
+        restrict: 'A',
+        scope: '@&',
+        compile: function compile(tElement, tAttrs, transclude) {
+            return {
+                post: function postLink(scope, iElement, iAttrs, controller) {
+                    var ul = $('#' + iAttrs.context),
+                        last = null;
+
+                    ul.css({
+                        'display': 'none'
+                    });
+                    $(iElement).bind('contextmenu', function (event) {
+                        event.preventDefault();
+                        ul.css({
+                            position: "fixed",
+                            display: "block",
+                            left: event.clientX + 'px',
+                            top: event.clientY + 'px'
+                        });
+                        last = event.timeStamp;
+                    });
+
+                    $(document).click((event) => {
+                        var target = $(event.target);
+                        if (!target.is(".popover") && !target.parents().is(".popover")) {
+                            if (last === event.timeStamp)
+                                return;
+                            ul.css({
+                                'display': "none"
+                            });
+                        }
+                    });
+                }
+            };
+        }
+    };
+}
+]);
 //#endregion
 
 //#region Angular services
@@ -1110,7 +1164,7 @@ app.controller("OpsLayoutController", function ($uibModal, $log, $document, $sco
     $scope.OpVideo1 = [];
 
     ctrl.toolkitParams = {
-        groupFactory: function (type, data, callback) {
+        groupFactory: (type, data, callback) => {
             if (data.type !== "group") {
                 let pos = {
                     top: `${data.top}px`,
@@ -1143,7 +1197,7 @@ app.controller("OpsLayoutController", function ($uibModal, $log, $document, $sco
                                     templateUrl: "grModalContent.html",
                                     controller: "GroupModalCtrl",
                                     controllerAs: "$ctrl",
-                                    windowClass: "modal-custom",
+                                    windowClass: "modal-custom op__group-modal",
                                     appendTo: undefined,
                                     resolve: {
                                         items: function () {
@@ -1189,7 +1243,7 @@ app.controller("OpsLayoutController", function ($uibModal, $log, $document, $sco
                 }
             }
         },
-        nodeFactory: function (type, data, callback) {
+        nodeFactory: (type, data, callback) => {
             const currentOpmt = GetSelectedOneRowData(gridOpsTableId);
             const isOpmtEmpty = !Object.keys(currentOpmt).length;
 
@@ -1297,24 +1351,19 @@ app.controller("OpsLayoutController", function ($uibModal, $log, $document, $sco
                                                     if (response.error === null || response.error === undefined) {
                                                         const opdtRs = response.result;
 
-                                                        console.log(opdtRs);
+                                                        console.log("Clone a process");
 
                                                         if (opdtRs !== "false") {
-                                                            //const node = CreateObjectForLayout(opmt, opdtResult);
-                                                            //node.DisplayColor = n.DisplayColor;
-                                                            //node.left = parseInt(n.left) + 2;
-                                                            //node.top = parseInt(n.top) + 2;
-                                                            //node.group = n.group;
-                                                            //node.MachineName = n.MachineName;
-                                                            //node.CanDelete = window.CanDelete;
-                                                            //node.Title = n.Title;
+                                                            const bgColorLayout = JSON.parse(localStorage.getItem(BottomCardBgColor)),
+                                                                bgImage = bgColorLayout ? bgColorLayout.BgImage : BottomCardBgImage,
+                                                                btFontColor = bgColorLayout ? bgColorLayout.FontColor : DefaultFontColor;
 
                                                             const layoutProcess = new LayoutProcess(opdtRs.OpSerial.toString(), `[${opdtRs.OpNum}] ${n.OpName}`, n.OpTime,
                                                                 n.MachineCount, n.MachineName, n.ManCount, n.OpName, n.VnOpName, n.GbOpName, n.MmOpName, n.IdOpName, n.EtOpName,
                                                                 n.Codes, n.IconNames, n.MainProcessArr, n.HotSpot, n.OpsState, opdtRs.OpNum, n.Remarks, n.OpGroup, n.MachineType,
                                                                 n.ModuleId, n.DisplayColor, n.ProcessWidth, n.ProcessHeight, n.LayoutFontSize, n.Tools, n.IsDisplay, n.Page,
                                                                 n.CanDelete, n.ShowButtonPlayVideo, parseInt(n.left) + 2, parseInt(n.top) + 2, n.group, n.Title, n.IconNameArr,
-                                                                n.IconUrl, n.IconName);
+                                                                n.IconUrl, n.IconName, bgImage, btFontColor);
 
                                                             toolkit.addNode(layoutProcess);
                                                         } else {
@@ -1770,7 +1819,8 @@ app.controller("OpsLayoutController", function ($uibModal, $log, $document, $sco
     const pHeight = ProcessHeight === "" ? defaultProcessHeight : ProcessHeight;
     const pWidth = ProcessWidth === "" ? defaultProcessWidth : ProcessWidth;
 
-    $scope.canvasStyle = { "height": parseInt(canvasHeight) };
+    //$scope.canvasStyle = { "height": parseInt(canvasHeight) };
+    $scope.canvasStyle = { "height": 100 };
 
     $scope.pLayoutModifier = {
         noProcessInRow: 1,
@@ -1791,11 +1841,16 @@ app.controller("OpsLayoutController", function ($uibModal, $log, $document, $sco
 
     //Get colors
     $http.post("/OpLayout/GetColour").then((response) => {
+        console.log("Loading list of colour.");
         const lstColor = [];
+        console.log(response.data);
+
         $.each(response.data, (index, value) => {
             const opColor = new OpColor(value.ColorDesc, "#" + value.HexaValue, value.OpGroup, value.Module);
             lstColor.push(opColor);
         });
+
+        console.log(lstColor);
         $scope.opsColors = lstColor;
     });
 
@@ -1832,6 +1887,8 @@ app.controller("OpsLayoutController", function ($uibModal, $log, $document, $sco
     $scope.selectedVideo = {};
     $scope.SplitVideoUrl = "";
     //$scope.selectedProcessVideo = {};
+
+    $scope.BottomCardStyle = { "backgroundImage": BottomCardBgImage };
 
     //#endregion
 
@@ -2033,6 +2090,8 @@ app.controller("OpsLayoutController", function ($uibModal, $log, $document, $sco
     //START ADD) SON - 06/Mar/2019
     function saveAsNewOp(url, isSaveAsFom, isSaveAsNew) {
         $.blockUI(window.BlockUI);
+        const opReason = $(`#${DrpReasonOp}`).val();
+
         LayoutEvent = true;
         let { Edition, StyleCode, StyleColorSerial, StyleSize, RevNo, OpRevNo, Remarks, Factory } = GetSelectedOneRowData(gridOpsTableId);
         const lang = MapFlagValueToLanguage($scope.layoutLang.selectedLang);
@@ -2050,12 +2109,32 @@ app.controller("OpsLayoutController", function ($uibModal, $log, $document, $sco
             }
         }
 
+        //console.log("reason...");
+        //console.log(opReason);
+        //console.log(isSaveAsFom);
+        //console.log(isSaveAsNew);
+        //console.log($scope.isNewForFom);
+
+        if (isSaveAsNew || isSaveAsFom) {
+            if (opReason) {
+                if (opReason.trim() === "") {
+                    MsgInform("Error", "Please select reason.", ObjMessageType.Error, false, true);
+                    $.unblockUI();
+                    return;
+                }
+            } else {
+                MsgInform("Error", "Please select reason.", ObjMessageType.Error, false, true);
+                $.unblockUI();
+                return;
+            }
+        }
+
         let edition2 = "";
         if (isSaveAsFom) edition2 = 'A';
 
         const opmt = new Opmt(Edition, edition2, StyleCode, StyleColorSerial, StyleSize, RevNo, OpRevNo, lang, opsViewMode,
             $scope.pLayoutModifier.pWidth, $scope.pLayoutModifier.pHeight, $scope.opsFont.fontSize,
-            $scope.canvasStyle.height, factory, remarks);
+            $scope.canvasStyle.height, factory, remarks, opReason);
 
         var data = toolkit.exportData({
             type: "json",
@@ -2142,7 +2221,7 @@ app.controller("OpsLayoutController", function ($uibModal, $log, $document, $sco
         const config = {
             url: url,
             async: true,
-            postData: JSON.stringify({ opdts: nodeArray, opmt: opmt })
+            postData: JSON.stringify({ opdts: nodeArray, opmt })
         };
         AjaxPostCommon(config, (response) => {
             var result = response;
@@ -3607,7 +3686,7 @@ class LayoutProcess {
     constructor(id, name, opTime, machineCount, machineName, manCount, opName, vnOpName, gbOpName, mmOpName, idOpName,
         etOpName, codes, iconNames, mainProcessArr, hotSpot, opsState, opNum, remarks, opGroup, machineType, moduleId,
         displayColor, processWidth, processHeight, layoutFontSize, tools, isDisplay, page, canDelete, showButtonPlayVideo,
-        left, top, group, title, iconNameArr, iconUrl, iconName) {
+        left, top, group, title, iconNameArr, iconUrl, iconName, bottomBgImg, bottomColor) {
         this.id = id;
         this.name = name;
         this.OpTime = opTime;
@@ -3646,6 +3725,8 @@ class LayoutProcess {
         this.IconNameArr = iconNameArr;
         this.IconUrl = iconUrl;
         this.IconName = iconName;
+        this.BottomBgImg = bottomBgImg;
+        this.BottomColor = bottomColor;
     }
 }
 //#endregion

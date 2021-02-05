@@ -40,6 +40,13 @@ var UserRoleOpm, UserRoleFom, UserRoleMes, ImageHttpLink;
     //flProcessImageChange();
     // Image, video, file events
     window.ImageVideoFileEvents();
+
+    getReasonOperationPlan(res => {
+        console.log("Loading op reason...");
+        console.log(res);
+
+        FillDataToDropDownlist("drpReasonOp", res, "SubCode", "CodeName");
+    });
 })();
 // #endregion Ready
 
@@ -170,6 +177,10 @@ function CreateLayoutProcess(opdt, callBack) {
 
             if (iconNameArr.length === 0) iconNameArr.push("settings.svg");
 
+            const bgColorLayout = JSON.parse(localStorage.getItem('bgColorLayout'));
+            let bgImage = bgColorLayout ? bgColorLayout.BgImage : "linear-gradient(to right, #fc6586, #53bbfd)",
+                btFontColor = bgColorLayout ? bgColorLayout.FontColor : '#ffffff';
+
             const machineName = res.Result.p.MachineName ? res.Result.p.MachineName : " ",
                 iconName = res.Result.p.IconName ? res.Result.p.IconName : "settings.svg",
                 hotSpot = res.Result.p.HotSpot && res.Result.p.HotSpot === "1" ? true : false,
@@ -186,7 +197,7 @@ function CreateLayoutProcess(opdt, callBack) {
                     hotSpot, opsState, opNum, remarks, res.Result.p.OpGroup, res.Result.p.MachineType, res.Result.p.ModuleId,
                     displayColor, window.ProcessWidth, window.ProcessHeight, window.LayoutFontSize, [], true,
                     window.LayoutPage, window.CanDelete, showButtonPlayVideo, LayoutLeftX, LayoutTopY, "emptyGroup", "",
-                    iconNameArr, res.Result.iconUrl, iconName);
+                    iconNameArr, res.Result.iconUrl, iconName, bgImage, btFontColor);
             callBack(layoutProcess);
         }
     });

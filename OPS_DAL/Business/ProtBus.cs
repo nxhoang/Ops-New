@@ -111,7 +111,7 @@ namespace OPS_DAL.Business
             var sb = new StringBuilder();
             sb.AppendLine(" SELECT ");
             sb.AppendLine("     PRO.STYLECODE, PRO.STYLESIZE, PRO.STYLECOLORSERIAL, PRO.REVNO, PRO.ITEMCODE, PRO.ITEMCOLORSERIAL, PRO.PATTERNSERIAL");
-            sb.AppendLine("     , PRO.MAINITEMCODE, PRO.MAINITEMCOLORSERIAL, PRO.OPREVNO, PRO.OPSERIAL, PRO.OPTYPE, PRO.STATUS, PRO.EDITION ");
+            sb.AppendLine("     , PRO.MAINITEMCODE, PRO.MAINITEMCOLORSERIAL, PRO.OPREVNO, PRO.OPSERIAL,  pro.OPNSERIAL, PRO.OPTYPE, PRO.STATUS, PRO.EDITION ");
             sb.AppendLine(" FROM ");
             sb.AppendLine($"     {tblName} PRO ");
             sb.AppendLine(" WHERE ");

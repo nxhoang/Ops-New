@@ -331,7 +331,6 @@ const eventOnChangeSelection = () => {
             if (!isEmptyOrWhiteSpace(color)) {
                 changeBackgroundColorDefineMultilOperations(color);
                 _moduleBgColor = `#${color}`;
-                console.log('_moduleBackgroundColor', _moduleBgColor);
             } else {
                 changeBackgroundColorDefineMultilOperations(_moduleBgColorDefault);
             }

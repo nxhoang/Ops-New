@@ -7,5 +7,9 @@
             IsSuccess = true;
             Result = data;
         }
+        public SuccessTaskResult()
+        {
+            IsSuccess = true;
+        }
     }
 }

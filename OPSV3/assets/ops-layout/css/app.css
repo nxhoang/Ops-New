@@ -15,7 +15,7 @@
     overflow: hidden;
 }
 
-.jtk-node .name {
+    .jtk-node .name {
         font-size: 13px;
         line-height: 24px;
         text-align: center;
@@ -63,10 +63,12 @@
 .jtk-group [jtk-group-content] {
     height: 110px;
 }
+
 /*M.O edits*/
 .card h1.card-title, .card h2.card-title, .card h3.card-title, .card h4.card-title, .card h5.card-title, .card h6.card-title {
     font-weight: 600;
     letter-spacing: 0.05rem;
     font-size: 1.25rem;
     margin-bottom: 0.25rem;
-    /*M.O has edited*/
+}
+/*M.O has edited*/

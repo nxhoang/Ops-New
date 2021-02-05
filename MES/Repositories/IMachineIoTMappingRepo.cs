@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using OPS_DAL.MesEntities;
+using PKERP.Base.Domain.Interface.Dto;
 using System.Threading.Tasks;
 
 namespace MES.Repositories
 {
     public interface IMachineIoTMappingRepo
     {
-        Task<string> UpdateMachineIotMappingAsync(string machineId, string iot);
+        Task<TaskResult<string>> UpdateMachineIotMappingAsync(Mcmp mcmp, string UserID);
     }
 }

@@ -92,13 +92,79 @@ namespace OPS_DAL.Business
                 new OracleParameter("P_REGISTRYDATE", module.RegistryDate),
                 new OracleParameter("P_FINALASSEMBLY", module.FinalAssembly),
                 new OracleParameter("P_CONFIRMED", module.Confirmed),
-                new OracleParameter("P_PARTID", module.PartId)
+                new OracleParameter("P_PARTID", module.PartId),
+                new OracleParameter("P_COLOR", module.Color), //ADD - SON) 1/Feb/2021
             };
 
             var resInsert = OracleDbManager.ExecuteQuery("SP_OPS_INSERTMODULE_SAMT", oracleParams.ToArray(), CommandType.StoredProcedure, trans, oraConn);
 
             return resInsert != null && int.Parse(resInsert.ToString()) != 0;
+        }
 
+        /// <summary>
+        /// Insert module
+        /// </summary>
+        /// <param name="module"></param>
+        /// <param name="oraConn"></param>
+        /// <param name="trans"></param>
+        /// <returns></returns>
+        /// Author: Son Nguyen Cao
+        /// Date: 4/Feb/2021
+        public static bool InsertModule_New(Samt module, OracleConnection oraConn, OracleTransaction trans)
+        {
+            string strSql = @" INSERT INTO T_00_SAMT (STYLECODE, MODULEID, MODULENAME, REGISTRAR, REGISTRYDATE,  FINALASSEMBLY, CONFIRMED, PARTID, COLOR)
+                                VALUES(:P_STYLECODE, :P_MODULEID, :P_MODULENAME, :P_REGISTRAR, :P_REGISTRYDATE,  :P_FINALASSEMBLY, :P_CONFIRMED, :P_PARTID, :P_COLOR)";
+            var oracleParams = new List<OracleParameter>
+            {
+                new OracleParameter("P_STYLECODE", module.StyleCode),
+                new OracleParameter("P_MODULEID", module.ModuleId),
+                new OracleParameter("P_MODULENAME", module.ModuleName),
+                new OracleParameter("P_REGISTRAR", module.Registrar),
+                new OracleParameter("P_REGISTRYDATE", module.RegistryDate),
+                new OracleParameter("P_FINALASSEMBLY", module.FinalAssembly),
+                new OracleParameter("P_CONFIRMED", module.Confirmed),
+                new OracleParameter("P_PARTID", module.PartId),
+                new OracleParameter("P_COLOR", module.Color)
+            };
+
+            var resInsert = OracleDbManager.ExecuteQuery(strSql, oracleParams.ToArray(), CommandType.Text, trans, oraConn);
+
+            return resInsert != null && int.Parse(resInsert.ToString()) != 0;
+        }
+
+        /// <summary>
+        /// Insert list module
+        /// </summary>
+        /// <param name="lstModule"></param>
+        /// <returns></returns>
+        /// Author: Son Nguyen Cao
+        /// Date: 4/Feb/2021
+        public static bool InsertModulesList_New(List<Samt> lstModule)
+        {
+            using (var connection = new OracleConnection(ConstantGeneric.ConnectionStr))
+            {
+                connection.Open();
+                var trans = connection.BeginTransaction();
+                try
+                {
+                    foreach (var samt in lstModule)
+                    {
+                        //Insert module
+                        if (InsertModule_New(samt, connection, trans)) continue;
+
+                        trans.Rollback();
+                        return false;
+                    }
+
+                    trans.Commit();
+                    return true;
+                }
+                catch (Exception)
+                {
+                    trans.Rollback();
+                    throw;
+                }
+            }
         }
 
         /// <summary>

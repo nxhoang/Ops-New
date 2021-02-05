@@ -113,7 +113,8 @@ function CreateGridAction(sysId, funcId, user) {
             { name: "Buyer", index: "Buyer", hidden: true },
             { name: "StyleGroup", index: "StyleGroup", hidden: true },
             { name: 'SubGroup', index: 'SubGroup', hidden: true },
-            { name: 'SubSubGroup', index: 'SubSubGroup', hidden: true }
+            { name: 'SubSubGroup', index: 'SubSubGroup', hidden: true },
+            { name: 'Buyer', index: 'Buyer', hidden: true }//ADD - SON) 1/Feb/2021
         ],
         onSelectRow: function (rowid) {
             var row = $(tbId).getRowData(rowid);
@@ -126,7 +127,7 @@ function CreateGridAction(sysId, funcId, user) {
                     case "RES":
                         var functionId = row.FunctionId;
                         if (functionId === "LAY") {
-                            window.location.href = "/OpsLayout/OpsLayout";
+                            window.location.href = "/OpLayout/OpLayout";
                         } else {                            
                             //window.location.href = "/Ops/Ops"; //MOD - SON) 26/Dec/2020
                             window.location.href = "/PlanManagement/PlanManagement";
@@ -136,7 +137,7 @@ function CreateGridAction(sysId, funcId, user) {
                         window.location.href = "/OpsLink/index";
                         break;
                     case "LAY":
-                        window.location.href = "/OpsLayout/OpsLayout";
+                        window.location.href = "/OpLayout/OpLayout";
                         break;
                 }
             }
@@ -176,7 +177,7 @@ function LinkToPage(id, page) {
             window.location.href = "/PlanManagement/PlanManagement";
             break;
         case "layout":
-            window.location.href = "/OpsLayout/OpsLayout";
+            window.location.href = "/OpLayout/OpLayout";
             break;
         case "linking":
             window.location.href = "/OpsLink/index";
@@ -463,7 +464,8 @@ function binDataToHistoryPlanGrid(buyer, styleInf, recentDay) {
             { name: "RegisterName", index: "RegisterName", label: 'REGISTER', align: "left" },
             { name: "RegisterId", index: "RegisterId", hidden: true },
             { name: "StyleColorSerial", index: "StyleColorSerial", hidden: true },
-            { name: "Edition", index: "Edition", hidden: true }
+            { name: "Edition", index: "Edition", hidden: true },
+            { name: 'Buyer', index: 'Buyer', hidden: true }//ADD - SON) 1/Feb/2021
         ],
         ondblClickRow: function (rowid) {
             var row = $('#tbHistoryPlan').jqGrid("getRowData", rowid);

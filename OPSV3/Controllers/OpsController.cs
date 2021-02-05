@@ -1368,6 +1368,10 @@ namespace OPS.Controllers
 
                 var maxPartId = SamtBus.GetMaxPartIdBuyer(styleCode);//ADD) SON - 1.1.1 - 30/Mar/2019
 
+                //START ADD - SON) 1/Feb/2021 - get list module color
+                var listModuleColors = OpColorBus.GetColour();
+                //END ADD - SON) 1/Feb/2021
+
                 var lstTempModules = new List<Samt>();
                 foreach (var item in lstItemMaster)
                 {
@@ -1375,6 +1379,11 @@ namespace OPS.Controllers
                     var samt = lstModules.Where(x => x.ModuleId == item.ItemCode).FirstOrDefault();
                     if (samt == null)
                     {
+                        //START ADD - SON) 1/Feb/2021 - get list module color
+                        //Get module color
+                        var moduleColor = listModuleColors.Find(x => x.Module == item.LevelNo01)?.HexaValue;
+                        //END ADD - SON) 1/Feb/2021
+
                         maxPartId++;//ADD) SON - 1.1.1 - 30/Mar/2019
                         var finalAssembly = item.MainLevel == ConstantGeneric.MainLevelFinalAssembly ? "1" : objModule.FinalAssembly;
                         var samtTemp = new Samt()
@@ -1385,7 +1394,8 @@ namespace OPS.Controllers
                             Registrar = objModule.Registrar,
                             RegistryDate = DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"),
                             FinalAssembly = finalAssembly,
-                            PartId = maxPartId.ToString("D2")//ADD) SON - 1.1.1 - 30/Mar/2019
+                            PartId = maxPartId.ToString("D2"),//ADD) SON - 1.1.1 - 30/Mar/2019
+                            Color = moduleColor //ADD - SON) 1/Feb/2021
                         };
 
                         lstTempModules.Add(samtTemp);
@@ -1394,7 +1404,7 @@ namespace OPS.Controllers
 
                 if (lstTempModules.Count == 0) return Json("There are no modules to add.", JsonRequestBehavior.AllowGet);
 
-                var resAdd = lstTempModules.Count > 0 ? SamtBus.InsertModulesList(lstTempModules) : true;
+                var resAdd = lstTempModules.Count > 0 ? SamtBus.InsertModulesList_New(lstTempModules) : true;
 
                 //Record log add new module           
                 var status = CommonUtility.ConvertBoolToString01(resAdd);
@@ -1472,7 +1482,7 @@ namespace OPS.Controllers
 
                 if (lstTempModules.Count == 0) return Json("There are no Parts to to be added.", JsonRequestBehavior.AllowGet);
 
-                var resAdd = lstTempModules.Count > 0 ? SamtBus.InsertModulesList(lstTempModules) : true;
+                var resAdd = lstTempModules.Count > 0 ? SamtBus.InsertModulesList_New(lstTempModules) : true;
 
                 //Record log add new module           
                 var status = CommonUtility.ConvertBoolToString01(resAdd);
@@ -2161,7 +2171,7 @@ namespace OPS.Controllers
                 return CommonUtility.ObjectToJson(exc.Message);
             }
         }
-       
+
         [HttpPost]
         public string UpdateOpName(Opmt opMaster, List<Opdt> lstOpdt, string languageId)
         {
@@ -3120,6 +3130,13 @@ namespace OPS.Controllers
             {
                 var lstOpmt = new List<Opmt>();
 
+                //START ADD - SON) 30/Jan/2021
+                if (string.IsNullOrEmpty(styleCode) || string.IsNullOrEmpty(styleSize) || string.IsNullOrEmpty(styleColor) || string.IsNullOrEmpty(revNo))
+                {
+                    return Json(lstOpmt, JsonRequestBehavior.AllowGet);
+                }
+                //END ADD - SON) 30/Jan/2021
+
                 lstOpmt = string.IsNullOrWhiteSpace(edition)
                     ? OpmtBus.GetOpMaster2(styleCode, styleSize, styleColor, revNo)
                     : OpmtBus.GetOpMasterByEdition2(styleCode, styleSize, styleColor, revNo, edition);
@@ -3128,6 +3145,11 @@ namespace OPS.Controllers
                 var orderListOpmt = from s in lstOpmt
                                     orderby s.Sorting
                                     select s;
+
+                //START ADD - SON) 30/Jan/2021 - check the last confirmation for MES operation plan
+                var lastOpmtMes = orderListOpmt.Where(x => x.Edition == "M" && x.ConfirmChk == "Y").OrderByDescending(x => x.ConfirmedDate).FirstOrDefault();
+                if (lastOpmtMes != null) lastOpmtMes.IsLastConfirmation = "Y";
+                //END ADD - SON) 30/Jan/2021
 
                 return Json(orderListOpmt, JsonRequestBehavior.AllowGet);
             }
@@ -3210,6 +3232,8 @@ namespace OPS.Controllers
                     copyOpmt.Edition = opMaster.Edition;
                     copyOpmt.Language = opMaster.Language;
                     copyOpmt.Factory = opMaster.Factory; //ADD) SON - 1/Jul/2019
+                    copyOpmt.Reason = opMaster.Reason; //ADD - SON) 30/Jan/2021
+                    copyOpmt.OpSource = opMaster.OpSource; //ADD - SON) 30/Jan/2021
                     opMaster = copyOpmt;
 
                     //START MOD) SON - 23/Feb/2019: Get list of processes with process standard name only
@@ -3333,8 +3357,6 @@ namespace OPS.Controllers
                             tool.OpRevNo = opMaster.OpRevNo;
                             tool.Edition = opMaster.Edition;
                         }
-
-
                     }
 
                     if (copyBOMPattern == ConstantGeneric.True)
@@ -3483,7 +3505,7 @@ namespace OPS.Controllers
                 }
 
                 //START MOD) SON - 04/Jun/2019 - Check if edition is MES then save operation plan to MES schema
-                var resAdd = OpmtBus.AddNewOpsMasterDetail(editionReg, opMaster, lstOpDetailCopy, lstOpnt, lstTool, copyToolLinking, copySelectPlan, registerEmptyPlan, importFile, listProt);
+                var resAdd = OpmtBus.AddNewOpsMasterDetail_New(editionReg, opMaster, lstOpDetailCopy, lstOpnt, lstTool, copyToolLinking, copySelectPlan, registerEmptyPlan, importFile, listProt);
 
                 //END MOD) SON - 04/Jun/2019
                 //Count process, machine... if add process by importing csv file.
@@ -3739,7 +3761,7 @@ namespace OPS.Controllers
                 var stream = fileDataContent.InputStream;
 
                 var sysFileName = styleCode + styleSize + styleColor + styleRevNo + opRevNo + opSerial;
-                
+
                 var tempFolder = Server.MapPath(ConstantGeneric.OpsTempFolder);
                 //Create directory for storing video.
                 if (!CommonMethod.CreateFolder(tempFolder)) return ConstantGeneric.Fail;

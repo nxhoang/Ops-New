@@ -52,5 +52,12 @@ namespace OPSV3.Controllers
 
             return Json(listModuleColors, JsonRequestBehavior.AllowGet);
         }
+
+        public JsonResult GetReasonOperationPlan()
+        {
+            var listReason = McmtBus.GetMasterCode("OPReason");
+
+            return Json(listReason, JsonRequestBehavior.AllowGet);
+        }
     }
 }

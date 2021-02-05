@@ -1,19 +1,22 @@
 ﻿using OPS_DAL.MesBus;
+using PKERP.Base.Domain.Interface.Dto;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-using System.Web;
 
 namespace MES.Repositories
 {
     public class MachineIoTMappingRepo : IMachineIoTMappingRepo
     {
-        private readonly McmpBus _McmpBus = new McmpBus();
+        private readonly McmpBus _mcmpBus = new McmpBus();
 
-        public async Task<string> UpdateMachineIotMappingAsync(string machineId, string iot)
+        public async Task<TaskResult<string>> UpdateMachineIotMappingAsync(OPS_DAL.MesEntities.Mcmp mcmp, string UserID)
         {
-            return await _McmpBus.UpdateMachineIotMapping(new OPS_DAL.MesEntities.Mcmp() { IOT_MAC = iot, MACHINE_ID = machineId }); 
+            await _mcmpBus.UpdateDGSMachineIotMappingAsync(mcmp, UserID);
+            var res = await _mcmpBus.UpdateMachineIotMappingAsync(mcmp, UserID);
+            if (res == "OK")
+                return new SuccessTaskResult<string>();
+            else
+                return new FailedTaskResult<string>(res);
         }
     }
 }

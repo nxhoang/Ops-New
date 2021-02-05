@@ -918,12 +918,10 @@
     <Content Include="js\demo_maps.js" />
     <Content Include="js\demo_tables.js" />
     <Content Include="js\demo_tasks.js" />
+    <Content Include="js\Entities\JsEntity.js" />
     <Content Include="js\Entities\JsEntity.min.js">
       <DependentUpon>JsEntity.js</DependentUpon>
     </Content>
-    <Content Include="js\Entities\Opdt.js" />
-    <Content Include="js\Entities\Opmt.js" />
-    <Content Include="js\Entities\JsEntity.js" />
     <Content Include="js\faq.js" />
     <Content Include="js\jqGrid\avatars\avatar.png" />
     <Content Include="js\jqGrid\avatars\avatar1.png" />

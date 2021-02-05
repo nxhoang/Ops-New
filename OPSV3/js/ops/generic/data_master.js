@@ -27,3 +27,8 @@ const getModuleColorsAsync = (callBack) => {
     var config = { url: "/DataMaster/GetModuleColors", postData: null, async: true };
     AjaxPostCommon(config, function (response) { callBack(response); });
 }
+
+const getReasonOperationPlan = (callBack) => {
+    var config = { url: "/DataMaster/GetReasonOperationPlan", postData: null, async: true };
+    AjaxPostCommon(config, function (response) { callBack(response); });
+}

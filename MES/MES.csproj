@@ -18,8 +18,7 @@
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
     <UseIISExpress>true</UseIISExpress>
-    <Use64BitIISExpress>
-    </Use64BitIISExpress>
+    <Use64BitIISExpress>true</Use64BitIISExpress>
     <IISExpressSSLPort />
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
@@ -310,6 +309,7 @@
     <Compile Include="Controllers\FactorySortingParameterController.cs" />
     <Compile Include="Controllers\FileSyncController.cs" />
     <Compile Include="Controllers\MasterDataController.cs" />
+    <Compile Include="Controllers\LineAllocationController.cs" />
     <Compile Include="Controllers\MesLineAllocationController.cs" />
     <Compile Include="Controllers\MesManagementController.cs" />
     <Compile Include="Controllers\MesPkgIotMachineTimeDashboardController.cs" />
@@ -1900,6 +1900,9 @@
     <Content Include="Views\QCO\MTOPPPCuttingReadinessPop.cshtml" />
     <Content Include="Views\LineDashboard\OperationPlanDashboard.cshtml" />
     <Content Include="Views\IotMes\MachineIot.cshtml" />
+    <Content Include="Views\LineAllocation\LineAllocation.cshtml" />
+    <Content Include="Views\PartialView\_ProcessDetailPartial.cshtml" />
+    <Content Include="Views\PartialView\OpLayoutVideo.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

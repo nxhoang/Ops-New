@@ -1,0 +1,957 @@
+﻿<!-- Modal Add New Process -->
+<div class="modal modal-custom fade" id="mdlProcessDetail" role="dialog" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-lg process-popup">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header color-customize" data-background-color="default">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h5 class="modal-title">Process Detail</h5>
+            </div>
+            <div class="modal-body">
+                <div class="modal-body-custom">
+                    <div class="row">
+                        <div class="col-sm-6 col-xs-12">
+                            <div class="row">
+                                <div class="col-sm-12 col-xs-12">
+                                    <form class="form-horizontal" role="form">
+                                        <div class="form-group">
+                                            <label class="col-sm-2 control-label no-padding-right"> Module </label>
+                                            <div class="col-sm-10 selec2-custom">
+                                                <select id="drpModule" class="form-control" data-placeholder="Select module"></select>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-2 control-label no-padding-right"> Process no </label>
+                                            <div class="col-sm-10">
+                                                <input type="text" id="txtProcessNo" readonly="readonly" style="display:none" placeholder="" class="form-control">
+                                                <input type="text" id="txtProcessNumber" onkeypress="return isDecimalNumber(event)" maxlength="10" placeholder="" class="form-control">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-2 control-label no-padding-right"> Pick Up </label>
+                                            <div class="col-sm-2" style="display:none">
+                                                <button type="button" id="btnPickUpDetail" class="btn btn btn-primary btn-modal form-control">Detail</button>
+                                            </div>
+                                            <label class="col-sm-2 control-label no-padding-right">Grade </label>
+                                            <div class="col-sm-2 selec2-custom">
+                                                <select id="drpPickUpGrade" class="form-control" data-placeholder="Grade"></select>
+                                            </div>
+                                            <label class="col-sm-2 control-label no-padding-right"> GSD Code </label>
+                                            <div class="col-sm-2 selec2-custom">
+                                                <select id="drpPickUpGsdCode" class="form-control"></select>
+                                            </div>
+
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-2 control-label no-padding-right"> Ref OpName</label>
+                                            <div class="col-sm-10">
+                                                <input type="text" id="txtRefOpName" placeholder="" class="form-control" disabled>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-2 control-label no-padding-right"> OpName 1 </label>
+                                            <div class="col-sm-8">
+                                                <input type="text" id="txtOpName1" placeholder="" class="form-control" disabled>
+                                                <input type="hidden" id="hdOpNameId1" />
+                                                <input type="hidden" id="hdIconName1" />
+                                            </div>
+                                            <div class="col-sm-2">
+                                                <button type="button" id="btnAddOpName1" class="btn btn btn-secondary btn-modal form-control shadow-z-2">+</button>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-2 control-label no-padding-right"> Machine 1 </label>
+                                            <div class="col-sm-4 selec2-custom">
+                                                <select id="drpMachineOpName1" class="form-control" data-placeholder="Select"></select>
+                                            </div>
+                                            <div class="col-sm-2" style="display: none">
+                                                <button type="button" id="btnDetail1" class="btn btn btn-primary btn-modal form-control">Detail 1</button>
+                                            </div>
+                                            <div class="col-sm-3">
+                                                <label class="radio-inline"><input type="radio" id="rdMainProcess1" name="mainProcess" value="1"  checked="checked" >Main Process</label>
+                                            </div>
+                                        </div>
+
+                                        <div id="divOpName2" style="display: none;">
+                                            <div class="form-group">
+                                                <label class="col-sm-2 control-label no-padding-right"> OpName 2 </label>
+                                                <div class="col-sm-9">
+                                                    <input type="text" id="txtOpName2" placeholder="" class="form-control" disabled>
+                                                    <input type="hidden" id="hdOpNameId2" />
+                                                    <input type="hidden" id="hdIconName2" />
+                                                </div>
+                                                <div class="col-sm-1">
+                                                    <button type="button" id="btnAddOpName2" class="btn btn btn-primary btn-modal form-control">+</button>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-sm-2 control-label no-padding-right"> Machine 2 </label>
+                                                <div class="col-sm-4 selec2-custom">
+                                                    <select id="drpMachineOpName2" class="form-control" data-placeholder="Select"></select>
+                                                </div>
+                                                <div class="col-sm-2" style="display:none">
+                                                    <button type="button" id="btnDetail2" class="btn btn btn-primary btn-modal form-control">Detail 2</button>
+                                                </div>
+                                                <div class="col-sm-3">
+                                                    <label class="radio-inline"><input type="radio" id="rdMainProcess2" name="mainProcess" value="2">Main Process</label>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div id="divOpName3" style="display: none;">
+                                            <div class="form-group">
+                                                <label class="col-sm-2 control-label no-padding-right"> OpName 3 </label>
+                                                <div class="col-sm-9">
+                                                    <input type="text" id="txtOpName3" placeholder="" class="form-control" disabled>
+                                                    <input type="hidden" id="hdOpNameId3" />
+                                                    <input type="hidden" id="hdIconName3" />
+                                                </div>
+                                                <div class="col-sm-1">
+                                                    <button type="button" id="btnAddOpName3" class="btn btn btn-primary btn-modal form-control">+</button>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-sm-2 control-label no-padding-right"> Machine 3 </label>
+                                                <div class="col-sm-4 selec2-custom">
+                                                    <select id="drpMachineOpName3" class="form-control" data-placeholder="Select"></select>
+                                                </div>
+                                                <div class="col-sm-2" style="display:none">
+                                                    <button type="button" id="btnDetail3" class="btn btn btn-primary btn-modal form-control">Detail 3</button>
+                                                </div>
+                                                <div class="col-sm-3">
+                                                    <label class="radio-inline"><input type="radio" id="rdMainProcess3" name="mainProcess" value="3">Main Process</label>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div id="divOpName4" style="display: none;">
+                                            <div class="form-group">
+                                                <label class="col-sm-2 control-label no-padding-right"> OpName 4 </label>
+                                                <div class="col-sm-9">
+                                                    <input type="text" id="txtOpName4" placeholder="" class="form-control" disabled>
+                                                    <input type="hidden" id="hdOpNameId4" />
+                                                    <input type="hidden" id="hdIconName4" />
+                                                </div>
+                                                <div class="col-sm-1">
+                                                    <button type="button" id="btnAddOpName4" class="btn btn btn-primary btn-modal form-control">+</button>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-sm-2 control-label no-padding-right"> Machine 4 </label>
+                                                <div class="col-sm-4 selec2-custom">
+                                                    <select id="drpMachineOpName4" class="form-control" data-placeholder="Select"></select>
+                                                </div>
+                                                <div class="col-sm-2" style="display:none">
+                                                    <button type="button" id="btnDetail4" class="btn btn btn-primary btn-modal form-control">Detail 4</button>
+                                                </div>
+                                                <div class="col-sm-3">
+                                                    <label class="radio-inline"><input type="radio" id="rdMainProcess4" name="mainProcess" value="3">Main Process</label>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div id="divOpName5" style="display: none;">
+                                            <div class="form-group">
+                                                <label class="col-sm-2 control-label no-padding-right"> OpName 5 </label>
+                                                <div class="col-sm-9">
+                                                    <input type="text" id="txtOpName5" placeholder="" class="form-control" disabled>
+                                                    <input type="hidden" id="hdOpNameId5" />
+                                                    <input type="hidden" id="hdIconName5" />
+                                                </div>
+                                                <div class="col-sm-1">
+                                                    <button type="button" id="btnAddOpName5" class="btn btn btn-primary btn-modal form-control">+</button>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-sm-2 control-label no-padding-right"> Machine 5 </label>
+                                                <div class="col-sm-4 selec2-custom">
+                                                    <select id="drpMachineOpName5" class="form-control" data-placeholder="Select"></select>
+                                                </div>
+                                                <div class="col-sm-2" style="display:none">
+                                                    <button type="button" id="btnDetail5" class="btn btn btn-primary btn-modal form-control">Detail 5</button>
+                                                </div>
+                                                <div class="col-sm-3">
+                                                    <label class="radio-inline"><input type="radio" id="rdMainProcess5" name="mainProcess" value="3">Main Process</label>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="col-sm-2 control-label no-padding-right"> Dispose </label>
+                                            <div class="col-sm-2" style="display:none">
+                                                <button type="button" id="btnDisposeDetail" class="btn btn btn-primary btn-modal form-control">Detail</button>
+                                            </div>
+                                            <label class="col-sm-2 control-label no-padding-right">Grade </label>
+                                            <div class="col-sm-2 selec2-custom">
+                                                <select id="drpDisposeGrade" class="form-control" data-placeholder="Grade"></select>
+                                            </div>
+                                            <label class="col-sm-2 control-label no-padding-right"> GSD Code </label>
+                                            <div class="col-sm-2 selec2-custom">
+                                                <select id="drpDisposeGsdCode" class="form-control"></select>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            @*<label class="col-sm-2 control-label no-padding-right"> Tool </label>*@
+
+                                            <label class="col-sm-2 control-label no-padding-right">Main </label>
+                                            <div class="col-sm-2 selec2-custom">
+                                                <input type="text" id="txtToolMain" placeholder="" class="form-control" disabled>
+                                            </div>
+                                            <label class="col-sm-2 control-label no-padding-right"> Type </label>
+                                            <div class="col-sm-2 selec2-custom">
+                                                <input type="text" id="txtToolType" placeholder="" class="form-control" disabled>
+                                            </div>
+                                            <label class="col-sm-2 control-label no-padding-right"> Item </label>
+                                            <div class="col-sm-2 selec2-custom">
+                                                <input type="text" id="txtToolItem" placeholder="" class="form-control" disabled>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="row">
+                                        <fieldset class="iottype">
+                                            <legend class="iottype">Operation Layout</legend>
+                                            <div id="divDefMulOperation" style="height: 100px; text-align: center; display:table; margin: 0 auto; padding: 10px">
+                                                <div id="divOpPickup">
+                                                    <label id="lblPickUp">pick up</label>
+                                                    <div id="divPickUp" class="def-mul-op" style="border: 2px solid green;">
+                                                        <img class="img-op-icon" src="~/img/ops/icon/no-image-icon.svg" />
+                                                    </div>
+                                                </div>
+                                                <div id="divArrow1" class="arrow-op">
+                                                    <label class="arrow-op-style">&#8594;</label>
+                                                </div>
+                                                <div id="divOp1" class="def-op">
+                                                    <label id="lblOpeartion1">Operation 1</label>
+                                                    <div id="divOpeartion1" class="def-mul-op">
+                                                        <img id="imgOpIcon1" class="img-op-icon" src="~/img/ops/icon/no-image-icon.svg" />
+                                                    </div>
+                                                </div>
+                                                <div id="divArrow2" class="arrow-op">
+                                                    <label class="arrow-op-style">&#8594;</label>
+                                                </div>
+                                                <div id="divOp2">
+                                                    <label id="lblOpeartion2">Operation 2</label>
+                                                    <div id="divOpeartion2" class="def-mul-op">
+                                                        <img id="imgOpIcon2" class="img-op-icon" src="~/img/ops/icon/no-image-icon.svg" />
+                                                    </div>
+                                                </div>
+                                                <div id="divArrow3" class="arrow-op">
+                                                    <label class="arrow-op-style">&#8594;</label>
+                                                </div>
+                                                <div id="divOp3">
+                                                    <label id="lblOpeartion3">Operation 3</label>
+                                                    <div id="divOpeartion3" class="def-mul-op">
+                                                        <img id="imgOpIcon3" class="img-op-icon" src="~/img/ops/icon/no-image-icon.svg" />
+                                                    </div>
+                                                </div>
+                                                <div id="divArrow4" class="arrow-op">
+                                                    <label class="arrow-op-style">&#8594;</label>
+                                                </div>
+                                                <div id="divOp4">
+                                                    <label id="lblOpeartion4">Operation 4</label>
+                                                    <div id="divOpeartion4" class="def-mul-op">
+                                                        <img id="imgOpIcon4" class="img-op-icon" src="~/img/ops/icon/no-image-icon.svg" />
+                                                    </div>
+                                                </div>
+                                                <div id="divArrow5" class="arrow-op">
+                                                    <label class="arrow-op-style">&#8594;</label>
+                                                </div>
+                                                <div id="divOp5">
+                                                    <label id="lblOpeartion5">Operation 5</label>
+                                                    <div id="divOpeartion5" class="def-mul-op">
+                                                        <img id="imgOpIcon5" class="img-op-icon" src="~/img/ops/icon/no-image-icon.svg" />
+                                                    </div>
+                                                </div>
+                                                <div id="divArrow6" class="arrow-op">
+                                                    <label class="arrow-op-style">&#8594;</label>
+                                                </div>
+                                                <div id="divOpDispose">
+                                                    <label id="lblDispose">dispose</label>
+                                                    <div id="divDispose" class="def-mul-op" style="border: 2px solid green">
+                                                        <img class="img-op-icon" src="~/img/ops/icon/no-image-icon.svg" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </fieldset>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6 col-xs-12">
+                            <div class="row">
+                                <div class="col-sm-12 col-xs-12">
+                                    <form class="form-horizontal" role="form">
+                                        <div class="form-group">
+                                            <label class="col-sm-3 control-label no-padding-right" for="txtProcessCost"> Process cost </label>
+                                            <div class="col-sm-9">
+                                                <input type="text" id="txtProcessCost" onkeypress="return isDecimalNumber(event)" maxlength="7" placeholder="" class="form-control">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-3 control-label no-padding-right" for="txtOfferPrice"> Offer price </label>
+                                            <div class="col-sm-9">
+                                                <input type="text" id="txtOfferPrice" onkeypress="return isDecimalNumber(event)" maxlength="7" placeholder="" class="form-control">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-3 control-label no-padding-right" for="txtCostingGroup"> Costing group </label>
+                                            <div class="col-sm-9">
+                                                <input type="text" id="txtCostingGroup" placeholder="" class="form-control">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-3 control-label no-padding-right"> Old Grouping</label>
+                                            <div class="col-sm-9 selec2-custom">
+                                                <select id="drpProcessGroup" class="form-control" data-placeholder="Select old grouping" disabled></select>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-3 control-label no-padding-right">  </label>
+                                            <div class="col-sm-6">
+                                                <label class="checkbox-inline"><input type="checkbox" id="chkOutsourcing" value="">Outsourcing</label>
+                                                <label class="checkbox-inline"><input type="checkbox" id="chkHotSpot" value="">Hot Spot</label>
+                                            </div>
+                                            <div class="col-sm-3">
+                                                <button type="button" id="btnShowLinkingModal" class="btn btn btn-secondary btn-modal form-control shadow-z-2">Patterns</button>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-3 control-label no-padding-right" for="txtMachineCount">* Machine(s)</label>
+                                            <div class="col-sm-3">
+                                                <input type="text" id="txtMachineCount" placeholder="" maxlength="2" onkeypress="return isNumber(event)" class="form-control" disabled>
+                                            </div>
+                                            <label class="col-sm-3 control-label no-padding-right" for="txtWorker"> * Worker(s) </label>
+                                            <div class="col-sm-3">
+                                                <input type="text" id="txtWorker" placeholder="" maxlength="4" onkeypress="return isDecimalNumber(event)" class="form-control" disabled>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-3 control-label no-padding-right" for="txtProcessTime">* Process time </label>
+                                            <div class="col-sm-3">
+                                                <input type="text" id="txtProcessTime" onkeypress="return isNumber(event)" maxlength="3" placeholder="" class="form-control" disabled>
+                                            </div>
+                                            <label class="col-sm-3 control-label no-padding-right" for="txtMaxTime"> * Max time </label>
+                                            <div class="col-sm-3">
+                                                <input type="text" id="txtMaxTime" value="0" placeholder="" maxlength="3" onkeypress="return isDecimalNumber(event)" class="form-control" disabled>
+                                            </div>
+                                        </div>
+
+                                    </form>
+                                </div>
+                            </div>
+                            <div class="space-5"></div>
+                            <div class="row">
+                                <div class="col-sm-6 col-xs-12">
+                                    <div class="upload-image">
+                                        <div class="row">
+                                            <div class="wrap-div">
+                                                <label id="lblImageName">No image.</label>
+                                            </div>
+                                        </div>
+                                        <div class="row cover-img">
+                                            <div class="div-img-preview">
+                                                <img id="imgPreview" src="~/img/no-image.png" alt="Image upload" class="img-preview" />
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="div-bnt-upload-image display-content">
+                                                <div class="col-sm-9 nopadding mrt-3-dt">
+                                                    <label class="btn btn-success fileinput-button btn-upload-file shadow-z-2">
+                                                        <i class="glyphicon glyphicon-plus"></i>
+                                                        <span>Add image...</span>
+                                                        <input type="file" id="flProcessImage" accept="image/*" style="display: none;">
+                                                    </label>
+                                                </div>
+                                                <div class="col-sm-1 nopadding mrt-3-dt "> </div>
+                                                <div class="col-sm-2 nopadding mrt-3-dt">
+                                                    <button id="btnRemoveImg" class="btn btn-danger btn-modal btn-trash shadow-z-2" data-toggle="tooltip" title="Remove image">
+                                                        <i class="glyphicon glyphicon-trash"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-6 col-xs-12">
+                                    <div class="upload-video">
+
+                                        <div class="row">
+                                            <div class="">
+                                                <label id="lblVideoName">No video.</label>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="div-video-preview">
+                                                <video class="video-preview" poster="/img/no-video.png" id="vidPreview" controls>
+                                                    <source src="" id="videoPreview" type="video/mp4">
+                                                    Your browser does not support HTML5 video.
+                                                </video>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="div-bnt-upload-video ">
+                                                <div class="col-sm-4 nopadding">
+                                                    <label class="btn btn-success fileinput-button btn-upload-file shadow-z-2 btn-w-100 btn-upload-file-detail text-hide-pk">
+                                                        <i class="glyphicon glyphicon-plus"></i>Add video...
+                                                        <input type="file" id="flProcessVideo" accept="video/*" style="display: none;">
+                                                    </label>
+                                                </div>
+                                                <div class="col-sm-1 nopadding">
+                                                    <button id="btnPlayVideoOp1" class="btn btn-primary btn-modal play-vid-mdl btn-w-auto shadow-z-2" data-toggle="tooltip" title="Play video process 1" onclick="playVideoSubProcess(1)">
+                                                        <i class="glyphicon glyphicon-play-circle"></i>
+                                                    </button>
+                                                </div>
+                                                <div class="col-sm-1 nopadding">
+                                                    <button id="btnPlayVideoOp2" class="btn btn-primary btn-modal play-vid-mdl btn-w-auto shadow-z-2" data-toggle="tooltip" title="Play video process 2" onclick="playVideoSubProcess(2)">
+                                                        <i class="glyphicon glyphicon-play-circle"></i>
+                                                    </button>
+                                                </div>
+                                                <div class="col-sm-1 nopadding">
+                                                    <button id="btnPlayVideoOp3" class="btn btn-primary btn-modal play-vid-mdl btn-w-auto shadow-z-2" data-toggle="tooltip" title="Play video process 3" onclick="playVideoSubProcess(3)">
+                                                        <i class="glyphicon glyphicon-play-circle"></i>
+                                                    </button>
+                                                </div>
+                                                <div class="col-sm-1 nopadding">
+                                                    <button id="btnPlayVideoOp4" class="btn btn-primary btn-modal play-vid-mdl btn-w-auto shadow-z-2" data-toggle="tooltip" title="Play video process 4" onclick="playVideoSubProcess(4)">
+                                                        <i class="glyphicon glyphicon-play-circle"></i>
+                                                    </button>
+                                                </div>
+                                                <div class="col-sm-1 nopadding">
+                                                    <button id="btnPlayVideoOp4" class="btn btn-primary btn-modal play-vid-mdl btn-w-auto shadow-z-2" data-toggle="tooltip" title="Play video process 5" onclick="playVideoSubProcess(5)">
+                                                        <i class="glyphicon glyphicon-play-circle"></i>
+                                                    </button>
+                                                </div>
+                                                <div class="col-sm-3 nopadding">
+                                                    <button id="btnRemoveVideo" class="btn btn-danger btn-modal btn-trash  shadow-z-2" data-toggle="tooltip" title="Remove video">
+                                                        <i class="glyphicon glyphicon-trash"></i>
+                                                    </button>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="row">
+                                        <div class="modal-process-remarks modal-process-remarks-detail">
+                                            <textarea class="form-control" id="txtRemarks" placeholder="Remarks"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="row">
+                                        <fieldset class="iottype iottype-detail">
+                                            <legend class="iottype">IoT tracking device type</legend>
+                                            <label class="radio-inline"><input type="radio" id="rdNormal" name="assemblyradio" value="">Normal Process</label>
+                                            <label class="radio-inline"><input type="radio" id="rdAssembly" name="assemblyradio" value="SA">Assembly</label>
+                                            <label class="radio-inline"><input type="radio" id="rdFinalAssembly" name="assemblyradio" value="FA">Final Assembly</label>
+                                            <label class="radio-inline"><input type="radio" id="rdQa" name="assemblyradio" value="QA">QA</label>
+                                            <div style="margin-bottom:5px"></div>
+                                        </fieldset>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="btnSaveProcess" class="btn btn btn-success btn-modal shadow-z-2">Save</button>
+                <button type="button" class="btn btn btn-secondary btn-modal shadow-z-2" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /Modal Add New Process -->
+<!-- Modal process detail Sub -->
+<div class="modal modal-custom fade" id="mdlProcessDetailSub" role="dialog" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-lg">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header color-customize" data-background-color="default">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h5 class="modal-title">Process Detail</h5>
+            </div>
+            <div class="modal-body">
+                <div class="modal-body-custom">
+                    <div class="row">
+                        <div class="col-sm-6 col-xs-12">
+                            <div class="row">
+                                <div class="col-sm-12 col-xs-12">
+                                    <form class="form-horizontal" role="form">
+                                        <div class="form-group">
+                                            <label class="col-sm-2 control-label no-padding-right">Main </label>
+                                            <div class="col-sm-2 selec2-custom">
+                                                <input type="text" id="txtToolMainSub" placeholder="" class="form-control" disabled>
+                                            </div>
+                                            <label class="col-sm-2 control-label no-padding-right"> Type </label>
+                                            <div class="col-sm-2 selec2-custom">
+                                                <input type="text" id="txtToolTypeSub" placeholder="" class="form-control" disabled>
+                                            </div>
+                                            <label class="col-sm-2 control-label no-padding-right"> Item </label>
+                                            <div class="col-sm-2 selec2-custom">
+                                                <input type="text" id="txtToolItemSub" placeholder="" class="form-control" disabled>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-2 control-label no-padding-right"> Classification </label>
+                                            <div class="col-sm-2 selec2-custom">
+                                                <select id="drpClassificationSub" class="form-control" data-placeholder="Select"></select>
+                                            </div>
+                                            <label class="col-sm-2 control-label no-padding-right"> Sub class </label>
+                                            <div class="col-sm-2 selec2-custom">
+                                                <select id="drpSubClassSub" class="form-control" data-placeholder="Select"></select>
+                                            </div>
+                                            <label class="col-sm-2 control-label no-padding-right"> Sub/Sub </label>
+                                            <div class="col-sm-2 selec2-custom">
+                                                <select id="drpSubSubSub" class="form-control" data-placeholder="Select"></select>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-2 control-label no-padding-right" for="txtMachineCount">* Machine(s)</label>
+                                            <div class="col-sm-4">
+                                                <input type="text" id="txtMachineCountSub" placeholder="" value="1" maxlength="2" onkeypress="return isNumber(event)" class="form-control">
+                                            </div>
+                                            <label class="col-sm-2 control-label no-padding-right" for="txtWorker"> * Worker(s)</label>
+                                            <div class="col-sm-4">
+                                                <input type="text" id="txtWorkerSub" placeholder="" value="1" maxlength="4" onkeypress="return isDecimalNumber(event)" class="form-control">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-2 control-label no-padding-right" for="txtProcessTime">* Process time </label>
+                                            <div class="col-sm-4">
+                                                <input type="text" id="txtProcessTimeSub" onkeypress="return isNumber(event)" maxlength="3" placeholder="" class="form-control">
+                                            </div>
+                                            <label class="col-sm-2 control-label no-padding-right" for="txtMaxTime"> * Max time </label>
+                                            <div class="col-sm-4">
+                                                <input type="text" id="txtMaxTimeSub" value="0" placeholder="" maxlength="3" onkeypress="return isDecimalNumber(event)" class="form-control">
+                                            </div>
+                                        </div>
+                                        <div id="divStitching" style="display: none" class="form-group">
+                                            <label class="col-sm-2 control-label no-padding-right">Stitching length </label>
+                                            <div class="col-sm-4">
+                                                <input type="text" id="txtStitchingLength" onkeypress="return isNumber(event)" maxlength="3" placeholder="" class="form-control">
+                                            </div>
+                                            <label class="col-sm-2 control-label no-padding-right" for="txtMaxTime">Stitches per inch </label>
+                                            <div class="col-sm-4">
+                                                <input type="text" id="txtStitchesPerInch" placeholder="" maxlength="3" onkeypress="return isNumber(event)" class="form-control">
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6 col-xs-12">
+                            <div class="row">
+                                <div class="col-sm-6 col-xs-12">
+                                    <div class="upload-image">
+                                        <div class="row">
+                                            <div class="wrap-div">
+                                                <label id="lblImageNameSub">No image.</label>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="div-img-preview">
+                                                <img id="imgPreviewSub" src="~/img/no-image.png" alt="Image upload" class="img-preview" />
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="div-bnt-upload-image">
+                                                <div class="col-sm-9 nopadding">
+                                                    <label class="btn btn-success fileinput-button btn-upload-file">
+                                                        <i class="glyphicon glyphicon-plus"></i>
+                                                        <span>Add image...</span>
+                                                        <input type="file" id="flProcessImageSub" accept="image/*" style="display: none;">
+                                                    </label>
+                                                </div>
+                                                <div class="col-sm-3 nopadding">
+                                                    <button id="btnRemoveImgSub" class="btn btn-danger btn-modal btn-trash" data-toggle="tooltip" title="Remove image">
+                                                        <i class="glyphicon glyphicon-trash"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-6 col-xs-12">
+                                    <div class="upload-video">
+
+                                        <div class="row">
+                                            <div class="">
+                                                <label id="lblVideoNameSub">No video.</label>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="div-video-preview">
+                                                <video class="video-preview" poster="/img/no-video.png" id="vidPreviewSub" controls>
+                                                    <source src="" id="videoPreviewSub" type="video/mp4">
+                                                    Your browser does not support HTML5 video.
+                                                </video>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="div-bnt-upload-video">
+                                                <div class="col-sm-9 nopadding">
+                                                    <label class="btn btn-success fileinput-button btn-upload-file">
+                                                        <i class="glyphicon glyphicon-plus"></i>
+                                                        <span>Add video...</span>
+                                                        <input type="file" id="flProcessVideoSub" accept="video/*" style="display: none;">
+                                                    </label>
+
+                                                </div>
+                                                <div class="col-sm-3 nopadding">
+                                                    <button id="btnRemoveVideoSub" class="btn btn-danger btn-modal btn-trash" data-toggle="tooltip" title="Remove video">
+                                                        <i class="glyphicon glyphicon-trash"></i>
+                                                    </button>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="row">
+                                        <div class="modal-process-remarks">
+                                            <textarea class="form-control" id="txtRemarksSub" placeholder="Remarks"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="row">
+                                        <fieldset class="iottype">
+                                            <legend class="iottype">IoT tracking device type</legend>
+                                            <label class="radio-inline"><input type="radio" id="rdNormalSub" name="assemblyradioSub" value="">Normal Process</label>
+                                            <label class="radio-inline"><input type="radio" id="rdAssemblySub" name="assemblyradioSub" value="SA">Assembly</label>
+                                            <label class="radio-inline"><input type="radio" id="rdFinalAssemblySub" name="assemblyradioSub" value="FA">Final Assembly</label>
+                                            <label class="radio-inline"><input type="radio" id="rdQaSub" name="assemblyradioSub" value="QA">QA</label>
+                                            <div style="margin-bottom:5px"></div>
+                                        </fieldset>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="btnOkOpDetailSub" class="btn btn btn-primary btn-modal">Ok</button>
+                <button type="button" class="btn btn btn-primary btn-modal" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /Modal process detail-->
+<!-- Modal select OpName -->
+<div class="modal fade modal-custom modal-custom-width" id="mdlSelectOpName" role="dialog" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-lg">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h5 class="modal-title">Operation</h5>
+            </div>
+            <div class="modal-body">
+                <div class="modal-body-custom">
+                    <div class="row">
+                        <form class="form-horizontal" role="form">
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label no-padding-right"> Classification </label>
+                                <div class="col-sm-2 selec2-custom">
+                                    <select id="drpClassification" class="form-control" data-placeholder="Select"></select>
+                                </div>
+                                <label class="col-sm-2 control-label no-padding-right"> Sub class </label>
+                                <div class="col-sm-2 selec2-custom">
+                                    <select id="drpSubClass" class="form-control" data-placeholder="Select"></select>
+                                </div>
+                                <label class="col-sm-2 control-label no-padding-right"> Sub/Sub </label>
+                                <div class="col-sm-2 selec2-custom">
+                                    <select id="drpSubSub" class="form-control" data-placeholder="Select"></select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label no-padding-right" for="txtMachineCount">* Machine(s)</label>
+                                <div class="col-sm-2">
+                                    <input type="text" id="txtMachineCountMain" placeholder="" value="1" maxlength="2" onkeypress="return isNumber(event)" class="form-control">
+                                </div>
+                                <label class="col-sm-2 control-label no-padding-right" for="txtWorker"> * Worker(s)</label>
+                                <div class="col-sm-2">
+                                    <input type="text" id="txtWorkerMain" placeholder="" value="1" maxlength="4" onkeypress="return isDecimalNumber(event)" class="form-control">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label no-padding-right" for="txtProcessTime">* Process time </label>
+                                <div class="col-sm-2">
+                                    <input type="text" id="txtProcessTimeMain" onkeypress="return isNumber(event)" maxlength="3" placeholder="" class="form-control">
+                                </div>
+                                <label class="col-sm-2 control-label no-padding-right" for="txtMaxTime"> * Max time </label>
+                                <div class="col-sm-2">
+                                    <input type="text" id="txtMaxTimeMain" value="0" placeholder="" maxlength="3" onkeypress="return isDecimalNumber(event)" class="form-control">
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="btnOkOpName" class="btn btn btn-primary btn-modal">Ok</button>
+                <button type="button" class="btn btn btn-primary btn-modal" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /Modal select OpName -->
+<!-- Modal process detail concept -->
+<div class="modal modal-custom fade" id="mdlProcessDetailConcept" role="dialog" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-lg">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header cl-header color-customize" data-background-color="default">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h5 class="modal-title">Process Detail - Concept</h5>
+            </div>
+            <div class="modal-body">
+                <div class="modal-body-custom">
+                    <div class="row">
+                        <div class="col-sm-6 col-xs-12">
+                            <div class="row">
+                                <div class="col-sm-12 col-xs-12">
+                                    <form class="form-horizontal" role="form">
+                                        <div class="form-group">
+                                            <label class="col-sm-2 control-label no-padding-right"> Classification </label>
+                                            <div class="col-sm-2 selec2-custom">
+                                                <select id="drpClassificationConcept" class="form-control" data-placeholder="Select"></select>
+                                            </div>
+                                            <label class="col-sm-2 control-label no-padding-right"> Sub class </label>
+                                            <div class="col-sm-2 selec2-custom">
+                                                <select id="drpSubClassConcept" class="form-control" data-placeholder="Select"></select>
+                                            </div>
+                                            <label class="col-sm-2 control-label no-padding-right"> Sub/Sub </label>
+                                            <div class="col-sm-2 selec2-custom">
+                                                <select id="drpSubSubConcept" class="form-control" data-placeholder="Select"></select>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-2 control-label no-padding-right" for="txtProcessTime">Operation Name </label>
+                                            <div class="col-sm-5">
+                                                <input type="text" id="txtOpNameConcept" placeholder="" class="form-control" disabled>
+                                                <input type="hidden" id="hdOpNameIdConcept" />
+                                            </div>
+                                            <div class="col-sm-5 selec2-custom">
+                                                <select id="drpMachineConcept" class="form-control" data-placeholder="Select"></select>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-2 control-label no-padding-right">Main </label>
+                                            <div class="col-sm-2 selec2-custom">
+                                                <input type="text" id="txtToolMainConcept" placeholder="" class="form-control" disabled>
+                                            </div>
+                                            <label class="col-sm-2 control-label no-padding-right"> Type </label>
+                                            <div class="col-sm-2 selec2-custom">
+                                                <input type="text" id="txtToolTypeConcept" placeholder="" class="form-control" disabled>
+                                            </div>
+                                            <label class="col-sm-2 control-label no-padding-right"> Item </label>
+                                            <div class="col-sm-2 selec2-custom">
+                                                <input type="text" id="txtToolItemConcept" placeholder="" class="form-control" disabled>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-2 control-label no-padding-right" for="txtMachineCount">* Machine(s)</label>
+                                            <div class="col-sm-4">
+                                                <input type="text" id="txtMachineCountConcept" placeholder="" value="1" maxlength="2" onkeypress="return isNumber(event)" class="form-control">
+                                            </div>
+                                            <label class="col-sm-2 control-label no-padding-right" for="txtWorker"> * Worker(s)</label>
+                                            <div class="col-sm-4">
+                                                <input type="text" id="txtWorkerConcept" placeholder="" value="1" maxlength="4" onkeypress="return isDecimalNumber(event)" class="form-control">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-2 control-label no-padding-right" for="txtProcessTime">* Process time </label>
+                                            <div class="col-sm-4">
+                                                <input type="text" id="txtProcessTimeConcept" onkeypress="return isNumber(event)" maxlength="3" placeholder="" class="form-control">
+                                            </div>
+                                            <label class="col-sm-2 control-label no-padding-right" for="txtMaxTime"> * Max time </label>
+                                            <div class="col-sm-4">
+                                                <input type="text" id="txtMaxTimeConcept" value="0" placeholder="" maxlength="3" onkeypress="return isDecimalNumber(event)" class="form-control">
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6 col-xs-12">
+                            <div class="row">
+                                <div class="col-sm-6 col-xs-12">
+                                    <div class="upload-image">
+                                        <div class="row">
+                                            <div class="wrap-div">
+                                                <label id="lblImageNameConcept">No image.</label>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="div-img-preview">
+                                                <img id="imgPreviewConcept" src="~/img/no-image.png" alt="Image upload" class="img-preview" />
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="div-bnt-upload-image">
+                                                <div class="col-sm-9 nopadding">
+                                                    <label class="btn btn-success fileinput-button btn-upload-file">
+                                                        <i class="glyphicon glyphicon-plus"></i>
+                                                        <span>Add image...</span>
+                                                        <input type="file" id="flProcessImageConcept" accept="image/*" style="display: none;">
+                                                    </label>
+                                                </div>
+                                                <div class="col-sm-3 nopadding">
+                                                    <button id="btnRemoveImgConcept" class="btn btn-danger btn-modal btn-trash" data-toggle="tooltip" title="Remove image">
+                                                        <i class="glyphicon glyphicon-trash"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-6 col-xs-12">
+                                    <div class="upload-video">
+
+                                        <div class="row">
+                                            <div class="">
+                                                <label id="lblVideoNameConcept">No video.</label>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="div-video-preview">
+                                                <video class="video-preview" poster="/img/no-video.png" id="vidPreviewConcept" controls>
+                                                    <source src="" id="videoPreviewConcept" type="video/mp4">
+                                                    Your browser does not support HTML5 video.
+                                                </video>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="div-bnt-upload-video">
+                                                <div class="col-sm-9 nopadding">
+                                                    <label class="btn btn-success fileinput-button btn-upload-file">
+                                                        <i class="glyphicon glyphicon-plus"></i>
+                                                        <span>Add video...</span>
+                                                        <input type="file" id="flProcessVideoConcept" accept="video/*" style="display: none;">
+                                                    </label>
+
+                                                </div>
+                                                <div class="col-sm-3 nopadding">
+                                                    <button id="btnRemoveVideoConcept" class="btn btn-danger btn-modal btn-trash" data-toggle="tooltip" title="Remove video">
+                                                        <i class="glyphicon glyphicon-trash"></i>
+                                                    </button>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="row">
+                                        <div class="modal-process-remarks">
+                                            <textarea class="form-control" id="txtRemarksConcept" placeholder="Remarks"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="row">
+                                        <fieldset class="iottype">
+                                            <legend class="iottype">IoT tracking device type</legend>
+                                            <label class="radio-inline"><input type="radio" id="rdNormalConcept" name="assemblyradioConcept" value="">Normal Process</label>
+                                            <label class="radio-inline"><input type="radio" id="rdAssemblyConcept" name="assemblyradioConcept" value="SA">Assembly</label>
+                                            <label class="radio-inline"><input type="radio" id="rdFinalAssemblyConcept" name="assemblyradioConcept" value="FA">Final Assembly</label>
+                                            <label class="radio-inline"><input type="radio" id="rdQaConcept" name="assemblyradioConcept" value="QA">QA</label>
+                                            <div style="margin-bottom:5px"></div>
+                                        </fieldset>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="btnSaveOpDetailConcept" class="btn btn btn-primary btn-modal">Save</button>
+                <button type="button" class="btn btn btn-primary btn-modal" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /Modal process detail-->
+<!-- Modal bom -->
+<div class="modal modal-custom fade" id="mdlPatternLinking" role="dialog" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-lg">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h5 class="modal-title">Bom & Patterns</h5>
+            </div>
+            <div class="modal-body">
+                <div class="modal-body-custom">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <table id="tbOpNameDetail"></table>
+                            <table id="tbLinkedItem"></table>
+                        </div>
+                        <div class="col-sm-6">
+                            <table id="tbBom"></table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="btnSaveLinkingBomPattern" class="btn btn btn-primary btn-modal">Save</button>
+                <button type="button" id="btnLinkItem" class="btn btn btn-primary btn-modal">Link</button>
+                <button type="button" id="btnCancelLinking" class="btn btn btn-primary btn-modal">Cancel</button>
+                <button type="button" class="btn btn btn-primary btn-modal" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /Modal bom-->
+<!--Modal BOM & Pattern linking-->
+<div id="mdlBomPatternLinking" class="modal fade modal-custom pattern-bom" role="dialog" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-lg">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h5 class="modal-title" id="hTitle">BOM & Pattern Linking</h5>
+            </div>
+            <div class="modal-body">
+                <div class="modal-body-custom">
+                    <div class="row">
+                        <table id="tbBomPatternLinking" class="scroll" style="width: 100%;"></table>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="btnLinkPattern" class="btn btn btn-primary btn-modal">Link</button>
+                <button type="button" class="btn btn-primary btn-modal" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+<!--/Modal BOM & Pattern linking-->

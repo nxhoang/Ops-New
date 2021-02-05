@@ -9,6 +9,18 @@ html, body {
     height: 100%
 }
 
+    .op__page-content .main-panel {
+        transform: unset /*because of bug jquery draggable (jump to another position in case of dragging)*/
+    }
+
+.op__page-content-col12 {
+    padding: 0 !important
+}
+
+.op__page-content .panel.panel-default {
+    margin-bottom: 0
+}
+
 .wrapper.nav-collapsed {
     height: 100%
 }
@@ -24,33 +36,46 @@ html, body {
     display: none
 }
 
-.card-header {
+.p__icon-div {
+    /*margin-top: -25px;*/
+    height: 40px
+}
+
+.p__icon-circle {
+    background-image: linear-gradient(to bottom right,#fff,#edeef5);
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    margin: 0 auto;
+    display: flex;
+    position: relative;
+    /*top: 25px;*/
+    z-index: 2
+}
+
+    .p__icon-circle .circle {
+        /*display: flex;*/
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        margin: 0 auto;
+        padding: 1.1px;
+        align-self: center;
+        display: flex
+    }
+
+/*.p__icon-circle .circle img {
+            align-self: center
+        }*/
+
+.p__card-header {
     /*display: none;*/
     height: 20px;
     position: relative;
     /*border-bottom: 1px solid #ccc*/
 }
 
-.circle {
-    /*width: 44px;
-    height: 44px;
-    border-radius: 50%;
-    margin-left: 2rem;
-    position: relative;
-    margin: 0 auto;
-    padding: 1px;
-    top: -78px;*/
-    /* M.O edits*/
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    margin-left: 2rem;
-    position: relative;
-    margin: 0 auto;
-    padding: 1.1px;
-    top: -97px !important;
-    /* M.O has edited*/
-}
+
 
 .circle2 {
     background: #49aaef;
@@ -75,8 +100,8 @@ html, body {
     height: 64px;
     border-radius: 50%;
     margin: 0 auto;
-    position: relative;
-    top: -40px;
+    /*position: relative;
+    top: -40px;*/
     box-shadow: 0 4px 8px 0 #000000, 0 6px 20px 0 #000000;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.05), 0 6px 20px 0 rgba(0, 0, 0, 0.15);
     background-image: linear-gradient(to bottom right, #ffffff, #edeef5);
@@ -85,9 +110,8 @@ html, body {
 /*M.O has edited*/
 
 .rounded-0 {
-    width: 2.2em;
-    display: block;
-    margin: 10px;
+    width: 24px;
+    margin: auto
 }
 
 .circle3 {
@@ -232,50 +256,55 @@ p {
     padding: 0 5px
 }
 
-.card {
-    border: 1px solid #ccc;
-    border-radius: 2px;
-    /*box-shadow: 0 4px 8px 0 #000000, 0 6px 20px 0 #000000;*/
-    box-shadow: 0 4px 8px 0 #000000, 0 6px 20px 0 #000000;
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.05), 0 6px 20px 0 rgba(0, 0, 0, 0.05);
-    float: left;
-    z-index: 12;
-    display: flex;
-    flex-flow: column;
-    background-color: white
-}
-
 .op__process-mc-info {
     height: 25px;
     width: 98%;
     white-space: nowrap;
     text-overflow: ellipsis;
     overflow: hidden;
-    color: #49aaef;
+    color: #49aaef !important;
     padding: 4px;
     position: absolute;
     bottom: 22px;
     background: white;
-    font-weight: bold
+    font-weight: bold;
+    display: flex
 }
+
+    .op__process-mc-info span {
+        margin: 0 auto
+    }
 
 .jtk-node {
     overflow: unset !important;
     border: unset !important;
-    background-color: white;
+    /*background-color: white !important;*/
     /*-moz-box-shadow: 10px 10px 5px #808080;
     -webkit-box-shadow: 10px 10px 5px #808080;
     box-shadow: 10px 10px 5px #808080;*/
-    box-shadow: 0 8px 20px 0 #53bbfd, 0 8px 20px 0 #53bbfd;
-    box-shadow: 0 8px 20px 0 rgba(142,157,190,.5), 0 8px 20px 0 rgba(142,157,190,.5);
+    /*box-shadow: 0 8px 20px 0 #53bbfd, 0 8px 20px 0 #53bbfd;
+    box-shadow: 0 8px 20px 0 rgba(142,157,190,.5), 0 8px 20px 0 rgba(142,157,190,.5);*/
 }
+
+    .jtk-node .card {
+        border: 1px solid #ccc;
+        border-radius: 2px;
+        /*box-shadow: 0 4px 8px 0 #000000, 0 6px 20px 0 #000000;*/
+        box-shadow: 0 4px 8px 0 #000000, 0 6px 20px 0 #000000;
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.05), 0 6px 20px 0 rgba(0, 0, 0, 0.05);
+        float: left;
+        z-index: 1;
+        display: flex;
+        flex-flow: column;
+        background-color: white !important
+    }
 
 .process-title {
     margin: 0 !important
 }
 
 #jsPlumb_2_1 {
-    background-color: #edeef5 !important;
+    background-color: #edeef5;
 }
 
 .op__op-name {
@@ -303,13 +332,13 @@ p {
     width: 100%;
     position: absolute;
     /*padding: 2px 5px;*/
-    background-image: linear-gradient(to right, #fc6586, #53bbfd);
+    /*background-image: linear-gradient(to right, #fc6586, #53bbfd);*/
     border-radius: 0 0 1px 1px;
     bottom: 0;
     right: 0;
-    border-left: 1px solid #ccc;
+    /*border-left: 1px solid #ccc;
     border-right: 1px solid #ccc;
-    border-bottom: 1px solid #ccc;
+    border-bottom: 1px solid #ccc;*/
     text-align: center
 }
 
@@ -431,7 +460,7 @@ p {
 }
 
 /*this just for viewing, do not push to TFS*/
-#imgOpIcon1 {
+/*#imgOpIcon1 {
     background-color: red
 }
 
@@ -449,7 +478,7 @@ p {
 
 #imgOpIcon5 {
     background-color: rgb(255, 0, 64)
-}
+}*/
 /*this just for viewing, do not push to TFS*/
 
 #mdlProcessDetail .arrow-op {
@@ -491,3 +520,7 @@ p {
     border-color: #7f8fb1;
 }
 /*M.O has edited*/
+
+.op__group-modal .btn.btn-default.dropdown-toggle {
+    box-shadow: unset !important
+}

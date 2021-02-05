@@ -56,6 +56,11 @@ namespace OPS_DAL.Entities
         public string RegisterName { get; set; }//ADD - SON) 04/Sep/2020
         public decimal Sorting { get; set; }//ADD - SON) 04/Sep/2020
         public string FactoryName { get; set; }//ADD - SON) 9/Oct/2020
-
+        //START ADD - SON) 30/Jan/2021
+        public string Reason { get; set; }
+        public string ReasonName { get; set; }
+        public string OpSource { get; set; }
+        public string IsLastConfirmation { get; set; }
+        //END ADD - SON) 30/Jan/2021
     }
 }

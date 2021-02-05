@@ -168,7 +168,7 @@ img {
 
 /*Alert bootstrap*/
 .vdp__alerts {
-    position: fixed;
+    position: absolute;
     top: 0;
     z-index: 9999;
     width: 50%;
@@ -857,15 +857,40 @@ input.ng-invalid-required {
         visibility: visible;
     }
 
+    #jsPlumb_2_1 {
+        background-color: white !important
+    }
+
     #jtk-ops-groups .controls, #jtk-ops-groups .controls *, #miniview, #miniview *, .controls-language, .controls-language *,
     .jtk-surface-pan, .jtk-surface-pan *, .delete-connection, .delete, .delete *, .group-title button, .play-video,
     .play-video *, .connect, .connect *, .ops__delete-process, .ops__delete-process *, .ops__process-bottom, .ops__process-bottom *,
-    ops-node-change-page, ops-node-change-page *, .op__control-div, .op__control-div *, .op__paging, .op__paging * {
+    ops-node-change-page, ops-node-change-page *, .op__control-div, .op__control-div *, .op__paging, .op__paging{
         visibility: hidden !important;
     }
 
-    .opmt-table, .opsum-btn-close, #opsmodal {
+    .opmt-table, .opsum-btn-close, #opsmodal, .wrapper.nav-collapsed .app-sidebar, .op__page-content-row .card-header,
+    .card-body .op__controls, .op__paging {
         display: none;
+    }
+
+    .op__page-content .main-panel {
+        margin: 0
+    }
+
+    .wrapper.nav-collapsed .main-panel .main-content {
+        padding: 0
+    }
+
+    .p__icon-circle {
+        background-color: #eaeaea !important
+    }
+
+    body {
+        overflow: hidden
+    }
+
+    .jtk-node .card {
+        background-color: #ffffff !important
     }
 }
 

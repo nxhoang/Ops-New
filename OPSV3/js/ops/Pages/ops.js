@@ -330,6 +330,11 @@ const checkRoleBaseOnActiveTab = (activeTab, edition, opConfirmation) => {
 
 //Init data for modal register new ops.
 function InitDataForAddNewOpsModal() {
+    //START ADD - SON) 30/Jan/2021
+    getReasonOperationPlan(response => {
+        FillDataToDropDownlist("drpReasonOp", response, "SubCode", "CodeName");
+    });
+    //END ADD - SON) 30/Jan/2021
     var arrBuyer = GetArrayBuyer();
     FillDataToDropDownlist("drpBuyer", arrBuyer, "BuyerCode", "BuyerName");
 
@@ -1391,6 +1396,7 @@ function BindDataToJqGridModule(styleCode, moduleItemCode) {
                     //Redefine Part Commnet because it return html
                     dtRow.PartComment = "";
                     dtRow.SubGroup = "";
+                    dtRow.DropdownModuleColor = "";
                     var rowData = JSON.stringify(dtRow);
 
                     return rowData;
@@ -1583,10 +1589,13 @@ function BindDataToJqGridOpsModal(styleCode, styleSize, styleColor, revNo) {
             { name: 'ConfirmChk', index: 'ConfirmChk', width: 100, label: arrOpsColname.CONFIRMCHK, align: 'center' },
             { name: 'OpPrice', index: 'OpPrice', width: 90, label: arrOpsColname.OPPRICE, align: 'center' },
             { name: 'LastUpdateTime', index: 'LastUpdateTime', width: 250, label: arrOpsColname.LASTUPDATEDATE, align: 'center', formatter: convertDateToString },
-            { name: 'Remarks', index: 'Remarks', width: 250, label: arrOpsColname.REMARKS, align: 'center' },
+            { name: 'ReasonName', index: 'ReasonName', width: 200, label: 'Reason', align: 'left' }, //ADD - SON) 1/Feb/2021
+            { name: 'Remarks', index: 'Remarks', width: 250, label: arrOpsColname.REMARKS, align: 'left' },
             { name: 'Factory', index: 'Factory', width: 150, label: "Factory", align: 'center' }, //ADD) SON - 28/Jun/2019
+            { name: 'OpSource', index: 'OpSource', width: 200, label: "Source", align: 'center' }, //ADD - SON) 1/Feb/2021
             { name: 'Edition', index: 'Edition', hidden: true },
             { name: 'Language', index: 'Language', hidden: true },
+            { name: 'IsLastConfirmation', index: 'IsLastConfirmation', hidden: true },//ADD - SON) 30/Jan/2021
             { name: 'StyleColorSerial', index: 'StyleColorSerial', hidden: true }
 
         ],
@@ -1630,6 +1639,14 @@ function BindDataToJqGridOpsModal(styleCode, styleSize, styleColor, revNo) {
             SetValueForLanguage("drpLanguageOpMaster", MapLanguageToFlag(row.Language));
 
         },
+        //START ADD - SON) 30/Jan/2021
+        rowattr: function (rd) {
+            console.log('rd', rd.IsLastConfirmation);
+            if (rd.IsLastConfirmation === "Y") {
+                return { "style": "background-color:#FFFF99;" };
+            }
+        },
+        //END ADD - SON) 30/Jan/2021
         ajaxRowOptions: { async: true }//ADD - SON) 1/Oct/2020
     });
 
@@ -2103,6 +2120,17 @@ function AlertEditionSelectionForImporting(selectedEdi) {
 
 //Add new Ops master
 function AddNewOps() {
+
+    //START ADD - SON) 30/Jan/2021
+    //if operation revision is not equal 001 then check reason must be selected
+    if ($("#rdCopySelectPlan").is(":checked") === true) {
+        if (isEmpty($('#drpReasonOp').val())) {
+            ShowMessage('Register Operation Plan', 'Please select reason', ObjMessageType.Warning);
+            return;
+        }        
+    }
+    //END ADD - SON) 30/Jan/2021
+
     //Check target edition
     const targetEdition = $("#drpTargetEdition").val();
 
@@ -2495,7 +2523,8 @@ function GetObjectOpsMasterOnModal() {
     var edition = $("#drpTargetEdition").val();
     var language = MapFlagValueToLanguage($("#drpLanguageOpMaster").val());
     var factory = $("#drpFactoryOpmt").val(); //ADD) SON - 1/Jul/2019
-
+    const reason = $("#drpReasonOp").val(); //ADD - SON) 30/Jan/2021
+    const opSource = styleCode + styleSize + styleColorSerial + revNo + edition + opRevNo;
     var objOps = {
         StyleCode: styleCode,
         StyleSize: styleSize,
@@ -2508,7 +2537,9 @@ function GetObjectOpsMasterOnModal() {
         ManCount: manCount,
         Edition: edition,
         Language: language,
-        Factory: factory //ADD) SON - 1/Jul/2019
+        Factory: factory, //ADD) SON - 1/Jul/2019
+        Reason: reason, //ADD - SON) 30/Jan/2021
+        OpSource: opSource //ADD - SON) 30/Jan/2021
     };
     return objOps;
 }

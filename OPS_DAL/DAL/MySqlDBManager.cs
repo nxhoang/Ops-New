@@ -525,8 +525,6 @@ namespace OPS_DAL.DAL
             }
 
         }
-
-
         //2020-08-07 Tai Le(Thomas)
         public static DataTable QueryToDatable(string commandText, CommandType commandType, MySqlParameter[] parameters, int ConnectionTimeOut = 30)
         {

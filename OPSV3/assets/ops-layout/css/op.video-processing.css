@@ -28,7 +28,8 @@
 
 .op__n-vp-modal2 {
     height: 22%;
-    position: fixed
+    /*position: fixed;
+    top: 6.4%*/
 }
 
 @keyframes rotateBtnClose {
@@ -720,7 +721,7 @@
 }
 
 .op__controls-video2 {
-    margin: 0 auto;
+    margin: 3% auto;
     position: relative;
     width: 90%
 }

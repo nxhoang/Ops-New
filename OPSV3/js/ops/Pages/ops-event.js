@@ -1425,7 +1425,9 @@ function ClickTabModule() {
         //Get list module part
         GetModulePart();
         // Oanh add function change color 19Jan2021
-        setBackgroundColorJqGridModal();        
+        setTimeout(() => {
+            setBackgroundColorJqGridModal();        
+        }, 0);
     });
 
     $("#achModuleRevision").click(function () {

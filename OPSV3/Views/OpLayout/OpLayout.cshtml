@@ -39,15 +39,12 @@
 
     <!-- Ops Layout page files -->
     <link href="../../assets/ops-layout/css/main.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="../../assets/ops-layout/css/app.min.css?v=2.3.1">
-    <link href="~/assets/ops-layout/css/ops-layout.min.css?v=2.7.9" rel="stylesheet" />
+    <link rel="stylesheet" href="../../assets/ops-layout/css/app.min.css?v=2.4.0">
+    <link href="~/assets/ops-layout/css/ops-layout.min.css?v=2.9.0" rel="stylesheet" />
     <script src="~/js/ops/uicontrol/SearchStyle.js?v=1.0.6"></script>
     <script src="~/js/ops/Pages/ops-video.js?v=1.4"></script>
 
-    <script src="~/js/Entities/JsEntity.min.js?v=1.1.0"></script>
-    <script src="~/js/Entities/Opmt.js?v=1.0"></script>
-    <script src="~/js/Entities/Opdt.js?v=1.0"></script>
-
+    <script src="~/js/Entities/JsEntity.min.js?v=2.3.1"></script>
     <script src="~/Scripts/jquery.signalR-2.2.2.min.js"></script>
     <script src="~/signalr/hubs/"></script>
 
@@ -55,8 +52,8 @@
     @*<link href="~/assets/op-management/css/op_video-process.min.css?v=1.7" rel="stylesheet" />
         <script src="~/assets/op-management/js/op_video-process.min.js?v=1.6"></script>*@
 
-    <link href="~/assets/ops-layout/css/op.video-processing.min.css?v=2.2.4" rel="stylesheet" />
-    <script src="~/assets/ops-layout/js/op.video-processing.min.js?v=2.2.4"></script>
+    <link href="~/assets/ops-layout/css/op.video-processing.min.css?v=2.5.0" rel="stylesheet" />
+    <script src="~/assets/ops-layout/js/op.video-processing.min.js?v=2.5.0"></script>
 
     <!--START ADD - SON NGUYEN CAO-->
     <script src="~/assets/ops-layout/js/ops-layout-process.js?v=1.1"></script>
@@ -70,11 +67,11 @@
     <script src="~/js/ops/process_detail/process_detail.js?v=2.2"></script>
     <script src="~/js/ops/process_detail/process_detail_event.js?v=2.2"></script>
     <script src="~/js/ops/process_detail/linking_bom_patterns.js"></script>
-    <script src="~/assets/ops-layout/js/opl.process-detail.min.js?v=2.2"></script>
+    <script src="~/assets/ops-layout/js/opl.process-detail.min.js?v=2.5.0"></script>
     @*<script src="~/assets/ops-layout/js/opl.process-detail-event.js"></script>*@
 
-    <link href="~/assets/ops-layout/css/demo-op-layout.min.css?v=2.3.2" rel="stylesheet" />
-    <script src="../../assets/ops-layout/js/demo-op-layout.js?v=2.3.2"></script>
+    <link href="~/assets/ops-layout/css/demo-op-layout.min.css?v=2.5.0" rel="stylesheet" />
+    <script src="../../assets/ops-layout/js/demo-op-layout.js?v=2.5.0"></script>
 
     <!--Print PNG-->
     <script src="~/js/plugins/html2canvas.js"></script>
@@ -179,7 +176,7 @@
                                     <td>Height of canvas</td>
                                     <td>
                                         <input type="number" min="1" max="7456123" ng-model="canvasStyle.height" ng-pattern="/^-?[0-9][^\.]*$/" value="1" class="number-input" ng-change="changeCanvasHeight(canvasStyle.height)">
-                                        <span id="basic-addon1">px</span>
+                                        <span id="basic-addon1">%</span>
                                     </td>
                                 </tr>
                                 <tr>
@@ -683,7 +680,7 @@
     <div class="jtk-container">
         <!-- content -->
         <div class="jtk-ops-main" id="jtk-ops-groups">
-            <div ng-style="canvasStyle" class="jtk-ops-canvas" style="font-size: 17px" ondrop="dropCanvas(event)" ondragover="allowDropCanvas(event)">
+            <div @*ng-style="canvasStyle"*@ ng-style="{'height' : canvasStyle.height + '%' }" class="jtk-ops-canvas" style="font-size: 17px" ondrop="dropCanvas(event)" ondragover="allowDropCanvas(event)">
                 <div id="divVerticalLine" class="vertical-line" ng-show="showPrintingLine"></div>
                 <jsplumb-toolkit class="opslayout-surface" init="OpsLayoutController.init" jtk-id="opsToolkit"
                                  params="OpsLayoutController.toolkitParams" surface-id="opsLayOutSurface"
@@ -966,15 +963,17 @@
                                     <div class="n-filter-item">
                                         <div class="n-vdp__bar-part" id="divBarPart2">
                                             <ul>
-                                                <li ng-repeat="v in OpVideo1">
+                                                <li ng-repeat="v in OpVideo1" id="liBar{{v.PartNo}}">
                                                     <div style="background-color: {{v.BarBgColor}}; left: {{v.StartedSplittingLeft}}; width: {{v.SplittingBarWidth}}">{{v.PartNo}}</div>
                                                 </li>
                                             </ul>
                                         </div>
                                         <div class="vdp__vd-thumbnail" id="divVideoThumbnail2">
                                             <ul>
-                                                <li ng-repeat="v in OpVideo1">
-                                                    <img alt="{{v.PartNo}}" draggable="true" ondragstart="dragStartVideo1(event)" ng-click="clickThumbnailVideo(v)" ng-src="{{v.ThumbnailImage}}" style="border: 3px solid {{v.BarBgColor}}; left: {{v.StartedSplittingLeft}};">
+                                                <li ng-repeat="v in OpVideo1" id="liThumbnail{{v.PartNo}}">
+                                                    <img alt="{{v.PartNo}}" draggable="true" ondragstart="dragStartVideo1(event)" oncontextmenu="minModalThumbnailRemove(event)"
+                                                         ng-click="clickThumbnailVideo(v)" ng-src="{{v.ThumbnailImage}}" @*context="thumbnailContext"*@
+                                                         style="border: 3px solid {{v.BarBgColor}}; left: {{v.StartedSplittingLeft}};">
                                                 </li>
                                             </ul>
                                         </div>
@@ -1010,14 +1009,25 @@
             </div>
 
             <script type="text/ng-template" id="node_template.tpl">
-                <div id="divP{{node.id}}" class="card card2" ondrop="dropVideo1(event)" ondragover="allowDropVideo1(event)" style="height:{{node.ProcessHeight}}px; width: {{node.ProcessWidth}}px;">
-                    <div class="card-header">
-                        <div class="grey-circle">
-                            <div class="rounded-circle"></div>
-                        </div>
-                        <div class="circle" style="background: {{node.DisplayColor}}; cursor: pointer">
+                <div class="p__icon-div">
+                    <div class="p__icon-circle">
+                        @*<div class="grey-circle">
+                                <div class="rounded-circle"></div>
+                            </div>*@
+                        <div class="circle" style="background: {{node.DisplayColor}} !important; cursor: pointer">
                             <img ng-src="{{node.IconUrl}}/{{node.IconName.trim()}}" alt="{{node.IconName}}" class="rounded-0">
                         </div>
+                    </div>
+                </div>
+
+                <div id="divP{{node.id}}" class="card card2" ondrop="dropVideo1(event)" ondragover="allowDropVideo1(event)" style="height:{{node.ProcessHeight}}px; width: {{node.ProcessWidth}}px;">
+                    <div class="p__card-header">
+                        @*<div class="grey-circle">
+                                <div class="rounded-circle"></div>
+                            </div>
+                            <div class="circle" style="background: {{node.DisplayColor}} !important; cursor: pointer">
+                                <img ng-src="{{node.IconUrl}}/{{node.IconName.trim()}}" alt="{{node.IconName}}" class="rounded-0">
+                            </div>*@
                         <div class="op__node--flag">
                             <img ng-if="node.OpsState == true" src="../assets/ops-layout/img/flag1.svg" class="op__control-icon-flag1" alt="...">
                             <img ng-if="node.HotSpot == true" src="../assets/ops-layout/img/flag2.svg" class="op__control-icon-flag2" alt="...">
@@ -1031,18 +1041,18 @@
                         <div class="op__process-mc-info" title="[{{node.OpTime}}] [{{node.ManCount}}][{{node.MachineName}}]">
                             <span>[{{node.OpTime}}] [{{node.ManCount}}][{{node.MachineName}}]</span>
                         </div>
-                        <div class="op__controls">
+                        <div class="op__controls" style="background-image : {{node.BottomBgImg}}">
                             <div class="op__control-icon">
-                                <svg ng-click="changeNodePage($event,node)" ng-show="node.CanDelete" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="square" stroke-linejoin="arcs"><path d="M14 2H6a2 2 0 0 0-2 2v16c0 1.1.9 2 2 2h12a2 2 0 0 0 2-2V8l-6-6z" /><path d="M14 3v5h5M16 13H8M16 17H8M10 9H8" /></svg>
-                                <svg ng-click="playVideoProcess(node)" title="Click to play video"
+                                <svg style="color : {{node.BottomColor}}" ng-click="changeNodePage($event,node)" ng-show="node.CanDelete" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="square" stroke-linejoin="arcs"><path d="M14 2H6a2 2 0 0 0-2 2v16c0 1.1.9 2 2 2h12a2 2 0 0 0 2-2V8l-6-6z" /><path d="M14 3v5h5M16 13H8M16 17H8M10 9H8" /></svg>
+                                <svg style="color : {{node.BottomColor}}" ng-click="playVideoProcess(node)" title="Click to play video"
                                      width="0.8em" height="0.8em" viewBox="0 0 16 16" class="bi bi-film" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                                     <path fill-rule="evenodd" d="M0 1a1 1 0 0 1 1-1h14a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1H1a1 1 0 0 1-1-1V1zm4 0h8v6H4V1zm8 8H4v6h8V9zM1 1h2v2H1V1zm2 3H1v2h2V4zM1 7h2v2H1V7zm2 3H1v2h2v-2zm-2 3h2v2H1v-2zM15 1h-2v2h2V1zm-2 3h2v2h-2V4zm2 3h-2v2h2V7zm-2 3h2v2h-2v-2zm2 3h-2v2h2v-2z" />
                                 </svg>
-                                <svg title="Click to delete" ng-click="removeProcess(node)" ng-show="node.CanDelete"
+                                <svg style="color : {{node.BottomColor}}" title="Click to delete" ng-click="removeProcess(node)" ng-show="node.CanDelete"
                                      width="0.8em" height="0.8em" viewBox="0 0 16 16" class="bi bi-trash-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                                     <path fill-rule="evenodd" d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5a.5.5 0 0 0-1 0v7a.5.5 0 0 0 1 0v-7z" />
                                 </svg>
-                                <div class="connect op__process-connect hidden-print"></div>
+                                <div class="connect op__process-connect hidden-print" style="color : {{node.BottomColor}}"></div>
                             </div>
                         </div>
                     </div>
@@ -1050,6 +1060,8 @@
                 <!--2 below lines must be in script only to prevent bug in case of dragging and dropping-->
                 <jtk-source filter=".connect"></jtk-source>
                 <jtk-target></jtk-target>
+
+
             </script>
 
             <script type="text/ng-template" id="group_template.tpl">
@@ -1086,21 +1098,26 @@
                 <button type="button" style="width: 100%">Select MES Package</button>
             </div>
             <div class="save-modal-row">
+                <select id="drpReasonOp" class="form-control" data-placeholder="Reason">
+                    <option></option>
+                </select>
+            </div>
+            <div class="save-modal-row">
                 <textarea ng-model="opmt.remarks" ng-maxlength="200" ng-trim="true" class="save-modal-remarks"
                           placeholder="Please enter comments / summary here."></textarea>
             </div>
             <div class="save-modal-row">
                 <div class="save-modal-col">
-                    <button class="save-modal-btn" ng-disabled="disableButtons.btnSave" ng-click="saveOp('/OpsLayout/SaveData')">Save</button>
+                    <button class="save-modal-btn" ng-disabled="disableButtons.btnSave" ng-click="saveOp('/OpLayout/SaveData')">Save</button>
                 </div>
                 <div class="save-modal-col">
-                    <button class="save-modal-btn" ng-disabled="disableButtons.btnSaveAsNewOpRev" ng-click="saveOp('/OpsLayout/CopyToNewOps', false, true)">Save as new OpRev</button>
+                    <button class="save-modal-btn" ng-disabled="disableButtons.btnSaveAsNewOpRev" ng-click="saveOp('/OpLayout/CopyToNewOps', false, true)">Save as new OpRev</button>
                 </div>
             </div>
             <div class="save-modal-row">
                 <div class="save-modal-col">
                     <button class="save-modal-btn" ng-disabled="disableButtons.btnSaveAsFacEdition"
-                            ng-click="saveOp('/OpsLayout/CopyToNewOps', true, false)">
+                            ng-click="saveOp('/OpLayout/CopyToNewOps', true, false)">
                         Save as Factory Edition
                     </button>
                 </div>
@@ -1110,6 +1127,12 @@
             </div>
         </div>
     </div>
+
+    <ul id="thumbnailContext" class="dropdown-menu">
+        <li><a ng-click="thumbnailRemove()">Remove</a></li>
+        @*<li class="divider"></li>
+            <li><a ng-click="properties()">Properties</a></li>*@
+    </ul>
 </div>
 
 <!-- Video processing -->

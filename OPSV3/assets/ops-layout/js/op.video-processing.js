@@ -746,6 +746,9 @@ function addPartBar1(splitControl) {
 function cropVideo1() {
     if (validateStartEndTime1(true)) {
         console.log("Crop video...");
+        // Resetting number of video 
+        if (_videoOpdts1 && _videoOpdts1.length === 0) _partVideo1 = 0;
+
         _partVideo1++;
         const totalSecond = parseInt(_endH1.value) * 3600 + parseInt(_endM1.value) * 60 + parseInt(_endS1.value) - (parseInt(_startH1.value) * 3600 + parseInt(_startM1.value) * 60 + parseInt(_startS1.value)),
             currentOpmt = GetSelectedOneRowData(gridOpsTableId);
@@ -815,6 +818,56 @@ function PreviewVideo(videoSrc, data) {
     document.getElementById(SpTotalTimeMax).innerHTML = data.TotalTimeStr;
 }
 
+function minModalThumbnailRemove(event) {
+    ///<summary>Removing thumbnail and bar in min-modal</summary>
+
+    //alert(event.currentTarget.alt);
+    event.preventDefault();
+    console.log("What's happening 👹");
+    
+    thumbnailContextmenu(event.currentTarget.alt);
+}
+
+const minMdRemoveThumbnail = (partNo) => {
+    // Removing thumbnail in min-modal.
+    if (document.getElementById(`liThumbnail${partNo}`)) document.getElementById(`liThumbnail${partNo}`).remove();
+    if (document.getElementById(`liBar${partNo}`)) document.getElementById(`liBar${partNo}`).remove();
+};
+
+function thumbnailContextmenu(partNo) {
+    ConfirmYesNo("Confirmation", "Are you sure to remove this video?", () => {
+        //row.remove();
+        //const vdRows = document.getElementsByClassName("vdp-modal--each-vd");
+        //if (_videoOpdts1 && _videoOpdts1.length === 0) _partVideo1 = 0;
+        
+        // Removing item from list selected video-processes.
+        const pos = _videoOpdts1.map((x) => x.PartNo.toString()).indexOf(partNo.toString());
+
+        console.log("Coming here 👹");
+        console.log(pos);
+
+        if (pos > -1) {
+            _videoOpdts1.splice(pos, 1);
+            _splitVideo1.splice(pos, 1);
+
+            console.log("After removing 👹");
+            console.log(_videoOpdts1);
+            console.log(_splitVideo1);
+        }
+
+        // Removing part bar by part number.
+        const divPart = document.getElementById(`divPart${partNo}`);
+        if (divPart) divPart.remove();
+
+        // Removing video thumbnail image
+        const imgPart = document.getElementById(`imgPart${partNo}`);
+        if (imgPart) imgPart.remove();
+
+        // Removing controls in min-modal
+        minMdRemoveThumbnail(partNo);
+    }, () => { });
+}
+
 function takeVideoThumbnail(data) {
     const canvas = document.createElement("canvas"),
         scale = 1,
@@ -848,8 +901,19 @@ function takeVideoThumbnail(data) {
             });
         }
 
+        // Moving splitting controls
+        moveSplittingControls1(data.StartedSplittingLeft, data.EndedSplittingLeft, data.SplittingBarWidth,
+            data.StartedDuration, data.StartTime, data.EndTime);
+
         // preview video
         PreviewVideo(_vidTag1.src, data);
+    });
+
+    img.addEventListener("contextmenu", (ev) => {
+        ev.preventDefault();
+        //console.log(ev);
+        console.log(data.PartNo);
+        thumbnailContextmenu(data.PartNo);
     });
 
     return img;

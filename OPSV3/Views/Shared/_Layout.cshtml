@@ -723,11 +723,11 @@
         });
 
         //START ADD - SON) 26/Jan/2021
-        //$(window).on('resize', function () {
-        //    const screenHeight = $(window).height();
-        //    const pageBodyHeight = screenHeight - (60 + 75);//60 is height of menu on top
-        //    $('#divPageBody').height(pageBodyHeight);
-        //}).trigger('resize');
+        $(window).on('resize', function () {
+            const screenHeight = $(window).height();
+            const pageBodyHeight = screenHeight - (100);//60 is height of menu on top
+            $('#divPageBody').css({ 'min-height': pageBodyHeight });
+        }).trigger('resize');
         //END ADD - SON) 26/Jan/2021
 
         //==================================

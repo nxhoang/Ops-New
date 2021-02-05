@@ -1321,8 +1321,10 @@ function BindDataToJqGridOps(styleCode, styleSize, styleColor, revNo, edition) {
             { name: 'ManCount', index: 'ManCount', width: 90, label: arrOpsColname.MANCOUNT, align: 'center', classes: 'pointer' },
             { name: 'Factory', index: 'Factory', width: 90, label: arrOpsColname.FACTORY, align: 'center', classes: 'pointer' },
             { name: 'LastUpdateTime', index: 'LastUpdateTime', width: 150, label: arrOpsColname.LASTUPDATEDATE, align: 'left', classes: 'pointer', formatter: convertDateToString },
+            { name: 'ReasonName', index: 'ReasonName', width: 250, label: 'Reason', align: 'left'}, //ADD - SON) 30/Jan/2021
             { name: 'Remarks', index: 'Remarks', width: 250, label: arrOpsColname.REMARKS, align: 'left', classes: 'pointer' },
             { name: 'MxPackage', index: 'MxPackage', width: 250, label: arrOpsColname.MXPACKAGE, align: 'left', classes: 'pointer' }, //ADD) SON - 1/Jul/2019
+            { name: 'OpSource', index: 'OpSource', width: 170, label: 'Op Source', align: 'center' }, //ADD - SON) 30/Jan/2021
             { name: 'Edition', index: 'Edition', width: 90, hidden: true },
             { name: 'StyleColorSerial', index: 'StyleColorSerial', hidden: true },
             { name: 'Language', index: 'Language', hidden: true },
